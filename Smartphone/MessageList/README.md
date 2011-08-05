@@ -20,7 +20,7 @@ The Message List API will allow you to add items to the main message list much l
 
 **Requires BlackBerry WebWorks SDK for Smartphones v2.0 or higher**
 
-Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks/issues) or contact the Authors
+Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks-Community-APIs/issues) or contact the Authors
 
 ## How To Configure The Extension For Use
 

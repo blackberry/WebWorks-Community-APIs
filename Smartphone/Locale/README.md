@@ -11,7 +11,7 @@ The Locale API will allow you to retrieve the locale string based on the device 
 
 **Requires BlackBerry WebWorks SDK for Smartphones v2.0 or higher**
 
-Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks/issues) or contact the [Author](https://github.com/tneil)
+Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks-Community-APIs/issues) or contact the [Author](https://github.com/tneil)
 
 ## How To Configure The Extension For Use
 

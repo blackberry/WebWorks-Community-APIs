@@ -23,7 +23,7 @@ the same consistent feel with your UI on a BlackBerry 6.0 browser.
 
 **Requires BlackBerry WebWorks SDK for Smartphones v2.0 or higher**
 
-Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks/issues) or contact the [Author](https://github.com/tneil)
+Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks-Community-APIs/issues) or contact the [Author](https://github.com/tneil)
 
 ## How To Configure The Extension For Use
 

@@ -18,7 +18,7 @@ This is accomplished by calling Backlight.enable(true, INTERVAL).
 2. The user-defined backlight timeout (Device software options screen) cannot be read.  As a result, there is no way to restore the user-defined timeout.  Use Backlight.getTimeoutDefault() instead (default value is 30 seconds).
 
 
-Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks/issues) or contact the [Author](https://github.com/astanley)
+Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks-Community-APIs/issues) or contact the [Author](https://github.com/astanley)
 
 ## How To Configure The Extension For Use
 
