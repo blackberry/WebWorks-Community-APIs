@@ -9,7 +9,7 @@ The Barcode API will allow scan a 1D or 2D barcode and read the data contained i
 
 **Requires BlackBerry WebWorks SDK for Tablet OS v2.1 or higher**
 
-Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks-Community-APIs/issues) or contact the Authors
+Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks/issues) or contact the Authors
 
 ## How To Configure The Extension For Use
 
@@ -64,10 +64,11 @@ Any references to files/directories under "shared" folder (e.g. music) requires 
 * Please ensure your file path provided to generate uses a ".png" file extension.
 * File name would be timestamp with .png extension (i.e. 1312478402621.png) when file path is not provided or file extension is not valid.
 * 'UPC_E', 'UPC_A', 'EAN_8', 'EAN_13', 'CODE_128', 'CODE_39', 'ITF', 'PDF417', 'QR' and 'DATAMATRIX' are supported barcode formates.
-* Parameter passed to callbacks is of object type with following default values: 
-   {'code': 0,   // 0 for Success, -1 for error.
-    'msg': null, // Contains an error message.
-    'data': {}}. // The actual data: value of 'content' for successful scan call, value of 'filePath' for successful generate call.
+* Parameter passed to callbacks is of object type with following default values:
+ 
+         {'code': 0,   // 0 for Success, -1 for error.
+          'msg': null, // Contains an error message.
+          'data': {}}  // Check returned values at: 'content' property for successful scan call, 'filePath' property for successful generate call.
 
 
 ## Known Issues
