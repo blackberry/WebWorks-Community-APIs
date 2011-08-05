@@ -17,7 +17,7 @@ Nothing yet...
 
 **Requires BlackBerry WebWorks SDK for Tablet OS v2.1 or higher**
 
-Have a problem with this extension?  [Log an Issue](https://github.com/tneil/MessingAround/issues) or contact the Authors above
+Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks-Community-APIs/issues) or contact the Authors above
 
 ## How To Configure The Extension For Use
 

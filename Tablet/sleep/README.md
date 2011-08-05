@@ -16,7 +16,7 @@ The sleep object will allow you to suspend and enable the BlackBerry Tablet OS b
 1. PR 104184 defect logged: "Unable to change value of systemIdleMode to KEEP_AWAKE".
 
 
-Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks/issues) or contact the [Author](https://github.com/myjing)
+Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks-Community-APIs/issues) or contact the [Author](https://github.com/myjing)
 
 ## How To Configure The Extension For Use
 

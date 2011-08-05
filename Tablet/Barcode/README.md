@@ -9,7 +9,7 @@ The Barcode API will allow scan a 1D or 2D barcode and read the data contained i
 
 **Requires BlackBerry WebWorks SDK for Tablet OS v2.1 or higher**
 
-Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks/issues) or contact the Authors
+Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks-Community-APIs/issues) or contact the Authors
 
 ## How To Configure The Extension For Use
 
