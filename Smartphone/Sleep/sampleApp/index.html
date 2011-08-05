@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<title>Allow Sleep Demo</title>
+	
+	<script type="text/javascript">
+		function debug(msg,lvl)
+		{
+			console.log(msg);
+			if (lvl >=1)
+			{
+				alert(msg);
+			}
+		}
+		function displayStatus()
+		{
+			try
+			{
+				var status = "", ele = document.getElementById("allowSleep");
+				
+				if ((window.webworks === undefined) || (webworks.system.display === undefined))
+				{
+					debug("Error in displayStatus: webworks.system.display object is undefined", 0);
+					status = "Undefined";
+				}
+				else {
+					//GET :
+					status = webworks.system.display.allowSleep;
+				}
+				
+				if (ele)
+				{
+					ele.innerHTML = "Allow backlight timeout: " + status;
+				}
+			}
+			catch (e) {
+				debug("Exception in displayStatus: " + e, 1);
+			}
+		}
+
+		function allowSleep(val)
+		{
+			try
+			{
+				if ((window.webworks === undefined) || (webworks.system.display === undefined))
+				{
+					debug("Error in allowSleep: webworks.system.display object is undefined", 0);
+					return false;
+				}
+				
+				//SET:
+				webworks.system.display.allowSleep = val;
+				
+				displayStatus();
+			}
+			catch (e) {
+				debug("Exception in displayStatus: " + e, 1);
+			}
+		}
+
+		window.onload = displayStatus;
+
+	</script>
+		
+</head>
+<body>
+
+	<h1>Allow Sleep Demo</h1>
+
+	<div id="allowSleep"></div>
+	
+	<p>
+		<button onclick="allowSleep(true)">Allow Backlight Timeout</button> <br/>
+		<button onclick="allowSleep(false)">Prevent Backlight Timeout</button>
+	</p>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:rim="http://www.blackberry.com/ns/widgets" id="888" version="1.0.0.0">
+  <name>Barcode API Testing</name>
+  <icon src="appicon.png"/>
+  <description>Barcode API Test Widget</description>
+  <author href="http://www.rim.com" rim:copyright="no copyright" email = "rhan@rim.com">
+	RIM
+  </author>
+  <license href="http://www.license.com">this is a license</license>
+  <rim:orientation mode="auto"/>
+  <rim:category name="ALL"/>
+  <rim:permissions>
+    <rim:permit>access_shared</rim:permit>
+    <rim:permit>use_camera</rim:permit>
+  </rim:permissions>  
+  <feature id="webworks.media.barcode" required="true" version="1.0.0.0" /> 
+  <feature id="blackberry.io.dir" required="true" version="1.0.0.0" /> 
+  <content src="index.htm" />
+</widget>

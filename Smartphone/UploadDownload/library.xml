@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library>
+  <extension>
+    <entryClass>webworks.io.fileTransfer.FileTransfer</entryClass>
+  </extension>
+  <features>
+    <feature id="webworks.io.fileTransfer" version="1.0.0.0"/>
+  </features>
+</library>

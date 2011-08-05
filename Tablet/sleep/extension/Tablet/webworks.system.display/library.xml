@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library isWhitelist="true">
+<!--
+ * Steps to writing a custom ActionScript extension:
+ * Updates necessary to this *.xml file:
+ * 
+ * 1) Update <entryClass> value to be correct format = [feature namespace].[*.as class name] (e.g. "webworks.system.display.AllowSleepExtension")
+ * 2) Update <configurations> section such that paths for JavaScript and ActionScript files are correct
+ * 3) Update <features> section to capture correct namespaces for this extension (e.g. <feature id="webworks.system.display" version="1.0.0" />)
+-->
+	<extension>
+		<entryClass>webworks.system.display.SleepExtension</entryClass>
+	</extension>
+
+	<platforms>
+		<platform value="AIR">
+			<target version="default" config="AIR_XHR" />
+		</platform>
+	</platforms>
+
+	<configurations>
+		<configuration name="AIR_XHR" version="1.0" comment="For XHR architecture for Java implementation">			
+			<src type="text/javascript" path="js/common/system_display_dispatcher.js" comment="Custom JS XHR dispatcher" />
+			<src type="text/javascript" path="js/common/system_display_ns.js" comment="Custom JS interface" />
+			<src type="text/actionscript" path="src/Air/AllowSleep/src" comment="ActionScript implementation" />
+		</configuration>
+	</configurations>
+	
+	<features>
+		<feature id="webworks.system.display" version="1.0.0" />
+	</features>
+
+</library>
