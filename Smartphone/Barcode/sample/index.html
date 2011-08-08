@@ -1,0 +1,61 @@
+<html>
+<head>
+
+<script type="text/javascript">
+
+    // Scans QR codes and Barcodes 5,6,7
+    function doScan() {
+        // default format = all
+        // cheater formats 1d + 2d = all
+        var options = {'tryHarder' : true,
+        				'formats' : ['1D']
+                    }
+        try{
+            webworks.media.barcode.scan(onCaptured, onError, options);
+        }catch(e){
+            alert("Error: " + e);
+        }
+    }
+    
+    // Generates an image based on the file extension for the filePath
+    function generateBarcode() {
+        // default codeType = qr
+        // default errorCorrectio = 50
+        var options = { 'format' : 'EAN_8', /*required*/
+                    'width' : 211, /*required*/
+                    'height' : 152, /*required*/
+                    'filePath' : 'file:///SDCard/lkajsl.png' /*required*/
+                     }
+        try{
+            webworks.media.barcode.generate("12345678", onGenerated, onError, options);
+        }catch(e){
+            alert("Error: " + e);
+        }
+    }
+    
+    function onError(error) {
+        alert("Code: " + error.code + "Message: " + error.message);
+        
+    }
+    
+    function onCaptured(value) {
+        alert(value);
+    }
+    
+    function onGenerated(filePath) {
+        alert('code generated here:' + filePath);
+        // getElementById("imageId").imageSrc= filePath;           
+        // do upload, display, delete.. whatever..
+    }
+    
+    
+</script>
+</head>
+<body>
+
+    <button onclick="doScan()">Scan Barcode</button>
+    <button onclick="generateBarcode()">Generate Barcode</button>
+    <image id="imageId" />
+
+</body>
+</html>
