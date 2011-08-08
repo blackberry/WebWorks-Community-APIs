@@ -1,4 +1,4 @@
-﻿# Sleep Object
+# Sleep Object
 
 ## NOTE: THIS IS A WORK IN PROGRESS
 
