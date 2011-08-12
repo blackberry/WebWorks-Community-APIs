@@ -17,8 +17,6 @@
 package webworks.message.list;
 
 import net.rim.device.api.script.ScriptableFunction;
-import java.util.Date;
-import net.rim.device.api.ui.component.Dialog;
 	
 public final class MessageListGetItemFunction extends ScriptableFunction
 {

@@ -16,7 +16,6 @@
 
 package webworks.message.list;
 
-import net.rim.device.api.script.Scriptable;
 import net.rim.device.api.script.ScriptableFunction;
 
 

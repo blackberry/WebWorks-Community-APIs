@@ -19,34 +19,35 @@ package webworks.message.list;
 
 import java.util.Vector;
 
-import net.rim.blackberry.api.messagelist.*;
-import net.rim.device.api.collection.ReadableList;
-import net.rim.device.api.system.RuntimeStore;
-import net.rim.blackberry.api.messagelist.ApplicationIndicatorRegistry;
 import net.rim.blackberry.api.messagelist.ApplicationMessageFolder;
+import net.rim.blackberry.api.messagelist.ApplicationMessageFolderRegistry;
+import net.rim.device.api.collection.ReadableList;
+import net.rim.device.api.system.PersistentObject;
+import net.rim.device.api.system.PersistentStore;
+import net.rim.device.api.util.Persistable;
+import net.rim.device.api.util.ToIntHashtable;
 
-/**
- * This class is used to facilitate the storage of messages. For the sake of
- * simplicitly, we are saving messages in the device runtime store. In a real
- * world situation, messages would be saved in device persistent store and/or
- * on a mail server.
- */
 public final class CustomMessageStore
 {
-	//TODO: change: unique msg name converted to long
-    private static final long MSG_KEY = 0x8083229363c3b900L;
 
     private static CustomMessageStore _instance;
     private ReadableListImpl _inboxMessages;
-    private ApplicationMessageFolder _mainFolder;
 
+    private static long _GUID;        
 
     /**
      * Creates a new CustomMessageStore object
      */
-    private CustomMessageStore()
+    private CustomMessageStore(long GUID)
     {
-        _inboxMessages = new ReadableListImpl();
+        this(GUID, new ReadableListImpl());
+    }
+    
+    private CustomMessageStore(long GUID, ReadableListImpl inboxMessages)
+    {
+        _inboxMessages = inboxMessages;
+        _GUID = GUID;
+        inboxMessages.init();
     }
 
 
@@ -55,39 +56,24 @@ public final class CustomMessageStore
      * 
      * @return The singleton instance of the MessagelistDemoStore
      */
-    public static synchronized CustomMessageStore getInstance()
+    public static synchronized CustomMessageStore getInstance(long GUID)
     {
-        // Keep messages as singleton in the RuntimeStore
+
         if(_instance == null)
         {
-            RuntimeStore rs = RuntimeStore.getRuntimeStore();
-
-            synchronized(rs)
-            {
-                _instance = (CustomMessageStore) rs.get(MSG_KEY);
-
-                if(_instance == null)
-                {
-                    _instance = new CustomMessageStore();
-                    rs.put(MSG_KEY, _instance);
-                }
-            }
+        	PersistentObject store = PersistentStore.getPersistentObject(GUID);
+        	if(store.getContents() == null){
+        		_instance = new CustomMessageStore(GUID);
+        		synchronized(store){        			
+        			store.setContents(_instance.getInboxMessages());
+        			store.commit();
+        		}
+        	}else{
+        		_instance = new CustomMessageStore(GUID, (ReadableListImpl)store.getContents());
+        	}
         }
         return _instance;
     }
-
-
-    /**
-     * Sets the main and folder
-     * 
-     * @param mainFolder The main folder to use
-     * @param deletedFolder The deleted folder to use
-     */
-    void setFolder(ApplicationMessageFolder mainFolder)
-    {
-        _mainFolder = mainFolder;
-    }
-
 
     /**
      * Retrieves the inbox folder
@@ -96,7 +82,7 @@ public final class CustomMessageStore
      */
     ApplicationMessageFolder getInboxFolder()
     {
-        return _mainFolder;
+        return ApplicationMessageFolderRegistry.getInstance().getApplicationFolder(CustomMessage.INBOX_FOLDER_ID);
     }
 
     /**
@@ -108,6 +94,8 @@ public final class CustomMessageStore
     {
         message.messageDeleted();
         _inboxMessages.removeMessage(message);
+        persist();
+
     }
 
 
@@ -118,9 +106,15 @@ public final class CustomMessageStore
      */
     void commitMessage(CustomMessage message)
     {
-        // This empty method exists to reinforce the idea that in a real world
-        // situation messages would be saved in device persistent store and/or
-        // on a mail server.
+    	persist();
+    }
+    
+    private void persist(){
+    	PersistentObject store = PersistentStore.getPersistentObject(_GUID);    		
+		synchronized(store){
+			store.setContents(this.getInboxMessages());
+			store.commit();
+		}
     }
 
 
@@ -132,6 +126,7 @@ public final class CustomMessageStore
     void addInboxMessage(CustomMessage message)
     {
         _inboxMessages.addMessage(message);
+        persist();
     }
 
     /**
@@ -148,16 +143,23 @@ public final class CustomMessageStore
      * This is an implementation of the ReadableList interface which stores the
      * list of messages using a Vector.
      */
-    static class ReadableListImpl implements ReadableList
+    static class ReadableListImpl implements ReadableList, Persistable
     {
-        private Vector messages;
+        private Vector _messages;
+        private ToIntHashtable _typeToImageJSON;
+        private static int _typeCounter = 1;
 
         /**
          * Creates a empty instance of ReadableListImpl
          */
         ReadableListImpl()
         {
-            messages = new Vector();
+            _messages = new Vector();
+            _typeToImageJSON = new ToIntHashtable();
+        }
+        
+        public void init(){
+
         }
 
 
@@ -166,7 +168,7 @@ public final class CustomMessageStore
          */
         public Object getAt(int index)
         {
-            return messages.elementAt(index);
+            return _messages.elementAt(index);
         }
 
 
@@ -175,7 +177,15 @@ public final class CustomMessageStore
          */
         public int getAt(int index, int count, Object[] elements, int destIndex)
         {
-            return 0;
+        	int returnVal = 0;
+        	if(_messages.size() < index+count){
+        		throw new ArrayIndexOutOfBoundsException();
+        	}else{
+        		for(;returnVal<count;returnVal++){
+        			elements[destIndex+returnVal] = _messages.elementAt(index+returnVal);
+        		}
+        	}
+            return returnVal;
         }
 
 
@@ -184,7 +194,7 @@ public final class CustomMessageStore
          */
         public int getIndex(Object element)
         {
-            return messages.indexOf(element);
+            return _messages.indexOf(element);
         }
 
 
@@ -193,7 +203,7 @@ public final class CustomMessageStore
          */
         public int size()
         {
-            return messages.size();
+            return _messages.size();
         }
 
 
@@ -202,9 +212,10 @@ public final class CustomMessageStore
          * 
          * @param message The message to add to this list
          */
-        void addMessage(CustomMessage message)
-        {
-            messages.addElement(message);
+        void addMessage(CustomMessage message)        
+        {        	
+            registerIcons(message);
+        	_messages.addElement(message);
         }
         
 
@@ -215,7 +226,28 @@ public final class CustomMessageStore
          */
         void removeMessage(CustomMessage message)
         {
-            messages.removeElement(message);
+            _messages.removeElement(message);
+        }
+        
+        ToIntHashtable getCustomTypeTable(){
+        	return _typeToImageJSON;
+        }
+        
+        private void registerIcons(CustomMessage message){
+        	int type = CustomMessage.DEFAULT_IMAGE_TYPE;
+        	String newImage = message.getImageNew()==null?"":message.getImageNew();
+        	String readImage = message.getImageRead()==null?"":message.getImageRead();
+        	if(newImage.length()!=0 || readImage.length()!=0){        		
+        		String JSON = "{'imageNew':" + newImage + ",'imageRead':" + readImage +"}";
+        		type = _typeToImageJSON.get(JSON);
+        		if(type == -1){
+        			type = CustomMessage.DEFAULT_IMAGE_TYPE+_typeCounter++;
+        			_typeToImageJSON.put(JSON, type);
+        			
+        			CustomMessageDispatcher.registerType(type, newImage, readImage);
+        		}        		
+        	}
+        	message.setType(type);        	
         }
     }
 }

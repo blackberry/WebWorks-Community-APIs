@@ -18,25 +18,26 @@ package webworks.message.list;
 
 import java.util.Date;
 
-import net.rim.blackberry.api.mail.ServiceConfiguration;
-import net.rim.blackberry.api.mail.Session;
-import net.rim.blackberry.api.mail.Store;
 import net.rim.blackberry.api.messagelist.ApplicationMessage;
 import net.rim.blackberry.api.messagelist.ApplicationMessageFolder;
 import net.rim.blackberry.api.messagelist.ApplicationMessageFolderRegistry;
-import net.rim.device.api.system.*;
+import net.rim.device.api.collection.ReadableList;
+import net.rim.device.api.system.Application;
+import net.rim.device.api.system.EncodedImage;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
-import net.rim.device.api.collection.ReadableList;
+import net.rim.device.api.util.Persistable;
 
 /**
  * This class provides a sample implementation of the ApplicationMessage
  * interface. It demonstrates how an application can define its own message
  * formats for use with the message store.
  */
-public final class CustomMessage implements ApplicationMessage {
+public final class CustomMessage implements ApplicationMessage, Persistable {
 
-	static final int DEMO_MESSAGE_TYPE = 0x01;
+//	static final int DEMO_MESSAGE_TYPE = 0x01;
+	static final int DEFAULT_IMAGE_TYPE = 0x01;
+
 
 	/* com.rimdevrel.cdp.messagelistinterceptor */
 	//static final long KEY = 0x39d90c5bc6899541L; // Base folder key
@@ -44,7 +45,7 @@ public final class CustomMessage implements ApplicationMessage {
 	/* com.rimdevrel.cdp.messagelistinterceptor.INBOX_FOLDER_ID */
 	static final long INBOX_FOLDER_ID = 0x2fb5115c0e4a6c33L;
 	
-	static MessageListInitFunction _initScriptable;
+	private static long _GUID;
 
 
 	/**
@@ -67,17 +68,18 @@ public final class CustomMessage implements ApplicationMessage {
 	private boolean _deleted;
 	private String _replyMessage;
 	private long _replyTime;
+	private int _type;
 	
 	// Images
-	private EncodedImage _previewPicture;
-	private EncodedImage _imageNew = null;
-	private EncodedImage _imageRead = null;
-	private EncodedImage _imageDeleted = null;
+	private String _previewPicture;
+	private String _imageNew = null;
+	private String _imageRead = null;
 
-	public static void initializeOnStartup(final MessageListInitFunction initScriptable,final String folderName, final String appName) {
+
+	public static void initializeOnStartup(final MessageListInitFunction initScriptable,final String folderName, final String appName, final long GUID) {
 	
-		_initScriptable = initScriptable;
-	
+		_GUID = GUID;
+		
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -88,7 +90,7 @@ public final class CustomMessage implements ApplicationMessage {
 					if (reg.getApplicationFolder(INBOX_FOLDER_ID) == null) {
 						// Register folders & message types and initialize
 						// folders
-						daemon.init(initScriptable, folderName, appName);
+						daemon.init(folderName, appName, GUID);
 					}
 
 				} catch (Exception e) {
@@ -111,12 +113,12 @@ public final class CustomMessage implements ApplicationMessage {
 					message.setSender(title);
 					message.setSubject(description);
 					message.setReceivedTime(System.currentTimeMillis());
-					message.setPreviewPicture(EncodedImage.getEncodedImageResource(imageNew));
-					message.setImageNew(EncodedImage.getEncodedImageResource(imageNew));
-					message.setImageRead(EncodedImage.getEncodedImageResource(imageRead));
+					message.setPreviewPicture(imageNew);
+					message.setImageNew(imageNew);
+					message.setImageRead(imageRead);
 					
 					// Store message
-					CustomMessageStore messageStore = CustomMessageStore.getInstance();
+					CustomMessageStore messageStore = CustomMessageStore.getInstance(_GUID);
 					synchronized (messageStore) {
 						messageStore.addInboxMessage(message);
 					}
@@ -136,7 +138,7 @@ public final class CustomMessage implements ApplicationMessage {
 			CustomMessage message = null;
 			
 			// Loop through our stored messages
-			CustomMessageStore messageStore = CustomMessageStore.getInstance();
+			CustomMessageStore messageStore = CustomMessageStore.getInstance(_GUID);
 			synchronized (messageStore) {
 				ReadableList list = messageStore.getInboxMessages();
 				int size = list.size();
@@ -163,7 +165,7 @@ public final class CustomMessage implements ApplicationMessage {
 			public void run() {
 				try {			
 					// Loop through our stored messages
-					CustomMessageStore messageStore = CustomMessageStore.getInstance();
+					CustomMessageStore messageStore = CustomMessageStore.getInstance(_GUID);
 					synchronized (messageStore) {
 						ReadableList list = messageStore.getInboxMessages();
 						int size = list.size();
@@ -177,7 +179,7 @@ public final class CustomMessage implements ApplicationMessage {
 								ApplicationMessageFolder folder = reg.getApplicationFolder(CustomMessage.INBOX_FOLDER_ID);
 								folder.fireElementRemoved(message);
 								
-								_initScriptable.invokeItemDeleted(message);	
+								MessageListNamespace.getInstance().invokeItemDeleted(message);	
 								
 								break;
 							}						
@@ -197,7 +199,7 @@ public final class CustomMessage implements ApplicationMessage {
 			public void run() {
 				try {			
 					// Loop through our stored messages
-					CustomMessageStore messageStore = CustomMessageStore.getInstance();
+					CustomMessageStore messageStore = CustomMessageStore.getInstance(_GUID);
 					synchronized (messageStore) {
 						ReadableList list = messageStore.getInboxMessages();
 						int size = list.size();
@@ -218,7 +220,7 @@ public final class CustomMessage implements ApplicationMessage {
 								folder.fireElementUpdated(message, message);
 							
 								// Invoke our callback
-								_initScriptable.invokeItemMarkedRead(message);
+								MessageListNamespace.getInstance().invokeItemMarkedRead(message);
 								
 								break;
 							}						
@@ -392,7 +394,7 @@ public final class CustomMessage implements ApplicationMessage {
 	 * @param image
 	 *            The desired preview picture of this message
 	 */
-	void setPreviewPicture(EncodedImage image) {
+	void setPreviewPicture(String image) {
 		_previewPicture = image;
 	}
 	
@@ -402,8 +404,12 @@ public final class CustomMessage implements ApplicationMessage {
 	 * @param image
 	 *            The desired new picture of this message
 	 */
-	void setImageNew(EncodedImage image) {
+	void setImageNew(String image) {
 		_imageNew = image;
+	}
+	
+	String getImageNew() {
+		return _imageNew;
 	}
 	
 	/**
@@ -412,8 +418,12 @@ public final class CustomMessage implements ApplicationMessage {
 	 * @param image
 	 *            The desired read picture of this message
 	 */
-	void setImageRead(EncodedImage image) {
+	void setImageRead(String image) {
 		_imageRead = image;
+	}
+	
+	String getImageRead() {
+		return _imageRead;
 	}
 	
 	
@@ -466,8 +476,11 @@ public final class CustomMessage implements ApplicationMessage {
 	 * @see net.rim.blackberry.api.messagelist.ApplicationMessage#getType()
 	 */
 	public int getType() {
-		// All messages have the same type
-		return DEMO_MESSAGE_TYPE;
+		return _type;
+	}
+	
+	public void setType(int newType) {
+		_type = newType;
 	}
 
 	/**
@@ -501,6 +514,6 @@ public final class CustomMessage implements ApplicationMessage {
 	 * @see net.rim.blackberry.api.messagelist.ApplicationMessage#getPreviewPicture()
 	 */
 	public Object getPreviewPicture() {
-		return _previewPicture;
+		return EncodedImage.getEncodedImageResource(_previewPicture==null?MessageListNamespace.getInstance().getDefaultNewImage():_previewPicture);
 	}
 }

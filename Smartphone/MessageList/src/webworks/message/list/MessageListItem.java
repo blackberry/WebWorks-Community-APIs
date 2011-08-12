@@ -17,7 +17,6 @@
 package webworks.message.list;
 
 import net.rim.device.api.script.Scriptable;
-import java.util.Date;
 
 public class MessageListItem extends Scriptable
 {
@@ -34,7 +33,7 @@ public class MessageListItem extends Scriptable
 	private String _imageNew = null;
 	private String _imageRead = null;
 	private String _imageDeleted = null;
-	private CustomMessage _message = null;
+//	private CustomMessage _message = null;
 	
     public Object getField(String name) throws Exception {
         if (name.equals(FIELD_ID)) {
