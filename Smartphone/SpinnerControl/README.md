@@ -5,7 +5,7 @@ the same consistent feel with your UI on a BlackBerry 6.0 browser.
 
 **Author:** [Tim Neil](https://github.com/tneil)
 
-![Spinner Image](https://github.com/tneil/MessingAround/blob/master/Smartphone/SpinnerControl/screenShot.png?raw=true)
+![Spinner Image](https://github.com/blackberry/WebWorks-Community-APIs/raw/master/Smartphone/SpinnerControl/screenShot.png)
 
 ## Tested On
 
