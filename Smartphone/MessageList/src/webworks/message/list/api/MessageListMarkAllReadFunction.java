@@ -16,9 +16,10 @@
 
 package webworks.message.list.api;
 
+import webworks.message.list.impl.CustomMessage;
 import net.rim.device.api.script.ScriptableFunction;
 
-public final class MessageListClearFunction extends ScriptableFunction
+public final class MessageListMarkAllReadFunction extends ScriptableFunction
 {
 	public static final String NAME = "markAllRead";
 	public Object invoke(Object obj, Object[] args) throws Exception
@@ -27,7 +28,7 @@ public final class MessageListClearFunction extends ScriptableFunction
 		{
 			try
 			{
-				// message list init Code Here
+				CustomMessage.markAllMessageRead();
 			} catch (Exception e) {}
 		}
 		return UNDEFINED;

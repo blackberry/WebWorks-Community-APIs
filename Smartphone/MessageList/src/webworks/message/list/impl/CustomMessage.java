@@ -236,6 +236,42 @@ public final class CustomMessage implements ApplicationMessage, Persistable {
 		});	
 	}
 	
+	public static void markAllMessageRead() {
+
+		Application.getApplication().invokeLater(new Runnable(){
+
+			public void run() {
+				try {			
+					// Loop through our stored messages
+					CustomMessageStore messageStore = CustomMessageStore.getInstance(_GUID);
+					synchronized (messageStore) {
+						ReadableList list = messageStore.getInboxMessages();
+						int size = list.size();
+						for (int i = 0; i < size; i++ ) {
+							CustomMessage message = (CustomMessage)list.getAt(i);
+								
+							// Update the inbox
+							ApplicationMessageFolderRegistry reg = ApplicationMessageFolderRegistry.getInstance();
+							ApplicationMessageFolder folder = reg.getApplicationFolder(CustomMessage.INBOX_FOLDER_ID);
+							
+							// Update message
+							message.markRead();													
+
+							// Notify GUI that message has changed
+							folder.fireElementUpdated(message, message);
+						
+							//  We called MarkAll Read, skip the callback
+							//MessageListNamespace.getInstance().invokeItemMarkedRead(message);
+						}
+						messageStore.persist();
+					}
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			}
+		});	
+	}
+	
 	
 
 	public static void clearMessages() {

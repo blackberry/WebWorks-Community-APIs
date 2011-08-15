@@ -109,7 +109,7 @@ public final class CustomMessageStore
     	persist();
     }
     
-    private void persist(){
+    void persist(){
     	PersistentObject store = PersistentStore.getPersistentObject(_GUID);    		
 		synchronized(store){
 			store.setContents(this.getInboxMessages());

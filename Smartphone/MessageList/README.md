@@ -8,10 +8,6 @@ The Message List API will allow you to add items to the main message list much l
 
 ## Known Issues
 
-* Currently none of the items persist past a restart
-* Unique identifiers hardcoded and will not allow for more than one application on the device using this API
-* Default image overrides on adding new items is not yet working
-
 ## Tested On
 
 * BlackBerry Torch 9800 v6.0.0.227
@@ -55,11 +51,12 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 	static Item getItem(id : string);
 	static void removeItem(id : string);
 	static void markItemRead(id : string);
+	static void markAllRead(); //No notification for you   
 	
-	/* TODO: 
-	static void markAllRead();	
+	/* TODO: 	
 	static Item[] getItems();
 	static void updateItem(item : Item);
+	static void removeAllItems();
 
 ## Options Summary
 

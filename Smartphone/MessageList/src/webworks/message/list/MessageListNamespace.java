@@ -17,7 +17,7 @@
 package webworks.message.list;
 
 import webworks.message.list.api.MessageListAddItemFunction;
-import webworks.message.list.api.MessageListClearFunction;
+import webworks.message.list.api.MessageListMarkAllReadFunction;
 import webworks.message.list.api.MessageListGetItemFunction;
 import webworks.message.list.api.MessageListInitFunction;
 import webworks.message.list.api.MessageListItem;
@@ -38,7 +38,7 @@ public class MessageListNamespace extends Scriptable
 	private MessageListInitFunction _initMessageList = null;
 	private MessageListAddItemFunction _addItem = null;
 	private MessageListGetItemFunction _getItem = null;
-	private MessageListClearFunction _clearMessageList = null;
+	private MessageListMarkAllReadFunction _markAllRead = null;
 	private MessageListRemoveItemFunction _removeItem = null;
 	private MessageListMarkReadFunction _markItemRead = null;
 
@@ -59,7 +59,7 @@ public class MessageListNamespace extends Scriptable
 		_initMessageList = new MessageListInitFunction();
 		_addItem = new MessageListAddItemFunction();
 		_getItem = new MessageListGetItemFunction();
-		_clearMessageList = new MessageListClearFunction();
+		_markAllRead = new MessageListMarkAllReadFunction();
 		_removeItem = new MessageListRemoveItemFunction();
 		_markItemRead = new MessageListMarkReadFunction();		
 
@@ -83,9 +83,9 @@ public class MessageListNamespace extends Scriptable
 		  {
 			   return _getItem;			
 		  }
-		  else if (name.equals(MessageListClearFunction.NAME))
+		  else if (name.equals(MessageListMarkAllReadFunction.NAME))
 		  {
-			   return _clearMessageList;			
+			   return _markAllRead;			
 		  }
 		  else if (name.equals(MessageListRemoveItemFunction.NAME))
 		  {
