@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package webworks.message.list;
+package webworks.message.list.api;
 
 import net.rim.device.api.script.ScriptableFunction;
 

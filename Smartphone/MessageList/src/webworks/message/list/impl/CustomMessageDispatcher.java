@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package webworks.message.list;
+package webworks.message.list.impl;
 
 import java.util.Enumeration;
 
@@ -28,7 +28,8 @@ import net.rim.device.api.system.ApplicationDescriptor;
 import net.rim.device.api.system.EncodedImage;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.util.ToIntHashtable;
-import webworks.message.list.CustomMessageStore.ReadableListImpl;
+import webworks.message.list.MessageListNamespace;
+import webworks.message.list.impl.CustomMessageStore.ReadableListImpl;
 
 /**
  * Daemon process that runs in the background. It's tasks include non-gui

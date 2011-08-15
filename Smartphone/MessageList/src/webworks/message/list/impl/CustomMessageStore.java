@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package webworks.message.list;
+package webworks.message.list.impl;
 
 
 import java.util.Vector;

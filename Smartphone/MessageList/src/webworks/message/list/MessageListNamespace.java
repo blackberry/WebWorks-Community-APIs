@@ -16,6 +16,14 @@
 
 package webworks.message.list;
 
+import webworks.message.list.api.MessageListAddItemFunction;
+import webworks.message.list.api.MessageListClearFunction;
+import webworks.message.list.api.MessageListGetItemFunction;
+import webworks.message.list.api.MessageListInitFunction;
+import webworks.message.list.api.MessageListItem;
+import webworks.message.list.api.MessageListMarkReadFunction;
+import webworks.message.list.api.MessageListRemoveItemFunction;
+import webworks.message.list.impl.CustomMessage;
 import net.rim.device.api.script.Scriptable;
 import net.rim.device.api.script.ScriptableFunction;
 import net.rim.device.api.system.Application;

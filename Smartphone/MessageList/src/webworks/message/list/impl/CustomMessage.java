@@ -14,9 +14,12 @@
 * limitations under the License.
 */
 
-package webworks.message.list;
+package webworks.message.list.impl;
 
 import java.util.Date;
+
+import webworks.message.list.MessageListNamespace;
+import webworks.message.list.api.MessageListInitFunction;
 
 import net.rim.blackberry.api.messagelist.ApplicationMessage;
 import net.rim.blackberry.api.messagelist.ApplicationMessageFolder;
