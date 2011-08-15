@@ -136,6 +136,37 @@ public final class CustomMessage implements ApplicationMessage, Persistable {
 		});
 	}
 	
+	public static void updateMessage(final CustomMessage message, final String id, final String title, final String description, final String imageNew, 
+			final String imageRead) {
+			
+			// Create a new message
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+				public void run() {
+					try {
+						message.setId(id);
+						message.setSender(title);
+						message.setSubject(description);
+						message.setReceivedTime(System.currentTimeMillis());
+						message.setPreviewPicture(imageNew);
+						message.setImageNew(imageNew);
+						message.setImageRead(imageRead);
+						
+						// Store message
+						CustomMessageStore messageStore = CustomMessageStore.getInstance(_GUID);
+						synchronized (messageStore) {
+							messageStore.commitMessage(message);
+						}
+						// Notify folder
+						ApplicationMessageFolder inboxFolder = messageStore.getInboxFolder();
+						inboxFolder.fireElementUpdated(message, message);
+
+					} catch (Exception e) {
+						Dialog.alert("update message failed:  " + e.getMessage());
+					}
+				}
+			});
+		}
+	
 	public static CustomMessage getMessage( String id) {
 		try {
 			CustomMessage message = null;
@@ -155,6 +186,26 @@ public final class CustomMessage implements ApplicationMessage, Persistable {
 			}
 		
 			return message;	
+
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		}
+	}
+	
+	public static CustomMessage[] getMessages() {
+		try {
+			CustomMessage[] messages = null;
+			
+			// Loop through our stored messages
+			CustomMessageStore messageStore = CustomMessageStore.getInstance(_GUID);
+			synchronized (messageStore) {
+				ReadableList list = messageStore.getInboxMessages();
+				int size = list.size();
+				messages = new CustomMessage[size];
+				list.getAt(0, size, messages, 0);
+			}
+		
+			return messages;	
 
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
