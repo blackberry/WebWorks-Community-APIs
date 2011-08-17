@@ -13,6 +13,7 @@ The Barcode API will allow scan a 1D or 2D barcode and read the data contained i
 Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks-Community-APIs/issues) or contact the Authors
 
 ## How To Configure The Extension For Use
+**For the 5.0 version replace 60 with 50 in the instructions**
 
 1. Locate your BlackBerry WebWorks SDK for Smartphone extensions directory using your File Explorer.  Default path is _**C:\Program Files\Research In Motion\BlackBerry WebWorks Packager\ext**_
 
@@ -22,9 +23,7 @@ Have a problem with this extension?  [Log an Issue](https://github.com/blackberr
 
 4. Using File Explorer browse to this extension's downloaded source code _**Smartphone\Barcode**_
 
-5. Copy the _**library.xml**_ file from the downloaded _**Smartphone\Barcode**_ directory to your new _**ext\webworks.media.barcode**_ directory
-
-6. Copy the downloaded _**Smartphone\Barcode\src\blackberry**_ directory to your new _**ext\webworks.media.barcode\blackberry**_ directory
+5. Copy the downloaded _**Smartphone\Barcode\60\**_ directory to your new _**ext\webworks.media.barcode**_ directory
 
 7. If using the 6.0 version update the bbwp.properties located in the _**bin**_ directory to point to a 6.0 SDK
 
