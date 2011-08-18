@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library>
+  <extension>
+    <entryClass>webworks.media.barcode.BarcodeExtension</entryClass>
+  </extension>
+  <platforms>
+    <platform value="JAVA">
+      <target version="default" config="JAVA" />
+    </platform>
+  </platforms>
+  <configurations>
+    <configuration name="JAVA" version="1.0" >
+      <src type="text/java" path="webworks" comment="API implementation in Java" />
+    </configuration>
+  </configurations>    
+  <features>
+    <feature id="webworks.media.barcode" version="1.0.0.0"/>
+  </features>
+</library>
