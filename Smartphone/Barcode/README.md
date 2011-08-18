@@ -23,7 +23,9 @@ Have a problem with this extension?  [Log an Issue](https://github.com/blackberr
 
 4. Using File Explorer browse to this extension's downloaded source code _**Smartphone\Barcode**_
 
-5. Copy the downloaded _**Smartphone\Barcode\60\**_ directory to your new _**ext\webworks.media.barcode**_ directory
+5. Copy the _**library.xml**_ file from the downloaded _**Smartphone\Barcode**_ directory to your new _**ext\webworks.media.barcode**_ directory
+
+6. Copy the downloaded _**Smartphone\Barcode\60\**_ directory to your new _**ext\webworks.media.barcode**_ directory
 
 7. If using the 6.0 version update the bbwp.properties located in the _**bin**_ directory to point to a 6.0 SDK
 
