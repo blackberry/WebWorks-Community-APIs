@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <library>
-  <extension>
+  <extension id="webworks.media.barcode">
     <entryClass>webworks.media.barcode.BarcodeExtension</entryClass>
   </extension>
   <platforms>
