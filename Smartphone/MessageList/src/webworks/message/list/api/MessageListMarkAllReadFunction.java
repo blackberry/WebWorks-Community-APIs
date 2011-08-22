@@ -16,8 +16,8 @@
 
 package webworks.message.list.api;
 
-import webworks.message.list.impl.CustomMessage;
 import net.rim.device.api.script.ScriptableFunction;
+import webworks.message.list.model.CustomMessageServices;
 
 public final class MessageListMarkAllReadFunction extends ScriptableFunction
 {
@@ -28,7 +28,7 @@ public final class MessageListMarkAllReadFunction extends ScriptableFunction
 		{
 			try
 			{
-				CustomMessage.markAllMessageRead();
+				CustomMessageServices.markAllMessageRead();
 			} catch (Exception e) {}
 		}
 		return UNDEFINED;

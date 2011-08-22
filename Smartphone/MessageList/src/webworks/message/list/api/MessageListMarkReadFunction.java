@@ -16,8 +16,8 @@
 
 package webworks.message.list.api;
 
-import webworks.message.list.impl.CustomMessage;
 import net.rim.device.api.script.ScriptableFunction;
+import webworks.message.list.model.CustomMessageServices;
 
 
 public class MessageListMarkReadFunction extends ScriptableFunction
@@ -32,7 +32,7 @@ public class MessageListMarkReadFunction extends ScriptableFunction
 		   try
 		   {
 				String id = (String)args[0];
-				CustomMessage.markMessageRead(id);
+				CustomMessageServices.markMessageRead(id);
 				
 		   } catch (final Exception e) {
 				throw new RuntimeException(e.getMessage());

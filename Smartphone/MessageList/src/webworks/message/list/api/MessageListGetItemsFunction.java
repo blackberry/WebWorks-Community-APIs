@@ -16,7 +16,8 @@
 
 package webworks.message.list.api;
 
-import webworks.message.list.impl.CustomMessage;
+import webworks.message.list.model.CustomMessage;
+import webworks.message.list.model.CustomMessageServices;
 import net.rim.device.api.script.ScriptableFunction;
 	
 public final class MessageListGetItemsFunction extends ScriptableFunction
@@ -29,16 +30,13 @@ public final class MessageListGetItemsFunction extends ScriptableFunction
 		{
 		   try
 		   {
-				CustomMessage[] messages = CustomMessage.getMessages();
+				CustomMessage[] messages = CustomMessageServices.getMessages();
 
 				MessageListItem[] items = null;
 				if (messages != null){
 					items = new MessageListItem[messages.length];
 					for(int i =0;i<messages.length;i++){
-						items[i] =  new MessageListItem();
-						items[i].putField(MessageListItem.FIELD_ID, new String(messages[i].getId()));
-						items[i].putField(MessageListItem.FIELD_TITLE, new String(messages[i].getContact()));
-						items[i].putField(MessageListItem.FIELD_DESCRIPTION, new String(messages[i].getSubject()));
+						items[i] =  new MessageListItem(messages[i]);
 					}
 				}
 				

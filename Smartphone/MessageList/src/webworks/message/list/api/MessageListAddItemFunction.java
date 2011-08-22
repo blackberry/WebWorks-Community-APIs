@@ -16,9 +16,9 @@
 
 package webworks.message.list.api;
 
-import webworks.message.list.impl.CustomMessage;
 import net.rim.device.api.script.Scriptable;
 import net.rim.device.api.script.ScriptableFunction;
+import webworks.message.list.model.CustomMessageServices;
 	
 public final class MessageListAddItemFunction extends ScriptableFunction
 {
@@ -63,7 +63,7 @@ public final class MessageListAddItemFunction extends ScriptableFunction
 					throw new Exception("Invalid parameter. 'description' cannot be null");
 				
 				// Actually add it to a list
-				CustomMessage.createMessage(id,title,description, imageNew, imageRead);
+				CustomMessageServices.createMessage(id,title,description, imageNew, imageRead);
 		   } 
 		   catch (Exception e) {
 				throw new RuntimeException(e.getMessage());

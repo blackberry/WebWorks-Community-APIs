@@ -16,12 +16,14 @@
 
 package webworks.message.list.api;
 
-import webworks.message.list.impl.CustomMessage;
+import net.rim.device.api.script.Scriptable;
 import net.rim.device.api.script.ScriptableFunction;
+import webworks.message.list.model.CustomMessage;
+import webworks.message.list.model.CustomMessageServices;
 	
 public final class MessageListUpdateItemFunction extends ScriptableFunction
 {
-	public static final String NAME = "getItems";
+	public static final String NAME = "updateItem";
 	
 	public Object invoke(Object obj, Object[] args) throws Exception
 	{
@@ -29,17 +31,42 @@ public final class MessageListUpdateItemFunction extends ScriptableFunction
 		{
 		   try
 		   {
-				String id = (String)args[0];
-				CustomMessage message = CustomMessage.getMessage(id);
+			   
+			   // Set defaults
+				String imageNew = null;
+				String imageRead = null;
+		   
+				// Grab the options object and its details
+				Scriptable item = (Scriptable)args[0];
+				String id = (String)item.getField(MessageListItem.FIELD_ID);
+				String title = (String)item.getField(MessageListItem.FIELD_TITLE);
+				String description = (String)item.getField(MessageListItem.FIELD_DESCRIPTION);
+				//Optional Parameter
+				Object imageNewArg = item.getField(MessageListItem.FIELD_IMAGENEW);
+				if(imageNewArg != UNDEFINED){
+					imageNew = (String)imageNewArg;
+				}
+				Object imageReadArg = item.getField(MessageListItem.FIELD_IMAGEREAD);
+				if(imageReadArg != UNDEFINED){
+					imageRead = (String)imageReadArg;
+				}
+				
+								
+				if (id == null)
+					throw new Exception("Invalid parameter. 'id' cannot be null");
+				
+				if (title == null)
+					throw new Exception("Invalid parameter. 'title' cannot be null");
+					
+				if (description == null)
+					throw new Exception("Invalid parameter. 'description' cannot be null");
+			   
+				CustomMessage message = CustomMessageServices.getMessage(id);
 
 				if (message == null)
-					return null;
+					throw new Exception("No item exists to update.");
 					
-				MessageListItem item = new MessageListItem();
-				item.putField(MessageListItem.FIELD_ID, new String(message.getId()));
-				item.putField(MessageListItem.FIELD_TITLE, new String(message.getContact()));
-				item.putField(MessageListItem.FIELD_DESCRIPTION, new String(message.getSubject()));
-				return item;		
+				CustomMessageServices.updateMessage(message,id,title,description, imageNew, imageRead);	
 		   } 
 		   catch (Exception e) {
 				throw new RuntimeException(e.getMessage());
@@ -48,6 +75,8 @@ public final class MessageListUpdateItemFunction extends ScriptableFunction
 		else {
 			throw new RuntimeException("Invalid number of parameters");
 		}
+		
+		return UNDEFINED;
 		
 	 }
 }

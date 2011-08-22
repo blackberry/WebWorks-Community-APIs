@@ -16,6 +16,8 @@
 
 package webworks.message.list;
 
+import java.lang.ref.WeakReference;
+
 import webworks.message.list.api.MessageListAddItemFunction;
 import webworks.message.list.api.MessageListMarkAllReadFunction;
 import webworks.message.list.api.MessageListGetItemFunction;
@@ -23,7 +25,8 @@ import webworks.message.list.api.MessageListInitFunction;
 import webworks.message.list.api.MessageListItem;
 import webworks.message.list.api.MessageListMarkReadFunction;
 import webworks.message.list.api.MessageListRemoveItemFunction;
-import webworks.message.list.impl.CustomMessage;
+import webworks.message.list.api.MessageListUpdateItemFunction;
+import webworks.message.list.model.CustomMessage;
 import net.rim.device.api.script.Scriptable;
 import net.rim.device.api.script.ScriptableFunction;
 import net.rim.device.api.system.Application;
@@ -34,35 +37,23 @@ public class MessageListNamespace extends Scriptable
 	public static final String FIELD_ONITEMMARKEDREAD = "onItemMarkedRead";
 	public static final String FIELD_ONITEMMARKEDUNREAD = "onItemMarkedUnread";
 	public static final String FIELD_ONITEMDELETED = "onItemDeleted";
-
-	private MessageListInitFunction _initMessageList = null;
-	private MessageListAddItemFunction _addItem = null;
-	private MessageListGetItemFunction _getItem = null;
-	private MessageListMarkAllReadFunction _markAllRead = null;
-	private MessageListRemoveItemFunction _removeItem = null;
-	private MessageListMarkReadFunction _markItemRead = null;
-
+	
+	private WeakReference _onItemOpened = new WeakReference(null);
+	private WeakReference _onItemMarkedRead = new WeakReference(null);
+	private WeakReference _onItemMarkedUnread = new WeakReference(null);
+	private WeakReference _onItemDeleted = new WeakReference(null);
+	
 	private String _defaultNewImage = null;
 	private String _defaultReadImage = null;
+	
+	private static long _GUID;
 
-	private ScriptableFunction _onItemOpened = null;
-	private ScriptableFunction _onItemMarkedRead = null;
-	private ScriptableFunction _onItemMarkedUnread = null;
-	private ScriptableFunction _onItemDeleted = null;
 
 	private static class MessageListNamespaceHolder{
 		public static final MessageListNamespace INSTANCE = new MessageListNamespace();
 	}
 
-	private MessageListNamespace()
-	{
-		_initMessageList = new MessageListInitFunction();
-		_addItem = new MessageListAddItemFunction();
-		_getItem = new MessageListGetItemFunction();
-		_markAllRead = new MessageListMarkAllReadFunction();
-		_removeItem = new MessageListRemoveItemFunction();
-		_markItemRead = new MessageListMarkReadFunction();		
-
+	private MessageListNamespace() {
 	}
 
 	public static final MessageListNamespace getInstance(){
@@ -71,81 +62,82 @@ public class MessageListNamespace extends Scriptable
 
 	public Object getField(String name) throws Exception
 	 {
-		  if (name.equals(MessageListInitFunction.NAME))
-		  {
-			   return _initMessageList;			
+		  if (MessageListInitFunction.NAME.equals(name)) {
+			   return new MessageListInitFunction();			
+		  } else if (MessageListAddItemFunction.NAME.equals(name)) {
+			   return new MessageListAddItemFunction();			
+		  } else if (MessageListGetItemFunction.NAME.equals(name)) {
+			   return new MessageListGetItemFunction();			
+		  } else if (MessageListMarkAllReadFunction.NAME.equals(name)) {
+			   return new MessageListMarkAllReadFunction();			
+		  } else if (MessageListMarkReadFunction.NAME.equals(name)) {
+			   return new MessageListMarkReadFunction();
+		  } else if (MessageListRemoveItemFunction.NAME.equals(name)) {
+			   return new MessageListRemoveItemFunction();
+		  } else if (MessageListUpdateItemFunction.NAME.equals(name)) {
+			   return new MessageListUpdateItemFunction();
+		  } else if (FIELD_ONITEMOPENED.equals(name)) {
+			   return _onItemOpened.get();			
+		  } else if (FIELD_ONITEMMARKEDREAD.equals(name)) {
+			   return _onItemMarkedRead.get();			
+		  } else if (FIELD_ONITEMMARKEDUNREAD.equals(name)) {
+			   return _onItemMarkedUnread.get();			
+		  } else if (FIELD_ONITEMDELETED.equals(name)) {
+			   return _onItemDeleted.get();			
 		  }
-		  else if (name.equals(MessageListAddItemFunction.NAME))
-		  {
-			   return _addItem;			
-		  }
-		  else if (name.equals(MessageListGetItemFunction.NAME))
-		  {
-			   return _getItem;			
-		  }
-		  else if (name.equals(MessageListMarkAllReadFunction.NAME))
-		  {
-			   return _markAllRead;			
-		  }
-		  else if (name.equals(MessageListRemoveItemFunction.NAME))
-		  {
-			   return _removeItem;
-		  }
-		  else if (name.equals(MessageListMarkReadFunction.NAME))
-		  {
-			   return _markItemRead;
-		  }
-		  else if (name.equals(FIELD_ONITEMOPENED))
-		  {
-			   return _onItemOpened;			
-		  }
-		  else if (name.equals(FIELD_ONITEMMARKEDREAD))
-		  {
-			   return _onItemMarkedRead;			
-		  }
-		  else if (name.equals(FIELD_ONITEMMARKEDUNREAD))
-		  {
-			   return _onItemMarkedUnread;			
-		  }
-		  else if (name.equals(FIELD_ONITEMDELETED))
-		  {
-			   return _onItemDeleted;			
-		  }
+		  
 		  return super.getField(name);  
 	 }
 	 
 	 public boolean putField(String field, Object value) throws Exception {
 	
-		if (field.equals(FIELD_ONITEMOPENED)) {
-			_onItemOpened = (ScriptableFunction)value;	  
+		if (FIELD_ONITEMOPENED.equals(field)) {
+			_onItemOpened = new WeakReference(value);	  
+		} else if (FIELD_ONITEMMARKEDREAD.equals(field)) {
+			_onItemMarkedRead = new WeakReference(value);
+		} else if (FIELD_ONITEMMARKEDUNREAD.equals(field)) {
+			_onItemMarkedUnread = new WeakReference(value);
+		} else if (FIELD_ONITEMDELETED.equals(field)) {
+			_onItemDeleted = new WeakReference(value);
 		}
-		else if (field.equals(FIELD_ONITEMMARKEDREAD)) {
-			_onItemMarkedRead = (ScriptableFunction)value;	  
-		}
-		else if (field.equals(FIELD_ONITEMMARKEDUNREAD)) {
-			_onItemMarkedUnread = (ScriptableFunction)value;	  
-		}
-		else if (field.equals(FIELD_ONITEMDELETED)) {
-			_onItemDeleted = (ScriptableFunction)value;	  
-		}
-
+		
 		return super.putField(field, value);
 	}
 
 	public ScriptableFunction getOnItemOpened() {
-		return _onItemOpened;
+		Object nullCheck = _onItemOpened.get();
+		if(nullCheck != null){
+			return (ScriptableFunction)nullCheck;
+		}else{
+			return null;
+		}
 	}
 
 	public ScriptableFunction getOnItemMarkedRead() {
-		return _onItemMarkedRead;
+		Object nullCheck = _onItemMarkedRead.get();
+		if(nullCheck != null){
+			return (ScriptableFunction)nullCheck;
+		}else{
+			return null;
+		}
 	}
 
 	public ScriptableFunction getOnItemMarkedUnread() {
-		return _onItemMarkedUnread;
+		Object nullCheck = _onItemMarkedUnread.get();
+		if(nullCheck != null){
+			return (ScriptableFunction)nullCheck;
+		}else{
+			return null;
+		}
 	}
 
 	public ScriptableFunction getOnItemDeleted() {
-		return _onItemDeleted;
+		Object nullCheck = _onItemDeleted.get();
+		if(nullCheck != null){
+			return (ScriptableFunction)nullCheck;
+		}else{
+			return null;
+		}
 	}
 
 	public String getDefaultNewImage() {
@@ -163,8 +155,16 @@ public class MessageListNamespace extends Scriptable
 	public void setDefaultReadImage(String value) {
 		_defaultReadImage = value;
 	}
-	
-	 public void invokeItemOpen(final CustomMessage message) {
+				
+	public static long getGUID() {
+		return _GUID;
+	}
+
+	public static void setGUID(long GUID) {
+		MessageListNamespace._GUID = GUID;
+	}
+
+	public void invokeItemOpen(final CustomMessage message) {
 			
 			if (getOnItemOpened() == null || message == null) {
 				return;
@@ -175,10 +175,7 @@ public class MessageListNamespace extends Scriptable
 				public void run() {
 					try
 					{
-						MessageListItem item = new MessageListItem();
-						item.putField(MessageListItem.FIELD_ID, new String(message.getId()));
-						item.putField(MessageListItem.FIELD_TITLE, new String(message.getContact()));
-						item.putField(MessageListItem.FIELD_DESCRIPTION, new String(message.getSubject()));
+						MessageListItem item = new MessageListItem(message);
 						
 						Object[] result = new Object[] {item};
 					
@@ -205,10 +202,7 @@ public class MessageListNamespace extends Scriptable
 				public void run() {
 					try
 					{
-						MessageListItem item = new MessageListItem();
-						item.putField(MessageListItem.FIELD_ID, new String(message.getId()));
-						item.putField(MessageListItem.FIELD_TITLE, new String(message.getContact()));
-						item.putField(MessageListItem.FIELD_DESCRIPTION, new String(message.getSubject()));
+						MessageListItem item = new MessageListItem(message);
 						
 						Object[] result = new Object[]{item};
 					
@@ -234,10 +228,7 @@ public class MessageListNamespace extends Scriptable
 				public void run() {
 					try
 					{
-						MessageListItem item = new MessageListItem();
-						item.putField(MessageListItem.FIELD_ID, new String(message.getId()));
-						item.putField(MessageListItem.FIELD_TITLE, new String(message.getContact()));
-						item.putField(MessageListItem.FIELD_DESCRIPTION, new String(message.getSubject()));
+						MessageListItem item = new MessageListItem(message);
 						
 						Object[] result = new Object[]{item};
 					
@@ -264,10 +255,7 @@ public class MessageListNamespace extends Scriptable
 				public void run() {
 					try
 					{
-						MessageListItem item = new MessageListItem();
-						item.putField(MessageListItem.FIELD_ID, new String(message.getId()));
-						item.putField(MessageListItem.FIELD_TITLE, new String(message.getContact()));
-						item.putField(MessageListItem.FIELD_DESCRIPTION, new String(message.getSubject()));
+						MessageListItem item = new MessageListItem(message);
 						
 						Object[] result = new Object[]{item};
 					

@@ -30,6 +30,7 @@ import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.util.ToIntHashtable;
 import webworks.message.list.MessageListNamespace;
 import webworks.message.list.impl.CustomMessageStore.ReadableListImpl;
+import webworks.message.list.model.CustomMessage;
 
 /**
  * Daemon process that runs in the background. It's tasks include non-gui
@@ -54,10 +55,12 @@ public final class CustomMessageDispatcher implements ApplicationMessageFolderLi
      * Called during device startup. Registers application descriptors, message
      * folder listeners, message icons and menu items.
      */
-    void init(String folderName, String appName, long GUID)
+    public void init(String folderName, String appName, long GUID)
     {
 		_folderName = folderName;
 		_GUID = GUID;
+		
+		MessageListNamespace.setGUID(GUID);
 		
 		// 1. Register folders and application descriptors ----------------------
 		ApplicationMessageFolderRegistry reg = ApplicationMessageFolderRegistry.getInstance();
@@ -284,7 +287,7 @@ public final class CustomMessageDispatcher implements ApplicationMessageFolderLi
                 }
 				
 				// Invoke our callback
-                MessageListNamespace.getInstance().invokeItemOpen(message);
+                message.invokeItemOpen(MessageListNamespace.getInstance());
             }
             return context;
         }

@@ -19,6 +19,9 @@ package webworks.message.list.impl;
 
 import java.util.Vector;
 
+import webworks.message.list.MessageListNamespace;
+import webworks.message.list.model.CustomMessage;
+
 import net.rim.blackberry.api.messagelist.ApplicationMessageFolder;
 import net.rim.blackberry.api.messagelist.ApplicationMessageFolderRegistry;
 import net.rim.device.api.collection.ReadableList;
@@ -56,6 +59,16 @@ public final class CustomMessageStore
      * 
      * @return The singleton instance of the MessagelistDemoStore
      */
+    public static synchronized CustomMessageStore getInstance()
+    {
+        return getInstance(MessageListNamespace.getGUID());
+    }
+    
+    /**
+     * Gets the singleton instance of the CustomMessageStore
+     * 
+     * @return The singleton instance of the MessagelistDemoStore
+     */
     public static synchronized CustomMessageStore getInstance(long GUID)
     {
 
@@ -80,7 +93,7 @@ public final class CustomMessageStore
      * 
      * @return The inbox folder
      */
-    ApplicationMessageFolder getInboxFolder()
+    public ApplicationMessageFolder getInboxFolder()
     {
         return ApplicationMessageFolderRegistry.getInstance().getApplicationFolder(CustomMessage.INBOX_FOLDER_ID);
     }
@@ -90,7 +103,7 @@ public final class CustomMessageStore
      * 
      * @param message The message to move to the deleted folder
      */
-    void deleteInboxMessage(CustomMessage message)
+    public void deleteInboxMessage(CustomMessage message)
     {
         message.messageDeleted();
         _inboxMessages.removeMessage(message);
@@ -104,12 +117,12 @@ public final class CustomMessageStore
      * 
      * @param message The message to commit
      */
-    void commitMessage(CustomMessage message)
+    public void commitMessage(CustomMessage message)
     {
     	persist();
     }
     
-    void persist(){
+    public void persist(){
     	PersistentObject store = PersistentStore.getPersistentObject(_GUID);    		
 		synchronized(store){
 			store.setContents(this.getInboxMessages());
@@ -123,7 +136,7 @@ public final class CustomMessageStore
      * 
      * @param message The message to add to the inbox
      */
-    void addInboxMessage(CustomMessage message)
+    public void addInboxMessage(CustomMessage message)
     {
         _inboxMessages.addMessage(message);
         persist();
@@ -134,7 +147,7 @@ public final class CustomMessageStore
      * 
      * @return The readable list of all the inbox messages
      */
-    ReadableListImpl getInboxMessages()
+    public ReadableListImpl getInboxMessages()
     {
         return _inboxMessages;
     }

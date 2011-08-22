@@ -16,10 +16,10 @@
 
 package webworks.message.list.api;
 
-import webworks.message.list.MessageListNamespace;
-import webworks.message.list.impl.CustomMessage;
 import net.rim.device.api.script.Scriptable;
 import net.rim.device.api.script.ScriptableFunction;
+import webworks.message.list.MessageListNamespace;
+import webworks.message.list.model.CustomMessageServices;
 	
 public final class MessageListInitFunction extends ScriptableFunction
 {
@@ -50,7 +50,7 @@ public final class MessageListInitFunction extends ScriptableFunction
 				namespace.setDefaultReadImage((String)optionsSent.getField("defaultReadImage"));
 				
 				// Do all our actual registration stuff
-				CustomMessage.initializeOnStartup(this, folderName, "Example App", GUID);
+				CustomMessageServices.initializeOnStartup(folderName, "Example App", GUID);
 					
 				// Set our init flag
 				_alreadyInit = true;
