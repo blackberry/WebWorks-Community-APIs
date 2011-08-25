@@ -32,39 +32,45 @@ public class BarcodeExtension implements WidgetExtension {
 		return new String[]{BarcodeNamespace.FEATURE_NAME};
 	}
 
-    /* @Override */
-    public void loadFeature(final String feature, final String version, final Document doc, final ScriptEngine scriptEngine) throws Exception {
-    	if(feature.equals(BarcodeNamespace.FEATURE_NAME)){
-        	scriptEngine.addExtension(feature, BarcodeNamespace.getInstance());
-        }
-    	
-    	if( feature.equals( BarcodeNamespace.FEATURE_NAME ) ) {
-            ApplicationPermissionsManager apm = ApplicationPermissionsManager.getInstance();
-            ApplicationPermissions permissions = apm.getApplicationPermissions();
-            ApplicationPermissions newPermissions = new ApplicationPermissions();
+	/* @Override */
+	public void loadFeature(final String feature, final String version, final Document doc, final ScriptEngine scriptEngine) throws Exception {
+		if(feature.equals(BarcodeNamespace.FEATURE_NAME)){
+			scriptEngine.addExtension(feature, BarcodeNamespace.getInstance());
+			;
+			ApplicationPermissions missingPermissions = getMissingPermissions();
 
-            int permissionKeys[] = new int[] { ApplicationPermissions.PERMISSION_FILE_API, ApplicationPermissions.PERMISSION_INPUT_SIMULATION, ApplicationPermissions.PERMISSION_MEDIA, ApplicationPermissions.PERMISSION_RECORDING };
+			if( missingPermissions.getPermissionKeys().length > 0 ) {
+				boolean accept = requestPermissions(missingPermissions);
+				if( !accept )
+					throw new Exception( "Could not load blackberry.media.camera" );                               
+			}
 
-            for( int i = 0; i < permissionKeys.length; i++ ) {
-                int key = permissionKeys[ i ];
-                if( permissions.getPermission( key ) != ApplicationPermissions.VALUE_ALLOW ) {
-                    newPermissions.addPermission( key );
-                }
-            }
+			scriptEngine.addExtension(feature, BarcodeNamespace.getInstance());
 
-            if( newPermissions.getPermissionKeys().length > 0 ) {
-                boolean accept = ApplicationPermissionsManager.getInstance().invokePermissionsRequest( newPermissions );
-                if( !accept )
-                    throw new Exception( "Could not load blackberry.media.camera" );
-               
-                
-            }
+		}
 
-        	scriptEngine.addExtension(feature, BarcodeNamespace.getInstance());
+	}
 
-        }
+	private boolean requestPermissions(ApplicationPermissions permissions){
+		return  ApplicationPermissionsManager.getInstance().invokePermissionsRequest( permissions );
+	}
 
-    }
+	private ApplicationPermissions getMissingPermissions(){
+		ApplicationPermissionsManager apm = ApplicationPermissionsManager.getInstance();
+		ApplicationPermissions permissions = apm.getApplicationPermissions();
+		ApplicationPermissions newPermissions = new ApplicationPermissions();
+
+		int permissionKeys[] = new int[] { ApplicationPermissions.PERMISSION_FILE_API, ApplicationPermissions.PERMISSION_INPUT_SIMULATION, ApplicationPermissions.PERMISSION_MEDIA, ApplicationPermissions.PERMISSION_RECORDING };
+
+		for( int i = 0; i < permissionKeys.length; i++ ) {
+			int key = permissionKeys[ i ];
+			if( permissions.getPermission( key ) != ApplicationPermissions.VALUE_ALLOW ) {
+				newPermissions.addPermission( key );
+			}
+		}
+
+		return newPermissions;
+	}
 
     /* @Override */
     public void register(final WidgetConfig widgetconfig, final BrowserField browserfield) {

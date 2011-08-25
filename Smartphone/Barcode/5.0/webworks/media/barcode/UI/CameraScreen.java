@@ -36,8 +36,8 @@ import com.google.zxing.BinaryBitmap;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
+import com.google.zxing.client.rim.BitmapLuminanceSource;
 import com.google.zxing.common.GlobalHistogramBinarizer;
-import com.rim.samples.zxing.BitmapLuminanceSource;
 
 /**
  * A UI screen to display the camera display and buttons
@@ -255,6 +255,7 @@ public final class CameraScreen extends MainScreen
     	            MultiFormatReader reader = new MultiFormatReader();
     				r = reader.decode(bb,_hints);
     			} catch (NotFoundException e) {
+    				//Don't throw an error here, just keep scanning
 //    				CameraScreen.this.returnError("ERROR " + e.getClass() + ":  " + e.getMessage());
     			} catch (MediaException e) {
     				CameraScreen.this.returnError("ERROR " + e.getClass() + ":  " + e.getMessage());
