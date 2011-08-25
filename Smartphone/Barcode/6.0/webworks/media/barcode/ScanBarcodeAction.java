@@ -21,7 +21,6 @@ import java.util.Vector;
 
 import net.rim.device.api.script.Scriptable;
 import net.rim.device.api.script.ScriptableFunction;
-import net.rim.device.api.system.Application;
 import net.rim.device.api.ui.UiApplication;
 import webworks.media.barcode.UI.ScannerScreen;
 
@@ -30,8 +29,6 @@ import com.google.zxing.DecodeHintType;
 
 public class ScanBarcodeAction extends ScriptableFunction {
 	public static final String NAME = "scan";
-
-	private ScannerScreen _scannerScreen;	
 
 	/* @Override */
 	public Object invoke(final Object thiz, final Object[] args) throws Exception {
@@ -54,10 +51,17 @@ public class ScanBarcodeAction extends ScriptableFunction {
 
 		final ScriptableFunction capturedCallback = onCaptureArg;
 		final ScriptableFunction errorCallback = onErrorArg;
+		final Hashtable hints = createHintsFromArgs(optionsArg);
 
-		final Hashtable hints = new Hashtable(5);
+		UiApplication.getUiApplication().invokeLater(new ScanBarcodeThread(capturedCallback, errorCallback, hints));
+
+		return UNDEFINED;
+
+	}  
+	
+	private Hashtable createHintsFromArgs(Scriptable optionsArg) throws Exception{
+		Hashtable hints = new Hashtable(5);
 		if(optionsArg != UNDEFINED){
-			try{
 				Object tryHarder = optionsArg.getField("tryHarder");
 				if(tryHarder != UNDEFINED){
 					hints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
@@ -111,54 +115,41 @@ public class ScanBarcodeAction extends ScriptableFunction {
 				}
 				
 				hints.put(DecodeHintType.POSSIBLE_FORMATS, formatVector);
-			}catch(Exception e){
-				returnError(errorCallback, "Error! " + e.getMessage());
-			}
 		}
-		
-		
 
 
-		Application.getApplication().invokeLater(new Runnable(){
+		return hints;
+	}
 
-			public void run() {
-				// If no screen exists, create one before displaying
-				if(_scannerScreen == null)
-				{
-					_scannerScreen = new ScannerScreen(capturedCallback,errorCallback,hints);
-				}
+	private class ScanBarcodeThread extends Thread{
 
-				// Push view finder screen onto the display stack
-				UiApplication.getUiApplication().pushScreen(_scannerScreen);
+		private ScriptableFunction capturedCallback;
+		private ScriptableFunction errorCallback;
+		private Hashtable hints;
 
-				// Begin the scanning process
-				_scannerScreen.startScan();
 
-			}
 
-		});
+		public ScanBarcodeThread(ScriptableFunction capturedCallback, ScriptableFunction errorCallback, Hashtable hints) {
+			super();
+			this.capturedCallback = capturedCallback;
+			this.errorCallback = errorCallback;
+			this.hints = hints;
+		}
 
-		return UNDEFINED;
 
-	}  
+
+		public void run() {
+			// If no screen exists, create one before displaying
+			ScannerScreen scannerScreen = new ScannerScreen(capturedCallback,errorCallback,hints);
+
+			// Push view finder screen onto the display stack
+			UiApplication.getUiApplication().pushScreen(scannerScreen);
+
+			// Begin the scanning process
+			scannerScreen.startScan();
+		}
+
+	}
 	
-    /**
-     * Pops the ViewFinderScreen and displays text on the main screen
-     * 
-     * @param text Text to display on the screen
-     */
-    private void returnError(final ScriptableFunction errorCallback, final String text)
-    {
-        UiApplication.getUiApplication().invokeLater(new Runnable()
-        {
-            public void run()
-            {                
-                try {
-					errorCallback.invoke(null,new Object[] {new ErrorObject(-1, text)});
-				} catch (Exception e) {
-				}
-            } 
-        });
-    }
 
 }
