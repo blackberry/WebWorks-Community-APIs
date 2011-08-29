@@ -1,7 +1,6 @@
 # File Picker
-The spinner control will allow you to have a more usable interface when interacting
-with &lt;select&gt; elements on a BlackBerry 5.0 browser.  It will also allow you to keep 
-the same consistent feel with your UI on a BlackBerry 6.0 browser.
+The file picker control will allow you to prompt your user to browse to a file.  This is necessary because the HTML input field of type "file" will not allow you to read or set the file path that the user 
+entered.  If you need to request a file and then manipulate the file in your JavaScript, you will need this file picker extension.
 
 **Author:** [Tim Neil](https://github.com/tneil)
 
