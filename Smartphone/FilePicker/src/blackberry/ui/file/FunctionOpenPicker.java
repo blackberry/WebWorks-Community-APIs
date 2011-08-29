@@ -28,7 +28,7 @@ import net.rim.device.api.ui.container.*;
 import java.util.*;
 
 /**
- * Opens the spinner control
+ * Opens the picker control
  * 
  * @author tneil
  * 
