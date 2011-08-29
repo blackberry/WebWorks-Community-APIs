@@ -19,17 +19,12 @@ import net.rim.device.api.script.Scriptable;
 import blackberry.ui.file.FunctionOpenPicker;
 
 public class FilePickerNamespace extends Scriptable {
-	private FunctionOpenPicker _openFunction;
     private static final String FIELD_OPEN = FunctionOpenPicker.NAME;
 	public static final String NAME = "webworks.ui.filePicker"; 
-	
-	public FilePickerNamespace() {
-		_openFunction = new FunctionOpenPicker();
-	}
 
     public Object getField(String name) throws Exception {
         if (name.equals(FIELD_OPEN)) {
-            return _openFunction;
+            return new FunctionOpenPicker();
         }
         return super.getField(name);
     }

@@ -36,16 +36,13 @@ import java.util.*;
 public class FunctionOpenPicker extends ScriptableFunction {
 
     public static final String NAME = "open";
-	private ScriptableFunction _callback = null;
-
    
     public Object invoke(Object thiz, Object[] args) throws Exception {
 		if (args.length == 1) {	
 			// Now get the callback method to fire
-			_callback = (ScriptableFunction)args[0];
+			final ScriptableFunction _callback = (ScriptableFunction)args[0];
 			
-			final UiApplication uiApp = UiApplication.getUiApplication();
-			//uiApp.invokeLater (new SpinnerRunnable(_callback, selectedIndex, rowHeight, visibleRows, title, choices));	
+			final UiApplication uiApp = UiApplication.getUiApplication();	
 			UiApplication.getUiApplication().invokeLater(new Runnable()
 			{
 				public void run()
@@ -71,19 +68,19 @@ public class FunctionOpenPicker extends ScriptableFunction {
 	
 		public void selectionDone(String str)
 		{
-			Object[] result = new Object[1];
+			Object result = null;
 		
 			// Record the result that the user chose. If they didn't choose an
 			// option return undefined
 			if(str != null) {    
-				result[0] = new String(str);
+				result = new String(str);
 			}  
 			else {
-				result[0] = UNDEFINED;
+				result = UNDEFINED;
 			}
 
 			// Create a final thread safe result to pass into the thread object
-			final Object[] threadedResult = result;
+			final Object[] threadedResult = new Object[] {result};
 			
 			// Create a new thread to make sure that the invoke of the JavaScript callback
 			// does not initiate from the UI thread.  This can otherwise cause a deadlock scenario
@@ -91,7 +88,7 @@ public class FunctionOpenPicker extends ScriptableFunction {
 				public void run() {
 					try
 					{
-						// Pass the result of the spinner back to the handle of the JavaScript callback
+						// Pass the result of the picker back to the handle of the JavaScript callback
 						_callback.invoke(_callback, threadedResult);
 					}
 					catch (Exception e) {
