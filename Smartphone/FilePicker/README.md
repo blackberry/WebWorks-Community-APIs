@@ -27,7 +27,7 @@ Have a problem with this extension?  [Log an Issue](https://github.com/blackberr
 
 5. Copy the _**library.xml**_ file from the downloaded _**Smartphone\FilePicker**_ directory to your new _**ext\webworks.ui.filePicker**_ directory
 
-6. Copy the downloaded _**Smartphone\FilePicker\src**_ directory to your new _**ext\webworks.ui.filePicker\src*_ directory
+6. Copy the downloaded _**Smartphone\FilePicker\src**_ directory to your new _**ext\webworks.ui.filePicker\src**_ directory
 
 **NOTE:** Be sure to back-up this _**ext\webworks.ui.filePicker**_ directory in your WebWorks SDK extensions directory before performing a WebWorks SDK upgrade. Simply copy it back into the _**ext**_ directory after you have completed your SDK upgrade.
 
