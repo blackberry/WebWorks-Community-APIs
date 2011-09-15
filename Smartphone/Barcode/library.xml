@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<library>
-  <extension>
+<library isWhitelist="true">
+
+  <extension id="webworks.media.barcode">
     <entryClass>webworks.media.barcode.BarcodeExtension</entryClass>
   </extension>
+
+  <platforms>
+    <platform value="JAVA">
+      <target version="default" config="JAVA_XHR" />
+    </platform>
+  </platforms>
+  
+  <configurations>
+    <configuration name="JAVA_XHR" version="1.0" comment="For XHR architecture for Java implementation">
+      <src type="text/java" path="webworks" comment="API implementation in Java" />
+    </configuration>
+  </configurations>  
+
   <features>
-    <feature id="webworks.media.barcode" version="1.0.0.0"/>
+    <feature id="webworks.media.barcode" version="1.0.0"/>
   </features>
+
 </library>
