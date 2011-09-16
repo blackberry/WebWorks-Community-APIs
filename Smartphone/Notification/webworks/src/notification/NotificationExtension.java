@@ -28,14 +28,13 @@ public final class NotificationExtension implements WidgetExtension
 
 	public String[] getFeatureList()
 	{
-		String[] result = new String[1];
-		result[0] = FEATURE_SYSTEM_DISPLAY;
+		String[] result = new String[] { FEATURE_SYSTEM_DISPLAY };
 		return result;
 	}
 
 	public void loadFeature(String feature, String version, Document doc, ScriptEngine scriptEngine) throws Exception
 	{
-		if (feature == FEATURE_SYSTEM_DISPLAY)
+		if (feature.equals(FEATURE_SYSTEM_DISPLAY))
 		{
 			scriptEngine.addExtension(FEATURE_SYSTEM_DISPLAY, new NotificationNamespace());
 		}
