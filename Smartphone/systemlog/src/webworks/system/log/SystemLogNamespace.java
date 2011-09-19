@@ -40,37 +40,25 @@ public class NotificationNamespace  extends Scriptable
         {
             if (args != null && args.length == 3)
             {
-                final long myGuid = StringUtilities.stringHashToLong(args[0].toString());
-                final String myAppName = args[1].toString();
-                String messageToLog = args[2].toString();
+                writeToLog(args[0].toString(), args[1].toString(), args[2].toString())
             }
             else
             {
-                final long myGuid = StringUtilities.stringHashToLong("webworks.system.log");
-                final String myAppName = "WebWorks System Log API";
-                String messageToLog = "ERROR 4419-2 Impropper API useage";
-            }
-
-            byte[] message = messageToLog.getBytes();
-            boolean registerErrorEventLogger = EventLogger.register(myGuid, myAppName, EventLogger.VIEWER_STRING);
-            if (registerErrorEventLogger == true)
-            {
-                EventLogger.logEvent(errorGuid, errorMessage);
-            }
-            else
-            {
-                final long errorGuid = StringUtilities.stringHashToLong("webworks.system.log");
-                final String errMesage = "ERROR 4419-1 Failed to register Application Name";
-                final String errorLogName = "WebWorks System Log API";
-
-                byte[] errorMessage = errMessage.getBytes();
-                boolean registerErrorEventLogger = EventLogger.register(errorGuid, errorLogName, EventLogger.VIEWER_STRING);
-                if (registerErrorEventLogger == true)
-                {
-                    EventLogger.logEvent(errorGuid, errorMessage);
-                }
+                writeToLog("webworks.system.log", "WebWorks System Log API", "ERROR 4419 Improper API useage")
             }
             return UNDEFINED;
+        }
+    }
+
+    private static void writeToLog(String guid, String appName, String appMessage)
+    {
+        final long myGuid = StringUtilities.stringHashToLong(guid);
+        final String myAppName = appName.toString();
+        byte[] logMessage = appMessage.getBytes();
+        boolean registerEventLogger = EventLogger.register(myGuid, myAppName, EventLogger.VIEWER_STRING);
+        if (registerErrorEventLogger == true)
+        {
+            EventLogger.logEvent(myGuid, logMessage);
         }
     }
 }
