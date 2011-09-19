@@ -28,7 +28,7 @@ public class NotificationNamespace  extends Scriptable
                 final String myAppName = args[1].toString();
                 String messageToLog = args[2].toString();
             }
-				    else
+            else
             {
                 final long myGuid = StringUtilities.stringHashToLong("webworks.system.log");
                 final String myAppName = "WebWorks System Log API";
