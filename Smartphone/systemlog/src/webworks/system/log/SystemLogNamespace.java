@@ -21,9 +21,9 @@ import net.rim.device.api.script.Scriptable;
 import net.rim.device.api.script.ScriptableFunction;
 import net.rim.device.api.util.StringUtilities;
 
-public class NotificationNamespace  extends Scriptable
+public class SystemLogNamespace extends Scriptable
 {
-    public static final String FIELD_WRITE = "write";
+    private static final String FIELD_WRITE = "write";
     public Object getField(String name) throws Exception
     {
         if (name.equals(FIELD_WRITE))
@@ -33,18 +33,18 @@ public class NotificationNamespace  extends Scriptable
         return super.getField(name);
     }
 
-    private class WriteSystemLog extends ScriptableFunction
+    public class WriteSystemLog extends ScriptableFunction
     {
         private static final String NAME = "write";
-        private Object invoke(Object obj, Object[] args) throws Exception
+        public Object invoke(Object obj, Object[] args) throws Exception
         {
             if (args != null && args.length == 3)
             {
-                writeToLog(args[0].toString(), args[1].toString(), args[2].toString())
+                writeToLog(args[0].toString(), args[1].toString(), args[2].toString());
             }
             else
             {
-                writeToLog("webworks.system.log", "WebWorks System Log API", "ERROR 4419 Improper API useage")
+                writeToLog("webworks.system.log", "WebWorks System Log API", "ERROR 4419 Improper API useage");
             }
             return UNDEFINED;
         }
@@ -56,7 +56,7 @@ public class NotificationNamespace  extends Scriptable
         final String myAppName = appName.toString();
         byte[] logMessage = appMessage.getBytes();
         boolean registerEventLogger = EventLogger.register(myGuid, myAppName, EventLogger.VIEWER_STRING);
-        if (registerErrorEventLogger == true)
+        if (registerEventLogger == true)
         {
             EventLogger.logEvent(myGuid, logMessage);
         }
