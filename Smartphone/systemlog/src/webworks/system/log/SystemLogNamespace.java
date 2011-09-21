@@ -52,7 +52,7 @@ public class SystemLogNamespace extends Scriptable
 
     private static void writeToLog(String guid, String appName, String appMessage)
     {
-        final long myGuid = StringUtilities.stringHashToLong(guid);
+        final long myGuid = StringUtilities.stringHashToLong(guid.toString());
         final String myAppName = appName.toString();
         byte[] logMessage = appMessage.getBytes();
         boolean registerEventLogger = EventLogger.register(myGuid, myAppName, EventLogger.VIEWER_STRING);
