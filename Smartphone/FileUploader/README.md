@@ -1,7 +1,5 @@
-# Spinner Control
-The spinner control will allow you to have a more usable interface when interacting
-with &lt;select&gt; elements on a BlackBerry 5.0 browser.  It will also allow you to keep 
-the same consistent feel with your UI on a BlackBerry 6.0 browser.
+# File Uploader
+The File Uploader extension provides a means to upload files to file server. 
 
 **Author:** [Jerome Carty](https://github.com/jcarty)
 
@@ -43,45 +41,58 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 
     function foo()
     {
-        var rowHeight;
-        var visibleRows;
-
-        // Populate our items
-        var items = new Array('Barcelona', 'Beijing', 'Brasilia', 'Melbourne', 'Moscow', 'New York', 'Paris' );
-
-        // Figure out our height and rows based on screen size
-        if (screen.height < 480){
-          rowHeight = 60;
-          visibleRows = 3;
-        }
-        else {
-          rowHeight = 75;
-          visibleRows = 4;
-        }
-
-        // Configure the options 
-        var options = {'title': 'Choose A City:',
-          'rowHeight': rowHeight,
-          'visibleRows': visibleRows,
-          'selectedIndex': 2,
-          'items' : items};
-
-        // Open the spin dialog
-            blackberry.ui.Spinner.open(options, function (selectedIndex) {
-              alert(selectedIndex); }	  
-        );	
+        var options = {
+			url: 'http://www.youruploadurl.com/path',
+			file: 'file:///' + file,
+			fileKey: 'media[]',
+			mimeType: 'image/jpg',
+			params: {
+				custom1: 'test'
+			},
+			headers: {
+				'Authorization', 'AUTH_HERE'
+			},
+			success: function(data) {
+				alert('Success!');
+			},
+			error: function(e, code) {
+				alert(e + " " + code);
+			}
+		};
+		
+		webworks.io.FileUploader.upload(options);
     }
 
 ## Usage Information
 
-
-_**NOTE:**_ The callback is handled asynchronously, so code that is placed directly after
+_**NOTE:**_ The _**error**_ and _**success**_ callbacks are handled asynchronously, so code that is placed directly after
 the "open" function call will be executed immediately while waiting for the user's 
 response input.
 
 ## Properties
-**items:**
-Is an array of string items you wish to display in the spinner control
+**url:**
+URL to upload file to
+
+**file:**
+File to upload to remote server
+
+**fileKey:**
+Field name of the uploaded file
+
+**mimeType:**
+Uploaded file mimeType (if not specified, default is JPG)
+
+**params:**
+Extra parameters to send along with your file
+
+**headers:**
+Set HTTP request headers
+
+**success:**
+Success callback. This method is called when the POST has completed successfully.
+
+**error:**
+Error callback. This method is called when there is an error (invalid file paths, file not found, etc)
 
 ## Change Log
 _Empty_
