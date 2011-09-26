@@ -1,0 +1,23 @@
+<library isWhitelist="true">
+
+  <extension id="webworks.io.FileUploader">
+    <entryClass>webworks.io.FileUploaderExtension</entryClass>
+  </extension>
+
+  <platforms>
+    <platform value="JAVA">
+      <target version="default" config="JAVA" />
+    </platform>
+  </platforms>
+
+  <configurations>
+    <configuration name="JAVA">
+      <src type="text/java" path="webworks" comment="API implementation in Java" />
+    </configuration>
+  </configurations>   
+
+  <features>
+    <feature id="webworks.io.FileUploader" version="1.0.0.0">Upload files to a remote server</feature>
+  </features>
+
+</library>
