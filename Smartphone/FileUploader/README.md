@@ -66,7 +66,7 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 ## Usage Information
 
 _**NOTE:**_ The _**error**_ and _**success**_ callbacks are handled asynchronously, so code that is placed directly after
-the "open" function call will be executed immediately while waiting for the user's 
+the "upload" function call will be executed immediately while waiting for the user's 
 response input.
 
 ## Properties

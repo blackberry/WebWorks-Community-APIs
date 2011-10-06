@@ -1,4 +1,4 @@
-<library isWhitelist="true">
+<library>
 
   <extension id="webworks.io.FileUploader">
     <entryClass>webworks.io.FileUploaderExtension</entryClass>
