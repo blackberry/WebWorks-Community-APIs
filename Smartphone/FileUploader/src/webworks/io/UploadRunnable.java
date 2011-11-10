@@ -1,3 +1,19 @@
+/*
+* Copyright 2010-2011 Research In Motion Limited.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
 package webworks.io;
 
 import java.io.InputStream;
@@ -7,6 +23,7 @@ import java.util.Hashtable;
 
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
+import javax.microedition.io.HttpsConnection;
 import javax.microedition.io.file.FileConnection;
 
 import net.rim.device.api.io.IOUtilities;
@@ -14,7 +31,10 @@ import net.rim.device.api.io.MIMETypeAssociations;
 import net.rim.device.api.io.http.HttpProtocolConstants;
 import net.rim.device.api.io.transport.ConnectionDescriptor;
 import net.rim.device.api.io.transport.ConnectionFactory;
+import net.rim.device.api.io.transport.TransportInfo;
+import net.rim.device.api.io.transport.options.BisBOptions;
 import net.rim.device.api.script.ScriptableFunction;
+import net.rim.device.api.system.DeviceInfo;
 
 public class UploadRunnable implements Runnable
 {
@@ -33,13 +53,43 @@ public class UploadRunnable implements Runnable
 	private ScriptableFunction _success;
 	private ScriptableFunction _error;
 	
-	public UploadRunnable(String url, String fileKey, Hashtable params, String filePath, String mimeType, Hashtable headers, ScriptableFunction success, ScriptableFunction error)
+	private ConnectionFactory _factory;
+	
+	private int[] _transports = new int[] {
+		TransportInfo.TRANSPORT_TCP_WIFI,
+		TransportInfo.TRANSPORT_BIS_B,
+		TransportInfo.TRANSPORT_MDS,
+		TransportInfo.TRANSPORT_TCP_CELLULAR,
+		TransportInfo.TRANSPORT_WAP2,
+		TransportInfo.TRANSPORT_WAP
+	};
+	
+	public UploadRunnable(String url, String fileKey, Hashtable params, String filePath, String mimeType, long timeout, Hashtable headers, int[] transports, ScriptableFunction success, ScriptableFunction error)
 	{
 		_url = url;
 		_fileKey = fileKey;
 		_filePath = filePath;
 		_params = params;
 		_headers = headers;
+		
+		_mimeType = mimeType;
+		
+		if (transports != null) {
+			_transports = transports;
+		}
+		_success = success;
+		_error = error;
+		
+		_factory = new ConnectionFactory();
+		
+		if (DeviceInfo.isSimulator()) {
+			_factory.setPreferredTransportTypes(new int[] { TransportInfo.TRANSPORT_TCP_WIFI, TransportInfo.TRANSPORT_TCP_CELLULAR });
+		}
+		
+		_factory.setPreferredTransportTypes(_transports);
+		_factory.setAttemptsLimit(100);
+		_factory.setTimeoutSupported(true);
+		_factory.setConnectionTimeout(timeout);
 		
 		new Thread(this).start();
 	}
@@ -51,17 +101,20 @@ public class UploadRunnable implements Runnable
 		InputStream is = null;
 		OutputStream os = null;
 		
+		boolean isHTTPS = false;
+		
 		try {
 			
 			try {
                 fc = (FileConnection)Connector.open(_filePath, Connector.READ);
             } catch (Exception e) {
-            	Logger.info("Invalid file path");
+            	Logger.error("Invalid file path");
                 callErrorCallback(new String[] {"Invalid file path"});
                 return;
             }
             
-            Logger.info("Setting mime type...");
+            Logger.log("Setting mime type...");
+            
 			if (_mimeType == null) {
                 _mimeType = MIMETypeAssociations.getMIMEType(_filePath);
                 if (_mimeType == null) {
@@ -69,17 +122,27 @@ public class UploadRunnable implements Runnable
                 }          
             }
             
-			Logger.info("File not found");
             if (!fc.exists()) {
+            	Logger.error("File not found");
             	callErrorCallback(new String[] { _filePath + " not found" });
             } 
-			
-			ConnectionFactory factory = new ConnectionFactory();
-			ConnectionDescriptor connDesc = factory.getConnection(_url);
+            
+			if (_url.indexOf("https") != -1) {
+				isHTTPS = true;
+				Logger.error("Setting End to End");
+				_factory.setEndToEndDesired(isHTTPS);
+			}
+            
+			ConnectionDescriptor connDesc = _factory.getConnection(_url);
 			
 			if (connDesc != null) {
+				Logger.info("URL: " + connDesc.getUrl());
 				try {
-					hc = (HttpConnection) connDesc.getConnection();
+					if (isHTTPS) {
+						hc = (HttpsConnection) connDesc.getConnection();
+					} else {
+						hc = (HttpConnection) connDesc.getConnection();
+					}
 					
 					String startBoundary = getStartBoundary(_fileKey, fc.getName(), _mimeType);
 					String endBoundary = getEndBoundary();
@@ -96,7 +159,6 @@ public class UploadRunnable implements Runnable
 					hc.setRequestMethod(HttpConnection.POST);
 					
 					if (_headers != null) {
-						Logger.error("We have headers!");
 						String hKey;
 						String hVal;
 						for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
@@ -142,7 +204,7 @@ public class UploadRunnable implements Runnable
 		            int responseCode = hc.getResponseCode();
 		            
 					if (responseCode != HttpConnection.HTTP_OK) {
-						Logger.info("Response code: " +responseCode);
+						Logger.error("Response code: " +responseCode);
 						callErrorCallback(new Object[] { "Server Error", new Integer(responseCode) });
 					} else {
 						callSuccessCallback(new Object[]{ new String(IOUtilities.streamToBytes(is)) });
@@ -152,7 +214,7 @@ public class UploadRunnable implements Runnable
 					e.printStackTrace();
 				}
 			} else {
-				Logger.info("Error creating HTTP connection");
+				Logger.error("Error creating HTTP connection");
 				callErrorCallback(new String[] { "Error creating HTTP connection." });
 			}
 		        
@@ -206,7 +268,6 @@ public class UploadRunnable implements Runnable
 	private ScriptableFunction callSuccessCallback(Object[] args)
 	{
 		if (_success != null) {
-			
 			try {
 				_success.invoke(null, args);
 			} catch(Exception e) {
@@ -218,7 +279,6 @@ public class UploadRunnable implements Runnable
 	private ScriptableFunction callErrorCallback(Object[] args)
 	{
 		if (_error != null) {
-			
 			try {
 				_error.invoke(null, args);
 			} catch(Exception e) {

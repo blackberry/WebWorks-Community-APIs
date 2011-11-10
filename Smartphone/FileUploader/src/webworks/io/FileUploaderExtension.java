@@ -29,7 +29,13 @@ import net.rim.device.api.web.WidgetExtension;
  *
  */
 public class FileUploaderExtension implements WidgetExtension {
-
+	private WidgetConfig _widgetConfig;
+	
+	public FileUploaderExtension()
+	{
+		Logger.enableLogging(0x9c86ea678a259c68L, FileUploaderNamespace.NAME);
+	}
+	
 	public String[] getFeatureList() {
 		return new String[] { FileUploaderNamespace.NAME };
 	}
@@ -37,13 +43,14 @@ public class FileUploaderExtension implements WidgetExtension {
 	public void loadFeature(String feature, String version, Document doc,
 			ScriptEngine scriptEngine) throws Exception {
 		
+
 		if (feature.equals(FileUploaderNamespace.NAME)) {
-			Logger.enableLogging(0xe995515474f898fbL, "webworks.io.FileUploader");
-			scriptEngine.addExtension(feature, new FileUploaderNamespace());
+			scriptEngine.addExtension(feature, new FileUploaderNamespace(_widgetConfig));
 		}		
 	}
 
-	public void register(WidgetConfig arg0, BrowserField arg1) {
+	public void register(WidgetConfig config, BrowserField bf) {
+		_widgetConfig = config;
 	}
 
 	public void unloadFeatures(Document arg0) {

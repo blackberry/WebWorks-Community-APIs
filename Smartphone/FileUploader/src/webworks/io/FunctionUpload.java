@@ -16,21 +16,9 @@
 
 package webworks.io;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import javax.microedition.io.Connector;
-import javax.microedition.io.HttpConnection;
-import javax.microedition.io.file.FileConnection;
-
-import net.rim.device.api.io.IOUtilities;
-import net.rim.device.api.io.MIMETypeAssociations;
-import net.rim.device.api.io.http.HttpProtocolConstants;
-import net.rim.device.api.io.transport.ConnectionDescriptor;
-import net.rim.device.api.io.transport.ConnectionFactory;
 import net.rim.device.api.script.Scriptable;
 import net.rim.device.api.script.ScriptableFunction;
 
@@ -40,12 +28,21 @@ public class FunctionUpload extends ScriptableFunction {
 	
 	private ScriptableFunction _successCallback = null;
 	private ScriptableFunction _errorCallback = null;
+	
+	private int[] _transports = null;
+
+	public FunctionUpload(int[] transports) {
+		_transports = transports;
+	}
 
 	public Object invoke(Object thiz, Object[] args) throws Exception {
+		Logger.info("Upload invoked...");
 		
 		if (args.length == 1) {
 			Hashtable headers = null;
 			Hashtable params = null;
+			
+			long timeout = 30000;
 			
 			Logger.info("Getting options...");
 			
@@ -57,6 +54,7 @@ public class FunctionUpload extends ScriptableFunction {
 			String filePath = (String) config.getField("file");
 			String fileKey = (String) config.getField("fileKey");
 			String mimeType = (String) config.getField("mimeType");
+			Object cTimeout = config.getField("timeout");
 			
 			Logger.info("Getting headers and params...");
 			
@@ -65,6 +63,10 @@ public class FunctionUpload extends ScriptableFunction {
 			
 			if (mimeType.equals(UNDEFINED)) {
 				mimeType = null;
+			}
+			
+			if (!cTimeout.equals(UNDEFINED)) {
+				timeout = ((Integer) cTimeout).intValue();
 			}
 			
 			Logger.info("Setting headers and extra params...");
@@ -80,8 +82,8 @@ public class FunctionUpload extends ScriptableFunction {
 			_errorCallback = (ScriptableFunction) config.getField("error");
 			
 			Logger.info("Beginning upload...");
-			
-			new UploadRunnable(url, fileKey, params, filePath, mimeType, headers, _successCallback, _errorCallback);
+
+			new UploadRunnable(url, fileKey, params, filePath, mimeType, timeout, headers, _transports, _successCallback, _errorCallback);
 		}
 		return UNDEFINED;
 	}

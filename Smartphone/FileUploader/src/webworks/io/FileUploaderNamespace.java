@@ -16,7 +16,13 @@
 
 package webworks.io;
 
+import java.util.Vector;
+
 import net.rim.device.api.script.Scriptable;
+import net.rim.device.api.web.WidgetConfig;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 public class FileUploaderNamespace extends Scriptable {
 	
@@ -26,11 +32,66 @@ public class FileUploaderNamespace extends Scriptable {
 	
 	private FunctionUpload _uploadFunction;
 	
-	public FileUploaderNamespace() {
-		_uploadFunction = new FunctionUpload();
+	private static String transports[] =  new String[] {
+		null,
+		"TCP_CELLULAR",
+		"WAP",
+		"WAP2",
+		"MDS",
+		"BIS-B",
+		"TCP_WIFI"
+	};
+	
+	public FileUploaderNamespace(WidgetConfig wc) {
+		_uploadFunction = new FunctionUpload(getTransports(wc.getConfigXML()));
+	}
+	
+	private int[] getTransports(Document d)
+	{
+		int[] ret = null;
+		
+		String connection = "rim:connection";
+		NodeList connections = d.getElementsByTagName(connection);
+		NodeList transports = d.getElementsByTagName("id");
+		
+		int connectionCount = connections.getLength();
+		int transportCount = transports.getLength();
+		
+		if (connectionCount > 0) {
+			Vector v = new Vector();
+			
+			if (transportCount > 0) {
+				
+				for (int i=0; i< transportCount; i++) {
+					if (transports.item(i).getParentNode().getNodeName().equals(connection)) {
+						v.addElement(transports.item(i).getFirstChild().getNodeValue());
+					}
+				}
+				
+				ret = new int[v.size()];
+				for (int j=0; j<v.size(); j++) {
+					ret[j] = stringToTransport((String) v.elementAt(j));
+				}
+			}
+		}
+		
+		return ret;
 	}
 
-    public Object getField(String name) throws Exception {
+    private int stringToTransport(String transport) {
+    	
+    	int transportCount = transports.length;
+    	
+    	for (int i=transportCount-1; i >= 0; i--) {
+    		if (transports[i].equals(transport)) {
+    			return i;
+    		}
+    	}
+    	
+		return -1;
+	}
+
+	public Object getField(String name) throws Exception {
         if (name.equals(FIELD_UPLOAD)) {
             return _uploadFunction;
         }
