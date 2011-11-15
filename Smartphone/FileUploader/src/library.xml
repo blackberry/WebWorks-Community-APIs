@@ -11,7 +11,7 @@
   </platforms>
 
   <configurations>
-    <configuration name="JAVA">
+    <configuration name="JAVA" version="1.0">
       <src type="text/java" path="webworks" comment="API implementation in Java" />
     </configuration>
   </configurations>   
