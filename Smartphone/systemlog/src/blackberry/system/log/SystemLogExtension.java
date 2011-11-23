@@ -1,6 +1,9 @@
 /*
 * Copyright 2010-2011 Research In Motion Limited.
 *
+* Additionally
+* Copyright 2011 Matthew Haag.
+*
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
@@ -14,7 +17,7 @@
 * limitations under the License.
 */
 
-package webworks.system.log;
+package blackberry.system.log;
 
 import org.w3c.dom.Document;
 import net.rim.device.api.browser.field2.BrowserField;
@@ -24,11 +27,11 @@ import net.rim.device.api.web.WidgetExtension;
 
 public final class SystemLogExtension implements WidgetExtension
 {
-    private String	FEATURE_SYSTEM_DISPLAY	= "webworks.system.log";
+    private String      FEATURE_SYSTEM_DISPLAY  = "blackberry.ext.system.log";
     public String[] getFeatureList()
     {
         String[] result = new String[] { FEATURE_SYSTEM_DISPLAY };
-		    return result;
+                    return result;
     }
 
     public void loadFeature(String feature, String version, Document doc, ScriptEngine scriptEngine) throws Exception

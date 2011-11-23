@@ -4,7 +4,9 @@
 
 The WebWorks System Event Log API will allow you to write to the Blackberry System Event Log from within your WebWorks applications. 
 
-**Authors:** [John Mutter](https://github.com/jmutter)
+**Authors:** 
+[John Mutter](https://github.com/jmutter)
+[Matthew Haag](https://github.com/muerl)
 
 ## Known Issues
 
@@ -14,8 +16,6 @@ The WebWorks System Event Log API will allow you to write to the Blackberry Syst
 
 * BlackBerry Bold 9900 v7.0.0.261
 * BlackBerry Torch 9800 v6.0.0.227
-* BlackBerry Storm 9550 v5.0.0.469
-* BlackBerry Bold 9700 v5.0.0.469
 
 **Requires BlackBerry WebWorks SDK for Smartphones v2.0 or higher**
 
@@ -29,22 +29,20 @@ Have a problem with this extension?  [Log an Issue](https://github.com/blackberr
 
 3. Download the source from this repository and unzip it to a location on your computer
 
-4. Using File Explorer browse to this extension's downloaded source code _**Smartphone\SystemLog**_
-
-5. Copy the _**library.xml**_ file from the downloaded _**Smartphone\SystemLog**_ directory to your new _**ext\webworks.system.log**_ directory
-
-6. Copy the downloaded _**Smartphone\SystemLog\src\webworks**_ directory to your new _**ext\webworks.system.log\webworks**_ directory
+4. Copy extracted contents to the _**webworks.system.log**_ directory
 
 **NOTE:** Be sure to back-up this _**ext\webworks.system.log**_ directory in your WebWorks SDK extensions directory before performing a WebWorks SDK upgrade. Simply copy it back into the _**ext**_ directory after you have completed your SDK upgrade.
 
 ## Required Feature ID
 Whenever you use the below feature id in any of your WebWorks applications this extension will be loaded for use.
 
-    <feature id="webworks.system.log" />
+    <feature id="blackberry.ext.system.log" />
 
 ## Summary
 
-webworks.system.log.write ( [String:App Guid Name] , [String:App Name] , [String:System Log Message Text] )
+blackberry.ext.system.log.setup ( [String:App Guid Name] , [String:App Name] , [Integer:Mode] )
+
+blackberry.ext.system.log.write ( [String:System Log Message Text] )
 
 
 
@@ -57,10 +55,16 @@ webworks.system.log.write ( [String:App Guid Name] , [String:App Name] , [String
 
 [String:System Log Message Text] // This is the physical text that would make up the actual system event log message.
 
+[Integer:Mode] //This is an ENUM, 1 for System Log, 2 for Standard Out, 3 for both.  There are defined ENUMs but they are broken will be fixed in next version
+
 ## Initialization Example
 
-    function writeToLog() {
+    function setupLog() {
     
-      webworks.system.log.write ( "com.demo.myappname", "My Application", "The user successfully logged into My Application" )
+      blackberry.ext.system.log.setup ( "com.demo.myappname", "My Application", 3 );
     
     }
+	
+	function writeLog(){
+		blackberry.ext.system.log.write( "Test Message");
+	}
