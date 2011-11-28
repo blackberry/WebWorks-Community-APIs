@@ -114,6 +114,10 @@ Error callback. This method is called when there is an error (invalid file paths
 The amount of milliseconds this extension will attempt a connection.
 
 ## Change Log
+-11/15/2011
+	
+- Closes gh-1
+
 11/9/2011
 
 - Extension now reads <rim:connection> tag from config.xml
