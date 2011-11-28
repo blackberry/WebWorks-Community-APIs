@@ -5,7 +5,7 @@ The File Uploader extension provides a means to upload files to file server.
 
 ## Tested On
 
-* BlackBerry Torch 9810 v7.0.0.261
+* BlackBerry Torch 9810 v7.0.0.439
 * BlackBerry Bold 9900 v7.0.0.353
 * BlackBerry Bold 9650 v6.0.0.546
 * BlackBerry Curve 9300 v5.0.0.716
@@ -114,10 +114,6 @@ Error callback. This method is called when there is an error (invalid file paths
 The amount of milliseconds this extension will attempt a connection.
 
 ## Change Log
-11/15/2011
-
-- Closes gh-1
-
 11/9/2011
 
 - Extension now reads <rim:connection> tag from config.xml

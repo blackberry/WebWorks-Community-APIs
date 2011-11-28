@@ -127,7 +127,7 @@ public class UploadRunnable implements Runnable
             	callErrorCallback(new String[] { _filePath + " not found" });
             } 
             
-			if (_url.indexOf("https") != -1) {
+			if (_url.indexOf("https") == 0) {
 				isHTTPS = true;
 				Logger.error("Setting End to End");
 				_factory.setEndToEndDesired(isHTTPS);
