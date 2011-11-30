@@ -31,6 +31,7 @@ Have a problem with this extension?  [Log an Issue](https://github.com/blackberr
 Whenever you use the below feature id in any of your WebWorks applications this extension will be loaded for use.
 
     <feature id="webworks.media.barcode" />
+    <feature id="blackberry.io.dir" /> - Required when using 'generate' method.
     
 ## Required Permissions
 Any references to files/directories under "shared" folder (e.g. music) requires this permission to be set in your application's config.xml file
@@ -119,10 +120,10 @@ Encoding hint 'errorCorrection' is not taken into consideration.
             try {
               blackberry.media.barcode.generate("Encodng Checked!", 
                 function successCB(resultObj) {
-                  alert("Barcode generation succeed: " +  + resultObj.data.filePath);
+                  alert("Barcode generation succeed: " + resultObj.data.filePath);
                 },
                 function errorCB(errorObj) {
-                  alert("Error occured: " +  + errorObj.code + ", " + errorObj.msg);
+                  alert("Error occured: " + errorObj.code + ", " + errorObj.msg);
                 },
                 {
                   'format' : 'qr',
