@@ -119,10 +119,10 @@ Encoding hint 'errorCorrection' is not taken into consideration.
             try {
               blackberry.media.barcode.generate("Encodng Checked!", 
                 function successCB(resultObj) {
-                  alert("Barcode generation succeed: " +  + resultObj.data.filePath);
+                  alert("Barcode generation succeed: " + resultObj.data.filePath);
                 },
                 function errorCB(errorObj) {
-                  alert("Error occured: " +  + errorObj.code + ", " + errorObj.msg);
+                  alert("Error occured: " + errorObj.code + ", " + errorObj.msg);
                 },
                 {
                   'format' : 'qr',
