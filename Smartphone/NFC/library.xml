@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library>
+    <extension>
+        <entryClass>widgetpackage.NfcExtension</entryClass>
+    </extension>
+    <features>
+        <feature id="blackberry.nfc.ndef" version="1.0.0" ></feature>
+    </features>
+</library>
