@@ -5,8 +5,8 @@ The NFC API enables the ability to leverage the near field communication (NFC) c
 **Note**: there are multiple types of NDEF record types defined as part of the NFC spect.  Currently this NFC API supports only _smart poster_.
 
 **Authors:** 
-Martin Wooley (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/191236)
-John Murray
+* Martin Wooley (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/191236)
+* John Murray
 
 ## Tested On
 
@@ -14,7 +14,7 @@ John Murray
 * BlackBerry Curve 9360 7.0 b2365
 
 
-**Requires BlackBerry WebWorks SDK (for Smartphone) v2.2 or higher and BlackBerry handheld code 7.0+**
+**Requires:** BlackBerry WebWorks SDK (for Smartphone) v2.2 or higher and BlackBerry handheld code 7.0+
 
 Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks-Community-APIs/issues)
 
@@ -49,7 +49,7 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 	
 **Supported Record Types**
 
-    Sp - Smart poster
+    Sp - Smart poster Ndef tag
 
 	
 ## Usage Information
