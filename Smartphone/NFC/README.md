@@ -5,6 +5,7 @@ The NFC API enables the ability to leverage the near field communication (NFC) c
 **Note**: there are multiple types of NDEF record types defined as part of the NFC spect.  Currently this NFC API supports only _smart poster_.
 
 **Authors:** 
+
 * Martin Wooley (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/191236)
 * John Murray
 
@@ -35,12 +36,16 @@ Have a problem with this extension?  [Log an Issue](https://github.com/blackberr
 
 **NOTE:** Be sure to back-up this _**ext\blackberry.nfc.ndef**_ directory in your WebWorks SDK extensions directory before performing a WebWorks SDK upgrade. Simply copy it back into the _**ext**_ directory after you have completed your SDK upgrade.
 
-## Required Feature ID
+
+## Summary
+
+** Required Feature ID **
+
 Whenever you use the below feature id in any of your WebWorks applications this extension will be loaded for use.
 
     <feature id="blackberry.nfc.ndef" />
 
-## Summary
+** Methods **
 
 	static Undefined init_logging();
 	static Undefined register_ndef(onScan : function, onError : function, record_type : Object);
