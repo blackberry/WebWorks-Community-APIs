@@ -39,13 +39,13 @@ Have a problem with this extension?  [Log an Issue](https://github.com/blackberr
 
 ## Summary
 
-** Required Feature ID **
+**Required Feature ID**
 
 Whenever you use the below feature id in any of your WebWorks applications this extension will be loaded for use.
 
     <feature id="blackberry.nfc.ndef" />
 
-** Methods **
+**Methods**
 
 	static Undefined init_logging();
 	static Undefined register_ndef(onScan : function, onError : function, record_type : Object);
@@ -112,8 +112,8 @@ If a second call is made to the register_ndef message after a listener has alrea
 		
 	</script>
 	</head>
-	<body onLoad="initLogging();registerListener('Sp');">
-		
+	<body onLoad="initLogging();registerListener('Sp');" onUnLoad="removeListener('Sp');">
+
 		<p>NFC Extension user</p>
 		<input type="button" value="Register NDEF listener" onclick="registerListener('Sp')" />
 		<input type="submit" value="Register unsupported type" onclick="registerListener('XX')" />
