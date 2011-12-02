@@ -6,7 +6,7 @@ The NFC API enables the ability to leverage the near field communication (NFC) c
 
 **Authors:** 
 
-* Martin Wooley (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/191236)
+* Martin Woolley (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/191236)
 * John Murray
 
 ## Tested On
