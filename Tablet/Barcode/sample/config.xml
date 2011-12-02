@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:rim="http://www.blackberry.com/ns/widgets" id="888" version="1.0.0.0">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:rim="http://www.blackberry.com/ns/widgets" id="barcodeapp" version="1.0.0.0">
   <name>Barcode API Testing</name>
   <icon src="appicon.png"/>
   <description>Barcode API Test Widget</description>
