@@ -51,4 +51,4 @@ public final class SystemLogExtension implements WidgetExtension
     {
         // TODO Auto-generated method stub
     }
-}
+	}
