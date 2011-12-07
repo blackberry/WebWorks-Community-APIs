@@ -145,7 +145,7 @@ package webworks.io.filetransfer
 				}]);
 			}
 			
-			return result.jsObject;
+			return result.jsonObject;
 		}
 		
 		public function download(remotePath : String, localPath : String, onProgressID : String, onErrorID : String, options : String) : Object {
@@ -195,7 +195,7 @@ package webworks.io.filetransfer
 				result = new WebWorksReturnValue(data, -1);
 			}
 			
-			return result.jsObject;
+			return result.jsonObject;
 		}
 
 		private function configureListeners(dispatcher : IEventDispatcher) : void {			
