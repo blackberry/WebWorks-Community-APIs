@@ -17,7 +17,7 @@
 * limitations under the License.
 */
 
-package blackberry.system.log;
+package blackberry.ext.system.log;
 
 import org.w3c.dom.Document;
 import net.rim.device.api.browser.field2.BrowserField;

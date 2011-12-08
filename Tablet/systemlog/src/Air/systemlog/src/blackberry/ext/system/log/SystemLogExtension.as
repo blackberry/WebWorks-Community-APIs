@@ -22,7 +22,7 @@
  *
  *
  */
-package webworks.system.log
+package blackberry.ext.system.log
 {
     
     import webworks.config.ConfigConstants;
@@ -44,13 +44,17 @@ package webworks.system.log
 		private var namespace;
 		private var appName;
 		private var mode;
-		public function setup(namespace:String,appName:String,mode:int):int {
+		public function setup(namespace:String,appName:String,mode:String):int {
 			this.namespace = namespace;
 			this.appName = appName;
-			this.mode = mode;
+			this.mode = parseInt(mode);
 			return 0;
 		}
 		
 		public function write(message:String):void{
+			
+			if(this.mode & 2 != 0)
+				trace(message);
 		}
+	}
 }

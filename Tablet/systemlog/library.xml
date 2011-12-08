@@ -17,7 +17,7 @@
 <library isWhitelist="true">
 
   <extension id="blackberry.ext.system.log">
-    <entryClass>blackberry.system.log.SystemLogExtension</entryClass>
+    <entryClass>blackberry.ext.system.log.SystemLogExtension</entryClass>
   </extension>
 
   <platforms>
@@ -38,7 +38,7 @@
 	<configuration name="AIR_XHR" version="1.0" comment="For XHR architecture for Java implementation">			
 			<src type="text/javascript" path="src/js/common/systemlog_dispatcher.js" comment="Custom JS XHR dispatcher" />
 			<src type="text/javascript" path="src/js/common/systemlog_ns.js" comment="Custom JS interface" />
-			<src type="text/actionscript" path="src/Air/systemlog/src/webworks/system/logging" comment="ActionScript implementation" />
+			<src type="text/actionscript" path="src/Air/systemlog/src" comment="ActionScript implementation" />
 		</configuration>
   </configurations>  
 
