@@ -255,7 +255,7 @@ public class NdefMessageParser implements Runnable {
                         urlBuffer.append("http://www.");
 
                     } else if(spPayloadBytes[0] == (byte) 0x02) {
-                        urlBuffer.append("https://");
+                        urlBuffer.append("https://www.");
 
                     } else if(spPayloadBytes[0] == (byte) 0x03) {
                         urlBuffer.append("http://");
