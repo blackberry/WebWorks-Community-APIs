@@ -14,33 +14,41 @@
 * limitations under the License.
 */
 
-package webworks.message.list;
+package webworks.message.list.api;
 
-import net.rim.device.api.script.Scriptable;
+import webworks.message.list.model.CustomMessage;
+import webworks.message.list.model.CustomMessageServices;
 import net.rim.device.api.script.ScriptableFunction;
-
-
-public class MessageListRemoveItemFunction extends ScriptableFunction
-{
-	public static final String NAME = "removeItem";
 	
-	 
-	 public Object invoke(Object obj, Object[] args) throws Exception
-	 {
+public final class MessageListGetItemsFunction extends ScriptableFunction
+{
+	public static final String NAME = "getItem";
+	
+	public Object invoke(Object obj, Object[] args) throws Exception
+	{
 		if (args != null && args.length == 1)
 		{
 		   try
 		   {
-				String id = (String)args[0];
-				CustomMessage.removeMessage(id);
+				CustomMessage[] messages = CustomMessageServices.getMessages();
+
+				MessageListItem[] items = null;
+				if (messages != null){
+					items = new MessageListItem[messages.length];
+					for(int i =0;i<messages.length;i++){
+						items[i] =  new MessageListItem(messages[i]);
+					}
+				}
 				
-		   } catch (final Exception e) {
+				return items;		
+		   } 
+		   catch (Exception e) {
 				throw new RuntimeException(e.getMessage());
 		   }
 		}
+		else {
+			throw new RuntimeException("Invalid number of parameters");
+		}
 		
-		return UNDEFINED;
-	}
+	 }
 }
-	
-

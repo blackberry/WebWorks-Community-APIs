@@ -14,20 +14,17 @@
 * limitations under the License.
 */
 
-package webworks.message.list;
+package webworks.message.list.api;
 
 import net.rim.device.api.script.Scriptable;
 import net.rim.device.api.script.ScriptableFunction;
-import java.util.Date;
-import net.rim.device.api.ui.component.Dialog;
+import webworks.message.list.model.CustomMessageServices;
 	
 public final class MessageListAddItemFunction extends ScriptableFunction
 {
 	public static final String NAME = "addItem";
-	private MessageListNamespace _namespace = null;
 	
-	public MessageListAddItemFunction(MessageListNamespace namespace) {
-		_namespace = namespace;
+	public MessageListAddItemFunction() {
 	}
 	
 	public Object invoke(Object obj, Object[] args) throws Exception
@@ -37,17 +34,24 @@ public final class MessageListAddItemFunction extends ScriptableFunction
 		   try
 		   {
 				// Set defaults
-				String imageNew = _namespace.getDefaultNewImage();
-				String imageRead = _namespace.getDefaultReadImage();
+				String imageNew = null;
+				String imageRead = null;
 		   
 				// Grab the options object and its details
 				Scriptable item = (Scriptable)args[0];
 				String id = (String)item.getField(MessageListItem.FIELD_ID);
 				String title = (String)item.getField(MessageListItem.FIELD_TITLE);
 				String description = (String)item.getField(MessageListItem.FIELD_DESCRIPTION);
-				/*String imageNew = (String)item.getField(MessageListItem.FIELD_IMAGENEW);
-				String imageRead = (String)item.getField(MessageListItem.FIELD_IMAGEREAD);
-				*/
+				//Optional Parameter
+				Object imageNewArg = item.getField(MessageListItem.FIELD_IMAGENEW);
+				if(imageNewArg != UNDEFINED){
+					imageNew = (String)imageNewArg;
+				}
+				Object imageReadArg = item.getField(MessageListItem.FIELD_IMAGEREAD);
+				if(imageReadArg != UNDEFINED){
+					imageRead = (String)imageReadArg;
+				}
+				
 								
 				if (id == null)
 					throw new Exception("Invalid parameter. 'id' cannot be null");
@@ -59,7 +63,7 @@ public final class MessageListAddItemFunction extends ScriptableFunction
 					throw new Exception("Invalid parameter. 'description' cannot be null");
 				
 				// Actually add it to a list
-				CustomMessage.createMessage(id,title,description, imageNew, imageRead);
+				CustomMessageServices.createMessage(id,title,description, imageNew, imageRead);
 		   } 
 		   catch (Exception e) {
 				throw new RuntimeException(e.getMessage());

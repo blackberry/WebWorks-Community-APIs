@@ -14,22 +14,33 @@
 * limitations under the License.
 */
 
-package webworks.message.list;
+package webworks.message.list.api;
 
 import net.rim.device.api.script.ScriptableFunction;
-	
-public final class MessageListClearFunction extends ScriptableFunction
+import webworks.message.list.model.CustomMessageServices;
+
+
+public class MessageListMarkReadFunction extends ScriptableFunction
 {
-	   public static final String NAME = "markAllRead";
-		 public Object invoke(Object obj, Object[] args) throws Exception
-		 {
-        if (args != null || args.length == 1)
-        {
-           try
-           {
-							// message list init Code Here
-           } catch (Exception e) {}
-        }
-			return UNDEFINED;
-		 }
+	public static final String NAME = "markItemRead";
+	
+	 
+	 public Object invoke(Object obj, Object[] args) throws Exception
+	 {
+		if (args != null && args.length == 1)
+		{
+		   try
+		   {
+				String id = (String)args[0];
+				CustomMessageServices.markMessageRead(id);
+				
+		   } catch (final Exception e) {
+				throw new RuntimeException(e.getMessage());
+		   }
+		}
+		
+		return UNDEFINED;
+	}
 }
+	
+
