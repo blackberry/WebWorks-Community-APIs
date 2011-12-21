@@ -28,7 +28,7 @@
 			webworks.message.list.onItemMarkedUnread = onItemMarkedUnread;
 			webworks.message.list.onItemDeleted = onItemDeleted;
 			
-			var options = { 'guid' : 'my.app.id',
+			var options = { 'guid' : '123456789',
 					'folderName' : 'My Cool App',
 					'defaultNewImage' : 'new.png',
 					'defaultReadImage' : 'opened.png'
@@ -65,6 +65,18 @@
 			addStatusMessage('Item: ' + id + ' added');	
 		}
 		
+		function addCustomIconItem() {
+            var id = blackberry.utils.generateUniqueId().toString();
+            var item = { 'id' : id,
+                    'title' : 'my title',
+                    'description' : 'my description',
+                    'imageNew' : 'new2.png',
+                    'imageRead' : 'opened2.png'
+                    }
+            webworks.message.list.addItem(item);            
+            addStatusMessage('Item: ' + id + ' added'); 
+        }
+		
 		function removeItem() {
 			var id = document.getElementById('removeitem').value;
 			webworks.message.list.removeItem(id);
@@ -97,6 +109,7 @@
   </head>
   <body onload="init()">
 	<button onclick="addItem()">Add Item</button><br/>
+	<button onclick="addCustomIconItem()">Add Custom Icon Item</button><br/>
 	<button onclick="removeItem()">Remove Item</button><input id="removeitem" type="text" /><br/>
 	<button onclick="getItem()">Get Item</button><input id="getitem" type="text" /><br/>
 	<button onclick="markItemRead()">Mark Read</button><input id="readitem" type="text" /><br/>

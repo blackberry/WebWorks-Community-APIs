@@ -16,12 +16,12 @@
 
 package webworks.message.list;
 
-import org.w3c.dom.Document;
 import net.rim.device.api.browser.field2.BrowserField;
 import net.rim.device.api.script.ScriptEngine;
-import net.rim.device.api.script.Scriptable;
 import net.rim.device.api.web.WidgetConfig;
 import net.rim.device.api.web.WidgetExtension;
+
+import org.w3c.dom.Document;
 
 public final class MessageListExtension  implements WidgetExtension
 {
@@ -29,15 +29,13 @@ public final class MessageListExtension  implements WidgetExtension
 	private static final String FEATURE_ID = "webworks.message.list";
 	
 	public String[] getFeatureList() {
-		String[] result = new String[1];
-		result[0] = FEATURE_ID;
-		return result;
+		return new String[] {FEATURE_ID};
 	}
 
 	public void loadFeature(String feature, String version, Document doc, ScriptEngine scriptEngine) throws Exception {
 		if (feature == FEATURE_ID)
 		{
-			scriptEngine.addExtension(FEATURE_ID, new MessageListNamespace());
+			scriptEngine.addExtension(FEATURE_ID, MessageListNamespace.getInstance());
 		}
 	}
 
