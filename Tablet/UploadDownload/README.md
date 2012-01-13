@@ -27,7 +27,7 @@ Have a problem with this extension?  [Log an Issue](https://github.com/blackberr
 
 3. Download the source from this repository and unzip it to a location on your computer _**Tablet\UploadDownload**_
 
-4. Copy all files from the downloaded _**Tablet\UploadDownload**_ directory to your new _**ext\webworks.io.filetransfer**_ directory
+4. Copy all files from the downloaded _**Tablet\UploadDownload\ext**_ directory to your new _**ext\webworks.io.filetransfer**_ directory
 
 **NOTE:** Be sure to back-up this _**ext\webworks.io.filetransfer**_ directory in your WebWorks SDK extensions directory before performing a WebWorks SDK upgrade. Simply copy it back into the _**ext**_ directory after you have completed your SDK upgrade.
 
@@ -125,3 +125,21 @@ Whenever you use the below feature id in any of your WebWorks applications this 
       </body>
     </html>
 
+    <?xml version="1.0" encoding="utf-8"?>
+    <widget xmlns=" http://www.w3.org/ns/widgets"
+        xmlns:rim="http://www.blackberry.com/ns/widgets"
+        version="2.0.0.0">
+
+        <name>Sample App</name>
+
+        <description>
+            A sample application to demonstrate some of the possibilities.
+        </description>
+
+        <content src="index.html"/>
+
+        <feature id="webworks.io.fileTransfer"/>
+    
+        <access uri="*" subdomains="true"/>
+
+    </widget>
