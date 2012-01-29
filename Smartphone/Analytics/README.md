@@ -73,24 +73,43 @@ Put a Script like this in your head element:
 After that, call methods like the following to track events in your app:
 
 Track when a user clicks on an ad:
+
 		webworks.analytics.adclick(/mainscreen', 'Main Screen', 'adclick', 'Demo Ad')
+
 Track when users have been shown ads:
-		webworks.analytics.adimpression('/mainscreen', 'Main Screen', 'adimpression', 'Demo Ad1', 'Demo Ad2')
+		
+    webworks.analytics.adimpression('/mainscreen', 'Main Screen', 'adimpression', 'Demo Ad1', 'Demo Ad2')
+
 Track when a button has been clicked in the app (does a feature get used? do users find this button?):
-		webworks.analytics.button('/mainscreen', 'Main Screen', 'upgradebutton')
+		
+    webworks.analytics.button('/mainscreen', 'Main Screen', 'upgradebutton')
+
 Track conversions/purchases in your app:
+
 		webworks.analytics.conversion('/mainscreen/upgrade', 'Main Screen', 'upgrade', 'main app content', 'upgrade to full version')
+		
 Track anything not covered in another method:
+
 		webworks.analytics.custom('/mainscreen', 'Custom', 'custom event')
+
 Track media playback:
+
 		webworks.analytics.media('/mainscreen/videoplay', 'Main Screen', 'media', 'Sports', 'tennis.mp4', 'video', 'p')
+
 Track views of a product:
+
 		webworks.analytics.product('/mainscreen/product', 'Product Screen', 'productview', 'Sports', '12345', 'SKU0001')
+
 Track loading of pages/screens:
+
 		webworks.analytics.screen('/mainscreen', 'Main Screen', 'mainscreen view', 'main app content')
+
 Track search queries in the app:
+
 		webworks.analytics.search('/mainscreen/search', 'Searc Screen', 'QueryString', '10')
+
 Track errors:
+
 		webworks.analytics.error('Error Message')
 	
 * The first parameter for most methods is the hierarchical location within the app, such as the screen or page where the event occurs. 
