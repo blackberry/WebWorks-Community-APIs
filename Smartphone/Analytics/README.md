@@ -60,7 +60,8 @@ Put a Script like this in your head element:
 			webworks.analytics.terminate();
 		}
 		
-		// The dcs id is a value you will get from the Analytics Portal when you create a Space for your app. This is a test id.
+		// The dcs id is a value you will get from the Analytics Portal when you create a Space for your app. 
+    // This is a test id.
 		// second parameter is app category
 		webworks.analytics.register('dcsgkyqzl6bv0h08zoc7zofva_4h6y', 'Utilities');
 		webworks.analytics.start();
