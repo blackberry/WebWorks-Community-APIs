@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library isWhitelist="true">
+    <extension>
+        <entryClass>webworks.analytics.AnalyticsExtension</entryClass>
+    </extension>
+    
+    <platforms>
+      <platform value="JAVA">
+        <target version="default" config="JAVA" />
+      </platform>
+    </platforms>
+    
+    <configurations>
+      <configuration name="JAVA">
+        <src type="text/java" path="webworks" comment="API implementation in Java" />
+      </configuration>
+    </configurations>
+    
+    <features>
+        <feature id="webworks.analytics" version="1.0.0">WebWorks Extension for the Analytics SDK</feature>
+    </features>
+</library>
