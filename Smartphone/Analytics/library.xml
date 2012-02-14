@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-* Copyright 2010-2011 Research In Motion Limited.
+* Copyright 2012 Research In Motion Limited.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -15,9 +15,13 @@
  limitations under the License.
 -->
 <library isWhitelist="true">
-    <extension>
+    <extension id="webworks.analytics">
         <entryClass>webworks.analytics.AnalyticsExtension</entryClass>
     </extension>
+    
+    <dependencies>
+      <jar path="AnalyticsService_v1.0.jar" />
+    </dependencies>
     
     <platforms>
       <platform value="JAVA">
@@ -26,7 +30,7 @@
     </platforms>
     
     <configurations>
-      <configuration name="JAVA">
+      <configuration name="JAVA" version="1.0" comment="API implementation in Java">
         <src type="text/java" path="webworks" comment="API implementation in Java" />
       </configuration>
     </configurations>

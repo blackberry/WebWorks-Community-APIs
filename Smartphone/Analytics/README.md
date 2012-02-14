@@ -41,6 +41,10 @@ Have a problem with this extension?  [Log an Issue](https://github.com/blackberr
 Whenever you use the below feature id in any of your WebWorks applications this extension will be loaded for use.
 
     <feature id="webworks.analytics" />
+    
+Capturing the application events in Analytics is important and requires the use of the BlackBerry.app Feature:
+
+    <feature id="blackberry.app.event" />
 
 ## How to add the Extension to your app
 
