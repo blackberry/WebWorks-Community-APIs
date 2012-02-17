@@ -128,3 +128,9 @@ The library will queue events and send when in coverage. The queue is quite larg
 2. What is the longest string I can send?
 The strings are essentially unlimited, but it is recommended to keep them as short as possible. Longer strings will require more data and battery to transmit, 
 and they will be of limited use in the portal. The point of Analytics is really to count events over time, not send a lot of detailed data.
+
+3. What is the JAR file "AnalyticsService_v1.0.jar"?
+This JAR is the BlackBerry Analytics Service SDK. The extension is really a wrapper for the Java SDK that is in this JAR file. 
+The JAR file needs to be included to make the extension work so it's included here in the proper place and with the proper version.
+If the Analytics SDK changes in the future, the extension may require updating and would need to be updated at the same time with the new JAR file.
+This JAR file is closed source, but free to use. It is typically accessed by downloading the SDK from the Analytics Portal, but in order to simplify deployment of this extension, it's been included here.
