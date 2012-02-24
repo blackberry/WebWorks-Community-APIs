@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library>
+	<extension id="webworks.template">
+		<entryClass>webworks.template.TemplateExtension</entryClass>
+	</extension>
+	
+	<platforms>
+		<platform value="AIR">
+			<target version="default" config="AIR_XHR" />
+		</platform>
+	</platforms>
+
+	<configurations>
+		<configuration name="AIR_XHR" version="1.0" comment="XHR architecture/Air implementation">			
+			<src type="text/javascript" path="js/common/templateextension_dispatcher.js" comment="webworks.template JS Dispatcher" />
+			<src type="text/javascript" path="js/common/templateextension_ns.js" comment="webworks.template JS interface and partial implementation" />
+			<src type="text/actionscript" path="src/Air/TemplateExtension/src" comment="ActionScript implementation" />
+		</configuration>
+	</configurations>
+	
+	<features>
+		<feature id="webworks.template" version="1.0.0" />
+    </features>
+</library>
