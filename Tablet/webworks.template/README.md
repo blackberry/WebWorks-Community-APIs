@@ -21,7 +21,7 @@ How to test?  Suggest building a sample WebWorks app, similar to **test_app**, t
 test your extension.
 
 Note: You can can use Web Inspector to check runtime values and set breakpoints for JavaScript, however you cannot
-use Web Inspector to debug into the J2ME layer (from JavaScript).
+use Web Inspector to debug into the AIR layer (from JavaScript).
 
 Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks-Community-APIs/issues) or contact the [Author](https://github.com/astanley)
 
