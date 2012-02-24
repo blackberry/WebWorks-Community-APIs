@@ -18,7 +18,7 @@ the source and making changes throughout wherever you see a "STEP n" instruction
 If you encounter RAPC errors when building your WebWorks app, it likely means there is a syntax or compiling error 
 within your extension code.
 
-How to test?  Suggest building a sample WebWorks app, similar to test_app, that uses JavaScript unit tests to evaluate 
+How to test?  Suggest building a sample WebWorks app, similar to **test_app**, that uses JavaScript unit tests to evaluate 
 test your extension.
 
 Note: You can can use Web Inspector to check runtime values and set breakpoints for JavaScript, however you cannot
@@ -48,6 +48,8 @@ Whenever you use the below feature id in any of your WebWorks applications this 
     <feature id="webworks.template" />
 
 ## Summary
+
+This template demonstrates the basics of how to provide readable and writeable properties, as well as functions and properties.
 
 	static boolean bool
 	static string string
