@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library isWhitelist="true">
+    <extension id="webworks.template">
+        <entryClass>webworks.template.TemplateExtension</entryClass>
+    </extension>
+    
+    <platforms>
+		<platform value="JAVA">
+			<target version="default" config="JAVA" />
+		</platform>
+    </platforms>
+    
+    <configurations>
+      <configuration name="JAVA" version="1.0" comment="API implementation in Java">
+        <src type="text/java" path="webworks" comment="API implementation in Java" />
+      </configuration>
+    </configurations>
+    
+    <features>
+		<feature id="webworks.template" version="1.0.0">A template for webworks extensions.</feature>
+    </features>
+</library>
