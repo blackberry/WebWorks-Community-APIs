@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library>
+<!--
+ * Steps to writing a custom ActionScript extension:
+ * Updates necessary to this *.xml file:
+ * 
+ * 1) Update <entryClass> value to be correct format = [feature namespace].[*.as class name]
+ * 2) Update <configurations> section such that paths for JavaScript and ActionScript files are correct
+ * 3) Update <features> section to capture correct namespaces for this extension
+-->
+	<extension id="blackberry.template">
+		<entryClass>blackberry.template.Template</entryClass>
+	</extension>
+	
+	<platforms>
+		<platform value="AIR">
+			<target version="default" config="AIR_XHR" />
+		</platform>
+	</platforms>
+
+	<configurations>
+		<configuration name="AIR_XHR" version="1.0" comment="XHR architecture/Air implementation">			
+			<src type="text/javascript" path="js/common/template_dispatcher.js" comment="blackberry.template JS Dispatcher" />
+			<src type="text/javascript" path="js/common/template_ns.js" comment="blackberry.template JS interface and partial implementation" />
+			<src type="text/actionscript" path="src/Air/Template/src" comment="ActionScript implementation" />
+		</configuration>
+	</configurations>
+	
+	<features>
+		<feature id="blackberry.template" version="1.0.0">Template AIR JavaScript extension</feature>
+    </features>
+</library>

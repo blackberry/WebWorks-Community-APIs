@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library isWhitelist="true">
+    <extension id="blackberry.template">
+        <entryClass>blackberry.template.Template</entryClass>
+    </extension>
+    
+    <platforms>
+		<platform value="JAVA">
+			<target version="default" config="JAVA" />
+		</platform>
+    </platforms>
+    
+    <configurations>
+      <configuration name="JAVA" version="1.0" comment="API implementation in Java">
+        <src type="text/java" path="blackberry" comment="API implementation in Java" />
+      </configuration>
+    </configurations>
+    
+    <features>
+		<feature id="blackberry.template" version="1.0.0">A template for webworks extensions.</feature>
+    </features>
+</library>
