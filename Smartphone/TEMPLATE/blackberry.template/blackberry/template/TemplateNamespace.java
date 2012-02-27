@@ -262,7 +262,11 @@ public class TemplateNamespace extends Scriptable
 	public class VoidFunction extends ScriptableFunction {
 
 		public Object invoke(Object obj, Object[] args) throws Exception {
-			System.out.println("VoidFunction - log function called.");
+			if (args.length == 1)
+			{
+				String msg  = args[0].toString();
+				System.out.println("VoidFunction - log : " + msg);
+			}				
 			return UNDEFINED;
 		}
 	}
