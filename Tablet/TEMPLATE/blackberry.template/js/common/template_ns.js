@@ -36,8 +36,8 @@
 		this.constructor.prototype.add = function(first, second) {
 			return dispatch.add(first, second);
 		};
-		this.constructor.prototype.log = function() {
-			return dispatch.log();
+		this.constructor.prototype.log = function(msg) {
+			return dispatch.log(msg);
 		};
 
 	}

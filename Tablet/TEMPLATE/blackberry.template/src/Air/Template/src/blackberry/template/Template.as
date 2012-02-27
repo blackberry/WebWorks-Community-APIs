@@ -129,9 +129,9 @@ package blackberry.template
         {
             return (first + second);
         }
-		public function log():void
+		public function log(msg:String):void
 		{
-			trace("Template - log function called.");
+			trace("Template log : " + msg);
 		}
 
     }

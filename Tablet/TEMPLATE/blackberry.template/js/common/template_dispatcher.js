@@ -83,8 +83,9 @@
 		request.addParam("second", second);
 		return request.makeSyncCall();		//use sync if you need a return value.
 	};
-	TemplateDispatcher.prototype.log = function () {
+	TemplateDispatcher.prototype.log = function (msg) {
 		var request = new blackberry.transport.RemoteFunctionCall(TEMPLATE_EXTENSION_URL + "/" +  FUNCTION_LOG);
+		request.addParam("msg", msg);
 		return request.makeAsyncCall();		//use async if you don't need a return value.
 	};
 

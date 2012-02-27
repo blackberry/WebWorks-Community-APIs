@@ -75,7 +75,7 @@ test("functions", function(){
 	//Run the test
 	equals(blackberry.template.add(valueA, valueB), 11, "blackberry.template.add correct");
 	equals(blackberry.template.add(valueA+1, valueB+1), 13, "blackberry.template.add correct");
-	equals(blackberry.template.log(), undefined, "blackberry.template.log correct");
+	equals(blackberry.template.log("test"), undefined, "blackberry.template.log correct");
 	//Test teardown:
   
 })
