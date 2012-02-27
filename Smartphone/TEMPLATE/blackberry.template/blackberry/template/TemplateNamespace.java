@@ -67,7 +67,7 @@ public class TemplateNamespace extends Scriptable
 
 //
 //STEP 3: Replace the following with the names of any properties or functions that 
-//		will be supported by this extension.
+//		  will be supported by this extension.
 //
 	public static final String PROPERTY_BOOLEAN = "bool";
 	public static final String PROPERTY_STRING  = "string";
@@ -96,7 +96,7 @@ public class TemplateNamespace extends Scriptable
 	 */
 	public TemplateNamespace()
 	{
-        super();
+		super();
 		System.out.println("TemplateNamespace.constructor");
 	}
 	
