@@ -56,14 +56,14 @@
 //
 package blackberry.template
 {
-    import webworks.extension.DefaultExtension;
+	import webworks.extension.DefaultExtension;
 	
 //
 //STEP 2: Rename this class and constructor to describe the primary purpose of this extension.
 //		  e.g. HelloWorldExtension or LEDextension
 //
-    public class Template extends DefaultExtension
-    {
+	public class Template extends DefaultExtension
+	{
 
 //
 //STEP 3: For each feature name, add it to an array. 
@@ -79,15 +79,15 @@ package blackberry.template
 //STEP 2 (Continued): Rename this constructor to match the class name.
 //
 
-        public function Template()
-        {
-            super();
-        }
+		public function Template()
+		{
+			super();
+		}
 
-        override public function getFeatureList():Array
-        {
-            return FEATURE_ID;
-        }
+		override public function getFeatureList():Array
+		{
+			return FEATURE_ID;
+		}
 
 //
 //STEP 4: Replace the following section with any properties or functions that 
@@ -125,14 +125,14 @@ package blackberry.template
 		//
 		// Functions:
 		//
-        public function add(first:Number, second:Number):Number
-        {
-            return (first + second);
-        }
+		public function add(first:Number, second:Number):Number
+		{
+			return (first + second);
+		}
 		public function log(msg:String):void
 		{
 			trace("Template log : " + msg);
 		}
 
-    }
+	}
 }
