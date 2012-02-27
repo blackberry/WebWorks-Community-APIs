@@ -8,24 +8,11 @@ the source and making changes throughout wherever you see a "STEP n" instruction
 ## Tested On
 
 * BlackBerry Tablet OS v 1.0.7.2670
-
-
-## TODO
-1. Demonstrate how to support callbacks to JavaScript [example](http://supportforums.blackberry.com/t5/Web-and-WebWorks-Development/Callback-Extension-Object/m-p/1215117#M15050).
-
-## Troubleshooting
-If you encounter Air Packager exceptions when building your WebWorks app, it likely means there is a syntax or compiling error 
-within your extension code.
-
-How to test?  Suggest building a sample WebWorks app, similar to **test_app**, that uses JavaScript unit tests to evaluate 
-test your extension.
-
-Note: You can can use Web Inspector to check runtime values and set breakpoints for JavaScript, however you cannot
-use Web Inspector to debug into the AIR layer (from JavaScript).
+* BlackBerry Tablet OS v 1.0.8.6067
 
 Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks-Community-APIs/issues) or contact the [Author](https://github.com/astanley)
 
-## How To Configure The Extension For Use
+## How to test this extension
 
 1. Download the source from this repository and extract it to a location on your computer.
 
@@ -34,6 +21,19 @@ Have a problem with this extension?  [Log an Issue](https://github.com/blackberr
 3. Copy the downloaded _**Tablet\TEMPLATE\blackberry.template**_ directory to the extensions directory for the BlackBerry WebWorks SDK for Tablet OS. The default path for this location is _**C:\Program Files\Research In Motion\BlackBerry WebWorks SDK for TabletOS\bbwp\ext**_.
 
 **NOTE:** Be sure to back-up this _**ext\blackberry.template**_ directory in your WebWorks SDK extensions directory before performing a WebWorks SDK upgrade. Simply copy it back into the _**ext**_ directory after you have completed your SDK upgrade.
+
+## Troubleshooting
+If you encounter Air Packager exceptions when building your WebWorks app, it likely means there is a syntax or compiling error within your extension code.
+
+How to test?  Suggest building a sample WebWorks app, similar to **test_app**, that uses JavaScript unit tests to evaluate 
+test your extension.
+
+Note: You can can use Web Inspector to check runtime values and set breakpoints for JavaScript, however you cannot
+use Web Inspector to debug into the AIR layer (from JavaScript).
+
+## TODO
+1. Show to support callbacks to JavaScript [example](http://supportforums.blackberry.com/t5/Web-and-WebWorks-Development/Callback-Extension-Object/m-p/1215117#M15050).
+2. Refactor this sample. Is there any way to make it easier to understand by simplifying the code?
 
 ## Required Feature ID
 Whenever you use the below feature id in any of your WebWorks applications this extension will be loaded for use.
