@@ -13,7 +13,7 @@ the source and make changes throughout wherever you see a "STEP n" instruction.
 
 Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks-Community-APIs/issues) or contact the [Author](https://github.com/astanley)
 
-## How to test this extension
+## How to install this extension
 
 1. Download the source from this repository and extract it to a location on your computer.
 
