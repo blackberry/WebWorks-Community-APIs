@@ -15,17 +15,15 @@
 */
 
 
-
 //------------------------------------------------------------------------------------
 //
 // CREATE YOUR OWN BLACKBERRY WEBWORKS EXTENSION WITH THIS TEMPLATE.
 // GET STARTED BY COMPLETING ALL OF THE 'STEP' INSTRUCTIONS LISTED BELOW.
 //
-// 1. Namespace
-// 2. Class name
-// 3. Define feature names
-// 4. Return list of feature names
-// 5. Associate namespace class with each feature
+// 1. Package name
+// 2. Class and constructor name
+// 3. Feature names
+// 4. Properties and functions
 //
 //
 //  Consider contributing your extension to the BlackBerry WebWorks Community APIs:
@@ -39,14 +37,14 @@
 *  developer APIs found in the underlying OS (J2ME for BlackBerry Smartphones and Adobe 
 *  AIR for BlackBerry Tablet OS).
 *
-*  Using this technique, WebWorks developers can expose any native feature available from the 
-*	BlackBerry OS in their HTML5 application content.
+*  Using this technique, WebWorks developers can expose any available devices features  
+*	in their HTML5 application content.
 *
 * Example (config.xml): 
 *		<feature id="webworks.template" required="true" version="1.0.0.0"/>
 *
 * Example (JavaScript): 
-*		webworks.template.add()
+*		webworks.template.add(5,6);   //11
 */
 
 
@@ -66,9 +64,11 @@ package blackberry.template
 //
     public class Template extends DefaultExtension
     {
+
 //
 //STEP 3: For each feature name, add it to an array. 
 //
+
         private const FEATURE_ID:Array = new Array("blackberry.template");
 
 		private var _boolean:Boolean = false;
@@ -78,6 +78,7 @@ package blackberry.template
 //
 //STEP 2 (Continued): Rename this constructor to match the class name.
 //
+
         public function Template()
         {
             super();
@@ -91,7 +92,12 @@ package blackberry.template
 //
 //STEP 4: Replace the following section with any properties or functions that 
 //        will be supported in your extension.
-//		
+//
+
+		//
+		// GET/SET Properties:
+		//
+		//
 		public function getBoolean():Boolean
 		{ 	
 			return _boolean;
@@ -99,8 +105,7 @@ package blackberry.template
 		public function setBoolean(value:Boolean):void
 		{ 	
 			_boolean = value;
-		}
-		
+		}		
 		public function getString():String
 		{ 	
 			return _string;
@@ -117,9 +122,9 @@ package blackberry.template
 		{ 	
 			_integer = value;
 		}
-		
-
-		//Functions
+		//
+		// Functions:
+		//
         public function add(first:Number, second:Number):Number
         {
             return (first + second);

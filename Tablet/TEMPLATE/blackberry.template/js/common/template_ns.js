@@ -15,27 +15,36 @@
  */
 (function () {
 
-    function Template(disp) {
+	//
+	//An interface and partial implementation for this extension:
+	//
+    function Template(dispatch) {
 
-		//Define get/set properties:
-        this.constructor.prototype.__defineGetter__("bool", disp.getBoolean);
-        this.constructor.prototype.__defineSetter__("bool", disp.setBoolean);
-        this.constructor.prototype.__defineGetter__("string", disp.getString);
-        this.constructor.prototype.__defineSetter__("string", disp.setString);
-        this.constructor.prototype.__defineGetter__("integer", disp.getInteger);
-        this.constructor.prototype.__defineSetter__("integer", disp.setInteger);
+		//
+		// Properties (GET/SET):
+        //
+		this.constructor.prototype.__defineGetter__("bool", dispatch.getBoolean);
+        this.constructor.prototype.__defineSetter__("bool", dispatch.setBoolean);
+        this.constructor.prototype.__defineGetter__("string", dispatch.getString);
+        this.constructor.prototype.__defineSetter__("string", dispatch.setString);
+        this.constructor.prototype.__defineGetter__("integer", dispatch.getInteger);
+        this.constructor.prototype.__defineSetter__("integer", dispatch.setInteger);
 		
-		//Define functions
+		//
+		// Functions:
+		//
         this.constructor.prototype.add = function(first, second) {
-            return disp.add(first, second);
+            return dispatch.add(first, second);
         };
         this.constructor.prototype.log = function() {
-            return disp.log();
+            return dispatch.log();
         };
 
     }
 
-//must start with 'blackberry'
+	//
+	// Unique namespace for this extension (name must start with 'blackberry'):
+	//
     blackberry.Loader.javascriptLoaded("blackberry.template", Template);
 	
 })();

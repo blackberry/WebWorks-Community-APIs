@@ -15,25 +15,33 @@
  */
 (function () {
 
+	//
+	//  Dispatches JavaScript property/function calls to ActionScript 
+	//
     function TemplateDispatcher() {
     }
 
+	//
+	// Location of ActionScript code for this extension (found in src/Air/Template/src folder):
+	//
     var TEMPLATE_EXTENSION_URL = "blackberry/template";
 	
-	//define setter/getter for properties:
-    var GET_BOOLEAN = "getBoolean";
+	//
+	// Property and function names supported by this extension:
+	//    
+	var GET_BOOLEAN = "getBoolean";
     var SET_BOOLEAN = "setBoolean";
     var GET_STRING  = "getString";
     var SET_STRING  = "setString";
     var GET_INTEGER = "getInteger";
     var SET_INTEGER = "setInteger";
-
-	//define methods
     var FUNCTION_ADD = "add";
     var FUNCTION_LOG = "log";
-	
-	
-	//Helper methods for Get/Set calls to properties:
+
+
+	//
+	//Helper methods for property GET/SET:
+	//
     function makeGetCall(method) {
         var recall = new blackberry.transport.RemoteFunctionCall(TEMPLATE_EXTENSION_URL + "/" + method);
         return recall.makeSyncCall();
@@ -43,8 +51,10 @@
         recall.addParam("value", newValue);
         recall.makeSyncCall();
     }
-	
-	//Get/Set methods for properties:
+
+	//
+	// Properties (GET/SET):
+	//
 	TemplateDispatcher.prototype.getBoolean = function() {
 		return makeGetCall(GET_BOOLEAN);
     };
@@ -64,7 +74,9 @@
 		return makeSetCall(SET_INTEGER, newValue);
     };
 
-	//Functions:
+	//
+	// Functions:
+	//
     TemplateDispatcher.prototype.add = function (first, second) {
         var request = new blackberry.transport.RemoteFunctionCall(TEMPLATE_EXTENSION_URL + "/" +  FUNCTION_ADD);
         request.addParam("first", first);
@@ -76,7 +88,9 @@
         return request.makeAsyncCall();		//use async if you don't need a return value.
     };
 
-//must start with 'blackberry'
+	//
+	// Unique namespace for this dispatcher (name must start with 'blackberry'):
+	//
 	blackberry.Loader.javascriptLoaded("blackberry.template", TemplateDispatcher);
 
 })();
