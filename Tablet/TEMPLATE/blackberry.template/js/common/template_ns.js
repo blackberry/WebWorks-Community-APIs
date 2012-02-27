@@ -18,33 +18,33 @@
 	//
 	//An interface and partial implementation for this extension:
 	//
-    function Template(dispatch) {
+	function Template(dispatch) {
 
 		//
 		// Properties (GET/SET):
-        //
+		//
 		this.constructor.prototype.__defineGetter__("bool", dispatch.getBoolean);
-        this.constructor.prototype.__defineSetter__("bool", dispatch.setBoolean);
-        this.constructor.prototype.__defineGetter__("string", dispatch.getString);
-        this.constructor.prototype.__defineSetter__("string", dispatch.setString);
-        this.constructor.prototype.__defineGetter__("integer", dispatch.getInteger);
-        this.constructor.prototype.__defineSetter__("integer", dispatch.setInteger);
+		this.constructor.prototype.__defineSetter__("bool", dispatch.setBoolean);
+		this.constructor.prototype.__defineGetter__("string", dispatch.getString);
+		this.constructor.prototype.__defineSetter__("string", dispatch.setString);
+		this.constructor.prototype.__defineGetter__("integer", dispatch.getInteger);
+		this.constructor.prototype.__defineSetter__("integer", dispatch.setInteger);
 		
 		//
 		// Functions:
 		//
-        this.constructor.prototype.add = function(first, second) {
-            return dispatch.add(first, second);
-        };
-        this.constructor.prototype.log = function() {
-            return dispatch.log();
-        };
+		this.constructor.prototype.add = function(first, second) {
+			return dispatch.add(first, second);
+		};
+		this.constructor.prototype.log = function() {
+			return dispatch.log();
+		};
 
-    }
+	}
 
 	//
 	// Unique namespace for this extension (name must start with 'blackberry'):
 	//
-    blackberry.Loader.javascriptLoaded("blackberry.template", Template);
+	blackberry.Loader.javascriptLoaded("blackberry.template", Template);
 	
 })();
