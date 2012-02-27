@@ -1,14 +1,15 @@
 # blackberry.template
 
 This template is designed to help developers get started writing their own WebWorks extensions. Download and modify 
-the source and making changes throughout wherever you see a "STEP n" instruction.
+the source and make changes throughout wherever you see a "STEP n" instruction.
 
 **Authors:** [Adam Stanley](https://github.com/astanley)
 
 ## Tested On
 
-* BlackBerry Tablet OS v 1.0.7.2670
+* BlackBerry Tablet OS v 2.0.0.7971
 * BlackBerry Tablet OS v 1.0.8.6067
+* BlackBerry Tablet OS v 1.0.7.2670
 
 Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks-Community-APIs/issues) or contact the [Author](https://github.com/astanley)
 

@@ -1,7 +1,7 @@
 # blackberry.template
 
 This template is designed to help developers get started writing their own WebWorks extensions. Download and modify 
-the source and making changes throughout wherever you see a "STEP n" instruction.
+the source and make changes throughout wherever you see a "STEP n" instruction.
 
 **Authors:** [Adam Stanley](https://github.com/astanley)
 
