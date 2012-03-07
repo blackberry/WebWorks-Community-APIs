@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Research In Motion Limited.
+ * Copyright 2010-2011 Research In Motion Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@
 //
 //
 //  Consider contributing your extension to the BlackBerry WebWorks Community APIs:
-//    https://github.com/blackberry/WebWorks-Community-APIs
+//	   https://github.com/blackberry/WebWorks-Community-APIs
 //
 //------------------------------------------------------------------------------------
 
@@ -78,26 +78,23 @@ public class Template implements WidgetExtension
 //STEP 3: Define one or more feature names here. A feature name is used to register 
 //		  this extension with the JavaScript engine and is white listed in a WebWorks
 //		  application's config.xml file. You can organize the logic of your extension 
-//		  by grouping them under different feature names.
+//	  	  by grouping them under different feature names.
 //
 //	Example: "webworks" or "companyname.xyz" or "barcode.scanner"
 //
-//	TIP: Avoid using the reserved keyword "blackberry" which is registered, and managed, by 
-//		 the native web engine.
-//
-	private String FEATURE_WEBWORKS_TEMPLATE = "blackberry.template";
+    private String FEATURE_WEBWORKS_TEMPLATE = "blackberry.template";
 
 //
 //STEP 4: For each feature name, add it to an array. 
 //
-	String[] _features = new String[] { FEATURE_WEBWORKS_TEMPLATE };
+        String[] _features = new String[] { FEATURE_WEBWORKS_TEMPLATE };
 
 		
 	/**
 	 * Provides a list of all features supported by this extension. If this method does not 
-	 * return a feature name, that feature cannot be used in a WebWorks application.
+     * return a feature name, that feature cannot be used in a WebWorks application.
 	 * @return an array of features 
-	 * @see    net.rim.device.api.web.WidgetExtension#getFeatureList()
+     * @see    net.rim.device.api.web.WidgetExtension#getFeatureList()
 	 */
 	public String[] getFeatureList()
 	{
@@ -110,25 +107,25 @@ public class Template implements WidgetExtension
 	/**
 	 * Load a feature defined in config.xml into the JavaScript engine.
 	 *
-	 * @param feature      name of the feature  as defined by config.xml
-	 * @param version      version of the feature as defined by config.xml
-	 * @param doc          the HTML document for which this extension is being loaded 
+     * @param feature      name of the feature  as defined by config.xml
+     * @param version      version of the feature as defined by config.xml
+     * @param doc          the HTML document for which this extension is being loaded 
 	 *					   (e.g. index.html)
-	 * @param scriptEngine reference to the instance of the JavaScript engine used 
+     * @param scriptEngine reference to the instance of the JavaScript engine used 
 	 *        by the WebWorks app
-	 * @see   net.rim.device.api.web.WidgetExtension#loadFeature(String, String, Document, ScriptEngine)
+     * @see   net.rim.device.api.web.WidgetExtension#loadFeature(String, String, Document, ScriptEngine)
 	 */
 	public void loadFeature(String feature, String version, Document doc, ScriptEngine scriptEngine) throws Exception
 	{
 		Object obj = null;
 		System.out.println("Template.loadFeature(" + feature + ")");
-
+  
 //
 //STEP 5: For each feature name defined above, add a namespace to the script engine.  The logic 
 //        for your extension will exist within this namespace, and it is through the script 
 //        engine of your WebWorks app that you can make calls into this extension.
 //
-	if (feature.equals(FEATURE_WEBWORKS_TEMPLATE))
+		if (feature.equals(FEATURE_WEBWORKS_TEMPLATE))
 		{
 			obj = new TemplateNamespace();
 			//
@@ -148,9 +145,9 @@ public class Template implements WidgetExtension
 	/**
 	 * Handle the extension registration event. Called when this extension is first loaded.
 	 * 
-	 * @param config  the config.xml document used by the WebWorks app
-	 * @param bf      the browserfield object of the WebWorks app
-	 * @see   net.rim.device.api.web.WidgetExtension#register(WidgetConfig, BrowserField)
+     * @param config  the config.xml document used by the WebWorks app
+     * @param bf      the browserfield object of the WebWorks app
+     * @see   net.rim.device.api.web.WidgetExtension#register(WidgetConfig, BrowserField)
 	 */
 	public void register(WidgetConfig config, BrowserField bf)
 	{
@@ -168,8 +165,8 @@ public class Template implements WidgetExtension
 	 * Handles the extension unload event. Called when the application is closed or the user 
 	 * navigates to different page.
 	 * 
-	 * @param doc  the HTML document for which this extension is being unloaded from (e.g. index.html)
-	 * @see   net.rim.device.api.web.WidgetExtension#unloadFeatures(Document)
+     * @param doc  the HTML document for which this extension is being unloaded from (e.g. index.html)
+     * @see   net.rim.device.api.web.WidgetExtension#unloadFeatures(Document)
 	 */
 	public void unloadFeatures(Document doc)
 	{

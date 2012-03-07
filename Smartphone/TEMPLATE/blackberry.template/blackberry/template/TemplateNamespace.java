@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Research In Motion Limited.
+ * Copyright 2010-2011 Research In Motion Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +57,10 @@ package blackberry.template;
 import net.rim.device.api.script.Scriptable;
 import net.rim.device.api.script.ScriptableFunction;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import blackberry.core.ApplicationEventHandler;
+
 
 //
 //STEP 2: Rename this class and constructor to describe the primary purpose of this feature.
@@ -67,20 +71,16 @@ public class TemplateNamespace extends Scriptable
 
 //
 //STEP 3: Replace the following with the names of any properties or functions that 
-//		  will be supported by this extension.
+//		will be supported by this extension.
 //
 	public static final String PROPERTY_BOOLEAN = "bool";
 	public static final String PROPERTY_STRING  = "string";
 	public static final String PROPERTY_INTEGER = "integer";		
 	public static final String FUNCTION_ADD     = "add";
 	public static final String FUNCTION_LOG     = "log";
+	public static final String FUNCTION_CALLBACK = "onEvent";
 
-
-
-	private boolean _boolean = false;
-	private String  _string  = "hello";
-	private int     _integer = 0;
-	
+    private Hashtable _fields;
 
 //
 //STEP 2 (Continued): Rename this constructor to match the class name.
@@ -96,7 +96,19 @@ public class TemplateNamespace extends Scriptable
 	 */
 	public TemplateNamespace()
 	{
-		super();
+        _fields = new Hashtable();
+//
+//STEP 4: Replace the following with any properties or functions that 
+//        will be supported in your extension.
+//
+        _fields.put( PROPERTY_BOOLEAN, new Boolean(false) );
+        _fields.put( PROPERTY_STRING, new String("hello") );
+        _fields.put( PROPERTY_INTEGER, new Integer(0) );
+
+        _fields.put( FUNCTION_ADD, new ReturnFunction() );
+        _fields.put( FUNCTION_LOG, new VoidFunction() );
+        _fields.put( FUNCTION_CALLBACK, new CallbackFunction() );
+        
 		System.out.println("TemplateNamespace.constructor");
 	}
 	
@@ -117,56 +129,14 @@ public class TemplateNamespace extends Scriptable
 	public Object getField(String name) throws Exception 
 	{
 		System.out.println("TemplateNamespace.getField(" + name + ")");
-
-//
-//STEP 4: Replace the following section with any properties or functions that 
-//        will be supported in your extension.
-//
-		//
-		// Properties:
-		//
-		// Must always return an Object, never a primitive value.
-		//    e.g. "new Boolean(Boolean.FALSE)" instead of "false"
-		//
-		if (name.equals(PROPERTY_BOOLEAN)) 
-		{
-			return new Boolean(_boolean);
-		}
-		else if (name.equals(PROPERTY_STRING))
-		{
-			return new String(_string);
-		}
-		else if (name.equals(PROPERTY_INTEGER))
-		{
-			return new Integer(_integer);
-		}
-		//
-		// Functions:
-		//
-		// The following demonstrates how to support method or function calls within an  
-		// extension. Create and return a ScriptableFunction object.  The implementation 
-		// for this object will handle the logic of the function, and will receive 
-		// parameters passed in by the script engine.  The ScriptableFunction object 
-		// will return an Object representing the result of your function (can return 
-		// UNDEFINED if there are no results).
-		//
-		if (name.equals(FUNCTION_ADD)) 
-		{
-			return new ReturnFunction();
-		} 
-		else if (name.equals(FUNCTION_LOG)) 
-		{
-			return new VoidFunction();
-		}
-
-		//
-		//If the name is not recognized, send it to the super class to be handled.
-		//
-		return super.getField(name);
+        
+		Object field = _fields.get( name );
+        if( field == null ) {
+            return UNDEFINED;
+        }
+        return field;
 	}
 
-
-	
 	/**
 	 *  Called when WebWorks application tries to SET the value of a property.
 	 *  This occurs when when the dot “.” extender is used on your JavaScript object.
@@ -178,36 +148,44 @@ public class TemplateNamespace extends Scriptable
 	public boolean putField(String name, Object value) throws Exception 
 	{
 		System.out.println("TemplateNamespace.putField(" + name + "), value=" + value);
-		
-//
-//STEP 5: Replace the following to set any properties you will be supporting in your extension.
-//
-		//
-		// Properties:
-		//		
-		if (name.equals(PROPERTY_BOOLEAN)) 
-		{
-			_boolean = value.toString().toLowerCase().equals("true");
-			return true;
-		}
-		else if (name.equals(PROPERTY_STRING))
-		{
-			_string = value.toString();
-			return true;
-		}
-		else if (name.equals(PROPERTY_INTEGER))
-		{
-			_integer = Integer.parseInt(value.toString());
-			return true;
-		}
-		
-		//If the name is not recognized, send it to the super class to be handled.
-		//
-		return super.putField(name, value);
+
+		Object field = _fields.get( name );        
+		if( field == null ) {
+            return super.putField(name, value);
+        }
+		_fields.put(name, value);
+		return true;	
 	}
 
+	
+    /**
+     * When dealing with event listeners and callbacks, the responsible thing to do
+	 * is call any waiting events when this namespace is unloaded.
+     * 
+     * @throws Exception
+     */
+    public void unload() throws Exception {
+        for( Enumeration e = _fields.elements(); e.hasMoreElements(); ) {
 
-	//used to demonstrate how to implement a function that returns results.
+    //        OnAppEventFunction event = (OnAppEventFunction) e.nextElement();
+    //        event.execute( null, new Object[] { null } );
+	
+        }
+    }
+
+
+//
+//STEP 6: Implement any functions used by this extension.
+//
+
+	//
+	//TIP: The following ScriptableFunction classes can be their own external files,
+	//		as long as they share the same package name as this NameSpace class.
+	//
+	//		e.g. ReturnFunction.java, VoidFunction.java
+	//
+	
+	//Used to demonstrate how to implement a function that returns results.
 	public class ReturnFunction extends ScriptableFunction {
 
 		/**
@@ -222,10 +200,6 @@ public class TemplateNamespace extends Scriptable
 		{
 			System.out.println("ReturnFunction.invoke");
 			Object result = Boolean.FALSE;
-
-//
-//STEP 6: Implement your function.
-//
 
 			//
 			//    i. Validate parameters supported by this function:
@@ -270,5 +244,32 @@ public class TemplateNamespace extends Scriptable
 			return UNDEFINED;
 		}
 	}
+
+	//used to demonstrate how to implement callback event functions that return parameters.
+	public class CallbackFunction extends ScriptableFunction {
 	
+		/**
+		* Invoked by the WidgetExtension when a JavaScript function call is made.
+		*
+		* @param obj   Context where this function was called.
+		* @param args  0 or more parameters provided to the JavaScript function.
+		*
+		* @return value to be returned for the JavaScript function.
+		*/
+		public Object invoke(Object obj, Object[] args) throws Exception 
+		{
+			System.out.println("CallbackFunction.invoke");
+
+			if (args.length == 1)
+			{
+				int eventId  = Integer.parseInt(args[0].toString());
+				
+				//TODO - DO THE ACTUAL CALLBACK?
+				return new Integer(5);	//return 5 for now - so we can see this in the unit test.
+			}
+			
+			return UNDEFINED;
+		}
+		
+	}	
 }
