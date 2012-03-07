@@ -37,6 +37,7 @@
 	var SET_INTEGER = "setInteger";
 	var FUNCTION_ADD = "add";
 	var FUNCTION_LOG = "log";
+	var FUNCTION_CALLBACK = "onEvent";
 
 
 	//
@@ -86,9 +87,21 @@
 	TemplateDispatcher.prototype.log = function (msg) {
 		var request = new blackberry.transport.RemoteFunctionCall(TEMPLATE_EXTENSION_URL + "/" +  FUNCTION_LOG);
 		request.addParam("msg", msg);
-		return request.makeAsyncCall();		//use async if you don't need a return value.
+		return request.makeAsyncCall();		//use async if you don't need a return value - will not return right away.
 	};
 
+	//
+	// Callbacks:
+	//
+	TemplateDispatcher.prototype.onEvent = function (onComplete) {
+		var eventHandlerId = blackberry.events.registerEventHandler("onComplete", onComplete);
+
+		var request = new blackberry.transport.RemoteFunctionCall(TEMPLATE_EXTENSION_URL + "/" +  FUNCTION_CALLBACK);
+		request.addParam("eventId", eventHandlerId);
+        request.makeAsyncCall();
+	};
+
+	
 	//
 	// Unique namespace for this dispatcher (name must start with 'blackberry'):
 	//

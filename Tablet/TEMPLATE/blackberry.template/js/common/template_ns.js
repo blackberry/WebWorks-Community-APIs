@@ -39,6 +39,13 @@
 		this.constructor.prototype.log = function(msg) {
 			return dispatch.log(msg);
 		};
+		
+		//
+		// Callbacks:
+		//
+		this.constructor.prototype.onEvent = function(callback) {
+            return dispatch.onEvent(callback);
+        };
 
 	}
 

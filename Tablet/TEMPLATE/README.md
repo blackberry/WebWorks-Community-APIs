@@ -33,8 +33,7 @@ Note: You can can use Web Inspector to check runtime values and set breakpoints 
 use Web Inspector to debug into the AIR layer (from JavaScript).
 
 ## TODO
-1. Show to support callbacks to JavaScript [example](http://supportforums.blackberry.com/t5/Web-and-WebWorks-Development/Callback-Extension-Object/m-p/1215117#M15050).
-2. Refactor this sample. Is there any way to make it easier to understand by simplifying the code?
+1. Refactor this sample. Is there any way to make it easier to understand by simplifying the code?
 
 ## Required Feature ID
 Whenever you use the below feature id in any of your WebWorks applications this extension will be loaded for use.
@@ -50,17 +49,22 @@ This template demonstrates the basics of how to provide readable and writeable p
 	static int integer
 	static int add(int first, int second)
 	static void log()
+	static void onEvent(function onComplete)
 
 ## Code Example
 
-	function properties()
-	{
+	function properties() {
 		blackberry.template.string = (blackberry.template.bool ? "yes" : "no");
 		blackberry.template.integer = blackberry.template.integer + 1;
 	}
 
-	function functions()
-	{
+	function functions() {
 		var result = blackberry.template.add(5,5);
 		blackberry.template.log();
+	}
+
+	function callbacks() {
+		blackberry.template.onEvent(function (response) {
+			console.log("event complete");
+		});
 	}

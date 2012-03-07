@@ -1,5 +1,5 @@
 /*
-* Copyright 2012 Research In Motion Limited.
+* Copyright 2010-2011 Research In Motion Limited.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -56,8 +56,14 @@
 //
 package blackberry.template
 {
+	import flash.events.Event;
 	import webworks.extension.DefaultExtension;
-	
+
+	import mx.controls.Alert;
+
+	import qnx.events.QNXApplicationEvent;
+	import qnx.system.QNXApplication;
+
 //
 //STEP 2: Rename this class and constructor to describe the primary purpose of this extension.
 //		  e.g. HelloWorldExtension or LEDextension
@@ -74,6 +80,7 @@ package blackberry.template
 		private var _boolean:Boolean = false;
 		private var _string:String   = "hello";
 		private var _integer:Number  = 0;
+		private var onEventCallbackId:String = "";
 
 //
 //STEP 2 (Continued): Rename this constructor to match the class name.
@@ -83,7 +90,11 @@ package blackberry.template
 		{
 			super();
 		}
-
+/*
+		public override function unloadFeature():void {
+			webView.removeEventListener(Event.ACTIVATE,activate);
+		}
+*/		
 		override public function getFeatureList():Array
 		{
 			return FEATURE_ID;
@@ -132,6 +143,44 @@ package blackberry.template
 		public function log(msg:String):void
 		{
 			trace("Template log : " + msg);
+		}
+		
+		//
+		// Local event handler(s) for callback functions:
+		//
+		//	Makes a JavaScript call to a known method name.
+		//	Can also provide parameter to that JavaScript method.
+		//
+		public function handleEvent(event:Event):void {
+			var param:Array;
+			param = new Array(1);
+			param[0] = "Event type = " + event.type;
+			evalJavaScriptEvent(onEventCallbackId, param);
+		}
+		
+		//
+		// Callback functions:
+		// A callback is just like any other function, except it can make calls
+		//	to the JavaScript engine when an event occurs.
+		//
+		public function onEvent(eventId:String):void
+		{
+			//
+			//Save the JavaScript method name to be called when the event occurs:
+			//
+			onEventCallbackId = eventId;
+			
+			//
+			//Example 1: Manually fire a generic event:
+			//
+			handleEvent(new Event("custom"));
+
+			//
+			//Example 2: 
+			//
+			// Listen for system events (e.g. capture a Tablet OS swipe-down event):
+			//	QNXApplication.qnxApplication.addEventListener(QNXApplicationEvent.SWIPE_DOWN, handleEvent);
+			//			
 		}
 
 	}

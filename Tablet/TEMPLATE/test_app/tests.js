@@ -1,18 +1,3 @@
-/*
- * Copyright 2012 Research In Motion Limited.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 // documentation on writing tests here: http://docs.jquery.com/QUnit
 // example tests: https://github.com/jquery/qunit/blob/master/test/same.js
@@ -31,6 +16,8 @@
 module("blackberry.template");	
 
 test("object", function(){
+	"use strict";
+	
 	expect(2);
 
 	//Setup test:
@@ -48,22 +35,26 @@ test("object", function(){
 	equals(typeofObjB, "object", "'blackberry.template' JavaScript object exists in ScriptEngine.");
 	//Test teardown:
   
-})
+});
 
 test("GET properties", function(){
+	"use strict";
+	
+	expect(3);
 
 	//Setup test:
 	
 	//Run the test
-	expect(3);
 	equals(blackberry.template.bool, false, "blackberry.template.bool initial value");
 	equals(blackberry.template.string, "hello", "blackberry.template.string initial value.");
 	equals(blackberry.template.integer, 0, "blackberry.template.integer initial value.");
 	//Test teardown:
   
-})
+});
 
 test("SET properties", function(){
+	"use strict";
+	
 	expect(3);
 
 	//Setup test:
@@ -79,18 +70,57 @@ test("SET properties", function(){
 	equals(blackberry.template.integer, newInt, "blackberry.template.integer changed.");
 	//Test teardown:
   
-})
+});
 
 test("functions", function(){
-	expect(3);
+	"use strict";
+	
+	expect(5);
 
 	//Setup test:
 	var valueA = 5, valueB = 6;
 	
-	//Run the test
-	equals(blackberry.template.add(valueA, valueB), 11, "blackberry.template.add correct");
-	equals(blackberry.template.add(valueA+1, valueB+1), 13, "blackberry.template.add correct");
+	//Run the tests
+	equals((typeof blackberry.template.add), "function", "blackberry.template.add function exists");
+	equals((typeof blackberry.template.log), "function", "blackberry.template.log function exists");
+	
+	valueA = blackberry.template.add(5, 6);
+	equals(valueA, 11, "blackberry.template.add correct");
+	valueB = blackberry.template.add(valueA+1, 1);
+	equals(valueB, 13, "blackberry.template.add correct");
 	equals(blackberry.template.log("test"), undefined, "blackberry.template.log correct");
 	//Test teardown:
   
-})
+}); 
+
+
+//
+//Because callbacks happen asyncronously, we must use an asyncTest in order for QUnit to lock the tread.
+//	Otherwise what appears to happen is the ActionScript function never appears to be called. However, it
+//	actually does and the callback occurs after this JavaScript thread has finished evaluating all unit tests.
+//
+asyncTest("callback", function(){
+	"use strict";
+	
+	expect(4);
+
+	//Setup test:
+	var result;
+
+	//Run the test:
+	equals((typeof blackberry.template.onEvent), "function", "blackberry.template.onEvent function exists");
+	
+	result = blackberry.template.onEvent(function (eventType) {
+				ok(true, "blackberry.template.onEvent complete");
+				equals(eventType, "Event type = custom", "blackberry.template.onEvent expected parameter okay");
+			});
+	
+	equals(result, undefined, "blackberry.template.onEvent returns no value");
+
+	//Test teardown:
+
+	
+	//Begin the asyncronous test
+	start();
+  
+});
