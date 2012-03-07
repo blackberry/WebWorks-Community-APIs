@@ -44,8 +44,8 @@
 		// Callbacks:
 		//
 		this.constructor.prototype.onEvent = function(callback) {
-            return dispatch.onEvent(callback);
-        };
+			return dispatch.onEvent(callback);
+		};
 
 	}
 

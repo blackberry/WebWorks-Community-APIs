@@ -98,7 +98,7 @@
 
 		var request = new blackberry.transport.RemoteFunctionCall(TEMPLATE_EXTENSION_URL + "/" +  FUNCTION_CALLBACK);
 		request.addParam("eventId", eventHandlerId);
-        request.makeAsyncCall();
+		request.makeAsyncCall();
 	};
 
 	

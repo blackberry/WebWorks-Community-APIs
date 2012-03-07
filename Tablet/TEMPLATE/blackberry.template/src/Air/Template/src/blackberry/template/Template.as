@@ -59,8 +59,6 @@ package blackberry.template
 	import flash.events.Event;
 	import webworks.extension.DefaultExtension;
 
-	import mx.controls.Alert;
-
 	import qnx.events.QNXApplicationEvent;
 	import qnx.system.QNXApplication;
 
