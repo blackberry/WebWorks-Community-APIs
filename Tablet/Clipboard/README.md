@@ -1,6 +1,6 @@
 # blackberry.clipboard
 
-This extension provides clipboard read/write access to blackberry WebWorks applications.
+This extension provides clipboard read/write access for blackberry WebWorks applications.
 
 **Authors:** [Martin Kleinschrodt](https://github.com/MaKleSoft)
 
@@ -27,7 +27,9 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 
 ## API
 Write text to clipboard:
-	blackberry.clipboard.setText("some text");
+
+    blackberry.clipboard.setText("some text");
 
 Get text from clipboard:
-	var text = blackberry.clipboard.getText();
+
+    var text = blackberry.clipboard.getText();
