@@ -31,8 +31,8 @@ test("object", function(){
 	}
 	
 	//Run the test
-	equals(typeofObjA, "object", "'blackberry' JavaScript object exists in ScriptEngine.");
-	equals(typeofObjB, "object", "'blackberry.template' JavaScript object exists in ScriptEngine.");
+	equal(typeofObjA, "object", "'blackberry' JavaScript object exists in ScriptEngine.");
+	equal(typeofObjB, "object", "'blackberry.template' JavaScript object exists in ScriptEngine.");
 	//Test teardown:
   
 });
@@ -45,9 +45,9 @@ test("GET properties", function(){
 	//Setup test:
 	
 	//Run the test
-	equals(blackberry.template.bool, false, "blackberry.template.bool initial value");
-	equals(blackberry.template.string, "hello", "blackberry.template.string initial value.");
-	equals(blackberry.template.integer, 0, "blackberry.template.integer initial value.");
+	equal(blackberry.template.bool, false, "blackberry.template.bool initial value");
+	equal(blackberry.template.string, "hello", "blackberry.template.string initial value.");
+	equal(blackberry.template.integer, 0, "blackberry.template.integer initial value.");
 	//Test teardown:
   
 });
@@ -65,9 +65,9 @@ test("SET properties", function(){
 	blackberry.template.integer = newInt;
 	
 	//Run the test
-	equals(blackberry.template.bool, newBool, "blackberry.template.bool changed");
-	equals(blackberry.template.string, newString, "blackberry.template.string changed.");
-	equals(blackberry.template.integer, newInt, "blackberry.template.integer changed.");
+	equal(blackberry.template.bool, newBool, "blackberry.template.bool changed");
+	equal(blackberry.template.string, newString, "blackberry.template.string changed.");
+	equal(blackberry.template.integer, newInt, "blackberry.template.integer changed.");
 	//Test teardown:
   
 });
@@ -81,14 +81,14 @@ test("functions", function(){
 	var valueA = 5, valueB = 6;
 	
 	//Run the tests
-	equals((typeof blackberry.template.add), "function", "blackberry.template.add function exists");
-	equals((typeof blackberry.template.log), "function", "blackberry.template.log function exists");
+	equal((typeof blackberry.template.add), "function", "blackberry.template.add function exists");
+	equal((typeof blackberry.template.log), "function", "blackberry.template.log function exists");
 	
 	valueA = blackberry.template.add(5, 6);
-	equals(valueA, 11, "blackberry.template.add correct");
+	equal(valueA, 11, "blackberry.template.add correct");
 	valueB = blackberry.template.add(valueA+1, 1);
-	equals(valueB, 13, "blackberry.template.add correct");
-	equals(blackberry.template.log("test"), undefined, "blackberry.template.log correct");
+	equal(valueB, 13, "blackberry.template.add correct");
+	equal(blackberry.template.log("test"), undefined, "blackberry.template.log correct");
 	//Test teardown:
   
 }); 
@@ -108,14 +108,14 @@ asyncTest("callback", function(){
 	var result;
 
 	//Run the test:
-	equals((typeof blackberry.template.onEvent), "function", "blackberry.template.onEvent function exists");
+	equal((typeof blackberry.template.onEvent), "function", "blackberry.template.onEvent function exists");
 	
 	result = blackberry.template.onEvent(function (eventType) {
 				ok(true, "blackberry.template.onEvent complete");
-				equals(eventType, "Event type = custom", "blackberry.template.onEvent expected parameter okay");
+				equal(eventType, "Event type = custom", "blackberry.template.onEvent expected parameter okay");
 			});
 	
-	equals(result, undefined, "blackberry.template.onEvent returns no value");
+	equal(result, undefined, "blackberry.template.onEvent returns no value");
 
 	//Test teardown:
 

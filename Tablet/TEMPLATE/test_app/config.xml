@@ -16,7 +16,7 @@
 -->
 <widget xmlns="http://www.w3.org/ns/widgets" 
         xmlns:rim="http://www.blackberry.com/ns/widgets" 
-        version="1.0.0.1" id="extUnitTestsX" xml:lang="en">
+        version="1.0.0.1" id="extUnitTests" xml:lang="en">
 
 	<name>ext Tests</name>
 	<description>Unit tests for blackberry.template extension</description>
