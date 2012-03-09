@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library>
+    <extension id="blackberry.ui.locationPicker">
+        <entryClass>blackberry.ui.locationPicker.LocationPickerExtension</entryClass>
+    </extension>
+    <platforms>
+    <platform value="JAVA">
+      <target version="default" config="JAVA" />
+    </platform>
+  </platforms>
+  <configurations>
+    <configuration name="JAVA" version="1.0" >
+      <src type="text/java" path="blackberry" comment="API implementation in Java" />
+    </configuration>
+  </configurations>  
+    <features>
+        <feature id="blackberry.ui.locationPicker" version="1.0.0" ></feature>
+    </features>
+</library>
