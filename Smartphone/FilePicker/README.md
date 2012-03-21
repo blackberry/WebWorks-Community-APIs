@@ -71,6 +71,12 @@ _**NOTE:**_ The callback is handled asynchronously, so code that is placed direc
 the "open" function call will be executed immediately while waiting for the user's 
 response input.
 
+_**NOTE:**_ If you override the back key in your application (_**blackberry.system.event.onHardwareKey(blackberry.system.event.KEY_BACK, myExit);**_) 
+you will need to null this out (_**blackberry.system.event.onHardwareKey(blackberry.system.event.KEY_BACK, null);**_) 
+before calling _**webworks.ui.filePicker.open**_. If you don’t do this, your app will perform the override action
+when a user clicks back in the FilePicker instead of moving back a directory or even closing the picker. 
+Remember to re-associate your exit function in the FilePicker callback.
+
 ## Disclaimer
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
