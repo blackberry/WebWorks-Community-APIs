@@ -45,7 +45,7 @@ Whenever you use the below feature id in any of your WebWorks applications this 
         var options = {
 			url: 'http://www.youruploadurl.com/path',
 			file: 'file:///' + file,
-			fileKey: 'media[]',
+			fileKey: 'myFile',
 			mimeType: 'image/jpg',
 			timeout: 60000, // in milliseconds default is 30000
 			params: {
@@ -64,6 +64,23 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 		
 		webworks.io.FileUploader.upload(options);
     }
+
+## Server Code Example
+This is a simple ASP.NET example to accept the file upload.
+
+                string FolderPath = HttpContext.Current.Server.MapPath("~/") + "//upload";
+
+                if (!Directory.Exists(FolderPath))
+                {
+                                Directory.CreateDirectory(FolderPath);
+                }
+                
+                HttpPostedFile file = context.Request.Files["myFile"];
+                if (file != null && file.ContentLength > 0)
+                {
+                                string fname = Path.GetFileName(file.FileName);
+                                file.SaveAs(Path.Combine(FolderPath, fname));
+                }
 
 ## Usage Information
 
