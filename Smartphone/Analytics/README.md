@@ -3,7 +3,7 @@
 The BlackBerry Analytics SDK allows you to quickly capture analytics data from your applications and review this 
 aggregate data about your user base in the Analytics Portal.
 
-Register for the SDK here: http://www.blackberry.com/developers/platform/analyticsservice/
+Register for the SDK here: http://us.blackberry.com/developers/platform/analyticsservice/
 
 View documentation on the Portal here: http://docs.blackberry.com/en/developers/subcategories/?userType=21&category=Analytics+Service
 
@@ -48,7 +48,7 @@ Capturing the application events in Analytics is important and requires the use 
 
 ## How to add the Extension to your app
 
-__REQUIRED:__ Visit www.blackberry.com/developers/platform/analyticsservice/ to register and for more details of the SDK.
+__REQUIRED:__ Visit http://us.blackberry.com/developers/platform/analyticsservice/ to register and for more details of the SDK.
 DCSID is provided by the Analytics SDK, when you register a space.
 
 Put a Script like this in your head element:
