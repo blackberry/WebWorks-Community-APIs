@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library isWhitelist="true">
+    <extension id="blackberry.template">
+        <entryClass>blackberry.template.Template</entryClass>
+    </extension>
+    
+    <platforms>
+		<platform value="JAVA">
+			<target version="default" config="JAVA_XHR" />
+			<target version="5.0" config="JAVA_XHR_BlackBerry" />
+		</platform>
+    </platforms>
+	
+	<configurations>
+		<configuration name="JAVA_XHR" version="1.0" comment="For XHR architecture for Java implementation">
+			<src type="text/javascript" path="js/common/template_dispatcher.js" comment="JS Dispatcher" />
+			<src type="text/javascript" path="js/common/template_ns.js" comment="JS interface and partial implementation" />
+			<src type="text/java" path="blackberry" comment="API implementation in JavaScript" />
+		</configuration>
+		<configuration name="JAVA_XHR_BlackBerry" version="1.0" comment="For XHR architecture for Java implementation for OS 5.0">
+			<src type="text/javascript" path="js/common/template_dispatcher.js" comment="JS Dispatcher" />
+			<src type="text/javascript" path="js/common/template_ns.js" comment="JS interface and partial implementation" />
+			<src type="text/java" path="blackberry" comment="API implementation in JavaScript" />
+		</configuration>
+	</configurations> 
+
+    
+    <features>
+		<feature id="blackberry.template" version="1.0.0">A template for webworks extensions.</feature>
+    </features>
+</library>
