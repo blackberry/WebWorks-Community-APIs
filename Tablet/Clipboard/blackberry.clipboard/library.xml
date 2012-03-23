@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* Copyright 2010-2011 Research In Motion Limited.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<library>
+<!--
+ * Change this *.xml file:
+ * 
+ * 1) Update <entryClass> value to be correct format = [feature namespace].[*.as class name]
+ * 2) Update the JavaScript and ActionScript file paths in the <configurations> section.
+ * 3) Update the <features> section to include the correct namespaces for this extension.
+-->
+	<extension id="blackberry.clipboard">
+		<entryClass>blackberry.clipboard.ClipboardExtension</entryClass>
+	</extension>
+	
+	<platforms>
+		<platform value="AIR">
+			<target version="default" config="AIR_XHR" />
+		</platform>
+	</platforms>
+
+	<configurations>
+		<configuration name="AIR_XHR" version="1.0" comment="XHR architecture/Air implementation">			
+			<src type="text/javascript" path="js/common/clipboard_dispatcher.js" comment="JS Dispatcher" />
+			<src type="text/javascript" path="js/common/clipboard_ns.js" comment="JS interface and partial implementation" />
+			<src type="text/actionscript" path="src/Air/Clipboard/src" comment="ActionScript implementation" />
+		</configuration>
+	</configurations>
+	
+	<features>
+		<feature id="blackberry.clipboard" version="1.0.0">Clipboard AIR JavaScript extension</feature>
+    </features>
+</library>
