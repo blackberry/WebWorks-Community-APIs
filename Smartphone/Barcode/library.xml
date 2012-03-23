@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<library>
-  <extension>
-    <entryClass>webworks.media.barcode.BarcodeExtension</entryClass>
-  </extension>
-  <features>
-    <feature id="webworks.media.barcode" version="1.0.0.0"/>
-  </features>
-</library>
