@@ -2,7 +2,7 @@
 * Copyright 2011 Research In Motion Limited.
 * 
 * Additionally
-* Copyright 2011 Matthew Haag.
+* Copyright 2011-2012 Matthew Haag Verivo Software.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
