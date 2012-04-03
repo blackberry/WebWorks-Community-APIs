@@ -1,6 +1,9 @@
-# Location Picker
-This extension will allow the user to select a point on the map and get the latitude and longitude result. This extension uses an embedded BlackBerry MapField that automatically gets the 
-users current location. The point of the extension is to allow users to select a more accurate location if the current location isn't accurate enough.
+# Transport Coverage
+This extension is used to check the availability and coverage of a specific transport on the BlackBerry. 
+
+In order to successfully establish a connection, the desired transport has to be both available (i.e. the device must be capable of supporting that transport), 
+and there must be sufficient coverage for the transport in question. Remember to still check for a proper response code from server as these methods only test 
+client side transport availability/connectivity. Ex you could have MDS available with coverage, but the BES could have MDS turned off at that time.
 
 **Author:** [Brent Thornton](https://github.com/bthornton32) – Special thanks to Rob Watt and Mark Trolley for their help with the MapField.
 
@@ -18,34 +21,35 @@ Have a problem with this extension?  [Log an Issue](https://github.com/blackberr
 
 1. Locate your BlackBerry WebWorks SDK for Smartphone extensions directory using your File Explorer.  Default path is _**C:\Program Files\Research In Motion\BlackBerry WebWorks Packager\ext**_
 
-2. Create a new _**blackberry.ui.locationPicker**_ directory in the _**ext**_ directory
+2. Create a new _**blackberry.transportCoverage**_ directory in the _**ext**_ directory
 
 3. Download the source from this repository and unzip it to a location on your computer
 
-4. Using File Explorer browse to this extension's downloaded source code _**Smartphone\LocationPicker**_
+4. Using File Explorer browse to this extension's downloaded source code _**Smartphone\TransportCoverage**_
 
-5. Copy the _**library.xml**_ file from the downloaded _**Smartphone\LocationPicker**_ directory to your new _**ext\blackberry.ui.locationPicker**_ directory
+5. Copy the _**library.xml**_ file from the downloaded _**Smartphone\TransportCoverage**_ directory to your new _**ext\blackberry.transportCoverage**_ directory
 
-6. Copy the downloaded _**Smartphone\LocationPicker\blackberry**_ directory to your new _**ext\blackberry.ui.locationPicker\blackberry**_ directory
+6. Copy the downloaded _**Smartphone\TransportCoverage\blackberry**_ directory to your new _**ext\blackberry.transportCoverage\blackberry**_ directory
 
-**NOTE:** Be sure to back-up this _**ext\blackberry.ui.locationPicker**_ directory in your WebWorks SDK extensions directory before performing a WebWorks SDK upgrade. Simply copy it back into the _**ext**_ directory after you have completed your SDK upgrade.
+**NOTE:** Be sure to back-up this _**ext\blackberry.transportCoverage**_ directory in your WebWorks SDK extensions directory before performing a WebWorks SDK upgrade. Simply copy it back into the _**ext**_ directory after you have completed your SDK upgrade.
 
 ## Required Feature ID
 Whenever you use the below feature id in any of your WebWorks applications this extension will be loaded for use.
 
-    <feature id="blackberry.ui.locationPicker" />
+    <feature id="blackberry.transportCoverage" />
 
 ## Summary
 
-	//if a location is found these options are ignored, these values are fall backs.
-    var options = {	
-        lat: '27.718',
-        lon: '-114.829',
-        zoom: '4'
-    };
-    //call open with a default location in case geolocate doesn't work
-    blackberry.ui.locationPicker.open(myCallBack, options);
+	//Possible Transport Strings to Pass as Input:
+	//TRANSPORT_MDS
+	//TRANSPORT_BIS_B
+	//TRANSPORT_TCP_CELLULAR
+	//TRANSPORT_TCP_WIFI
+	//TRANSPORT_WAP
+	//TRANSPORT_WAP2
 
+	var rval = blackberry.transportCoverage.getTransportDetails("TRANSPORT_MDS");
+    alert("Transport: " + rval.transport + " Available: " + rval.available+ ", Coverage: " +  rval.coverage);
    
 ## Code Example
 
@@ -54,42 +58,41 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 		<meta name="viewport" id="viewport" content="height=device-height,width=device-width,user-scalable=no" />
 		<script type="text/javascript" >
 		function doClick(){
-			//inLocationPicker = true;
-			alert('Select a point on the map and click the back button to return to this screen.');
-			var options = {	//if a location is found this is ignored, these values are fall backs. 
-		        lat: '27.718',
-		        lon: '-114.829',
-		        zoom: '4'
-		    };
-		    //call open with a default location in case geolocate doesn't work
-		    blackberry.ui.locationPicker.open(myCallBack, options);
-		    
-		    //call open with no default location
-			//blackberry.ui.locationPicker.open(myCallBack);
+			var rval = blackberry.transportCoverage.getTransportDetails("TRANSPORT_MDS");
+		    debug(rval.transport + " Available: " + rval.available+ ", Coverage: " +  rval.coverage);
+		
+		    var rval2 = blackberry.transportCoverage.getTransportDetails("TRANSPORT_BIS_B");
+		    debug(rval2.transport + " Available: " + rval2.available+ ", Coverage: " +  rval2.coverage);
+		
+		    var rval3 = blackberry.transportCoverage.getTransportDetails("TRANSPORT_TCP_CELLULAR");
+		    debug(rval3.transport + " Available: " + rval3.available+ ", Coverage: " +  rval3.coverage);
+		
+		    var rval4 = blackberry.transportCoverage.getTransportDetails("TRANSPORT_TCP_WIFI");
+		    debug(rval4.transport + " Available: " + rval4.available+ ", Coverage: " +  rval4.coverage);
+		
+		    var rval5 = blackberry.transportCoverage.getTransportDetails("TRANSPORT_WAP");
+		    debug(rval5.transport + " Available: " + rval5.available+ ", Coverage: " +  rval5.coverage);
+		
+		    var rval6 = blackberry.transportCoverage.getTransportDetails("TRANSPORT_WAP2");
+		    debug(rval6.transport + " Available: " + rval6.available+ ", Coverage: " +  rval6.coverage);
 		}
 
 
-		function myCallBack(result){
-			document.getElementById('debug').innerHTML = 'result: ' + result;
+		function debug(result){
+			document.getElementById('debug').innerHTML += '<br / >' + result;
 		}
+
 		</script>
 		</head>
 		<body >
 		<h1>Hello World</h1>
-		<button onclick="doClick();">Pick Location</button> 
+		<button onclick="doClick();">Test Transports</button> 
 		<div id="debug"></div>
 		</body>
 	</html>
 
 ## Usage Information
-Pass the callback as the first parameter to the open method. You can pass the default location as the second parameter to the open method or null. If you set to null the default location if no GPS location is found is Ottawa.
-Once the map is shown the user can click the back key and their current location will be selected, if they pick another location on the map those coordinates are returned.
-Result will be a JSON formatted string sent to your callback function. Ex. {"latitude":"43.5069","longitude":"-80.54768"}
-
-
-_**NOTE:**_ The callback is handled asynchronously, so code that is placed directly after
-the "open" function call will be executed immediately while waiting for the user's 
-response input.
+Pass the transport string as the first parameter to the getTransportDetails method. An object with the attributes transport, available, and coverage will be returned.
 
 ## Disclaimer
 
