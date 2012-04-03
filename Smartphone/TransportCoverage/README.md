@@ -5,12 +5,12 @@ In order to successfully establish a connection, the desired transport has to be
 and there must be sufficient coverage for the transport in question. Remember to still check for a proper response code from server as these methods only test 
 client side transport availability/connectivity. Ex you could have MDS available with coverage, but the BES could have MDS turned off at that time.
 
-**Author:** [Brent Thornton](https://github.com/bthornton32) – Special thanks to Rob Watt and Mark Trolley for their help with the MapField.
+**Author:** [Brent Thornton](https://github.com/bthornton32)
 
 ## Tested On
 
 * BlackBerry Bold 9790 v7.1.0.221
-* BlackBerry Bold 9900 v7.1.0.251
+* BlackBerry Bold 9900 v7.1.0.377
 * BlackBerry Bold 9900 v7.0.0.540
 
 **Requires BlackBerry WebWorks SDK for Smartphones v2.0 or higher**
