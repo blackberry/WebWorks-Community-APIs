@@ -73,6 +73,12 @@ public class AnalyticsNamespace extends Scriptable {
 			return new Terminate();
 		} else if (name.equals(FIELD_ERROR)) {
 			return new Error();
+		} else if (name.equals(FIELD_FOREGROUND)) {
+			return new Foreground();
+		} else if (name.equals(FIELD_BACKGROUND)) {
+			return new Background();
+		} else if (name.equals(FIELD_START)) {
+			return new Start();
 		}
 		return super.getField(name);
 	}
