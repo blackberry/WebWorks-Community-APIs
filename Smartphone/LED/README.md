@@ -49,6 +49,7 @@ webworks.bbalert.led.flashLED([String:stop])
 
 
 Example:
+```
 <script type="text/javascript" >
 //The hex color must be in the format 0x00[RRGGBB]
 //The color patterns can be anything that the device can handle.
@@ -67,3 +68,4 @@ var app = {
 	}
 }
 </script>
+```
