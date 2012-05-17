@@ -56,6 +56,7 @@
 //
 package blackberry.clipboard
 {
+	import flash.utils.ByteArray;
 	import flash.events.Event;
 	import flash.desktop.Clipboard;
 	import flash.desktop.ClipboardFormats;
@@ -106,6 +107,7 @@ package blackberry.clipboard
 		public function setText(value:String):void
 		{
             Clipboard.generalClipboard.clear();
+			value = encodeUtf8(value); // Use UTF8 encoding
             Clipboard.generalClipboard.setData(ClipboardFormats.TEXT_FORMAT, value);
 		}
 		public function getText():String
@@ -113,5 +115,29 @@ package blackberry.clipboard
 			return String(Clipboard.generalClipboard.getData(ClipboardFormats.TEXT_FORMAT));
 		}
 
+		public function encodeUtf8(str: String):String
+		{    
+			if (str != null && str != "undefined") {
+			  	var oriByteArr: ByteArray = new ByteArray();
+			  	oriByteArr.writeUTFBytes(str);
+			  	var tempByteArr:ByteArray = new ByteArray();
+
+			  	for(var i:Number = 0; i < oriByteArr.length; i++) {
+				   	if(oriByteArr[i] == 194){
+						tempByteArr.writeByte(oriByteArr[i+1]);
+						i++;
+				   	} else if (oriByteArr[i] == 195) {
+						tempByteArr.writeByte(oriByteArr[i+1] + 64);
+						i++;
+				   	} else {
+						tempByteArr.writeByte(oriByteArr[i]);
+				   	}
+				}
+				tempByteArr.position = 0;
+			  	return tempByteArr.readMultiByte(tempByteArr.bytesAvailable, "utf-8");
+			} else {
+			 	return "";
+			}
+		}			
 	}
 }
