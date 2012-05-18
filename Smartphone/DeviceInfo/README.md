@@ -51,6 +51,7 @@ Returning specific properties:
 webworks.device.info.getDeviceInfo([String:property],[String:property], [String:property])
 
 Available properties include:
+
 1.  Reset Idle Time: Property: canResetIdleTime
 
 2.  Battery Level: Property: getBatteryLevel
