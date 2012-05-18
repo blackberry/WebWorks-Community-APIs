@@ -52,22 +52,39 @@ webworks.device.info.getDeviceInfo([String:property],[String:property], [String:
 
 Available properties include:
 1.  Reset Idle Time: Property: canResetIdleTime
+
 2.  Battery Level: Property: getBatteryLevel
+
 3.  Battery Status: Property: getBatteryStatus
+
 4.  Battery Temperature: Property: getBatteryTemp
+
 5.  Device ID: Property: getDeviceId
+
 6.  Device Name: Property: getDeviceName
+
 7.  Idle Time: Property: getIdleTime
+
 8.  Lockout Timeout: Property: getLockoutTimeout
+
 9.  Manufacturer Name: Property: getManufacturerName
+
 10. Platform Version: Property: getPlatformVersion
+
 11. Software Version: Property: getSoftwareVersion
+
 12. Total Flash Size: Property: getTotalFlashSize
+
 13. USB Connection State: Property: getUSBConnectionState (returns connected|disconnected)
+
 14. Has Camera: Property: hasCamera
+
 15. IS Backlight On: Property: isBacklightOn
+
 16. Is Battery Removable: Property: isBatteryRemovable
+
 17. Is Pasword Enabled: Property: isPasswordEnabled
+
 18. Is Simulator: Property: isSimulator
 
 Example:
