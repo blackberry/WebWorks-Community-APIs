@@ -104,7 +104,7 @@ Example:
     		var result = webworks.device.info.getDeviceinfo("getBatteryLevel", "getBatteryStatus");
     	}
     }
-   //returns battery level and status as a JSON string
+    //returns battery level and status as a JSON string
     app.getBatteryLevelAndStatus();
     </script>
 
