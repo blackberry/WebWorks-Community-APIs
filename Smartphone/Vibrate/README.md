@@ -63,5 +63,7 @@ Example:
     		var vibrateStopResult = webworks.bbalert.vibrate.manage("stop");
     	}
     }
+    //start the vibration using the default maximum value
+    app.startVibrate();
     </script>
 
