@@ -50,23 +50,23 @@ webworks.bbalert.led.flashLED([String:stop])
 
 Example:
 
-    ```
-<script type="text/javascript" >
-//The hex color must be in the format 0x00[RRGGBB]
-//The color patterns can be anything that the device can handle.
+    
+    <script type="text/javascript" >
+    //The hex color must be in the format 0x00[RRGGBB]
+    //The color patterns can be anything that the device can handle.
+    
+    var app = {
+    		flashLED : function () {
+    		var pattern = '[{"hex-color": "0x00B22234","on-duration-in-milliseconds": "1000","transition-time-in-milliseconds": "500"},' +
+    						'{"hex-color": "0x00000000","on-duration-in-milliseconds": "1000","transition-time-in-milliseconds": "500"},'+
+    						'{"hex-color": "0x00FFFFFF","on-duration-in-milliseconds": "1000","transition-time-in-milliseconds": "500"},' +
+    						'{"hex-color": "0x00000000","on-duration-in-milliseconds": "1000","transition-time-in-milliseconds": "500"},' +
+    						'{ "hex-color": "0x00000FB3","on-duration-in-milliseconds": "1000","transition-time-in-milliseconds": "500"}]';
+    		webworks.bbalert.led.flashLED('start', pattern, 'true');
+    	},
+    	stopLED : function () {
+    		webworks.bbalert.led.flashLED('stop');
+    	}
+    }
+    </script>
 
-var app = {
-		flashLED : function () {
-		var pattern = '[{"hex-color": "0x00B22234","on-duration-in-milliseconds": "1000","transition-time-in-milliseconds": "500"},' +
-						'{"hex-color": "0x00000000","on-duration-in-milliseconds": "1000","transition-time-in-milliseconds": "500"},'+
-						'{"hex-color": "0x00FFFFFF","on-duration-in-milliseconds": "1000","transition-time-in-milliseconds": "500"},' +
-						'{"hex-color": "0x00000000","on-duration-in-milliseconds": "1000","transition-time-in-milliseconds": "500"},' +
-						'{ "hex-color": "0x00000FB3","on-duration-in-milliseconds": "1000","transition-time-in-milliseconds": "500"}]';
-		webworks.bbalert.led.flashLED('start', pattern, 'true');
-	},
-	stopLED : function () {
-		webworks.bbalert.led.flashLED('stop');
-	}
-}
-</script>
-    ```
