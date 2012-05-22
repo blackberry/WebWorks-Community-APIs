@@ -82,22 +82,22 @@ Example:
     
     <script type="text/javascript" >
     var app = {
-    getBacklightProperties : function () {
+    	getBacklightProperties : function () {
     		
-    var properties = webworks.device.backlight.manageBacklight("all");
-    var propertyDiv = document.getElementById("properties");
-    propertyDiv.innerHTML = properties;
+    		var properties = webworks.device.backlight.manageBacklight("all");
+    		var propertyDiv = document.getElementById("properties");
+    		propertyDiv.innerHTML = properties;
     	
-    },
-    turnOffBacklight : function () {
-    alert('the backlight will be turned off for 10 seconds');
-    webworks.device.backlight.manageBacklight("backlightEnable", "off");
-    setTimeout("app.turnOnBacklight()", 10000);
+    	},
+    	turnOffBacklight : function () {
+    		alert('the backlight will be turned off for 10 seconds');
+    		webworks.device.backlight.manageBacklight("backlightEnable", "off");
+    		setTimeout("app.turnOnBacklight()", 10000);
     	
-    },
-    turnOnBacklight : function () {
-    webworks.device.backlight.manageBacklight("backlightEnable", "on");
-    }
+    	},
+    	turnOnBacklight : function () {
+    		webworks.device.backlight.manageBacklight("backlightEnable", "on");
+    	}
     }
     </script>
 
