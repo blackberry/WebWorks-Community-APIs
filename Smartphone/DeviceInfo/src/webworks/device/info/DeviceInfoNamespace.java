@@ -81,7 +81,7 @@ public class DeviceInfoNamespace extends Scriptable
             			jsonString += "\"canResetIdleTime\" : \"" + deviceProperties.canResetIdleTime + "\", ";
             			continue;
             		} else if (functionParameter.equals(DeviceInfoNamespace.GET_BATTERY_LEVEL)) {
-            			jsonString += "\"getBatteryLevel\" : " + deviceProperties.getBatteryLevel + "\", ";
+            			jsonString += "\"getBatteryLevel\" : \"" + deviceProperties.getBatteryLevel + "\", ";
             			continue;
             		}else if (functionParameter.equals(DeviceInfoNamespace.GET_BATTERY_STATUS)) {
             			jsonString += "\"getBatteryStatus\" : \"" + deviceProperties.getBatteryStatus + "\", ";
