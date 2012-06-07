@@ -31,7 +31,7 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 
 ### Constants
 
-Send Command Types (the primary data type you're looking to send):
+SendCommand Types (the primary data type you're looking to send):
 
 * blackberry.ui.sendmenu.TYPE_PATH
 * blackberry.ui.sendmenu.TYPE_TEXT
@@ -51,11 +51,11 @@ Adds the Send Menu to the app's menu.
 Arguments:
 
 * `TYPE` is one of the above `TYPE_PATH` or `TYPE_TEXT` constants
-* `CONTEXT` is a JSON object with valid keys `PATH`, `SUBJECT` and/or `TEXT`
+* `CONTEXT` is a JSON string with valid keys `PATH`, `SUBJECT` and/or `TEXT`
 * `GET_ALL` (optional) is a boolean indicating whether to get all commands, regardless of availability (defaults to `FALSE`)
 * `ORDERING` (optional) is an integer indicating menu ordering (defaults to 0)
 * `PRIORITY` (optional) is an integer indicating menu priority (defaults to 0)
-* `FILTER` (optional) is a JSON object similar to `CONTEXT` which replaces values in `CONTEXT` based on command filters (in testing this had no affect on commands I thought it would, ie: Twitter or SMS limits), leave null for none
+* `FILTER` (optional) is a JSON string similar to `CONTEXT` which replaces values in `CONTEXT` based on command filters (in testing this had no affect on commands I thought it would, ie: Twitter or SMS limits), leave null for none
 
 ### blackberry.ui.sendmenu.remove()
 
@@ -65,7 +65,7 @@ Removes the Send Menu previously added in the current application session (the m
 
 Sets the parent menu label for the sub menu containing all send commands. Defaults to `Share`.
 
-## Code Example
+## Example
 
 	var context = {};
 	blackberry.ui.sendmenu.setLabel('Send...');
