@@ -176,6 +176,7 @@ public class SendMenuNamespace extends Scriptable
 			{
 				MainScreen screen = (MainScreen) SendMenuExtension.getBrowserField().getScreen();
 				screen.removeMenuItem(menu.getMenuItem());
+				menu = null;
 				return Boolean.TRUE;
 			}
 			

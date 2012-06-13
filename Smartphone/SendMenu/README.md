@@ -44,7 +44,7 @@ Context JSON Keys:
 
 ###  Methods
 
-#### blackberry.ui.sendmenu.add(TYPE,CONTEXT[,GET_ALL,ORDERING,PRIORITY,FILTER])
+#### blackberry.ui.sendmenu.add( TYPE, CONTEXT [, GET_ALL, ORDERING, PRIORITY, FILTER ] )
 
 Adds the Send Menu to the app's menu.
 
@@ -57,11 +57,11 @@ Arguments:
 * `PRIORITY` (optional) is an integer indicating menu priority (defaults to 0)
 * `FILTER` (optional) is a JSON string similar to `CONTEXT` which replaces values in `CONTEXT` based on command filters (in testing this had no affect on commands I thought it would, ie: Twitter or SMS limits), leave null for none
 
-### blackberry.ui.sendmenu.remove()
+#### blackberry.ui.sendmenu.remove()
 
 Removes the Send Menu previously added in the current application session (the menu will not persist between sessions).
 
-### blackberry.ui.sendmenu.setLabel(STRING_LABEL)
+#### blackberry.ui.sendmenu.setLabel( STRING_LABEL )
 
 Sets the parent menu label for the sub menu containing all send commands. Defaults to `Share`.
 
