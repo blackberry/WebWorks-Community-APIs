@@ -79,11 +79,11 @@ Whenever you use the below feature id in any of your WebWorks applications this 
                             'BESMaxSingeChunk' : 3279}
                             
                 // Path could be one of http/https
-                u.uploadFile(remotePath, localPath, onProgress, onError, options);
+                u.upload(remotePath, localPath, onProgress, onError, options);
             }
       
             function doDownload() {
-                var d = blackberry.io.filetransfer;
+                var d = blackberry.io.fileTransfer;
                 
                 // Check the file size
                 var sizeInBytes = d.getRemoteFileSize('http://foo/bar.jpg');
@@ -99,7 +99,7 @@ Whenever you use the below feature id in any of your WebWorks applications this 
                             'connectionTimeout': 30000,
                             'BESMaxSingeChunk' : 3279}
                 // Path could be one of http/https
-                d.downloadFile(remotePath, localPath, onProgress, onError, options);
+                d.download(remotePath, localPath, onProgress, onError, options);
             }
           
             // Error handler is something goes wrong during download/upload
