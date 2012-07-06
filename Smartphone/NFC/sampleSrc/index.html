@@ -1,0 +1,336 @@
+<!--
+ Copyright 2010-2012 Research In Motion Limited.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+--->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" id="viewport"
+    content="height=device-height,width=device-width,user-scalable=no" />
+
+<script src="blackberry_nfc_ndef.js" type="text/javascript">
+    
+</script>
+
+<script src="util.js" type="text/javascript">
+    
+</script>
+
+<script type="text/JavaScript">
+
+    // Initialise logging.
+    function initLogging() {
+        try {
+            if (blackberry.nfc.ndef.init_logging()) {
+                console.log("init_logging() ready.");
+            } else {
+                alert("The was a problem initialising logging");
+            }
+        } catch (error) {
+            alert("Could not init logging: " + error);
+        }
+    }
+
+    // The image types that will be registered.
+    var imageTypes = [ "bmp", "jpg", "gif", "png" ];
+
+    // An array of currently registered listeners.
+    var registeredListeners = new Array();
+    
+    // Track if NFC was enabled/supported on this device (at startup)
+    var nfcEnabled = false;
+
+    // Helper to conver the given params to JSON.
+    function makeJSONArgs(type, typeNameFormat) {
+        var jsonArgs = '{ "type": "%1", "typeNameFormat": %2}';
+        jsonArgs = jsonArgs.replace("%1", type);
+        jsonArgs = jsonArgs.replace("%2", typeNameFormat);
+        return jsonArgs;
+    }
+    
+    // Register for the given type.
+    function register(jsonArgs) {
+        try {
+            var toReturn = blackberry.nfc.ndef.register_ndef(onScan, onError, jsonArgs);
+            if (toReturn) {
+                registeredListeners.push(jsonArgs);
+            }
+            return toReturn;
+        } catch (error) {
+            alert("Problem calling register: " + error  + " for " + jsonArgs);
+            return false;
+        }
+    }
+
+    // Reigster listeners (as specified on screen)
+    function registerListeners() {
+        try {
+            var startSize = registeredListeners.length;
+            var good = true;
+
+            var checkBox = document.getElementById("checkbox_sp");
+            if (checkBox.checked) {
+                var jsonArgs = makeJSONArgs(ndef.SMART_POSTER_TYPE,
+                        ndef.tnf.WELL_KNOWN);
+                good &= register(jsonArgs);
+            }
+
+            checkBox = document.getElementById("checkbox_images");
+            if (checkBox.checked) {
+                for ( var i = 0; i < imageTypes.length; ++i) {
+                    var jsonArgs = makeJSONArgs("image/" + imageTypes[i],
+                            ndef.tnf.MEDIA);
+                    good &= register(jsonArgs);
+                }
+            }
+
+            checkBox = document.getElementById("checkbox_custom");
+            if (checkBox.checked) {
+                var type = document.getElementById("custom_type").value;
+                var typeNameFormatSelect = document
+                        .getElementById("custom_type_name_format");
+                var typeNameFormat = typeNameFormatSelect.options[typeNameFormatSelect.selectedIndex].value;
+                var jsonArgs = makeJSONArgs(type, typeNameFormat);
+                good &= register(jsonArgs);
+            }
+
+            if (good) {
+                if (registeredListeners.length == startSize) {
+                    alert("Nothing was registered...");
+                } else {
+                    alert("Listeners registered successfully.");
+                }
+            } else {
+                alert("Problem registering listeners.");
+            }
+        } catch (error) {
+            alert("Could not register: " + error);
+        }
+        toggleRegisterButtons();
+    }
+
+    // Remove the existing listeners. No dialogues if 'silent'.
+    function removeListeners(silent) {
+        if (registeredListeners.length==0) {
+            if (!silent && nfcEnabled) {
+                alert("I don't think that there are any listeners registered right now...");
+            }
+            return;
+        }
+        var good = true;
+        while(registeredListeners.length!=0) {
+            var jsonArgs = registeredListeners.pop();
+            try {
+                good &= blackberry.nfc.ndef.unregister_ndef(jsonArgs);
+            } catch (error) {
+                alert("Error unregistering: " + error + " for " + jsonArgs);
+            }
+        }
+        if (!silent) {
+            if (good) {
+                alert("Listeners removed successfully.");
+            } else {
+                alert("Problem removing listeners.");
+            }
+        }
+        toggleRegisterButtons();
+    }
+     
+    // Ensure that the correct register/unregister button is enabled.
+    function toggleRegisterButtons() {
+        var any = registeredListeners.length!=0;
+        document.getElementById("buttonRegister").disabled = !nfcEnabled || any;
+        document.getElementById("buttonUnregister").disabled = !nfcEnabled || !any;
+    }
+
+    // Call back function for tags.
+    function onScan(ndef_message) {
+        try {
+            document.getElementById("lastMessage").value = formatJSON(ndef_message);
+            var object = null;
+            eval("object = " + ndef_message);
+            if (object.typeNameFormat == ndef.tnf.MEDIA
+                    && object.type.indexOf("image") == 0) {
+                if (object.dataURI) {
+                    addImage(object.dataURI);
+                } else {
+                    addImage("");
+                }
+                setURI("");
+                setText("");
+                show();
+            } else if (object.typeNameFormat == ndef.tnf.WELL_KNOWN
+                    && object.type == ndef.SMART_POSTER_TYPE) {
+                if ('uri' in object) {
+                    setURI(object.uri);
+                } else {
+                    setURI("");
+                }
+                if ('text' in object) {
+                    setText(object.text);
+                } else {
+                    setText("");
+                }
+                if ('icons' in object) {
+
+                } else {
+                    addImage("");
+                }
+                show();
+            } else {
+                alert("Unexpected message type.");
+            }
+        } catch (error) {
+            alert("Error receiving message: " + error);
+        }
+    }
+
+    // Call back function for errors.
+    function onError(error_message) {
+        alert("NDEF error:" + error_message);
+    }
+
+    // Fake a tag.
+    function fake() {
+        onScan('{ "records":[ { "id":"", "type":"image/bmp", "typeNameFormat":2, "payload":[ 66,77,126,0,0,0,0,0,0,0,62,0,0,0,40,0,0,0,16,0,0,0,16,0,0,0,1,0,1,0,0,0,0,0,64,0,0,0,19,11,0,0,19,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,255,255,255,0,252,7,0,0,224,3,0,0,192,1,0,0,128,0,0,0,128,0,0,0,128,0,0,0,135,192,0,0,135,224,0,0,255,241,0,0,255,255,0,0,255,255,0,0,135,225,0,0,135,224,0,0,135,224,0,0,135,225,0,0,207,255,0,0 ], "mimeType":"image/bmp", "body":"Qk1+AAAAAAAAAD4AAAAoAAAAEAAAABAAAAABAAEAAAAAAEAAAAATCwAAEwsAAAAAAAAAAAAAAAAAAP///wD8BwAA4AMAAMABAACAAAAAgAAAAIAAAACHwAAAh+AAAP/xAAD//wAA//8AAIfhAACH4AAAh+AAAIfhAADP/wAA", "dataURI":"data:image/bmp;base64, Qk1+AAAAAAAAAD4AAAAoAAAAEAAAABAAAAABAAEAAAAAAEAAAAATCwAAEwsAAAAAAAAAAAAAAAAAAP///wD8BwAA4AMAAMABAACAAAAAgAAAAIAAAACHwAAAh+AAAP/xAAD//wAA//8AAIfhAACH4AAAh+AAAIfhAADP/wAA" } ], "id":"", "type":"image/bmp", "typeNameFormat":2, "payload":[ 66,77,126,0,0,0,0,0,0,0,62,0,0,0,40,0,0,0,16,0,0,0,16,0,0,0,1,0,1,0,0,0,0,0,64,0,0,0,19,11,0,0,19,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,255,255,255,0,252,7,0,0,224,3,0,0,192,1,0,0,128,0,0,0,128,0,0,0,128,0,0,0,135,192,0,0,135,224,0,0,255,241,0,0,255,255,0,0,255,255,0,0,135,225,0,0,135,224,0,0,135,224,0,0,135,225,0,0,207,255,0,0 ], "mimeType":"image/bmp", "body":"Qk1+AAAAAAAAAD4AAAAoAAAAEAAAABAAAAABAAEAAAAAAEAAAAATCwAAEwsAAAAAAAAAAAAAAAAAAP///wD8BwAA4AMAAMABAACAAAAAgAAAAIAAAACHwAAAh+AAAP/xAAD//wAA//8AAIfhAACH4AAAh+AAAIfhAADP/wAA", "dataURI":"data:image/bmp;base64, Qk1+AAAAAAAAAD4AAAAoAAAAEAAAABAAAAABAAEAAAAAAEAAAAATCwAAEwsAAAAAAAAAAAAAAAAAAP///wD8BwAA4AMAAMABAACAAAAAgAAAAIAAAACHwAAAh+AAAP/xAAD//wAA//8AAIfhAACH4AAAh+AAAIfhAADP/wAA" }');
+    }
+
+    // Handler for application exit.
+    function onExit() {
+        try {
+            removeListeners(true);
+            blackberry.app.exit();
+        } catch (error) {
+            alert("Could not finish: " + error);
+        }
+    }
+
+    // Handler for back button.
+    function handleBack() {
+        if (blanketShowing) {
+            hide();
+        } else {
+            onExit();
+        }
+    }
+
+    // Toggle the visibility of the custom types.
+    function customToggle() {
+        var cb = document.getElementById("checkbox_custom");
+        var details = document.getElementById("custom_details");
+        details.style.display = cb.checked ? "block" : "none";
+    }
+    
+    // Register for back and exit events.
+    function registerEvents() {
+        try {
+            blackberry.app.event.onExit(onExit);
+        } catch (error) {
+            alert("Error on exit: " + error);
+        }
+        try {
+            blackberry.system.event.onHardwareKey(blackberry.system.event.KEY_BACK,
+                    handleBack);
+        } catch (error) {
+                alert("Failure registering back button handling: " + error);
+        }
+    }
+    
+    // Startup the application.
+    function startup() {
+        nfcEnabled = false;
+        
+        try {
+            if (!blackberry.nfc.isNFCSupported()) {
+                alert("Your device does not support NFC...");
+            } else if (!blackberry.nfc.isNFCAvailable()) {
+                alert("NFC is not currently available...");
+            } else {
+                nfcEnabled = true;
+                
+                initLogging();
+                registerEvents();
+                registerListeners();
+            }
+            
+            customToggle();
+            toggleRegisterButtons();
+            
+        } catch (error) {
+            alert("Could not check NFC status: " + error);
+            return;
+        }
+        
+    }
+    
+    window.onload=startup;
+</script>
+<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+    <div id="smartPosterBlanket" onclick="hide()"></div>
+    <div id="smartPosterDisplay">
+        <div id="smartPosterDisplayInner">
+            <div id="smartPosterDisplay_URI">-</div>
+            <div id="smartPosterDisplay_Text">-</div>
+            <div id="smartPosterDisplay_icon">-</div>
+            <div>
+                <input type='button' value='Close' onclick="hide()" />
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div>
+            <h3>Listeners</h3>
+            <ul>
+                <li><input type="checkbox" id="checkbox_sp" checked="checked"><label
+                    for="checkbox_sp">SmartPoster</label></li>
+                <li><input type="checkbox" id="checkbox_images"
+                    checked="checked"><label for="checkbox_images">Common
+                        images</label></li>
+                <li><input type="checkbox" id="checkbox_custom"
+                    onchange="customToggle();"><label for="checkbox_custom">Custom</label>
+                    <div id="custom_details">
+                        <table>
+                            <tr>
+                                <td><label for="custom_type_name_format">TNF:</label></td>
+                                <td><select id="custom_type_name_format">
+                                        <option value="1">Well Known</option>
+                                        <option selected="selected" value="2">Media (MIME)</option>
+                                        <option value="3">Absolute URI</option>
+                                        <option value="4">External</option>
+                                </select></td>
+                            </tr>
+                            <tr>
+                                <td><label for="custom_type">Type:</label></td>
+                                <td><input type="text" id="custom_type"
+                                    value="application/fred" /></td>
+                            </tr>
+                        </table>
+                    </div></li>
+            </ul>
+        </div>
+        <input type="submit" id="buttonRegister" value="Register NDEF listeners"
+            onclick="registerListeners()" /> <input type="submit" id="buttonUnregister"
+            value="Unregister NDEF listeners" onclick="removeListeners()" /> <input
+            type="submit" value="Fake" onclick="fake()" />
+        <div>
+            <h3>Data Details</h3>
+            <textarea wrap="off" style="display: block; width: 90%; height: 70%;"
+                id="lastMessage"></textarea>
+        </div>
+    </div>
+</body>
+</html>

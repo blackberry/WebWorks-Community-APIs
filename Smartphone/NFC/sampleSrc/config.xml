@@ -14,22 +14,26 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --->
-<library isWhitelist="true">
-  <extension id="blackberry.nfc">
-    <entryClass>widgetpackage.NfcExtension</entryClass>
-  </extension>
+<widget xmlns="http://www.w3.org/ns/widgets"
+        xmlns:rim="http://www.blackberry.com/ns/widgets"
+        version="2.0.0.0">
+
+    <name>NfcWidget</name>
+
+    <description>
+        A sample application to demonstrate some of the possibilities...
+    </description>
   
-  <platforms>
-    <platform value="JAVA">
-      <target version="default" config="JAVA" />
-    </platform>
-  </platforms>
-  <configurations>
-    <configuration name="JAVA" version="1.0" >
-      <src type="text/java" path="blackberry" comment="API implementation in Java" />
-    </configuration>
-  </configurations>    
-  <features>
-    <feature id="blackberry.nfc" version="1.0.1" >NFC Functionality</feature>
-  </features>
-</library>
+    <rim:orientation mode="auto"/>
+  
+    <rim:category name="games"/>    
+
+    <content src="index.html"/>
+
+    <feature id="blackberry.app" />
+    <feature id="blackberry.app.event" />
+    <feature id="blackberry.nfc" required="true" version="1.0.1" />
+    <feature id="blackberry.system.event" />
+  
+</widget>
+

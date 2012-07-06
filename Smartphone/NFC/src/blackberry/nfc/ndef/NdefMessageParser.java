@@ -1,57 +1,63 @@
 /*
-* Copyright 2011 Research In Motion Limited.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright 2011-2012 Research In Motion Limited.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package widgetpackage;
 
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Vector;
 
-import org.json.me.JSONException;
-import org.json.me.JSONObject;
-
-import net.rim.device.api.io.nfc.NFCException;
-import net.rim.device.api.io.nfc.ndef.BadFormatException;
+import net.rim.device.api.io.Base64OutputStream;
 import net.rim.device.api.io.nfc.ndef.NDEFMessage;
 import net.rim.device.api.io.nfc.ndef.NDEFRecord;
 
+import org.json.me.JSONArray;
+import org.json.me.JSONException;
+import org.json.me.JSONObject;
+
 public class NdefMessageParser implements Runnable {
 
-    private static NdefMessageParser _parser;
-    private static NDEFMessage _message;
-    private static NdefJavaScriptBridge _js_bridge = NdefJavaScriptBridge.getInstance();
-
-    private static JSONObject _ndef_message;
+    private static NdefMessageParser _parser = new NdefMessageParser();
+    private static NdefJavaScriptBridge _js_bridge = NdefJavaScriptBridge
+            .getInstance();
+    private Vector _messages;
 
     private NdefMessageParser() {
+        _messages = new Vector();
     }
 
-    public static synchronized NdefMessageParser getInstance(NDEFMessage message) {
-        _message = message;
-        if(_parser == null) {
-            _parser = new NdefMessageParser();
-        }
+    public static NdefMessageParser getInstance(NDEFMessage message) {
         return _parser;
     }
 
     public void parseAndDeliver(NDEFMessage message) {
-        _ndef_message = new JSONObject();
+        log("parseAndDeliver(NDEFMessage)");
+        synchronized (_messages) {
+            _messages.addElement(message);
+        }
         Thread parser_thread = new Thread(this);
         parser_thread.start();
     }
 
-    public void run() {
+    protected JSONObject parseMessage(NDEFMessage _message)
+            throws JSONException, IOException {
+        log("parseMessage(NDEFMessage)");
         String record_type = "?";
+        int typeNameFormat = NDEFRecord.TNF_WELL_KNOWN;
+
+        JSONObject result = new JSONObject();
         /*
          * The NDEF Message may consist of a number of NDEF records
          */
@@ -62,246 +68,342 @@ public class NdefMessageParser implements Runnable {
          */
         int numRecords = records.length;
 
-        Utilities.log("XXXX NdefMessageParser is parsing #records=" + numRecords);
+        log("Parsing #records=" + numRecords);
 
         /*
          * Only unpick the message if it contains a non-zero number of records
          */
-        try {
-            if(numRecords > 0) {
-                /*
-                 * Work our way through each record in the message in turn
-                 */
-                for(int j = numRecords - 1; j >= 0; j--) {
-                    Utilities.log("XXXX NdefMessageParser processing NDEF record#=" + j);
-                    /*
-                     * Extract the NDEF record payload as an array of bytes
-                     * 
-                     * This is an example of what an NDEF Smart Poster payload looks like representing:
-                     * 
-                     * Text (en_US): This is a title for the BBC URI URI : http://www.bbc.co.uk
-                     * 
-                     * Original length 59 decimal bytes
-                     * 
-                     * NDEF PayLoad:
-                     * 
-                     * 99 01 25 01 54 31 05 65 6E 2D :..%.T1.en-: 55 53 54 68 69 73 20 69 73 20 :USThis is : 61 20 74 69 74 6C 65
-                     * 20 66 6F :a title fo: 72 20 74 68 65 20 42 42 43 20 :r the BBC : 55 52 49 59 01 0A 01 55 32 01 :URIY...U2.:
-                     * 62 62 63 2E 63 6F 2E 75 6B :bbc.co.uk :
-                     * 
-                     * Notice that "http://www." is so common it has a special binary encoding and only the remainder of the URL
-                     * is text encoded "bbc.co.uk"
-                     */
-                    byte[] payloadBytes = records[j].getPayload();
-                    /*
-                     * Parse and display
-                     */
-                    StringBuffer hexPayload = new StringBuffer();
-                    StringBuffer characterPayload = new StringBuffer();
+        JSONArray recordsArray = new JSONArray();
+        result.put(Constants.NDEF_RECORDS, recordsArray);
 
-                    String hexpair;
+        if (numRecords > 0) {
+            /*
+             * Work our way through each record in the message in turn
+             */
+            for (int j = 0; j < numRecords; ++j) {
+                log("parseMessage record #" + j);
 
-                    int numberOfHexPairs = 8;
+                NDEFRecord currentRecord = records[j];
+                JSONObject jsonRecord = new JSONObject();
+                recordsArray.put(jsonRecord);
 
-                    for(int i = 0; i < payloadBytes.length; i++) {
-                        hexpair = byte2HexPair(payloadBytes[i]);
-                        characterPayload.append(byte2Ascii(payloadBytes[i]));
+                log("Processing NDEF record#=" + j);
 
-                        hexPayload.append(hexpair + " " + (((i + 1) % numberOfHexPairs == 0) ? "\n" : ""));
-                        characterPayload.append((((i + 1) % numberOfHexPairs == 0) ? "\n" : ""));
+                typeNameFormat = currentRecord.getTypeNameFormat();
+                record_type = records[j].getType();
+
+                if (typeNameFormat == NDEFRecord.TNF_WELL_KNOWN) {
+                    if (Constants.NDEF_SMART_POSTER_TYPE.equals(records[j]
+                            .getType())) {
+                        mergeInto(jsonRecord, parseSmartPoster(records[j]));
+                    } else if (Constants.NDEF_TEXT_TYPE.equals(records[j]
+                            .getType())) {
+                        mergeInto(jsonRecord, parseText(records[j]));
+                    } else if (Constants.NDEF_URI_TYPE.equals(records[j]
+                            .getType())) {
+                        mergeInto(jsonRecord, parseURI(records[j]));
+                    } else {
+                        // Gc, Hr, Hs, Hc, Sig are not currently parsed by this
+                        // implementation...
                     }
-                    /*
-                     * Parse the elements of the NDEF record It should identify WELL_KNOWN, TEXT or URI and "Sp" for smart poster
-                     */
-                    String record = "Root NDEF Record\nID: " + records[j].getId() + "\nType: " + records[j].getType() + "\nTNF: "
-                            + records[j].getTypeNameFormat() + "\nPayload Len: " + records[j].getPayload().length
-                            + "\nHex Payload: \n" + hexPayload + "\nCharacter Payload: \n" + characterPayload;
-
-                    record_type = records[j].getType();
-                    _ndef_message.putOpt(Constants.NDEF_ID, records[j].getId());
-                    _ndef_message.putOpt(Constants.NDEF_TYPE, record_type);
-                    _ndef_message.put(Constants.NDEF_TYPE_NAME_FORMAT, records[j].getTypeNameFormat());
-
-                    if(Constants.NDEF_SMART_POSTER_TYPE.equals(records[j].getType())) {
-                        try {
-                            parseSmartPoster(records, j, numberOfHexPairs);
-                        } catch(JSONException e) {
-                            Utilities.log("XXXX " + e.getClass().getName() + ":" + e.getMessage());
-                            _js_bridge.reportError(Constants.NDEF_SMART_POSTER_TYPE, "NdefMessageParser JSONException:" + e.getMessage());
-                            return;
-                        } catch(BadFormatException e) {
-                            Utilities.log("XXXX NdefMessageParser bad NDEF format message");
-                            _js_bridge.reportError(Constants.NDEF_SMART_POSTER_TYPE, "NdefMessageParser bad NDEF format message:" + e.getMessage());
-                            return;
-                        } catch(UnsupportedEncodingException e) {
-                            Utilities.log("XXXX NdefMessageParser UnsupportedEncodingException");
-                            _js_bridge.reportError(
-                                    Constants.NDEF_SMART_POSTER_TYPE,
-                                    "NdefMessageParser UnsupportedEncodingException:" + e.getMessage());
-                            return;
-                        } catch(NFCException e) {
-                            Utilities.log("XXXX NdefMessageParser NFC Exception");
-                            _js_bridge.reportError(Constants.NDEF_SMART_POSTER_TYPE,
-                                    "NdefMessageParser NFCException:" + e.getMessage());
-                            return;
-                        }
-                    }
+                } else if (typeNameFormat == NDEFRecord.TNF_MEDIA) {
+                    mergeInto(jsonRecord, parseMediaRecord(records[j]));
+                } else if (typeNameFormat == NDEFRecord.TNF_EXTERNAL) {
+                    NDEFMessage message = new NDEFMessage(
+                            records[j].getPayload());
+                    mergeInto(jsonRecord, parseMessage(message));
                 }
-            } else {
-                Utilities.log("XXXX NdefMessageParser no records in message");
-                return;
+
+                if (!jsonRecord.has(Constants.NDEF_PAYLOAD64)) {
+                    mergeInto(jsonRecord, parseGenericRecord(records[j]));
+                }
+
+                // Put the first record at the top level - to simplify
+                // accessing.
+                if (j == 0) {
+                    mergeInto(result, jsonRecord);
+                }
             }
-        } catch(JSONException e) {
-            Utilities.log("XXXX JSONException in NdefMessageParser: " + e.getClass().getName() + ":" + e.getMessage());
-            _js_bridge.reportError(record_type, "JSONException in NdefMessageParser:" + e.getMessage());
-            return;
+        } else {
+            log("No records in message");
+            return null;
         }
-        _js_bridge.useNDEFMessage(record_type, _ndef_message.toString());
+        return result;
     }
 
-    public void parseSmartPoster(NDEFRecord[] records, int j, int numberOfHexPairs) throws JSONException,
-            UnsupportedEncodingException, BadFormatException, NFCException {
+    public void run() {
+        NDEFMessage message = null;
+        synchronized (_messages) {
+            message = (NDEFMessage) _messages.elementAt(_messages.size() - 1);
+            _messages.removeElementAt(_messages.size() - 1);
+        }
 
+        JSONObject toUse;
+        try {
+            toUse = parseMessage(message);
+            try {
+                _js_bridge.useNDEFMessage(
+                        toUse.getInt(Constants.NDEF_TYPE_NAME_FORMAT),
+                        toUse.getString(Constants.NDEF_TYPE), toUse.toString());
+            } catch (JSONException j) {
+                log("Could not send object back to event handler", j);
+            }
+        } catch (Exception e) {
+            String record_type = "?";
+            int typeNameFormat = NDEFRecord.TNF_WELL_KNOWN;
+            try {
+                NDEFRecord[] records = message.getRecords();
+                if (records.length > 0) {
+                    record_type = records[0].getType();
+                    typeNameFormat = records[0].getTypeNameFormat();
+                }
+            } catch (Exception toIgnore) {
+                // consume
+            }
+            _js_bridge.reportError(typeNameFormat, record_type, e.getClass()
+                    .getName() + ": " + e.getMessage());
+            log("Problem inside run", e);
+        }
+    }
+
+    private void log(String message) {
+        Utilities.log(NdefMessageParser.class.getName() + ": " + message);
+    }
+
+    private void log(String message, Throwable t) {
+        Utilities.log(NdefMessageParser.class.getName() + ": " + message, t);
+    }
+
+    private void mergeInto(JSONObject target, JSONObject source)
+            throws JSONException {
+        log("mergeInto(JSONObject,JSONObject)");
+        Enumeration e = source.keys();
+        while (e.hasMoreElements()) {
+            String key = String.valueOf(e.nextElement());
+            if (!target.has(key)) {
+                target.put(key, source.get(key));
+            }
+        }
+    }
+
+    protected JSONObject parseURI(NDEFRecord record) throws JSONException,
+            IOException {
+        log("parseURL(NDEFRecord)");
+        JSONObject toReturn = parseGenericRecord(record);
+        byte[] payload = record.getPayload();
+        StringBuffer uriBuffer = new StringBuffer();
+        uriBuffer.append(URLPrefixes.getPrefix(payload[0] & 0xff));
+        uriBuffer.append(new String(payload, 1, payload.length - 1, "UTF-8"));
+        toReturn.put(Constants.NDEF_URI, uriBuffer.toString());
+        return toReturn;
+    }
+
+    protected JSONObject parseGenericRecord(NDEFRecord record)
+            throws JSONException, IOException {
+        log("parseGenericRecord(NDEFRecord)");
+        JSONObject toReturn = new JSONObject();
+        toReturn.putOpt(Constants.NDEF_ID, record.getId());
+        toReturn.putOpt(Constants.NDEF_TYPE, record.getType());
+        toReturn.put(Constants.NDEF_TYPE_NAME_FORMAT,
+                record.getTypeNameFormat());
+
+        byte[] payloadBytes = record.getPayload();
+        JSONArray bytePayload = new JSONArray();
+
+        for (int i = 0; i < payloadBytes.length; i++) {
+            byte b = payloadBytes[i];
+            bytePayload.put(b & 0xff);
+        }
+
+        toReturn.put("payload", bytePayload);
+        return toReturn;
+    }
+
+    protected JSONObject parseText(NDEFRecord record) throws JSONException,
+            IOException {
+        log("parseText(NDEFRecord)");
+        byte[] payload = record.getPayload();
+        if (payload.length == 0) {
+            log("Text record too short to read");
+            return null;
+        }
+        int statusByte = payload[0] & 0xff;
+
+        boolean isUTF16 = Utilities.isUtf16Encoded(statusByte);
+        int languageCodeLength = Utilities
+                .getIanaLanguageCodeLength(statusByte);
+
+        int textLength = payload.length - 1 - languageCodeLength;
+
+        String languageCode = "";
+        if (languageCodeLength > 0) {
+            languageCode = new String(payload, 1, languageCodeLength,
+                    "US-ASCII");
+        }
+
+        String text = "";
+        if (textLength > 0) {
+            text = new String(payload, 1 + languageCodeLength, textLength,
+                    isUTF16 ? "UTF-16" : "UTF-8");
+        }
+
+        JSONObject toReturn = parseGenericRecord(record);
+        toReturn.putOpt(Constants.NDEF_TEXT_LANGUAGE_CODE, languageCode);
+        toReturn.putOpt(Constants.NDEF_TEXT_VALUE, text);
+        return toReturn;
+    }
+
+    protected JSONObject parseSmartPoster(NDEFRecord record)
+            throws JSONException, IOException {
+        log("parseSmartPoster(NDEFRecord)");
+        JSONObject toReturn = new JSONObject();
+        JSONArray recordsArray = new JSONArray();
+        toReturn.put("records", recordsArray);
         // testing
 
         // if (true)
         // throw new JSONException("Fictitious JSON problem");
 
         // if(true)
-        // throw new UnsupportedEncodingException("Fictitious encoding problem");
+        // throw new
+        // UnsupportedEncodingException("Fictitious encoding problem");
 
         // if(true)
         // throw new BadFormatException("Fictitious format problem");
 
-//        if(true)
-//            throw new NFCException("Fictitious NFC problem");
+        // if(true)
+        // throw new NFCException("Fictitious NFC problem");
 
-        StringBuffer hexPayload;
-        StringBuffer characterPayload;
-        String hexpair;
-        Utilities.log("XXXX NdefMessageParser recognised a Smart Poster Message");
+        log("Recognised a Smart Poster Message");
         // try {
-        NDEFMessage smartPosterMessage = new NDEFMessage(records[j].getPayload());
+        NDEFMessage smartPosterMessage = new NDEFMessage(record.getPayload());
         NDEFRecord[] spRecords = smartPosterMessage.getRecords();
         int numSpRecords = spRecords.length;
-        Utilities.log("XXXX NdefMessageParser is parsing smartposter #records=" + numSpRecords);
+        log("Parsing smartposter #records=" + numSpRecords);
 
-        if(numSpRecords > 0) {
-            Utilities.log("XXXX NdefMessageParser parsing Smart Poster Message");
-            for(int k = numSpRecords - 1; k >= 0; k--) {
-                Utilities.log("XXXX NdefMessageParser parsing SP record#=" + k);
+        if (numSpRecords > 0) {
+            log("Parsing Smart Poster Message");
+            for (int k = 0; k < numSpRecords; ++k) {
+                log("parseSmartPoster record #" + k);
+                JSONObject currentRecordJSON = parseGenericRecord(spRecords[k]);
+                recordsArray.put(currentRecordJSON);
+                log("Parsing SP record#=" + k);
                 byte[] spPayloadBytes = spRecords[k].getPayload();
-                hexPayload = new StringBuffer();
-                characterPayload = new StringBuffer();
 
-                for(int i = 0; i < spPayloadBytes.length; i++) {
-                    hexpair = byte2HexPair(spPayloadBytes[i]);
-                    characterPayload.append(byte2Ascii(spPayloadBytes[i]));
+                int tnf = spRecords[k].getTypeNameFormat();
+                String type = spRecords[k].getType();
 
-                    hexPayload.append(hexpair + " " + (((i + 1) % numberOfHexPairs == 0) ? "\n" : ""));
-                    characterPayload.append((((i + 1) % numberOfHexPairs == 0) ? "\n" : ""));
-                }
+                log("entering parseSmartPoster if");
 
-                String spRecordLog = "Subsidiary NDEF Record\nID: " + spRecords[k].getId() + "\nType: " + spRecords[k].getType()
-                        + "\nTNF: " + spRecords[k].getTypeNameFormat() + "\nPayload Len: " + spRecords[k].getPayload().length
-                        + "\nHex Payload: \n" + hexPayload + "\nCharacter Payload: \n" + characterPayload;
-
-                if((spRecords[k].getTypeNameFormat() == NDEFRecord.TNF_WELL_KNOWN) && "T".equals(spRecords[k].getType())) {
-                    /*
-                     * Well Known Type "T" is a TEXT record
-                     */
-                    String text = new String();
-                    String langCode = new String();
-
-                    int statusByte = spPayloadBytes[0]; // bit 7 indicates UTF-8 if 0, UTF-16 if 1. Bits 5..0 len of IANA
-                                                        // language code.
-                    boolean is_utf16 = Utilities.isUtf16Encoded(statusByte);
-                    int iana_language_code_len = Utilities.getIanaLanguageCodeLength(statusByte);
-
-                    // extract the IANA language code as an ASCII string
-                    byte[] iana_lang_code_bytes = new byte[iana_language_code_len];
-                    if(iana_language_code_len > 0) {
-                        for(int m = 0; m < iana_language_code_len; m++) {
-                            iana_lang_code_bytes[m] = spPayloadBytes[m + 1];
+                if (tnf == NDEFRecord.TNF_WELL_KNOWN) {
+                    if (Constants.NDEF_TEXT_TYPE.equals(type)) {
+                        log(Constants.NDEF_TEXT_TYPE);
+                        JSONObject text = parseText(spRecords[k]);
+                        mergeInto(currentRecordJSON, text);
+                        if (text != null) {
+                            toReturn.putOpt(Constants.NDEF_TEXT,
+                                    text.get(Constants.NDEF_TEXT_VALUE));
+                            getOrCreateArray(toReturn,
+                                    Constants.NDEF_TEXT_VALUES).put(text);
                         }
-                    }
-                    langCode = new String(iana_lang_code_bytes, "US-ASCII");
-
-                    // extract the text which may be UTF-8 or UTF-16 encoded depending on bit 7 of the status byte
-                    byte[] text_bytes = new byte[spPayloadBytes.length - iana_language_code_len + 1];
-                    int i = 0;
-                    for(int m = iana_language_code_len + 1; m < spPayloadBytes.length; m++) {
-                        text_bytes[i] = spPayloadBytes[m];
-                        i++;
-                    }
-                    if(!is_utf16) {
-                        text = new String(text_bytes, "UTF-8");
+                    } else if (Constants.NDEF_URI_TYPE.equals(type)) {
+                        log(Constants.NDEF_URI_TYPE);
+                        JSONObject uri = parseURI(spRecords[k]);
+                        mergeInto(currentRecordJSON, uri);
+                        toReturn.put(Constants.NDEF_URI,
+                                uri.get(Constants.NDEF_URI));
+                        toReturn.put(Constants.NDEF_URI_LEGACY,
+                                uri.get(Constants.NDEF_URI));
+                    } else if (Constants.NDEF_SMART_POSTER_RECOMMENDED_ACTION_TYPE
+                            .equals(type)) {
+                        log("Reading an action");
+                        if (spPayloadBytes.length != 1) {
+                            log("Incorrect length noted for 'action' record: "
+                                    + spPayloadBytes.length);
+                        }
+                        if (spPayloadBytes.length > 0) {
+                            toReturn.put(
+                                    Constants.NDEF_SMART_POSTER_RECOMMENDED_ACTION,
+                                    spPayloadBytes[0] & 0xff);
+                        }
+                    } else if (Constants.NDEF_SMART_POSTER_URI_SIZE_TYPE
+                            .equals(type)) {
+                        log("Reading size");
+                        if (spPayloadBytes.length != 4) {
+                            log("Incorrect length noted for 'size' record: "
+                                    + spPayloadBytes.length);
+                        }
+                        if (spPayloadBytes.length >= 4) {
+                            long size = 0;
+                            for (int i = 0; i < 4; ++i) {
+                                size <<= 8;
+                                size |= spPayloadBytes[i] & 0xff;
+                            }
+                            toReturn.put(Constants.NDEF_SMART_POSTER_URI_SIZE,
+                                    size);
+                        }
+                    } else if (Constants.NDEF_SMART_POSTER_URI_TYPE_TYPE
+                            .equals(type)) {
+                        log("Reading URI Type");
+                        if (spPayloadBytes.length == 0) {
+                            toReturn.put(Constants.NDEF_SMART_POSTER_URI_TYPE,
+                                    "");
+                        } else {
+                            toReturn.put(Constants.NDEF_SMART_POSTER_URI_TYPE,
+                                    new String(spPayloadBytes, "UTF-8"));
+                        }
                     } else {
-                        text = new String(text_bytes, "UTF-16");
+                        // Unexpected TNF_WELL_KNOWN for a smart poster...
+                        log("Unexpected type for TNF_WELL_KNOWN for smart poster: "
+                                + type);
                     }
-
-                    _ndef_message.putOpt(Constants.NDEF_TEXT, text);
-
-                } else if((spRecords[k].getTypeNameFormat() == NDEFRecord.TNF_WELL_KNOWN) && "U".equals(spRecords[k].getType())) {
-                    /*
-                     * Well Known Type "U" is a URI record
-                     */
-                    StringBuffer urlBuffer = new StringBuffer();
-                    int urlOffset = 1;
-
-                    // Handle the most common short prefixes
-
-                    if(spPayloadBytes[0] == (byte) 0x01) {
-                        urlBuffer.append("http://www.");
-
-                    } else if(spPayloadBytes[0] == (byte) 0x02) {
-                        urlBuffer.append("https://www.");
-
-                    } else if(spPayloadBytes[0] == (byte) 0x03) {
-                        urlBuffer.append("http://");
-
-                    } else if(spPayloadBytes[0] == (byte) 0x04) {
-                        urlBuffer.append("https://");
+                } else if (tnf == NDEFRecord.TNF_MEDIA) {
+                    log("Reading " + NDEFRecord.TNF_MEDIA);
+                    try {
+                        getOrCreateArray(toReturn,
+                                Constants.NDEF_SMART_POSTER_ICONS).put(
+                                parseMediaRecord(spRecords[k]));
+                    } catch (IOException ioe) {
+                        log("Could not build media record: " + ioe.getMessage());
                     }
-
-                    // extract the URI which must be UTF-8 encoded
-                    byte[] uri_bytes = new byte[spPayloadBytes.length - 1];
-
-                    int i = 0;
-                    for(int m = urlOffset; m < spPayloadBytes.length; m++) {
-                        uri_bytes[i] = spPayloadBytes[m];
-                        i++;
-                    }
-                    urlBuffer.append(new String(uri_bytes, "UTF-8"));
-                    _ndef_message.putOpt(Constants.NDEF_URL, urlBuffer.toString());
+                } else {
+                    log("Unexpected type name format for smart poster: " + tnf);
                 }
+
+                log("finished if");
             }
         } else {
-            Utilities.log("XXXX NdefMessageParser empty Smart Poster Message");
-            _ndef_message.putOpt(Constants.NDEF_ERROR, "NdefMessageParser empty Smart Poster Message");
-            return;
+            log("Empty Smart Poster Message");
+            toReturn.putOpt(Constants.NDEF_ERROR,
+                    "NdefMessageParser empty Smart Poster Message");
         }
+        return toReturn;
     }
 
-    /*
-     * Helper to represent a byte as a printable ASCII character
-     */
-    private char byte2Ascii(byte b) {
-        char character = '.';
-        if((20 <= b) && (126 >= b)) {
-            character = (char) b;
+    protected JSONObject parseMediaRecord(NDEFRecord ndefRecord)
+            throws JSONException, IOException {
+        log("parseMediaRecord(NDEFRecord)");
+        JSONObject toReturn = parseGenericRecord(ndefRecord);
+        byte[] payLoad = ndefRecord.getPayload();
+        String base64 = Base64OutputStream.encodeAsString(payLoad, 0,
+                payLoad.length, false, false);
+        toReturn.put(Constants.NDEF_MEDIA_MIME_TYPE, ndefRecord.getType());
+        toReturn.put(Constants.NDEF_MEDIA_MIME_BODY, base64);
+        toReturn.put(Constants.NDEF_MEDIA_DATA_URI,
+                "data:" + ndefRecord.getType() + ";base64," + base64);
+        return toReturn;
+    }
+
+    private JSONArray getOrCreateArray(JSONObject object, String name)
+            throws JSONException {
+        log("getOrCreateArray(JSONObject,String)");
+        JSONArray toReturn = null;
+        if (object.has(name)) {
+            toReturn = object.getJSONArray(name);
+        } else {
+            toReturn = new JSONArray();
+            object.put(name, toReturn);
         }
-        return character;
+        return toReturn;
     }
-
-    /*
-     * Helper to represent a byte as a printable hex pair.
-     */
-    private String byte2HexPair(byte b) {
-        String hex;
-        hex = "00" + Integer.toHexString(b);
-        hex = hex.substring(hex.length() - 2).toUpperCase();
-        return hex;
-    }
-
 }
