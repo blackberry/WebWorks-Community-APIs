@@ -17,24 +17,33 @@
 <library isWhitelist="true">
 
   <extension id="blackberry.ext.system.log">
-    <entryClass>blackberry.system.log.SystemLogExtension</entryClass>
+    <entryClass>blackberry.ext.system.log.SystemLogExtension</entryClass>
   </extension>
-
 
   <platforms>
     <platform value="JAVA">
       <target version="default" config="JAVA_XHR" />
     </platform>
+		<platform value="AIR">
+		<target version="default" config="AIR_XHR" />
+	</platform>
   </platforms>
   
   <configurations>
     <configuration name="JAVA_XHR" version="1.0" comment="For XHR architecture for Java implementation">
-      <src type="text/java" path="webworks" comment="API implementation in Java" />
+      	<src type="text/javascript" path="src/js/common/systemlog_dispatcher.js" comment="Custom JS XHR dispatcher" />
+			<src type="text/javascript" path="src/js/common/systemlog_ns.js" comment="Custom JS interface" />
+	  <src type="text/java" path="src/blackberry/" comment="API implementation in Java" />
     </configuration>
+	<configuration name="AIR_XHR" version="1.0" comment="For XHR architecture for Java implementation">			
+			<src type="text/javascript" path="src/js/common/systemlog_dispatcher.js" comment="Custom JS XHR dispatcher" />
+			<src type="text/javascript" path="src/js/common/systemlog_ns.js" comment="Custom JS interface" />
+			<src type="text/actionscript" path="src/Air/systemlog/src" comment="ActionScript implementation" />
+		</configuration>
   </configurations>  
 
   <features>
-    <feature id="blackberry.system.log" version="1.0.0"/>
+    <feature id="blackberry.ext.system.log" version="1.0.0"/>
   </features>
 
 </library>
