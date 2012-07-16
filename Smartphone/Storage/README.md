@@ -42,6 +42,9 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 
 	//Read from storage
 	var myResult = webworks.persistent.storage.read("mykey");
+	
+	//Delete from storage
+	webworks.persistent.storage.delete("mykey");
 
 ## Code Example
 
@@ -58,12 +61,18 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 			var myResult = webworks.persistent.storage.read("mykey");
 			alert(myResult);
 		}
+		
+		function doDelete(){
+			webworks.persistent.storage.delete("mykey");
+			alert('Persistent Data Destroyed');
+		}
 		</script>
 		</head>
-		<body >
+		<body>
 		<h1>Hello World</h1>
 		<button onclick="doWrite();">Test Write</button>
 		<button onclick="doRead();">Test Read</button>
+		<button onclick="doDelete();">Test Delete</button>
 		</body>
 	</html>
 

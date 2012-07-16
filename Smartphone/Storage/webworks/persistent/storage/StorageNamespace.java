@@ -26,6 +26,7 @@ public class StorageNamespace extends Scriptable
 {
     public static final String FIELD_WRITE = "write";
     public static final String FIELD_READ = "read";
+    public static final String FIELD_DELETE = "delete";
     public Object getField(String name) throws Exception
     {
         if (name.equals(FIELD_WRITE))
@@ -36,9 +37,28 @@ public class StorageNamespace extends Scriptable
         {
             return new StorageRead();
         }
+        
+        if (name.equals(FIELD_DELETE))
+        {
+            return new StorageDelete();
+        }
         return super.getField(name);
     }
 
+    public class StorageDelete extends ScriptableFunction
+    {
+        private static final String NAME = "delete";
+        public Object invoke(Object obj, Object[] args) throws Exception
+        {
+            if (args.length == 1)
+            {
+                PersistentObject myPersistentData;
+                PersistentStore.destroyPersistentObject(StringUtilities.stringHashToLong(args[0].toString()));
+            }
+            return UNDEFINED;
+        }
+    }
+    
     public class StorageWrite extends ScriptableFunction
     {
         private static final String NAME = "write";
