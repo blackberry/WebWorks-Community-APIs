@@ -1,7 +1,9 @@
 # Screen Object
-The screen object will allow you to subscribe to scrolling events on the screen, set the screen's title and show/hide the virtual keyboard.  
+The screen object will allow you to subscribe to scrolling events on the screen, set the screen's title and show/hide the virtual keyboard.
 
-**Author:** [Tim Neil](https://github.com/tneil)
+**Author:**
+[Tim Neil](https://github.com/tneil)
+[Adam Stanley](https://github.com/astanley)
 
 ## Tested On
 
@@ -9,7 +11,7 @@ The screen object will allow you to subscribe to scrolling events on the screen,
 * BlackBerry Torch 9800 v6.0.0.190
 * BlackBerry Torch 9800 v6.0.0.246
 
-**Requires BlackBerry WebWorks SDK for Smartphones v2.0 or higher**
+**Requires BlackBerry WebWorks SDK for Smartphones v5.0 or higher**
 
 ## Known Issues
 * Currently the setTitle() function has painting problems and isn't very functional
@@ -44,6 +46,7 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 	static void showKeyboard()
 	static void hideKeyboard()
 	static void setTitle(title : String)
+     static void screenshot(filename : String)
 
 ## Code Example
 
@@ -56,6 +59,12 @@ Whenever you use the below feature id in any of your WebWorks applications this 
       blackberry.ui.screen.onScrollEnd(function(vPos, hPos) {
         alert('Vertical Position: ' + vPos + ' Horizontal Position: ' + hPos);
       });
+    }
+
+    function takeScreenshot()
+    {
+     var filename = "screenshot1.png";
+      blackberry.ui.screen.screenshot(filename);
     }
 
 
