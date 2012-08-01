@@ -132,7 +132,7 @@ public class DeviceInfoNamespace extends Scriptable
             			} else if (usbState == SystemListener2.USB_STATE_CABLE_DISCONNECTED || usbState == 12) {
             				usbConnection = "DISCONNECTED";
             			}
-            			jsonString += "\"getUSBConnectionState\" : \"" + usbConnection + "\":" + usbState + ", ";
+            			jsonString += "\"getUSBConnectionState\" : \"" + usbConnection + "\" , ";
             			continue;
             		}else if (functionParameter.equals(DeviceInfoNamespace.HAS_CAMERA)) {
             			jsonString += "\"hasCamera\" : \"" + deviceProperties.hasCamera + "\", ";
