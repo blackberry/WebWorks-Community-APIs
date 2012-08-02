@@ -176,14 +176,14 @@ public class EmailListenerManager {
                //problem
           }else{
                 _vec = (Vector)_listenerHash.get(eService);
-                final Object[] callBackObj = { eService, msg};
+                
                 for(int i=0; i < _vec.size(); i++){
                   final ScriptableFunction sf = (ScriptableFunction)_vec.elementAt(i);
                     _appObject.invokeLater(new Runnable() {
                         public void run() {
                               try {
                                   
-                                  sf.invoke(null, new Object[] { callBackObj });
+                                  sf.invoke(null, new Object[] { eService, msg });
 
                               } catch (Exception e) {
                                     System.out.println("Error invoking callback: " + e.getMessage());
