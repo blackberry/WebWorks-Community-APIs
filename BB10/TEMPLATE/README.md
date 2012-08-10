@@ -20,6 +20,8 @@ build the native portion of an extension.
 The Memory Extension implementation should be used in conjunction with this
 read me file to understand how to create a WebWorks extension.
 
+The sample code for this application is Open Source under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
+
 ## How to add an WebWorks Extension to your WebWorks Installation
 
 1. Navigate to the  Framework/ext folder of your WebWorks Installation and
@@ -277,3 +279,7 @@ redirects calls to methods in __index.js__ to the corresponding _MemoryJNext_ me
         return JNEXT.invoke(_self._id, "getMemoryNative");
     };
 ```
+
+## Disclaimer
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
