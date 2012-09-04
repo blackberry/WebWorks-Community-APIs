@@ -76,7 +76,7 @@ Whenever you use the below feature id in any of your WebWorks applications this 
                             'username':'foo', 
                             'password' : 'bar',
                             'connectionTimeout': 30000,
-                            'BESMaxSingeChunk' : 3279}
+                            'BESMaxSingleChunk' : 3279}
                             
                 // Path could be one of http/https
                 u.upload(remotePath, localPath, onProgress, onError, options);
@@ -97,7 +97,7 @@ Whenever you use the below feature id in any of your WebWorks applications this 
                             'username':'foo', 
                             'password' : 'bar',
                             'connectionTimeout': 30000,
-                            'BESMaxSingeChunk' : 3279}
+                            'BESMaxSingleChunk' : 3279}
                 // Path could be one of http/https
                 d.download(remotePath, localPath, onProgress, onError, options);
             }
