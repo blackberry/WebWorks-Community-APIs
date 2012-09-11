@@ -34,7 +34,7 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 
 ## Summary
 
-    static Undefined scan(onCaptured : function, onError : function, options : object);
+    static Undefined scan(onCaptured : function, onError : function, options : Object, focusOptions : Object, zoomOptions : Object);
     static Undefined generate(content : String, onGenerated : function, onError : function, options : Object);
 	
 **Scan Options**
