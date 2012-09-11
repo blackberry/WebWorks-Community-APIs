@@ -40,7 +40,9 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 **Scan Options**
 
     optional readwrite Boolean tryHarder; // Default true
-	optional readwrite String[] format; // Default value ['1D', '2D'] Other Options ['QR_CODE', 'CODE_128', 'CODE_39', 'EAN_13', 'EAN_8', 'ITF', 'UPC_A']
+	optional readwrite String[] format; //['CODE_128', 'CODE_39', 'EAN_13', 'EAN_8', 'ITF', 'UPC_A', 'UPC_E', 'QR_CODE', 'DATAMATRIX', 'PDF417']
+	optional read Boolean focusOptions: 'autoFocus' : true || 'macroFocus' : true
+	optional read String zoomOptions: 'digitalZoom' : 'int val' || 'opticalZoom' : 'int val'
 	
 **Generate Options**
 
@@ -58,38 +60,58 @@ When generating a barcode it will always generate a PNG file.  Please ensure you
 
 ## Scan Code Example
 
-    <html>
-      <head>
-        <meta name="viewport" id="viewport" content="height=device-height,width=device-width,user-scalable=no" />
-        <script type="text/javascript" >
-        
-        // Scans QR codes and Barcodes 5,6,7
-        function doScan() {
-            // default format = all
-            // cheater formats 1d + 2d = all
-            var options = {'tryHarder' : true
-                          }
-            try{
-                webworks.media.barcode.scan(onCaptured, onError, options);
-            }catch(e){
-                alert("Error: " + e);
-            }
-        }
-		 
-		function onCaptured(value) {
-            alert(value);
-		}
-		 
-		function onError(error) {
-            alert('Exception: ' + error.message + ' : ' + error.code);
-		}
-		 
-        </script>
-      </head>
-      <body >
-    	<button onclick="doScan()">Scan Code</button>
-      </body>
-    </html>
+<html>
+	<head>
+		<meta name="viewport" id="viewport" content="height=device-height,width=device-width,user-scalable=no" />
+		<script type="text/javascript" >
+			function onCaptured(value) {
+				alert(value);
+			}
+
+			function onError(error) {
+				alert('Exception: ' + error.message + ' : ' + error.code);
+			}
+
+			// Scans QR codes and Barcodes 5,6,7
+			function doScan() {
+				// default format = all
+				/*
+				 * using the following formats will result in the default format. Choose the formats you are most interested in to speed up
+				 * the detection time of the barcode you are trying to decode
+				 * 'formats' : ['CODE_128', 'CODE_39', 'EAN_13', 'EAN_8', 'ITF', 'UPC_A', 'UPC_E', 'QR_CODE', 'DATAMATRIX', 'PDF417']
+				 */ 
+				var options = {
+					'tryHarder' : true,
+					'formats' : ['DATAMATRIX', 'QR_CODE']
+				};
+				var focusOptions = {
+					'autoFocus' : true,
+					'macroFocus' : true					
+				};
+				/*
+				 * You can use the following zoom options
+				 * 'digitalZoom' : '100'
+				 * 'opticalZoom' : '100'
+				 * where 100 is the default zoom. 1x = 100, 2x = 200. You must provide a value within the zoom range otherwise this will fail
+				 * opticalZoom is not widely available on most devices so it is not provided in this sample.
+				 */ 
+				var zoomOptions = {
+					'digitalZoom' : '100'
+				};
+				try {
+					webworks.media.barcode.scan(onCaptured, onError, options, focusOptions, zoomOptions);
+				} catch(e) {
+					alert("Error: " + e);
+				}
+			}
+		</script>
+	</head>
+	<body >
+		<button onclick="doScan()">
+			Scan Code
+		</button>
+	</body>
+</html>
 
 ## Generate Code Example
 
