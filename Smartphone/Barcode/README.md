@@ -59,7 +59,7 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 When generating a barcode it will always generate a PNG file.  Please ensure your file path provided to generate uses a ".png" file extension
 
 ## Scan Code Example
-
+```
 	<html>
 		<head>
 			<meta name="viewport" id="viewport" content="height=device-height,width=device-width,user-scalable=no" />
@@ -112,7 +112,7 @@ When generating a barcode it will always generate a PNG file.  Please ensure you
 			</button>
 		</body>
 	</html>
-
+```
 ## Generate Code Example
 
     <html>
