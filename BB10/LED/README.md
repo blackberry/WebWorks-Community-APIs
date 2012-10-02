@@ -26,23 +26,26 @@ Whenever you use the below feature id in any of your WebWorks applications this 
     <feature id="webworks.bbalert.led" required="true" version="1.0.0.0" />
 
 ## Summary
+
 var id = webworks.bbalert.led.startLed([String: color], [String: blinkCount])
 
-Parameters: 
+Parameters:
+
 color: hex string with with format "RRGGBB", default: "FF0000"
 blinkCount: String Integer >=0, default: "0" (0 means Blink indefinitely until stopLed command is issued)
 
 Return:
+
 request id - used to reference the LED request
 
 webworks.bbalert.led.stopLed([String:id])
 
 Parameter:
+
 id: request id - given when startLed command was issued.
 	
-
-	
 Example:
+
 	<script type="text/javascript" >
 		var id = webworks.bbalert.led.startLed("FFFF00", "10");
 		webworks.bbalert.led.stopLed(id)
