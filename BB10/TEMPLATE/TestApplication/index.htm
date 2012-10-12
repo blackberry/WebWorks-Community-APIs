@@ -1,30 +1,39 @@
 <html>
 	<head>
-		<title>Example of Memory Extension</title>
-		<script type="text/javascript" src="webworks-1.0.0.7.js"></script>
+		<title>Example of Compass Extension</title>
+		<script type="text/javascript" src="webworks-1.0.2.9.js"></script>
 		<script type="text/javascript">
             function getFreeMemory() {
-                var freeMemory = example.memory.getMemory(); 
+                var freeMemory = example.compass.getCompass(); 
                 alert("Free memory: " + freeMemory);
             }
+			
+			function getAvailableSensors()
+			{
+				var availableSensors = example.compass.getSensors();
+				alert("Available Sensors: " + availableSensors);
+			}
             
             function memoryUsageCallback(memoryInByte) {
                 document.getElementById("memoryUsage").innerHTML = "Free memory: " + memoryInByte;
             }
             
             function monitorMemoryUsage() {
-                var ret = example.memory.monitorMemory(memoryUsageCallback);
+                var ret = example.compass.monitorCompass(memoryUsageCallback);
                 alert(ret);
             }
         </script>
 	</head>
 	<body bgcolor="#FF9900">
         <div align="center">
-			<button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onclick="getFreeMemory()">
+			<button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onClick="getFreeMemory()">
 				Get current free memory
 			</button>
-			<button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onclick="monitorMemoryUsage()">
-				Start monitoring memory
+			<button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onClick="monitorMemoryUsage()">
+				Start monitoring compass
+			</button>
+            <button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onClick="getAvailableSensors()">
+				Start available sensors
 			</button>
             <br />
         </div>

@@ -13,24 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var memoryJNext,
+var compassJNext,
     _event = require("../../lib/event");
 
 module.exports = {
-    getMemoryServer: function (success, fail, args, env) {
+    getCompassServer: function (success, fail, args, env) {
         try {
-            success(memoryJNext.getMemoryJNext());
+            success(compassJNext.getCompassJNext());
         } catch (e) {
             fail(-1, e);
         }
     },
 
-    monitorMemoryServer: function (success, fail, args, env) {
+    monitorCompassServer: function (success, fail, args, env) {
         try {
-            success(memoryJNext.monitorMemoryJNext());
+            success(compassJNext.monitorCompassJNext());
         } catch (e) {
             fail(-1, e);
         }
+    },
+    
+    getSensorsServer: function(success, fail, args, env)
+    {
+    	try
+    	{
+    		success(compassJNext.getSensorsJNext());
+    	}
+    	catch(e)
+    	{
+    		fail(-1, e);
+    	}
     }
 };
 
@@ -38,16 +50,21 @@ module.exports = {
 // JavaScript wrapper for JNEXT plugin
 ///////////////////////////////////////////////////////////////////
 
-JNEXT.MemoryJNext = function ()
+JNEXT.CompassJNext = function ()
 {   
     var _self = this;
 
-    _self.getMemoryJNext = function () {
-        return JNEXT.invoke(_self._id, "getMemoryNative");
+    _self.getCompassJNext = function () {
+        return JNEXT.invoke(_self._id, "getCompassNative");
     };
 
-    _self.monitorMemoryJNext = function () {
-        return JNEXT.invoke(_self._id, "monitorMemoryNative");
+    _self.monitorCompassJNext = function () {
+        return JNEXT.invoke(_self._id, "monitorCompassNative");
+    };
+    
+    _self.getSensorsJNext = function()
+    {
+    	return JNEXT.invoke(_self._id, "getSensorsNative");
     };
 
     _self.getId = function () {
@@ -55,11 +72,11 @@ JNEXT.MemoryJNext = function ()
     };
 
     _self.init = function () {
-        if (!JNEXT.require("memoryJnext")) {
+        if (!JNEXT.require("compassJnext")) {
             return false;
         }
 
-        _self._id = JNEXT.createObject("memoryJnext.Memory");
+        _self._id = JNEXT.createObject("compassJnext.Compass");
 
         if (!_self._id || _self._id === "") {
             return false;
@@ -75,7 +92,7 @@ JNEXT.MemoryJNext = function ()
 
         // Trigger the event handler of specific Push events
         if (strEventId === "FreeMemory") {
-            _event.trigger("example.memory.memoryEvent", arg);
+            _event.trigger("example.compass.compassEvent", arg);
         }
     };
     
@@ -84,4 +101,4 @@ JNEXT.MemoryJNext = function ()
     _self.init();
 };
 
-memoryJNext = new JNEXT.MemoryJNext();
+compassJNext = new JNEXT.CompassJNext();

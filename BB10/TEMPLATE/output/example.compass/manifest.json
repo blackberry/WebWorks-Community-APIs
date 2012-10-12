@@ -1,5 +1,5 @@
 {
     "global": false,
-    "namespace": "example.memory",
+    "namespace": "example.compass",
     "dependencies": []
 }

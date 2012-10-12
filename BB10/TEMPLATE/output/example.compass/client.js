@@ -17,14 +17,19 @@
 var _self = {},
     _ID = require("./manifest.json").namespace;
 
-_self.getMemory = function () {
-    return window.webworks.execSync(_ID, "getMemoryServer", null);
+_self.getCompass = function () {
+    return window.webworks.execSync(_ID, "getCompassServer", null);
 };
 
-_self.monitorMemory = function (cb) {
-    window.webworks.event.add(_ID, "example.memory.memoryEvent", cb);
+_self.monitorCompass = function (cb) {
+    window.webworks.event.add(_ID, "example.compass.compassEvent", cb);
 
-    return window.webworks.execSync(_ID, "monitorMemoryServer", null);
+    return window.webworks.execSync(_ID, "monitorCompassServer", null);
+};
+
+_self.getSensors = function()
+{
+	return window.webworks.execSync(_ID, "getSensorsServer", null);
 };
 
 module.exports = _self;
