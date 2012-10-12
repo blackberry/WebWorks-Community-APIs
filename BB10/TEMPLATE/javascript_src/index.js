@@ -16,19 +16,28 @@
 var compassJNext,
     _event = require("../../lib/event");
 
-module.exports = {
-    getCompassServer: function (success, fail, args, env) {
-        try {
+module.exports = 
+{
+    getCompassServer: function (success, fail, args, env) 
+    {
+        try 
+        {
             success(compassJNext.getCompassJNext());
-        } catch (e) {
+        } 
+        catch (e) 
+        {
             fail(-1, e);
         }
     },
 
-    monitorCompassServer: function (success, fail, args, env) {
-        try {
+    monitorCompassServer: function (success, fail, args, env) 
+    {
+        try 
+        {
             success(compassJNext.monitorCompassJNext());
-        } catch (e) {
+        } 
+        catch (e) 
+        {
             fail(-1, e);
         }
     },
@@ -54,11 +63,13 @@ JNEXT.CompassJNext = function ()
 {   
     var _self = this;
 
-    _self.getCompassJNext = function () {
+    _self.getCompassJNext = function () 
+    {
         return JNEXT.invoke(_self._id, "getCompassNative");
     };
 
-    _self.monitorCompassJNext = function () {
+    _self.monitorCompassJNext = function () 
+    {
         return JNEXT.invoke(_self._id, "monitorCompassNative");
     };
     
@@ -67,31 +78,37 @@ JNEXT.CompassJNext = function ()
     	return JNEXT.invoke(_self._id, "getSensorsNative");
     };
 
-    _self.getId = function () {
+    _self.getId = function () 
+    {
         return _self._id;
     };
 
-    _self.init = function () {
-        if (!JNEXT.require("compassJnext")) {
+    _self.init = function () 
+    {
+        if (!JNEXT.require("compassJnext")) 
+        {
             return false;
         }
 
         _self._id = JNEXT.createObject("compassJnext.Compass");
 
-        if (!_self._id || _self._id === "") {
+        if (!_self._id || _self._id === "") 
+        {
             return false;
         }
 
         JNEXT.registerEvents(_self);
     };
 
-    _self.onEvent = function (strData) {
+    _self.onEvent = function (strData) 
+    {
         var arData = strData.split(" "),
             strEventId = arData[0],
             arg = arData[1];
 
         // Trigger the event handler of specific Push events
-        if (strEventId === "FreeMemory") {
+        if (strEventId === "FreeMemory") 
+        {
             _event.trigger("example.compass.compassEvent", arg);
         }
     };

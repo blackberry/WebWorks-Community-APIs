@@ -74,4 +74,11 @@
 		<nature>com.qnx.tools.ide.bbt.core.bbtnature</nature>
 		<nature>org.eclipse.cdt.core.ccnature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>javascript_src</name>
+			<type>2</type>
+			<location>E:/UBC/CPSC448/github/BB10/TEMPLATE/javascript_src</location>
+		</link>
+	</linkedResources>
 </projectDescription>
