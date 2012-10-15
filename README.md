@@ -1,5 +1,5 @@
 # Community API Repository
-The _**WebWorks-Community-APIs**_ repository is an area where members of the community can post up their JavaScript Extensions to share with the rest of the world.  
+The _**WebWorks-Community-APIs**_ repository is an area where members of the community can post up their JavaScript Extensions to share with the rest of the world.
 
 This area is a collection of APIs that are not part of the official BlackBerry WebWorks SDK but may prove as a testing ground for new APIs before they are officially added to the WebWorks SDK
 
@@ -34,10 +34,10 @@ the pull request and indicate that it is ready to be merged before the pull requ
 If the Author of the pull request is the actual owner of the API, then the Author should send a message to a committer via github messages to have their changes merged.
 
 **Ownership Transfer:**
-An Author can transfer ownership to another Author by opening up an Issue where both the original Author requests ownership to be transfered to the new Author, and the new Author agrees to take ownership of the code.  
+An Author can transfer ownership to another Author by opening up an Issue where both the original Author requests ownership to be transfered to the new Author, and the new Author agrees to take ownership of the code.
 The README for the API should be updated to indicate the new Author.
 
-**Repository Committers** 
+**Repository Committers**
 
 * [Jeffrey Heifetz](https://github.com/jeffheifetz)
 * [Alex Babut](https://github.com/ababut)
@@ -46,6 +46,7 @@ The README for the API should be updated to indicate the new Author.
 * [Chris DelCol](https://github.com/cdelcol)
 * [Tim Neil](https://github.com/tneil)
 * [Tim Windsor](https://github.com/timwindsor)
+* [Nukul Bhasin](https://github.com/nukulb)
 
 ## Bug Reporting and Feature Requests
 
