@@ -20,6 +20,11 @@ module.exports = {
     flashLedStart: function (success, fail, args, env) {
         try {
 		    var stringArgs = "";
+			if(isNaN(parseInt(JSON.parse(decodeURIComponent(args["color"])), 16))){
+				fail(-1, "invalid Hexdecimal color code");
+				return;
+			}
+			
 		    for (key in args) {
 	           stringArgs += " " + JSON.parse(decodeURIComponent(args[key]));
 	        }

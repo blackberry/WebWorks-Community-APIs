@@ -42,14 +42,14 @@
 				currColor = parseInt(colors[i].value, 16) | currColor;
 			}
 		}
-		var id = webworks.bbalert.led.startLed(currColor.toString(16), document.getElementById("blinkCount").value);
+		var id = community.led.startLed(currColor.toString(16), document.getElementById("blinkCount").value);
 
 		var button = document.createElement("button")
 		var buttonContent = document.createTextNode("Stop Led - " + id);
 		button.appendChild(buttonContent);
 		button.setAttribute("id", id);
 		button.onclick = function (){
-			webworks.bbalert.led.stopLed(this.id);
+			community.led.stopLed(this.id);
 			stopButtons.removeChild(this);
 			
 		};
