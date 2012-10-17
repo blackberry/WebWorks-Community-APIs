@@ -41,18 +41,6 @@ module.exports =
             fail(-1, e);
         }
     },
-    
-    getSensorsServer: function(success, fail, args, env)
-    {
-    	try
-    	{
-    		success(compassJNext.getSensorsJNext());
-    	}
-    	catch(e)
-    	{
-    		fail(-1, e);
-    	}
-    }
 };
 
 ///////////////////////////////////////////////////////////////////
@@ -71,11 +59,6 @@ JNEXT.CompassJNext = function ()
     _self.monitorCompassJNext = function () 
     {
         return JNEXT.invoke(_self._id, "monitorCompassNative");
-    };
-    
-    _self.getSensorsJNext = function()
-    {
-    	return JNEXT.invoke(_self._id, "getSensorsNative");
     };
 
     _self.getId = function () 

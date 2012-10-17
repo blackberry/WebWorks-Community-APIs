@@ -35,7 +35,7 @@ private:
 
     // Utility functions relate to memory function
     long getCompass();
-    string getSensors();
+
     string convertLongToString(long l);
     string convertFloatToString(float l);
 
@@ -44,10 +44,11 @@ private:
     bool StartThread();
 
     std::string m_id;
-    pthread_t m_thread;
 
     // member flag to check for compass availability
     bool m_compassExists;
+
+    pthread_t m_thread;
 };
 
 

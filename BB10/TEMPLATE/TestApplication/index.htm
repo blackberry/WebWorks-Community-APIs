@@ -7,12 +7,6 @@
                 var freeMemory = example.compass.getCompass(); 
                 alert("Free memory: " + freeMemory);
             }
-			
-			function getAvailableSensors()
-			{
-				var availableSensors = example.compass.getSensors();
-				alert("Available Sensors: " + availableSensors);
-			}
             
             function memoryUsageCallback(memoryInByte) {
                 document.getElementById("memoryUsage").innerHTML = "Free memory: " + memoryInByte;
@@ -31,9 +25,6 @@
 			</button>
 			<button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onClick="monitorMemoryUsage()">
 				Start monitoring compass
-			</button>
-            <button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onClick="getAvailableSensors()">
-				Start available sensors
 			</button>
             <br />
         </div>

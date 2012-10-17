@@ -87,53 +87,10 @@ string Compass::InvokeMethod(const string& command)
     {
         return MonitorCompassNative();
     }
-    else if (command == "getSensorsNative")
-    {
-    	return getSensors();
-    }
     else
     {
         return "Unsupported Method";
     }
-}
-
-/**
- * Method to retrieve all available sensor information on the system
- */
-string Compass::getSensors()
-{
-	string sensor_path[17] = {
-			"/dev/sensor/accel",
-			"/dev/sensor/mag",
-			"/dev/sensor/gyro",
-			"/dev/sensor/alt",
-			"/dev/sensor/temp",
-			"/dev/sensor/prox",
-			"/dev/sensor/light",
-			"/dev/sensor/gravity",
-			"/dev/sensor/linAccel",
-			"/dev/sensor/rotVect",
-			"/dev/sensor/orientation",
-			"/dev/sensor/rotMatrix",
-			"/dev/sensor/apr",
-			"/dev/sensor/faceDetect",
-			"/dev/sensor/pressure",
-			"/dev/sensor/holster",
-			"/dev/sensor/compass",
-	};
-
-	string retrievedSensors = "";
-
-	for ( unsigned int i = 0; i < 17; ++i )
-	{
-		int checkResult = access(sensor_path[i].c_str(), F_OK);
-		if ( checkResult != -1 )
-		{
-			retrievedSensors += sensor_path[i] + "\n";
-		}
-	}
-
-	return retrievedSensors;
 }
 
 /**
@@ -293,7 +250,6 @@ string Compass::MonitorCompassNative()
  */
 void Compass::SendCompassInfo()
 {
-    //std::string eventString = "FreeMemory " + convertLongToString(getCompass());
 	std::string eventString = "FreeMemory " + convertFloatToString(readCompass());
     NotifyEvent(eventString);
 }

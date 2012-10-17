@@ -76,6 +76,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>TestApplication</name>
+			<type>2</type>
+			<location>E:/UBC/CPSC448/github/BB10/TEMPLATE/TestApplication</location>
+		</link>
+		<link>
 			<name>javascript_src</name>
 			<type>2</type>
 			<location>E:/UBC/CPSC448/github/BB10/TEMPLATE/javascript_src</location>

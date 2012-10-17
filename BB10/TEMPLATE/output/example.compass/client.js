@@ -29,9 +29,4 @@ _self.monitorCompass = function (cb)
     return window.webworks.execSync(_ID, "monitorCompassServer", null);
 };
 
-_self.getSensors = function()
-{
-	return window.webworks.execSync(_ID, "getSensorsServer", null);
-};
-
 module.exports = _self;
