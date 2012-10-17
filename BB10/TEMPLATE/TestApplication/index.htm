@@ -2,12 +2,7 @@
 	<head>
 		<title>Example of Compass Extension</title>
 		<script type="text/javascript" src="webworks-1.0.2.9.js"></script>
-		<script type="text/javascript">
-            function getFreeMemory() {
-                var freeMemory = example.compass.getCompass(); 
-                alert("Free memory: " + freeMemory);
-            }
-            
+		<script type="text/javascript">                        
             function memoryUsageCallback(memoryInByte) {
                 document.getElementById("memoryUsage").innerHTML = "Free memory: " + memoryInByte;
             }
@@ -20,9 +15,6 @@
 	</head>
 	<body bgcolor="#FF9900">
         <div align="center">
-			<button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onClick="getFreeMemory()">
-				Get current free memory
-			</button>
 			<button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onClick="monitorMemoryUsage()">
 				Start monitoring compass
 			</button>

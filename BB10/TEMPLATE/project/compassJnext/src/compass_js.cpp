@@ -79,11 +79,7 @@ bool Compass::CanDelete()
 string Compass::InvokeMethod(const string& command)
 {
     // Determine which function should be executed
-    if (command == "getCompassNative")
-    {
-        return convertLongToString(getCompass());
-    }
-    else if (command == "monitorCompassNative")
+    if (command == "monitorCompassNative")
     {
         return MonitorCompassNative();
     }
@@ -260,20 +256,6 @@ void Compass::NotifyEvent(const std::string& event)
     std::string eventString = m_id + " ";
     eventString.append(event);
     SendPluginEvent(eventString.c_str(), m_pContext);
-}
-
-/**
- * Method that retreives the current free memory of OS.
- */
-long Compass::getCompass()
-{
-    struct stat statbuf;
-    paddr_t freemem;
-
-    stat("/proc", &statbuf);
-    freemem = (paddr_t) statbuf.st_size;
-
-    return freemem;
 }
 
 /**

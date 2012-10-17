@@ -33,9 +33,6 @@ public:
 
 private:
 
-    // Utility functions relate to memory function
-    long getCompass();
-
     string convertLongToString(long l);
     string convertFloatToString(float l);
 

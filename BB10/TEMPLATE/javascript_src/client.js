@@ -17,11 +17,6 @@
 var _self = {},
     _ID = require("./manifest.json").namespace;
 
-_self.getCompass = function () 
-{
-    return window.webworks.execSync(_ID, "getCompassServer", null);
-};
-
 _self.monitorCompass = function (cb) 
 {
     window.webworks.event.add(_ID, "example.compass.compassEvent", cb);
