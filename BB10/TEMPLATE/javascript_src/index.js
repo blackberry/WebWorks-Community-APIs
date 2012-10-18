@@ -29,6 +29,30 @@ module.exports =
             fail(-1, e);
         }
     },
+    
+    stopMonitoringCompassServer: function (success, fail, args, env)
+    {
+    	try 
+        {
+            success(compassJNext.stopMonitoringCompassJNext());
+        } 
+        catch (e) 
+        {
+            fail(-1, e);
+        }
+    },
+    
+    readCompassServer: function (success, fail, args, env)
+    {
+    	 try 
+         {
+             success(compassJNext.readCompassJNext());
+         } 
+         catch (e) 
+         {
+             fail(-1, e);
+         }
+    },
 };
 
 ///////////////////////////////////////////////////////////////////
@@ -42,6 +66,16 @@ JNEXT.CompassJNext = function ()
     _self.monitorCompassJNext = function () 
     {
         return JNEXT.invoke(_self._id, "monitorCompassNative");
+    };
+    
+    _self.stopMonitoringCompassJNext = function () 
+    {
+        return JNEXT.invoke(_self._id, "stopMonitoringNative");
+    };
+    
+    _self.readCompassJNext = function () 
+    {
+        return JNEXT.invoke(_self._id, "readCompassNative");
     };
 
     _self.getId = function () 
@@ -73,7 +107,7 @@ JNEXT.CompassJNext = function ()
             arg = arData[1];
 
         // Trigger the event handler of specific Push events
-        if (strEventId === "FreeMemory") 
+        if (strEventId === "CompassLeading") 
         {
             _event.trigger("example.compass.compassEvent", arg);
         }

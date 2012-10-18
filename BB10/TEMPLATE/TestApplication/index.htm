@@ -1,14 +1,24 @@
 <html>
 	<head>
-		<title>Example of Compass Extension</title>
+		<title>Community - Compass Extension</title>
 		<script type="text/javascript" src="webworks-1.0.2.9.js"></script>
 		<script type="text/javascript">                        
             function memoryUsageCallback(memoryInByte) {
-                document.getElementById("memoryUsage").innerHTML = "Free memory: " + memoryInByte;
+                document.getElementById("memoryUsage").innerHTML = "Degrees from Magnetic North: " + memoryInByte;
             }
             
             function monitorMemoryUsage() {
                 var ret = example.compass.monitorCompass(memoryUsageCallback);
+                alert(ret);
+            }
+            
+            function getCompassLeading() {
+                var ret = example.compass.readCompass();
+                alert(ret);
+            }
+            
+            function stopMonitoringCompass() {
+                var ret = example.compass.stopMonitoringCompass();
                 alert(ret);
             }
         </script>
@@ -16,7 +26,13 @@
 	<body bgcolor="#FF9900">
         <div align="center">
 			<button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onClick="monitorMemoryUsage()">
-				Start monitoring compass
+				Start Monitoring Compass
+			</button>
+			<button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onClick="stopMonitoringCompass()">
+				Stop Monitoring Compass
+			</button>
+			<button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onClick="getCompassLeading()">
+				Get Compass Leading
 			</button>
             <br />
         </div>

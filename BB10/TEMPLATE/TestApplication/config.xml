@@ -17,13 +17,13 @@
 <widget xmlns="http://www.w3.org/ns/widgets"
         xmlns:rim="http://www.blackberry.com/ns/widgets"
 		version="1.0.0"
-        id="ExampleCompassExtension">
+        id="CompassExtension">
     <name>CompassExtension</name>
     <content src="index.htm"/>
     <author>
 			Research In Motion Ltd.
 	</author>
-    <description>The example to show how to develop and use compass extension</description>
+    <description>This example shows how to develop and use the compass extension.</description>
     <feature id="example.compass" required="true" version="1.0.0.0"/>
     <access uri="*"/>
     <license href="http://www.apache.org/licenses/LICENSE-2.0">My License</license>

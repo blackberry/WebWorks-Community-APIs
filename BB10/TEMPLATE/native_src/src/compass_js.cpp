@@ -28,7 +28,7 @@ Compass::Compass(const std::string& id)
 	, m_compassExists(false)
 	, m_thread(0)
 {
-    isDeviceCompassCompatible();
+    isDeviceCompatible();
 }
 
 /**
@@ -81,7 +81,15 @@ string Compass::InvokeMethod(const string& command)
     // Determine which function should be executed
     if (command == "monitorCompassNative")
     {
-        return MonitorCompassNative();
+        return StartMonitoringNative();
+    }
+    else if (command == "stopMonitoringNative")
+    {
+    	return StopMonitoringNative();
+    }
+    else if (command == "readCompassNative")
+    {
+    	return convertFloatToString(readCompass());
     }
     else
     {
@@ -93,7 +101,7 @@ string Compass::InvokeMethod(const string& command)
  * Method to check if this device has a working compass.
  * @return: bool - true if working compass is available
  */
-bool Compass::isDeviceCompassCompatible()
+bool Compass::isDeviceCompatible()
 {
 	const char* compassPath = "/dev/sensor/compass";
 	int checkResult = access(compassPath, F_OK);
@@ -202,9 +210,9 @@ void* CompassThread(void* parent)
 /**
  * Method responsible for starting the thread to get compass leading. Only one
  * thread can be created per native JavaScript instance. This method returns
- * true if the thread was created successfully and false othrewise.
+ * true if the thread was created successfully and false otherwise.
  */
-bool Compass::StartThread()
+bool Compass::StartMonitoringThread()
 {
     if (!m_thread)
     {
@@ -212,8 +220,7 @@ bool Compass::StartThread()
         pthread_attr_init(&thread_attr);
         pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);
 
-        pthread_create(&m_thread, &thread_attr, CompassThread,
-                static_cast<void *>(this));
+        pthread_create(&m_thread, &thread_attr, CompassThread, static_cast<void *>(this));
         pthread_attr_destroy(&thread_attr);
         return true;
     }
@@ -228,9 +235,9 @@ bool Compass::StartThread()
  * string to the JavaScript side indicating whether or not the memory
  * monitoring was initialized.
  */
-string Compass::MonitorCompassNative()
+string Compass::StartMonitoringNative()
 {
-    if (StartThread())
+    if (StartMonitoringThread())
     {
         return "Compass monitored";
     }
@@ -240,13 +247,27 @@ string Compass::MonitorCompassNative()
     }
 }
 
+string Compass::StopMonitoringNative()
+{
+	if (m_thread)
+	{
+		pthread_abort(m_thread);
+		m_thread = 0;
+		return "Compass monitoring has stopped";
+	}
+	else
+	{
+		return "Compass isn't already being monitored";
+	}
+}
+
 /**
  * Method used by the getMemoryUsage thread to pass the amount of free memory
  * on the JavaScript side by firing an event.
  */
 void Compass::SendCompassInfo()
 {
-	std::string eventString = "FreeMemory " + convertFloatToString(readCompass());
+	std::string eventString = "CompassLeading " + convertFloatToString(readCompass());
     NotifyEvent(eventString);
 }
 
@@ -256,16 +277,6 @@ void Compass::NotifyEvent(const std::string& event)
     std::string eventString = m_id + " ";
     eventString.append(event);
     SendPluginEvent(eventString.c_str(), m_pContext);
-}
-
-/**
- * Utility function to convert a long into a string.
- */
-string Compass::convertLongToString(long l)
-{
-    stringstream ss;
-    ss << l;
-    return ss.str();
 }
 
 /**

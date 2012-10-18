@@ -28,17 +28,17 @@ public:
     void SendCompassInfo();
     void NotifyEvent(const std::string& event);
 
-    bool isDeviceCompassCompatible();
+    bool isDeviceCompatible();
     float readCompass();
 
 private:
 
-    string convertLongToString(long l);
     string convertFloatToString(float l);
 
     // Memory monitoring thread function
-    string MonitorCompassNative();
-    bool StartThread();
+    string StartMonitoringNative();
+    string StopMonitoringNative();
+    bool StartMonitoringThread();
 
     std::string m_id;
 

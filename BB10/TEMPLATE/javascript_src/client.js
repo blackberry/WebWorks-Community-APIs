@@ -17,6 +17,17 @@
 var _self = {},
     _ID = require("./manifest.json").namespace;
 
+_self.readCompass = function (cb) 
+{   
+    return window.webworks.execSync(_ID, "readCompassServer", null);
+};
+
+_self.stopMonitoringCompass = function (cb) 
+{   
+    return window.webworks.execSync(_ID, "stopMonitoringCompassServer", null);
+};
+
+
 _self.monitorCompass = function (cb) 
 {
     window.webworks.event.add(_ID, "example.compass.compassEvent", cb);
