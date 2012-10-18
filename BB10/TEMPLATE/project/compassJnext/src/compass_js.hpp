@@ -24,7 +24,7 @@ public:
     virtual bool CanDelete();
     virtual std::string InvokeMethod(const std::string& command);
 
-    // Methods for the memory thread
+    // Methods for the Monitoring thread
     void SendCompassInfo();
     void NotifyEvent(const std::string& event);
 
@@ -35,7 +35,7 @@ private:
 
     string convertFloatToString(float l);
 
-    // Memory monitoring thread function
+    // Compass Thread Monitoring Methods
     string StartMonitoringNative();
     string StopMonitoringNative();
     bool StartMonitoringThread();

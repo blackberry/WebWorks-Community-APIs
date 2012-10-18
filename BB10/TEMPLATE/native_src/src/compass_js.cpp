@@ -4,18 +4,14 @@
  *  Created on: 2012-09-29
  *      Author: starpax
  */
-#include <string>
+
 #include <sstream>
-#include <sys/stat.h>
-#include <sys/types.h>
 #include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sensor/libsensor.h>
 #include <sensor/sensor.h>
 #include <fcntl.h>
 #include <devctl.h>
 #include <math.h>
+
 #include "compass_js.hpp"
 
 using namespace std;
@@ -79,7 +75,7 @@ bool Compass::CanDelete()
 string Compass::InvokeMethod(const string& command)
 {
     // Determine which function should be executed
-    if (command == "monitorCompassNative")
+    if (command == "startMonitoringNative")
     {
         return StartMonitoringNative();
     }
@@ -247,12 +243,20 @@ string Compass::StartMonitoringNative()
     }
 }
 
+/*
+ * Stops monitoring the compass.
+ * @pre - none
+ * @post - m_thread = 0
+ * @return - string - a message to describe the halting of the thread
+ */
 string Compass::StopMonitoringNative()
 {
 	if (m_thread)
 	{
+		// Abort current thread
 		pthread_abort(m_thread);
 		m_thread = 0;
+
 		return "Compass monitoring has stopped";
 	}
 	else

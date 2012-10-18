@@ -28,11 +28,11 @@ _self.stopMonitoringCompass = function (cb)
 };
 
 
-_self.monitorCompass = function (cb) 
+_self.startMonitoringCompass = function (cb) 
 {
     window.webworks.event.add(_ID, "example.compass.compassEvent", cb);
 
-    return window.webworks.execSync(_ID, "monitorCompassServer", null);
+    return window.webworks.execSync(_ID, "startMonitoringCompassServer", null);
 };
 
 module.exports = _self;

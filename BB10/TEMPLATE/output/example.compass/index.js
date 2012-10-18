@@ -18,11 +18,11 @@ var compassJNext,
 
 module.exports = 
 {
-    monitorCompassServer: function (success, fail, args, env) 
+    startMonitoringCompassServer: function (success, fail, args, env) 
     {
         try 
         {
-            success(compassJNext.monitorCompassJNext());
+            success(compassJNext.startMonitoringCompassJNext());
         } 
         catch (e) 
         {
@@ -63,9 +63,9 @@ JNEXT.CompassJNext = function ()
 {   
     var _self = this;
 
-    _self.monitorCompassJNext = function () 
+    _self.startMonitoringCompassJNext = function () 
     {
-        return JNEXT.invoke(_self._id, "monitorCompassNative");
+        return JNEXT.invoke(_self._id, "startMonitoringNative");
     };
     
     _self.stopMonitoringCompassJNext = function () 
