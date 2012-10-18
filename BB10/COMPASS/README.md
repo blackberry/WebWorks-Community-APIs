@@ -34,9 +34,9 @@ number - degrees from Magnetic North
 
 Example:
 
-<script type="text/javascript">
-	var leading = community.compass.readCompass();
-</script>
+	<script type="text/javascript">
+		var leading = community.compass.readCompass();
+	</script>
 
 **community.compass.startMonitoringCompass([Function:fun])**
 
@@ -48,18 +48,18 @@ Return:
 
 Example:
 
-<script type="text/javascript">                        
-    function compassCallback(compassLeading) 
-    {
-        document.getElementById("leading").innerHTML = "Degrees from Magnetic North: " + compassLeading;
-    }
-    
-    function startMonitoringCompass() 
-    {
-        var ret = community.compass.startMonitoringCompass(compassCallback);
-        alert(ret);
-    }
-</script>   
+	<script type="text/javascript">                        
+	    function compassCallback(compassLeading) 
+	    {
+	        document.getElementById("leading").innerHTML = "Degrees from Magnetic North: " + compassLeading;
+	    }
+	    
+	    function startMonitoringCompass() 
+	    {
+	        var ret = community.compass.startMonitoringCompass(compassCallback);
+	        alert(ret);
+	    }
+	</script>   
 
 **community.compass.stopMonitoringCompass()**
 
@@ -68,13 +68,13 @@ Return:
 
 Example:
 
-<script type="text/javascript">   
-	function stopMonitoringCompass() 
-	{
-    	var ret = community.compass.stopMonitoringCompass();
-        alert(ret);
-    }
-</script>
+	<script type="text/javascript">   
+		function stopMonitoringCompass() 
+		{
+	    	var ret = community.compass.stopMonitoringCompass();
+	        alert(ret);
+	    }
+	</script>
 
 ## Disclaimer
 
