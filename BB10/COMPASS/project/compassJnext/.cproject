@@ -24,7 +24,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="so" artifactName="compassJnext" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="" id="com.qnx.qcc.configuration.sharedLib.debug.125035711" name="Device-Debug" parent="com.qnx.qcc.configuration.sharedLib.debug" postbuildStep="mv compassJnext.so ../../../output/example.compass/device/; cp -r ../../../output/example.compass/* E:/UBC/CPSC448/RIM/Framework/ext/example.compass/" prebuildStep="cp -r ../../../javascript_src/* ../../../output/example.compass/; cp -r ../public/* ../../../native_src/public/; cp -r ../src/* ../../../native_src/src/; cp -r ../../../TestApplication/* C:/Users/starpax/RippleSites/TestApplication/">
+				<configuration artifactExtension="so" artifactName="compassJnext" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="" id="com.qnx.qcc.configuration.sharedLib.debug.125035711" name="Device-Debug" parent="com.qnx.qcc.configuration.sharedLib.debug" postbuildStep="mv compassJnext.so ../../../output/community.compass/device/; cp -r ../../../output/community.compass/* E:/UBC/CPSC448/RIM/Framework/ext/community.compass/" prebuildStep="cp -r ../../../javascript_src/* ../../../output/community.compass/; cp -r ../public/* ../../../native_src/public/; cp -r ../src/* ../../../native_src/src/; cp -r ../../../TestApplication/* C:/Users/starpax/RippleSites/TestApplication/">
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.debug.125035711." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.debug.353520242" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<option id="com.qnx.qcc.option.cpu.491029821" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
@@ -80,8 +80,11 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/memoryJnext/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/compassJnext"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/memoryJnext/Device-Release"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/compassJnext/Device-Release"/>
 						<entry flags="" kind="libraryFile" name="memoryJnext"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="compassJnext"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -92,7 +95,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="" id="com.qnx.qcc.configuration.sharedLib.release.202015619" name="Device-Release" parent="com.qnx.qcc.configuration.sharedLib.release">
+				<configuration artifactExtension="so" artifactName="compassJnext" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="" id="com.qnx.qcc.configuration.sharedLib.release.202015619" name="Device-Release" parent="com.qnx.qcc.configuration.sharedLib.release" postbuildStep="mv compassJnext.so ../../../output/community.compass/device/; cp -r ../../../output/community.compass/* E:/UBC/CPSC448/RIM/Framework/ext/community.compass/" prebuildStep="cp -r ../../../javascript_src/* ../../../output/community.compass/; cp -r ../public/* ../../../native_src/public/; cp -r ../src/* ../../../native_src/src/; cp -r ../../../TestApplication/* C:/Users/starpax/RippleSites/TestApplication/">
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.release.202015619." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.release.441257790" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<option id="com.qnx.qcc.option.cpu.695582029" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
@@ -130,6 +133,7 @@
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
 								</inputType>
+								<outputType id="com.qnx.qcc.outputType.linker.sharedLib.1425432197" outputPrefix="" superClass="com.qnx.qcc.outputType.linker.sharedLib"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.archiver.1719660809" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
@@ -301,7 +305,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="so" artifactName="compassJnext" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="" id="com.qnx.qcc.configuration.sharedLib.debug.1686388255" name="Simulator-Debug" parent="com.qnx.qcc.configuration.sharedLib.debug" postbuildStep="mv compassJnext.so ../../../output/example.compass/simulator/; cp -r ../../../output/example.compass/* E:/UBC/CPSC448/RIM/Framework/ext/example.compass/" prebuildStep="cp -r ../../../javascript_src/* ../../../output/example.compass/; cp -r ../public/* ../../../native_src/public/; cp -r ../src/* ../../../native_src/src/">
+				<configuration artifactExtension="so" artifactName="compassJnext" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="" id="com.qnx.qcc.configuration.sharedLib.debug.1686388255" name="Simulator-Debug" parent="com.qnx.qcc.configuration.sharedLib.debug" postbuildStep="mv compassJnext.so ../../../output/community.compass/simulator/; cp -r ../../../output/community.compass/* E:/UBC/CPSC448/RIM/Framework/ext/community.compass/" prebuildStep="cp -r ../../../javascript_src/* ../../../output/community.compass/; cp -r ../public/* ../../../native_src/public/; cp -r ../src/* ../../../native_src/src/">
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.debug.1686388255." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.debug.171281672" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.355276991" osList="all" superClass="com.qnx.qcc.targetPlatform"/>

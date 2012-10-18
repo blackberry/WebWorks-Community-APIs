@@ -3,29 +3,29 @@
 		<title>Community - Compass Extension</title>
 		<script type="text/javascript" src="webworks-1.0.2.9.js"></script>
 		<script type="text/javascript">                        
-            function memoryUsageCallback(memoryInByte) {
-                document.getElementById("memoryUsage").innerHTML = "Degrees from Magnetic North: " + memoryInByte;
+            function compassCallback(compassLeading) {
+                document.getElementById("leading").innerHTML = "Degrees from Magnetic North: " + compassLeading;
             }
             
-            function monitorMemoryUsage() {
-                var ret = example.compass.startMonitoringCompass(memoryUsageCallback);
+            function startMonitoringCompass() {
+                var ret = community.compass.startMonitoringCompass(compassCallback);
                 alert(ret);
             }
             
             function getCompassLeading() {
-                var ret = example.compass.readCompass();
+                var ret = community.compass.readCompass();
                 alert(ret);
             }
             
             function stopMonitoringCompass() {
-                var ret = example.compass.stopMonitoringCompass();
+                var ret = community.compass.stopMonitoringCompass();
                 alert(ret);
             }
         </script>
 	</head>
 	<body bgcolor="#FF9900">
         <div align="center">
-			<button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onClick="monitorMemoryUsage()">
+			<button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onClick="startMonitoringCompass()">
 				Start Monitoring Compass
 			</button>
 			<button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onClick="stopMonitoringCompass()">
@@ -36,7 +36,7 @@
 			</button>
             <br />
         </div>
-        <div id="memoryUsage" style="font-size: 200%; background-color: lightblue">
+        <div id="leading" style="font-size: 200%; background-color: lightblue">
         </div>
 	</body>
 </html>

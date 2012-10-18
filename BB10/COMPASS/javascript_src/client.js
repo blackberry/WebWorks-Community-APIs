@@ -30,7 +30,7 @@ _self.stopMonitoringCompass = function (cb)
 
 _self.startMonitoringCompass = function (cb) 
 {
-    window.webworks.event.add(_ID, "example.compass.compassEvent", cb);
+    window.webworks.event.add(_ID, "community.compass.compassEvent", cb);
 
     return window.webworks.execSync(_ID, "startMonitoringCompassServer", null);
 };

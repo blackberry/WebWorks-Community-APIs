@@ -18,13 +18,13 @@
         xmlns:rim="http://www.blackberry.com/ns/widgets"
 		version="1.0.0"
         id="CompassExtension">
-    <name>CompassExtension</name>
+    <name>Compass Test</name>
     <content src="index.htm"/>
     <author>
 			Research In Motion Ltd.
 	</author>
-    <description>This example shows how to develop and use the compass extension.</description>
-    <feature id="example.compass" required="true" version="1.0.0.0"/>
+    <description>This application shows how to use the compass extension.</description>
+    <feature id="community.compass" required="true" version="1.0.0.0"/>
     <access uri="*"/>
     <license href="http://www.apache.org/licenses/LICENSE-2.0">My License</license>
 </widget>

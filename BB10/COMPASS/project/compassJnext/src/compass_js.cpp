@@ -14,12 +14,10 @@
 
 #include "compass_js.hpp"
 
-using namespace std;
-
 /**
  * Default constructor.
  */
-Compass::Compass(const std::string& id)
+Compass::Compass(const string& id)
 	: m_id(id)
 	, m_compassExists(false)
 	, m_thread(0)
@@ -127,7 +125,8 @@ float Compass::readCompass()
 
 		if ( checkSensor == -1 )
 		{
-			// TODO: Log error here - Accessing path sensorPath
+			// Log error here - Accessing path sensorPath
+			fprintf(stderr, "Error Accessing sensor path");
 			return 0.0f;
 		}
 
@@ -140,7 +139,8 @@ float Compass::readCompass()
 
 		if ( readCheck != EOK )
 		{
-			// TODO: Log error here - Attempting to skip duplicates
+			// Log error here - Attempting to skip duplicates
+			fprintf(stderr, "Error: Attempting to skip duplicates");
 		}
 
 		while (true)
@@ -153,17 +153,20 @@ float Compass::readCompass()
 			// Check for errors
 			if ( length == -1 )
 			{
-				// TODO: Log error here - Read error
+				// Log error here - Read error
+				fprintf(stderr, "Error: Reading the sensor");
 				break;
 			}
 			if ( length < (int)sizeof(sensorEvent) )
 			{
-				// TODO: Log error here - Read size less than expected
+				// Log error here - Read size less than expected
+				fprintf(stderr, "Error: Read size less than expected");
 				continue;
 			}
 			if ( sensorEvent.type != SENSOR_TYPE_COMPASS )
 			{
-				// TODO: Log error here - Sensor type different than expected
+				// Log error here - Sensor type different than expected
+				fprintf(stderr, "Error: Sensor type different than expected");
 				continue;
 			}
 
@@ -186,7 +189,7 @@ float Compass::readCompass()
 /**
  * Thread that retrieves the current leading of the compass every second and
  * sends it to the JavaScript side using an event. The thread shall continue
- * to retrieve the memory usage until the native object is destroyed on the
+ * to retrieve the compass leading until the native object is destroyed on the
  * JavaScript side.
  */
 void* CompassThread(void* parent)
@@ -227,9 +230,9 @@ bool Compass::StartMonitoringThread()
 }
 
 /**
- * Method used to start the get memory usage thread. The method shall return a
- * string to the JavaScript side indicating whether or not the memory
- * monitoring was initialized.
+ * Method used to start the monitoring thread. The method shall return a
+ * string to the JavaScript side indicating whether or not the compass
+ * monitoring was initialised.
  */
 string Compass::StartMonitoringNative()
 {
@@ -266,19 +269,19 @@ string Compass::StopMonitoringNative()
 }
 
 /**
- * Method used by the getMemoryUsage thread to pass the amount of free memory
+ * Method used by the Compass thread to pass the compass leading
  * on the JavaScript side by firing an event.
  */
 void Compass::SendCompassInfo()
 {
-	std::string eventString = "CompassLeading " + convertFloatToString(readCompass());
+	string eventString = "CompassLeading " + convertFloatToString(readCompass());
     NotifyEvent(eventString);
 }
 
 // Notifies JavaScript of an event
-void Compass::NotifyEvent(const std::string& event)
+void Compass::NotifyEvent(const string& event)
 {
-    std::string eventString = m_id + " ";
+    string eventString = m_id + " ";
     eventString.append(event);
     SendPluginEvent(eventString.c_str(), m_pContext);
 }

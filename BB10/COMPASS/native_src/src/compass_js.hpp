@@ -12,21 +12,22 @@
 #include <pthread.h>
 #include "../public/plugin.h"
 
+using std::string;
+
 class Compass: public JSExt
 {
-
 public:
 
-    explicit Compass(const std::string& id);
+    explicit Compass(const string& id);
     virtual ~Compass();
 
     // Interfaces of JSNext
     virtual bool CanDelete();
-    virtual std::string InvokeMethod(const std::string& command);
+    virtual string InvokeMethod(const string& command);
 
     // Methods for the Monitoring thread
     void SendCompassInfo();
-    void NotifyEvent(const std::string& event);
+    void NotifyEvent(const string& event);
 
     bool isDeviceCompatible();
     float readCompass();
@@ -40,7 +41,7 @@ private:
     string StopMonitoringNative();
     bool StartMonitoringThread();
 
-    std::string m_id;
+    string m_id;
 
     // member flag to check for compass availability
     bool m_compassExists;

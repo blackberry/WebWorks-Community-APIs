@@ -109,7 +109,7 @@ JNEXT.CompassJNext = function ()
         // Trigger the event handler of specific Push events
         if (strEventId === "CompassLeading") 
         {
-            _event.trigger("example.compass.compassEvent", arg);
+            _event.trigger("community.compass.compassEvent", arg);
         }
     };
     
