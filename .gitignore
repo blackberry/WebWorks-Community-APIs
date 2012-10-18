@@ -1,2 +1,6 @@
 add
 .DS_Store
+.metadata/
+.settings/
+*.[o]
+webworks-1.0.2.9.js
