@@ -31,7 +31,7 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 var image = community.thumbnail.createThumbNail(path, {width: width, height: height, quality:quality});
 
 Parameters:  
-path: path to image on local file system 
+path: path to image on local file system  
 JSON: width - width of resize image - optional  
 	  height - height of resize image - optional
 	  quality - quality of the resized image (default: 100) (0-100 ?? c++ api reference did not specify the quality range) - optional  
