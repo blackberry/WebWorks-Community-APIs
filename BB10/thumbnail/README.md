@@ -16,7 +16,7 @@ The ThumNail API allows you to create thumbnail of images residing on the local 
 
 1. Clone the repo to your local machine
 2. Locate your BlackBerry WebWorks SDK **C:\Program Files\Research In Motion\BlackBerry 10 WebWorks SDK <version>\Framework\ext** (Windows) or **~/SDKs/BlackBerry 10 WebWorks SDK <version>/Framework/ext** (Mac)
-3. Create a new directory **community.led** in the **ext** directory.
+3. Create a new directory **community.thumbnail** in the **ext** directory.
 4. Copy **output/community.thumbnail/device/thumbnailJnext.so** to **/path/to/sdk/ext/community.thumbnail/device/thumbnailJnext.so**
 5. Copy everything in **javascript_src** to **/path/to/sdk/ext/community.thumbnail/**
 
