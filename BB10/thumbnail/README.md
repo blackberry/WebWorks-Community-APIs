@@ -1,6 +1,6 @@
 # ThumbNail API
 
-The LED API allows you to control the LED.
+The ThumNail API allows you to create thumbnail of images residing on the local filesystem.
 
 **Tested On**
 
@@ -17,18 +17,13 @@ The LED API allows you to control the LED.
 1. Clone the repo to your local machine
 2. Locate your BlackBerry WebWorks SDK **C:\Program Files\Research In Motion\BlackBerry 10 WebWorks SDK <version>\Framework\ext** (Windows) or **~/SDKs/BlackBerry 10 WebWorks SDK <version>/Framework/ext** (Mac)
 3. Create a new directory **community.led** in the **ext** directory.
-<<<<<<< HEAD
 4. Copy **output/community.thumbnail/device/thumbnailJnext.so** to **/path/to/sdk/ext/community.thumbnail/device/thumbnailJnext.so**
 5. Copy everything in **javascript_src** to **/path/to/sdk/ext/community.thumbnail/**
-=======
-4. Copy **output/community.led/ledJnext.so** to **/path/to/sdk/ext/community.led/device/ledJnext.so**
-5. Copy everything in **javascript_src** to **/path/to/sdk/ext/community.led/**
->>>>>>> upstream/master
+
 
 ## Required Feature ID
 Whenever you use the below feature id in any of your WebWorks applications this extension will be loaded for use.
 
-<<<<<<< HEAD
     <feature id="community.thumbnail" required="true" version="1.0.0.0" />
 
 ## Summary
@@ -51,30 +46,6 @@ Example:
          var image = community.thumbnail.createThumbNail(path, {width:480});
 		 document.getElementById("image").innerHTML = "";
 		 document.getElementById("image").appendChild(image);
-=======
-    <feature id="community.led" required="true" version="1.0.0.0" />
-
-## Summary
-
-var id = community.led.startLed([String: color], [String: blinkCount])
-
-Parameters:  
-color: hex string with with format "RRGGBB", default: "FF0000"  
-blinkCount: String Integer >=0, default: "0" (0 means Blink indefinitely until stopLed command is issued)
-
-Return:  
-request id - used to reference the LED request
-
-community.led.stopLed([String:id])  
-Parameter:  
-id: request id - given when startLed command was issued.
-	
-Example:
-
-	<script type="text/javascript" >
-		var id = community.led.startLed("FFFF00", "10");
-		community.led.stopLed(id)
->>>>>>> upstream/master
 	</script>
 
 ## Disclaimer

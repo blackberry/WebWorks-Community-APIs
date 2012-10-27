@@ -1,9 +1,5 @@
 {
     "global": false,
-<<<<<<< HEAD
     "namespace": "community.thumbnail",
-=======
-    "namespace": "community.led",
->>>>>>> upstream/master
     "dependencies": []
 }
