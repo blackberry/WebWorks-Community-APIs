@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<title>Example of Memory Extension</title>
+		<script type="text/javascript" src="webworks-1.0.0.7.js"></script>
+		<script type="text/javascript">
+            function getFreeMemory() {
+                var freeMemory = example.memory.getMemory(); 
+                alert("Free memory: " + freeMemory);
+            }
+            
+            function memoryUsageCallback(memoryInByte) {
+                document.getElementById("memoryUsage").innerHTML = "Free memory: " + memoryInByte;
+            }
+            
+            function monitorMemoryUsage() {
+                var ret = example.memory.monitorMemory(memoryUsageCallback);
+                alert(ret);
+            }
+        </script>
+	</head>
+	<body bgcolor="#FF9900">
+        <div align="center">
+			<button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onclick="getFreeMemory()">
+				Get current free memory
+			</button>
+			<button style="width:280px; height: 240px; font-size: 200%; background-color: lightgreen" onclick="monitorMemoryUsage()">
+				Start monitoring memory
+			</button>
+            <br />
+        </div>
+        <div id="memoryUsage" style="font-size: 200%; background-color: lightblue">
+        </div>
+	</body>
+</html>
