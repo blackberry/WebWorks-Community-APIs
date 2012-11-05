@@ -49,7 +49,7 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 			var subject = "See attachment";
 			var body = "Some text goes here";
 
-			var file = "file:///myiamge.png";
+			var file = "file:///myimage.png";
 
 		    var result = webworks.mail.attachment.send(email, subject, body, file);
 		    if (result === true) alert("Email sent.");
