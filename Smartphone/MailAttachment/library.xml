@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library>
+    <extension id="webworks.mail.attachment">
+        <entryClass>webworks.mail.attachment.MailAttachmentExtension</entryClass>
+    </extension>
+    <platforms>
+    <platform value="JAVA">
+      <target version="default" config="JAVA" />
+    </platform>
+  </platforms>
+  <configurations>
+    <configuration name="JAVA" version="1.0" >
+      <src type="text/java" path="webworks" comment="API implementation in Java" />
+    </configuration>
+  </configurations>  
+    <features>
+        <feature id="webworks.mail.attachment" version="1.0.0" ></feature>
+    </features>
+</library>
