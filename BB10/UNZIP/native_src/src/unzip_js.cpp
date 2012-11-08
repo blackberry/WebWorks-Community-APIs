@@ -20,39 +20,44 @@
 #include <sys/types.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "memory_js.hpp"
+#include "unzip.h"
+#include "unzip_js.hpp"
 
 using namespace std;
 
 /**
  * Default constructor.
  */
-Memory::Memory(const std::string& id) : m_id(id) {
-    m_thread = 0;
+Unzip::Unzip(const std::string& id) : m_id(id)
+{
 }
 
 /**
- * Memory destructor.
+ * Unzip destructor.
  */
-Memory::~Memory() {
+Unzip::~Unzip()
+{
 }
 
 /**
  * This method returns the list of objects implemented by this native
  * extension.
  */
-char* onGetObjList() {
-    static char name[] = "Memory";
+char* onGetObjList()
+{
+    static char name[] = "Unzip";
     return name;
 }
 
 /**
- * This method is used by JNext to instantiate the Memory object when
+ * This method is used by JNext to instantiate the Unzip object when
  * an object is created on the JavaScript server side.
  */
-JSExt* onCreateObject(const string& className, const string& id) {
-    if (className == "Memory") {
-        return new Memory(id);
+JSExt* onCreateObject(const string& className, const string& id)
+{
+    if (className == "Unzip")
+    {
+        return new Unzip(id);
     }
 
     return NULL;
@@ -61,7 +66,8 @@ JSExt* onCreateObject(const string& className, const string& id) {
 /**
  * Method used by JNext to determine if the object can be deleted.
  */
-bool Memory::CanDelete() {
+bool Unzip::CanDelete()
+{
     return true;
 }
 
@@ -71,101 +77,85 @@ bool Memory::CanDelete() {
  * for invoking native code. This method is triggered when JNext.invoke is
  * called on the JavaScript side with this native objects id.
  */
-string Memory::InvokeMethod(const string& command) {
+string Unzip::InvokeMethod(const string& command)
+{
     // Determine which function should be executed
-    if (command == "getMemoryNative") {
-        return convertLongToString(getMemory());
-    } else if (command == "monitorMemoryNative") {
-        return MonitorMemoryNative();
-    } else {
+	if (command == "unzipPackageNative")
+	{
+		// Retrieve first parameter to method
+		size_t index = command.find_first_of(" ");
+		string pathToZipStr = command.substr(index + 1, command.length());
+
+		return unzipPackageNative(pathToZipStr.c_str());
+	}
+    else
+    {
         return "Unsupported Method";
     }
 }
 
 /**
- * Thread that retrieves the current amount of free memory every second and
- * sends it to the JavaScript side using an event. The thread shall continue
- * to retrieve the memory usage until the native object is destroyed on the
- * JavaScript side.
+ * Returns a JSON object in the form of a C++ string to be evaluated on the JavaScript side
  */
-void* MemoryThread(void* parent) {
-    Memory *pParent = static_cast<Memory *>(parent);
+string Unzip::unzipPackageNative(const char *zipPath)
+{
+	unzFile zipPackage = unzOpen64(zipPath);
 
-    // Endless loop that collect memory information and send it to JNext JavaScript side
-    while (true) {
-        pParent->SendMemoryInfo();
-        sleep(1);
-    }
+	if (zipPackage == NULL)
+	{
+		// Log error here - Opening the zip Package
+		fprintf(stderr, "Error Opening Zip package");
+	}
 
-    return NULL;
-}
+	unz_global_info64 packageGlobalInfo;
+	if ( UNZ_OK != unzGetGlobalInfo64(zipPackage, &packageGlobalInfo) )
+	{
+		// Log error here - Getting the global info of the package
+		fprintf(stderr, "Error retrieving the global info of the Zip package");
+	}
 
-/**
- * Method responsible for starting the thread to get memory usage. Only one
- * thread can be created per native JavaScript instance. This method returns
- * true if the thread was created successfully and false othrewise.
- */
-bool Memory::StartThread() {
-    if (!m_thread) {
-        pthread_attr_t thread_attr;
-        pthread_attr_init(&thread_attr);
-        pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);
+	unz_file_info64 fileInfo;
+	char fileName[256];
 
-        pthread_create(&m_thread, &thread_attr, MemoryThread,
-                static_cast<void *>(this));
-        pthread_attr_destroy(&thread_attr);
-        return true;
-    } else {
-        return false;
-    }
-}
+	// Iterate over all files in the Zip package
+	for (ZPOS64_T fileIndex = 0; fileIndex < packageGlobalInfo.number_entry; ++fileIndex)
+	{
+		if ( UNZ_OK != unzGetCurrentFileInfo64(zipPackage, &fileInfo, fileName, sizeof(fileName), NULL, 0, NULL, 0) )
+		{
+			// Log error here - Getting the file info of a file inside the Zip
+			fprintf(stderr, "Error retrieving the file information of a file inside the Zip");
+		}
 
-/**
- * Method used to start the get memory usage thread. The method shall return a
- * string to the JavaScript side indicating whether or not the memory
- * monitoring was initialized.
- */
-string Memory::MonitorMemoryNative() {
-    if (StartThread()) {
-        return "Memory monitored";
-    } else {
-        return "Memory already being monitored";
-    }
-}
+		// Read file name
+		std::string fileNameStr = fileName;
 
-/**
- * Method used by the getMemoryUsage thread to pass the amount of free memory
- * on the JavaScript side by firing an event.
- */
-void Memory::SendMemoryInfo() {
-    std::string eventString = "FreeMemory " + convertLongToString(getMemory());
-    NotifyEvent(eventString);
+
+
+	}
+
+	// Close the root package
+	if ( UNZ_OK != unzClose(zipPackage) )
+	{
+		// Log error here - Closing the zip package
+		fprintf(stderr, "Error Closing Zip package");
+	}
+
+	return NULL;
 }
 
 // Notifies JavaScript of an event
-void Memory::NotifyEvent(const std::string& event) {
+void Unzip::NotifyEvent(const std::string& event)
+{
     std::string eventString = m_id + " ";
     eventString.append(event);
     SendPluginEvent(eventString.c_str(), m_pContext);
 }
 
 /**
- * Method that retreives the current free memory of OS.
- */
-long Memory::getMemory() {
-    struct stat statbuf;
-    paddr_t freemem;
-
-    stat("/proc", &statbuf);
-    freemem = (paddr_t) statbuf.st_size;
-
-    return freemem;
-}
-
-/**
  * Utility function to convert a long into a string.
  */
-string Memory::convertLongToString(long l) {
+string Unzip::convertLongToString(long l)
+{
     stringstream ss;
     ss << l;
     return ss.str();

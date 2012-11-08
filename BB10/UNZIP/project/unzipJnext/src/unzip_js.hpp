@@ -20,31 +20,27 @@
 #include <pthread.h>
 #include "../public/plugin.h"
 
-class Memory: public JSExt {
+class Unzip: public JSExt
+{
 
 public:
-    explicit Memory(const std::string& id);
-    virtual ~Memory();
+    explicit Unzip(const std::string& id);
+    virtual ~Unzip();
 
-// Interfaces of JSExt
+    // Interfaces of JSExt
     virtual bool CanDelete();
     virtual std::string InvokeMethod(const std::string& command);
 
-// Methods for the memory thread
-    void SendMemoryInfo();
     void NotifyEvent(const std::string& event);
 
+    // Unzip Methods
+    std::string unzipPackageNative(const char* zipPath);
+
 private:
-// Utility functions relate to memory function
-    long getMemory();
+
     string convertLongToString(long l);
 
-// Memory monitoring thread function
-    string MonitorMemoryNative();
-    bool StartThread();
-
     std::string m_id;
-    pthread_t m_thread;
 };
 
 #endif /* UNZIP_JS_HPP_ */
