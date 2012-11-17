@@ -1,5 +1,5 @@
 {
     "global": false,
-    "namespace": "example.memory",
+    "namespace": "community.unzip",
     "dependencies": []
 }

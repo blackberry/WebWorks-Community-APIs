@@ -17,14 +17,10 @@
 var _self = {},
     _ID = require("./manifest.json").namespace;
 
-_self.getMemory = function () {
-    return window.webworks.execSync(_ID, "getMemoryServer", null);
-};
-
-_self.monitorMemory = function (cb) {
-    window.webworks.event.add(_ID, "example.memory.memoryEvent", cb);
-
-    return window.webworks.execSync(_ID, "monitorMemoryServer", null);
+_self.unzipPackage = function (filepath) 
+{
+	var args = {"filepath" : filepath};
+    return window.webworks.execSync(_ID, "unzipPackageServer", args);
 };
 
 module.exports = _self;

@@ -80,7 +80,10 @@ bool Unzip::CanDelete()
 string Unzip::InvokeMethod(const string& command)
 {
     // Determine which function should be executed
-	if (command == "unzipPackageNative")
+	size_t index = command.find_first_of(" ");
+	string strCommand = command.substr(0, index);
+
+	if (strCommand == "unzipPackageNative")
 	{
 		// Retrieve first parameter to method
 		size_t index = command.find_first_of(" ");
@@ -104,7 +107,9 @@ string Unzip::unzipPackageNative(const char *zipPath)
 	if (zipPackage == NULL)
 	{
 		// Log error here - Opening the zip Package
+
 		fprintf(stderr, "Error Opening Zip package");
+		return "Error Opening Zip Package";
 	}
 
 	unz_global_info64 packageGlobalInfo;
@@ -112,6 +117,7 @@ string Unzip::unzipPackageNative(const char *zipPath)
 	{
 		// Log error here - Getting the global info of the package
 		fprintf(stderr, "Error retrieving the global info of the Zip package");
+		return "Error retrieving the global info of the Zip package";
 	}
 
 	unz_file_info64 fileInfo;
@@ -124,12 +130,13 @@ string Unzip::unzipPackageNative(const char *zipPath)
 		{
 			// Log error here - Getting the file info of a file inside the Zip
 			fprintf(stderr, "Error retrieving the file information of a file inside the Zip");
+			return "Error retrieving the file information of a file inside the Zip";
 		}
 
 		// Read file name
-		std::string fileNameStr = fileName;
+		//std::string fileNameStr = fileName;
 
-
+		return fileName;
 
 	}
 
@@ -138,6 +145,7 @@ string Unzip::unzipPackageNative(const char *zipPath)
 	{
 		// Log error here - Closing the zip package
 		fprintf(stderr, "Error Closing Zip package");
+		return "Error closing zip";
 	}
 
 	return NULL;

@@ -13,22 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var memoryJNext,
+var unzipJNext,
     _event = require("../../lib/event");
 
 module.exports = {
-    getMemoryServer: function (success, fail, args, env) {
-        try {
-            success(memoryJNext.getMemoryJNext());
-        } catch (e) {
-            fail(-1, e);
-        }
-    },
-
-    monitorMemoryServer: function (success, fail, args, env) {
-        try {
-            success(memoryJNext.monitorMemoryJNext());
-        } catch (e) {
+    unzipPackageServer: function (success, fail, args, env) 
+    {
+        try 
+        {
+        	var stringArgs = "";
+        	
+        	for (key in args)
+        	{
+        		stringArgs += " " + JSON.parse(decodeURIComponent(args[key]));
+        	}
+        	
+            success(unzipJNext.unzipPackageJNext(stringArgs));
+        } 
+        catch (e) 
+        {
             fail(-1, e);
         }
     }
@@ -38,16 +41,12 @@ module.exports = {
 // JavaScript wrapper for JNEXT plugin
 ///////////////////////////////////////////////////////////////////
 
-JNEXT.MemoryJNext = function ()
+JNEXT.UnzipJNext = function ()
 {   
     var _self = this;
 
-    _self.getMemoryJNext = function () {
-        return JNEXT.invoke(_self._id, "getMemoryNative");
-    };
-
-    _self.monitorMemoryJNext = function () {
-        return JNEXT.invoke(_self._id, "monitorMemoryNative");
+    _self.unzipPackageJNext = function (args) {
+        return JNEXT.invoke(_self._id, "unzipPackageNative" + args);
     };
 
     _self.getId = function () {
@@ -55,11 +54,11 @@ JNEXT.MemoryJNext = function ()
     };
 
     _self.init = function () {
-        if (!JNEXT.require("memoryJnext")) {
+        if (!JNEXT.require("unzipJnext")) {
             return false;
         }
 
-        _self._id = JNEXT.createObject("memoryJnext.Memory");
+        _self._id = JNEXT.createObject("unzipJnext.Unzip");
 
         if (!_self._id || _self._id === "") {
             return false;
@@ -72,11 +71,6 @@ JNEXT.MemoryJNext = function ()
         var arData = strData.split(" "),
             strEventId = arData[0],
             arg = arData[1];
-
-        // Trigger the event handler of specific Push events
-        if (strEventId === "FreeMemory") {
-            _event.trigger("example.memory.memoryEvent", arg);
-        }
     };
     
     _self._id = "";
@@ -84,4 +78,4 @@ JNEXT.MemoryJNext = function ()
     _self.init();
 };
 
-memoryJNext = new JNEXT.MemoryJNext();
+unzipJNext = new JNEXT.UnzipJNext();
