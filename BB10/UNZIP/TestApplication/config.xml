@@ -24,6 +24,9 @@
 			Research In Motion Ltd.
 	</author>
     <description>The example to show how to develop and use unzip extension</description>
+    <rim:permissions>
+    	<rim:permit>access_shared</rim:permit>
+    </rim:permissions>
     <feature id="community.unzip" required="true" version="1.0.0.0"/>
     <access uri="*"/>
     <license href="http://www.apache.org/licenses/LICENSE-2.0">My License</license>

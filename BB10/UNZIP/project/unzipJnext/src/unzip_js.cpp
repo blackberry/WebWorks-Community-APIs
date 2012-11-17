@@ -20,6 +20,10 @@
 #include <sys/types.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+
+#include <fcntl.h>
+
 #include "unzip.h"
 #include "unzip_js.hpp"
 
@@ -102,6 +106,13 @@ string Unzip::InvokeMethod(const string& command)
  */
 string Unzip::unzipPackageNative(const char *zipPath)
 {
+	int fd = open(zipPath, O_RDONLY);
+	if ( fd == -1 )
+	{
+		return zipPath;
+	}
+	close(fd);
+
 	unzFile zipPackage = unzOpen64(zipPath);
 
 	if (zipPackage == NULL)
@@ -109,7 +120,7 @@ string Unzip::unzipPackageNative(const char *zipPath)
 		// Log error here - Opening the zip Package
 
 		fprintf(stderr, "Error Opening Zip package");
-		return "Error Opening Zip Package";
+		return "Error Opening Zip package";
 	}
 
 	unz_global_info64 packageGlobalInfo;
