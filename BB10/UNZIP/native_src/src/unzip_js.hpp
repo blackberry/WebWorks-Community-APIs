@@ -39,8 +39,6 @@ public:
 
 private:
 
-    string convertLongToString(long l);
-
     std::string m_id;
 };
 

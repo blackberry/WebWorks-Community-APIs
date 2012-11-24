@@ -15,7 +15,6 @@
 */
 
 #include <string>
-#include <sstream>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <stdio.h>
@@ -380,14 +379,4 @@ void Unzip::NotifyEvent(const std::string& event)
     std::string eventString = m_id + " ";
     eventString.append(event);
     SendPluginEvent(eventString.c_str(), m_pContext);
-}
-
-/**
- * Utility function to convert a long into a string.
- */
-string Unzip::convertLongToString(long l)
-{
-    stringstream ss;
-    ss << l;
-    return ss.str();
 }
