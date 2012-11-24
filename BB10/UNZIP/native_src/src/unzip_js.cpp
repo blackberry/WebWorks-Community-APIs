@@ -106,21 +106,12 @@ string Unzip::InvokeMethod(const string& command)
  */
 string Unzip::unzipPackageNative(const char *zipPath)
 {
-	int fd = open(zipPath, O_RDONLY);
-	if ( fd == -1 )
-	{
-		return zipPath;
-	}
-	close(fd);
-
 	unzFile zipPackage = unzOpen64(zipPath);
 
 	if (zipPackage == NULL)
 	{
 		// Log error here - Opening the zip Package
-
 		fprintf(stderr, "Error Opening Zip package");
-		return "Error Opening Zip package";
 	}
 
 	unz_global_info64 packageGlobalInfo;
@@ -128,11 +119,19 @@ string Unzip::unzipPackageNative(const char *zipPath)
 	{
 		// Log error here - Getting the global info of the package
 		fprintf(stderr, "Error retrieving the global info of the Zip package");
-		return "Error retrieving the global info of the Zip package";
 	}
 
 	unz_file_info64 fileInfo;
 	char fileName[256];
+	string JSONobject = "";
+
+	// Start the JSONobject String
+	JSONobject += "({ \"";
+	JSONobject += zipPath;
+	JSONobject += "\" : [";
+
+	unsigned int prevNestedLevel = 1;
+	bool prevFileInDirectory = false;
 
 	// Iterate over all files in the Zip package
 	for (ZPOS64_T fileIndex = 0; fileIndex < packageGlobalInfo.number_entry; ++fileIndex)
@@ -141,25 +140,125 @@ string Unzip::unzipPackageNative(const char *zipPath)
 		{
 			// Log error here - Getting the file info of a file inside the Zip
 			fprintf(stderr, "Error retrieving the file information of a file inside the Zip");
-			return "Error retrieving the file information of a file inside the Zip";
 		}
 
-		// Read file name
-		//std::string fileNameStr = fileName;
+		// Get filename without path and if the file is a directory
+		char* currentCharacter = fileName;
+		char* fileNameWithoutPath = fileName;
+		unsigned int currentLevel = 1; // keep track of how deep in the directory tree we're in
 
-		return fileName;
+		while ( (*currentCharacter) != '\0' )
+		{
+			if ( (*currentCharacter) == '/' || (*currentCharacter) == '\\' )
+			{
+				fileNameWithoutPath = currentCharacter + 1;
+				++currentLevel;
+			}
 
+			++currentCharacter;
+		}
+
+		if ( currentLevel > prevNestedLevel )
+		{
+			if ( prevFileInDirectory )
+			{
+				JSONobject += ",";
+			}
+
+			// we went down a directory
+			// Start constructing a JSON directory tree
+			JSONobject += "{ \"";
+			JSONobject += fileName;
+			JSONobject += "\" : [";
+
+			// if we're at the last element, close this empty directory
+			if ( fileIndex == packageGlobalInfo.number_entry - 1 )
+			{
+				JSONobject += "]}";
+			}
+
+			prevFileInDirectory = false;
+		}
+		else if ( currentLevel < prevNestedLevel )
+		{
+			// We went up a directory, so we're at a file
+
+			// Close previous directory tree
+			JSONobject += "]},";
+
+			// Append file
+			JSONobject += "{ \"filename\" : \"";
+			JSONobject += fileNameWithoutPath;
+			JSONobject += "\" }";
+
+			// if we're at the last element, close this file
+			if ( fileIndex == packageGlobalInfo.number_entry - 1 )
+			{
+				// TODO: while loop this ending tag depending on how deep current level is
+				JSONobject += "]}";
+			}
+
+			prevFileInDirectory = true;
+		}
+		else
+		{
+			// levels are equal, either we switched from a directory that was empty
+			// to another directory, or we're at a file
+			if ( *fileNameWithoutPath == '\0' )
+			{
+				// Close previous directory tree
+				JSONobject += "]},";
+
+				// Start constructing a JSON directory tree
+				JSONobject += "{ \"";
+				JSONobject += fileName;
+				JSONobject += "\" : [";
+
+				// if we're at the last element, close this empty directory
+				if ( fileIndex == packageGlobalInfo.number_entry - 1 )
+				{
+					JSONobject += "]}";
+				}
+
+				prevFileInDirectory = false;
+			}
+			else
+			{
+				if ( prevFileInDirectory )
+				{
+					JSONobject += ",";
+				}
+
+				// We are at a file
+				JSONobject += "{ \"filename\" : \"";
+				JSONobject += fileNameWithoutPath;
+				JSONobject += "\" }";
+
+				prevFileInDirectory = true;
+			}
+		}
+
+		// Set previous nested level
+		prevNestedLevel = currentLevel;
+
+		if ( UNZ_OK != unzGoToNextFile(zipPackage) )
+		{
+			// Log error here - Going to next file inside zip
+			fprintf(stderr, "Error iterating to next file inside Zip");
+		}
 	}
+
+	// Close root tag
+	JSONobject += "]})";
 
 	// Close the root package
 	if ( UNZ_OK != unzClose(zipPackage) )
 	{
 		// Log error here - Closing the zip package
 		fprintf(stderr, "Error Closing Zip package");
-		return "Error closing zip";
 	}
 
-	return NULL;
+	return JSONobject;
 }
 
 // Notifies JavaScript of an event
