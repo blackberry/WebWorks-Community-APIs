@@ -34,7 +34,7 @@ public:
     void NotifyEvent(const std::string& event);
 
     // Unzip Methods
-    std::string unzipPackageNative(const char* zipPath);
+    std::string unzipPackageNative(const char* zipPath, const char* unzipToPath);
 
 private:
 

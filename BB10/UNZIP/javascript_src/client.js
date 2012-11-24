@@ -17,9 +17,9 @@
 var _self = {},
     _ID = require("./manifest.json").namespace;
 
-_self.unzipPackage = function (filepath) 
+_self.unzipPackage = function (filepath, unzipToPath) 
 {
-	var args = {"filepath" : filepath};
+	var args = {"filepath" : filepath || {}, "unzipToPath" : unzipToPath || {}};
     return window.webworks.execSync(_ID, "unzipPackageServer", args);
 };
 

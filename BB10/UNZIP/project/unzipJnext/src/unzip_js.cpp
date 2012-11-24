@@ -90,10 +90,12 @@ string Unzip::InvokeMethod(const string& command)
 	if (strCommand == "unzipPackageNative")
 	{
 		// Retrieve first parameter to method
-		size_t index = command.find_first_of(" ");
-		string pathToZipStr = command.substr(index + 1, command.length());
+		string parameters = command.substr(index + 1, command.length());
+		size_t zipPathIndex = parameters.find_first_of(" ");
+		string pathToZipStr = parameters.substr(0, zipPathIndex);
+		string pathToUnzipToStr = parameters.substr(zipPathIndex + 1, parameters.length());
 
-		return unzipPackageNative(pathToZipStr.c_str());
+		return unzipPackageNative(pathToZipStr.c_str(), pathToUnzipToStr.c_str());
 	}
     else
     {
@@ -104,7 +106,7 @@ string Unzip::InvokeMethod(const string& command)
 /**
  * Returns a JSON object in the form of a C++ string to be evaluated on the JavaScript side
  */
-string Unzip::unzipPackageNative(const char *zipPath)
+string Unzip::unzipPackageNative(const char *zipPath, const char* unzipToPath)
 {
 	unzFile zipPackage = unzOpen64(zipPath);
 
@@ -182,6 +184,8 @@ string Unzip::unzipPackageNative(const char *zipPath)
 		else if ( currentLevel < prevNestedLevel )
 		{
 			// We went up a directory, so we're at a file
+			//TODO: did we go up multiple directories? if so, we should while loop the closing of
+			// previous directory trees
 
 			// Close previous directory tree
 			JSONobject += "]},";
