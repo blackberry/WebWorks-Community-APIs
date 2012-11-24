@@ -35,6 +35,7 @@ public:
 
     // Unzip Methods
     std::string unzipPackageNative(const char* zipPath, const char* unzipToPath);
+    bool extractFile(unzFile zipPackage, string filepath);
 
 private:
 

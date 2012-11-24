@@ -103,6 +103,83 @@ string Unzip::InvokeMethod(const string& command)
     }
 }
 
+/*
+ * Extracts current file in zipPackage to the working path + filename
+ * returns false if error occurs
+ */
+bool Unzip::extractFile(unzFile zipPackage, string filepath)
+{
+	if ( UNZ_OK != unzOpenCurrentFilePassword(zipPackage, NULL) )
+	{
+		// Log error here - Failed opening current file
+		fprintf(stderr, "Failed opening current file.");
+		return false;
+	}
+
+	// Allocate read buffer
+	unsigned int bufferSize = 8192;
+	void* buffer = (void*)malloc(bufferSize);
+
+	if ( buffer == NULL )
+	{
+		// Log error here - Failed in allocating memory
+		fprintf(stderr, "Failed in allocating memory.");
+		return false;
+	}
+
+	// Open our file
+	FILE* filePointer = NULL;
+	filePointer = fopen64(filepath.c_str(), "wb");
+
+	if ( filePointer == NULL )
+	{
+		// Log error here - Failed in opening file
+		fprintf(stderr, "Failed opening file.");
+		return false;
+	}
+
+	int readError = 0;
+	do
+	{
+		readError = unzReadCurrentFile(zipPackage, buffer, bufferSize);
+		if ( readError < 0 )
+		{
+			// Log error here - Failed reading current file into buffer
+			fprintf(stderr, "Error reading current file into buffer.");
+			break;
+		}
+
+		if ( readError > 0 )
+		{
+			if ( fwrite(buffer, readError, 1, filePointer) != 1 )
+			{
+				// Log error here - Failed writing extracted file
+				fprintf(stderr, "Error writing extracted file.");
+				break;
+			}
+		}
+	}
+	while ( readError > 0 );
+
+	// Close our file
+	if ( filePointer )
+	{
+		fclose(filePointer);
+	}
+
+	if ( UNZ_OK != unzCloseCurrentFile(zipPackage) )
+	{
+		// Log error here - Failed closing current file
+		fprintf(stderr, "Failed closing current file.");
+		return false;
+	}
+
+	free(buffer);
+	buffer = NULL;
+
+	return true;
+}
+
 /**
  * Returns a JSON object in the form of a C++ string to be evaluated on the JavaScript side
  */
@@ -144,6 +221,10 @@ string Unzip::unzipPackageNative(const char *zipPath, const char* unzipToPath)
 			fprintf(stderr, "Error retrieving the file information of a file inside the Zip");
 		}
 
+		// Full absolute path
+		string fullPath = unzipToPath;
+		fullPath += fileName;
+
 		// Get filename without path and if the file is a directory
 		char* currentCharacter = fileName;
 		char* fileNameWithoutPath = fileName;
@@ -168,6 +249,14 @@ string Unzip::unzipPackageNative(const char *zipPath, const char* unzipToPath)
 			}
 
 			// we went down a directory
+
+			// Create the directory
+			if ( mkdir(fullPath.c_str(), 0775) == -1 )
+			{
+				// Log error here - Failed in making a new directory
+				fprintf(stderr, "Error creating directory.");
+			}
+
 			// Start constructing a JSON directory tree
 			JSONobject += "{ \"";
 			JSONobject += fileName;
@@ -184,6 +273,13 @@ string Unzip::unzipPackageNative(const char *zipPath, const char* unzipToPath)
 		else if ( currentLevel < prevNestedLevel )
 		{
 			// We went up a directory, so we're at a file
+
+			// Extract our file
+			if ( !extractFile(zipPackage, fullPath) )
+			{
+				return "( { error } )";
+			}
+
 			//TODO: did we go up multiple directories? if so, we should while loop the closing of
 			// previous directory trees
 
@@ -210,6 +306,13 @@ string Unzip::unzipPackageNative(const char *zipPath, const char* unzipToPath)
 			// to another directory, or we're at a file
 			if ( *fileNameWithoutPath == '\0' )
 			{
+				// Create the directory
+				if ( mkdir(fullPath.c_str(), 0775) == -1 )
+				{
+					// Log error here - Failed in making a new directory
+					fprintf(stderr, "Error creating directory.");
+				}
+
 				// Close previous directory tree
 				JSONobject += "]},";
 
@@ -228,6 +331,12 @@ string Unzip::unzipPackageNative(const char *zipPath, const char* unzipToPath)
 			}
 			else
 			{
+				// Extract our file
+				if ( !extractFile(zipPackage, fullPath) )
+				{
+					return "( { error } )";
+				}
+
 				if ( prevFileInDirectory )
 				{
 					JSONobject += ",";
