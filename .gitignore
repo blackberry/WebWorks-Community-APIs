@@ -1,5 +1,7 @@
 add
 .DS_Store
+.project
+.trgtproject
 .metadata/
 .settings/
 *.[o]
