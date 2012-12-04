@@ -2,6 +2,8 @@
 
 The Compass API allows you to read the leading of the compass in your device.
 
+___Note that this extension is superceded by the Sensors API in WebWorks as of SDK Version 1.0.3.8. [Sample available](https://github.com/blackberry/BB10-WebWorks-Samples/tree/master/Sensors). It will remain here as another example of a BlackBerry 10 WebWorks Community Extension.___
+
 **Tested On**
 
 * BlackBerry 10.0.9.388
