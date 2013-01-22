@@ -21,17 +21,13 @@ Have a problem with this extension?  [Log an Issue](https://github.com/blackberr
 
 ## How To Configure The Extension For Use
 
-1. Locate your BlackBerry WebWorks SDK for Tablet OS extensions directory using your File Explorer.  Default path is _**C:\Program Files\Research In Motion\BlackBerry WebWorks Packager\ext**_
+1. Locate your BlackBerry WebWorks SDK for Tablet OS extensions directory using your File Explorer.  Default path for Windows is _**C:\Program Files\Research In Motion\BlackBerry WebWorks SDK for <version number>\ext**_ Default path for Mac is _**\Developer\SDKs\Research In Motion\BlackBerry WebWorks SDK for <version number>\ext**_
 
 2. Create a new _**webworks.io.filetransfer**_ directory in the _**ext**_ directory
 
-3. Download the source from this repository and unzip it to a location on your computer
+3. Download the source from this repository and unzip it to a location on your computer _**Tablet\UploadDownload**_
 
-4. Using File Explorer browse to this extension's downloaded source code _**Tablet\UploadDownload**_
-
-5. Copy the _**library.xml**_ file from the downloaded _**Tablet\UploadDownload**_ directory to your new _**ext\webworks.io.filetransfer**_ directory
-
-6. Copy the downloaded _**Tablet\UploadDownload\src\webworks**_ directory to your new _**ext\webworks.io.filetransfer\webworks**_ directory
+4. Copy all files from the downloaded _**Tablet\UploadDownload\ext**_ directory to your new _**ext\webworks.io.filetransfer**_ directory
 
 **NOTE:** Be sure to back-up this _**ext\webworks.io.filetransfer**_ directory in your WebWorks SDK extensions directory before performing a WebWorks SDK upgrade. Simply copy it back into the _**ext**_ directory after you have completed your SDK upgrade.
 
@@ -129,3 +125,21 @@ Whenever you use the below feature id in any of your WebWorks applications this 
       </body>
     </html>
 
+    <?xml version="1.0" encoding="utf-8"?>
+    <widget xmlns=" http://www.w3.org/ns/widgets"
+        xmlns:rim="http://www.blackberry.com/ns/widgets"
+        version="2.0.0.0">
+
+        <name>Sample App</name>
+
+        <description>
+            A sample application to demonstrate some of the possibilities.
+        </description>
+
+        <content src="index.html"/>
+
+        <feature id="webworks.io.fileTransfer"/>
+    
+        <access uri="*" subdomains="true"/>
+
+    </widget>
