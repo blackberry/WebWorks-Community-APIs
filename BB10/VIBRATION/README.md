@@ -27,7 +27,7 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 
 ## Summary
 var data = { "duration" : [int: duration], "intensity" : [int: intensity]}
-var id = community.vibration.requestVibration(data, [function: callback])
+var id = community.vibration.vibration_request(data, [function: callback])
 
 Parameters:  
 duration : length of vibration ( 0 - 5000)
@@ -36,7 +36,7 @@ intensity : level of vibration ( 1 , 10 , 100 )
 Return:  
 request id - used to reference the Vibration request
 
-community.vibration.requestVibration([String:id])  
+community.vibration.vibration_request([String:id])  
 Parameter:  
 id: request id - given when requestVibration command was issued.
 	
@@ -44,7 +44,7 @@ Example:
 
 	<script type="text/javascript" >
 		var data = { "duration" : 1000 , "intensity" : 100 };
-		var id = community.vibration.requestVibration(data, null);
+		var id = community.vibration.vibration_request(data, null);
 	</script>
 
 ## Disclaimer

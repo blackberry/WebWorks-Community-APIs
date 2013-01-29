@@ -34,8 +34,8 @@ VibrationNDK::~VibrationNDK() {
 }
 
 // Asynchronous callback with JSON data input and output
-void VibrationNDK::requestVibration(const std::string& inputString) {
-	std::string event = "requestVibrationCallbackResult";
+void VibrationNDK::vibrationRequest(const std::string& inputString) {
+	std::string event = "vibration_requestCallbackResult";
 
 	// Parse the arg string as JSON
 	Json::FastWriter writer;
@@ -48,10 +48,9 @@ void VibrationNDK::requestVibration(const std::string& inputString) {
 		error["result"] = "Cannot parse JSON object";
 		m_pParent->NotifyEvent(event + " " + writer.write(error));
 	} else {
-		root["result"] = root["duration"].asInt() + root["intensity"].asInt();
-		vibration_request(
-				root["duration"].asInt()
-				,root["intensity"].asInt()
+		root["id"] =  vibration_request(
+				                     (int) root["intensity"].asInt()
+				                    ,(int) root["duration"].asInt()
 		);
 		m_pParent->NotifyEvent(event + " " + writer.write(root));
 	}

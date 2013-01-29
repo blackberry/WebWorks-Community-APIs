@@ -29,15 +29,16 @@
 		if (rippleLoaded) return;
 		rippleLoaded = true;
 		
-		if (community.template) {
+		if (community.vibration) {
 
 			div = document.getElementById('vibrationRequestField');
-			var jsonData = { "duration": 1000, "intensity": 100 };
-			community.vibration.requestVibration(jsonData, requestVibrationCallbackResult(jsonData));
+			var jsonData = { "duration": 5000, "intensity": 100 };
+			community.vibration.vibration_request(jsonData, requestVibrationCallbackResult(jsonData));
 		}
 	}, false);
     
 	function requestVibrationCallbackResult(data) {
+		alert( data.id);
 		var div = document.getElementById('vibrationRequestField');
 		if (data) {
 			div.className = 'invoked';
@@ -45,8 +46,8 @@
 	}
     
 	function vibrate(){
-		var jsonData = { "duration": 1000, "intensity": 100 };
-		community.vibration.requestVibration(jsonData, requestVibrationCallbackResult(jsonData));
+		var jsonData = { "duration": 10, "intensity": 100 };
+		community.vibration.vibration_request(jsonData, requestVibrationCallbackResult);
 	}
 
 	</script>
