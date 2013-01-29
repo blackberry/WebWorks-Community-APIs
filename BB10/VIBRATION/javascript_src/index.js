@@ -27,9 +27,9 @@ module.exports = {
 	// These methods call into vibrationJNEXT.js which handles the
 	// communication through the JNEXT plugin to vibration_js.cpp
 
-	requestVibration: function (success, fail, args) {
+	vibration_request: function (success, fail, args) {
 		args = JSON.parse(decodeURIComponent(args["input"]));
-		vibration.getInstance().requestVibration(args);
+		vibration.getInstance().vibration_request(args);
 		success();
 	}
 	

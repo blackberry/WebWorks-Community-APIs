@@ -23,9 +23,9 @@ var _self = {},
 
 	
 	// Asynchronous with sending and returning a JSON object
-	_self.requestVibration = function (input, callback) {
-		window.webworks.event.once(_ID, "requestVibrationCallbackResult", callback);
-		return window.webworks.execAsync(_ID, "requestVibration", { input: input });
+	_self.vibration_request = function (input, callback) {
+		window.webworks.event.once(_ID, "vibration_requestCallbackResult", callback);
+		return window.webworks.execAsync(_ID, "vibration_request", { input: input });
 	};
 
 module.exports = _self;

@@ -30,7 +30,7 @@ public:
 
 	virtual ~VibrationNDK();
 
-	void requestVibration(const std::string& inputString);
+	void vibrationRequest(const std::string& inputString);
 
 private:
 	VibrationJS *m_pParent;

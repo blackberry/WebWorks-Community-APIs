@@ -77,8 +77,8 @@ string VibrationJS::InvokeMethod(const string& command) {
 	std::string strCommand = command.substr(0, index);
 	std::string arg = command.substr(index + 1, command.length());
 
-	if (strCommand == "requestVibration") {
-		m_pVibrationController->requestVibration(arg);
+	if (strCommand == "vibration_request") {
+		m_pVibrationController->vibrationRequest(arg);
 	}
 
 	strCommand.append(";");

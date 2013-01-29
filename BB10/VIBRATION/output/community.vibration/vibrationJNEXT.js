@@ -49,8 +49,22 @@ JNEXT.Vibration = function () {
 
     // calls into InvokeMethod(string command) in vibration_js.cpp
     
-    self.requestVibration = function (input) {
-        return JNEXT.invoke(self.m_id, "requestVibration " + JSON.stringify(input));
+    self.vibration_request = function (input) {
+        return JNEXT.invoke(self.m_id, "vibration_request " + JSON.stringify(input));
+    };
+
+    // Fired by the Event framework (used by asynchronous callbacks)
+    self.onEvent = function (strData) {
+        var arData = strData.split(" "),
+            strEventDesc = arData[0],
+            jsonData;
+        // Event names are set in native code when fired,
+        // and must be checked here.
+        if (strEventDesc === "vibration_requestCallbackResult") {
+            // Slice off the event name and the rest of the data is our JSON
+            jsonData = arData.slice(1, arData.length).join(" ");
+            _event.trigger("vibration_requestCallbackResult", JSON.parse(jsonData));
+        }
     };
 
     // ************************
