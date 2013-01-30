@@ -2,7 +2,7 @@
 
 This document describes how to generate a WebWorks Extension for retrieving the free memory.
 
-__This example follows an older format. It is recommended that you use the new template for your [extension starting point](WebWorks-Community-APIs/tree/master/BB10/Template)__
+__This example follows an older format. It is recommended that you use the new template for your [extension starting point](../Template)__
 
 The implementation is split into two parts: [Native](#native) and [JavaScript](#JavaScript)
 
