@@ -33,7 +33,7 @@ Copy the Template folder to a location on your computer to start working with it
 
 1. Open the Momentics IDE. Navigate to the workbench and from the program menu
 select File -> Import and choose "Existing Projects into Workspace".
-2. Choose "Select root directory: " and browse to the NDK_project directory where you copied the Template. Select the Template project in the Projects list and uncheck "Copy projects into workspace". Click Finish.
+2. Choose "Select root directory: " and browse to the /NDK_project directory where you copied the Template. Select the Template project in the Projects list and uncheck "Copy projects into workspace". Click Finish.
 3. Follow these next steps to build the template extension to be sure the setup is working.
 
 #### How to build your native Extension</a>
@@ -56,7 +56,7 @@ If you wish to do the copying manually, continue with these steps:
 2. The device and simulator folders should contain the libTemplate.so files built by the NDK.
 3. Copy the community.templateExt folder into your WebWorks SDK, placing it in the Framework/ext directory.
 
-If you have Ant installed and would like to use the build script provided, edit the script as follows (you will find it in the /ext directory, called [build.xml](WebWorks-Community-APIs/blob/master/BB10/Template/ext/build.xml) ).
+If you have Ant installed and would like to use the build script provided, edit the script as follows (you will find it in the /ext directory, called [build.xml](/ext/build.xml) ).
 
 1. Change the project name to match the extension name in manifest.json.
 2. Change the bbwp.native.dir value to match the SDK you want to deploy to.
@@ -103,9 +103,9 @@ self.init = function () {
 #### Update .js files
 There are many other places where "template" is used in file names and methods in the JavaScript files. These can be changed to better reflect the new extension API. Note carefully where index.js and templateJNEXT.js refer to each other so that you don't break the chain:
 
-1. [index.js calls require on the .template property of templateJNEXT](WebWorks-Community-APIs/blob/master/ext/community.templateExt/index.js#L17).
-2. [The Template object is defined in templateJNEXT.js](WebWorks-Community-APIs/blob/master/BB10/Template/ext/community.templateExt/templateJNEXT.js#L24).
-3. [the Template object is returned at the end of templateJNEXT.js](WebWorks-Community-APIs/blob/master/BB10/Template/ext/community.templateExt/templateJNEXT.js#L120-123).
+1. [index.js calls require on the .template property of templateJNEXT](/ext/community.templateExt/index.js#L17).
+2. [The Template object is defined in templateJNEXT.js](/ext/community.templateExt/templateJNEXT.js#L24).
+3. [the Template object is returned at the end of templateJNEXT.js](/ext/community.templateExt/templateJNEXT.js#L120-123).
 
 #### Change NDK files
 In the files template_ndk.hpp and template_ndk.cpp, there are plenty of uses of "Template" and "template" which can be changed to match the new extension.
@@ -122,14 +122,14 @@ Follow the steps above to:
 
 Extensions are organized into several files, each with a specific role.
 
-1. <a href="WebWorks-Community-APIs/blob/master/BB10/Template/ext/community.templateExt/manifest.json">manifest.json</a> - defines the namespace of the extension and any dependencies it has on other extensions.
-2. <a href="WebWorks-Community-APIs/blob/master/BB10/Template/ext/community.templateExt/client.js">client.js</a> - the client file defines the API that can be called by an application. It calls to functions in index.js using the WebWorks SDK. It also connects callback functions to the events that fire them.
-3. <a href="WebWorks-Community-APIs/blob/master/BB10/Template/ext/community.templateExt/index.js">index.js</a> - This is the main controller of the extension. It receives calls from the client.js through WebWorks, and calls the appropriate methods in templateJNEXT.js.
-4. <a href="WebWorks-Community-APIs/blob/master/BB10/Template/ext/community.templateExt/templateJNEXT.js">templateJNEXT.js</a> - This file handles communication with the native code through the JNEXT plugin. It is kept in a separate file and set of methods to reduce the dependency on JNEXT.
-5. <a href="WebWorks-Community-APIs/blob/master/BB10/TemplateNDK_project/src/template_js.hpp">template_js.hpp</a> - C++ header for the JNEXT code. You should rarely have to edit this aside from renaming.
-6. <a href="WebWorks-Community-APIs/blob/master/BB10/TemplateNDK_project/src/template_js.cpp">template_js.cpp</a> - C++ code for the JNEXT plugin. Besides renaming, the primary editing of this will be to edit the InvokeMethod function to call the appropriate methods in template_ndk.cpp, given the command sent in from templateJNEXT.js.
-7. <a href="WebWorks-Community-APIs/blob/master/BB10/TemplateNDK_project/src/template_ndk.hpp">template_ndk.hpp</a> - C++ header for the native code. Where you will need to list method signatures for the extenion methods called from the template_js.cpp file, and any private methods or variables.
-8. <a href="WebWorks-Community-APIs/blob/master/BB10/TemplateNDK_project/src/template_ndk.cpp">template_ndk.cpp</a> - C++ native code. All the main native code will go here typically. 
+1. <a href="/ext/community.templateExt/manifest.json">manifest.json</a> - defines the namespace of the extension and any dependencies it has on other extensions.
+2. <a href="/ext/community.templateExt/client.js">client.js</a> - the client file defines the API that can be called by an application. It calls to functions in index.js using the WebWorks SDK. It also connects callback functions to the events that fire them.
+3. <a href="/ext/community.templateExt/index.js">index.js</a> - This is the main controller of the extension. It receives calls from the client.js through WebWorks, and calls the appropriate methods in templateJNEXT.js.
+4. <a href="/ext/community.templateExt/templateJNEXT.js">templateJNEXT.js</a> - This file handles communication with the native code through the JNEXT plugin. It is kept in a separate file and set of methods to reduce the dependency on JNEXT.
+5. <a href="/NDK_project/src/template_js.hpp">template_js.hpp</a> - C++ header for the JNEXT code. You should rarely have to edit this aside from renaming.
+6. <a href="/NDK_project/src/template_js.cpp">template_js.cpp</a> - C++ code for the JNEXT plugin. Besides renaming, the primary editing of this will be to edit the InvokeMethod function to call the appropriate methods in template_ndk.cpp, given the command sent in from templateJNEXT.js.
+7. <a href="/NDK_project/src/template_ndk.hpp">template_ndk.hpp</a> - C++ header for the native code. Where you will need to list method signatures for the extenion methods called from the template_js.cpp file, and any private methods or variables.
+8. <a href="/NDK_project/src/template_ndk.cpp">template_ndk.cpp</a> - C++ native code. All the main native code will go here typically. 
 
 ## Communication end to end
 
