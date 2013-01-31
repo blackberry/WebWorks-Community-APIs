@@ -72,7 +72,7 @@ If you wish to do the copying manually, continue with these steps:
 2. The device and simulator folders should contain the libPreventSleep.so files built by the NDK.
 3. Copy the community.preventsleep folder into your WebWorks SDK, placing it in the Framework/ext directory.
 
-If you have Ant installed and would like to use the build script provided, edit the script as follows (you will find it in the /ext directory, called [build.xml](/timwindsor/WebWorks-Community-APIs/tree/master/BB10/PreventSleep/ext/build.xml) ).
+If you have Ant installed and would like to use the build script provided, edit the script as follows (you will find it in the /ext directory, called [build.xml](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/PreventSleep/ext/build.xml) ).
 
 1. Change the project name to match the extension name in manifest.json.
 2. Change the bbwp.native.dir value to match the SDK you want to deploy to.
@@ -96,7 +96,7 @@ community.preventsleep.setPreventSleep(true);
 
 ### Modifying the Extension
 
-See the examples in the [Template Extension](/blackberry/WebWorks-Community-APIs/blob/master/BB10/Template) for how to add additional features to this extension
+See the examples in the [Template Extension](https://github.com/blackberry/WebWorks-Community-APIs/blob/master/BB10/Template) for how to add additional features to this extension
 
 #### Rebuild 
 When making changes, rebuild regularly so you don't make a really hard to find typo.
