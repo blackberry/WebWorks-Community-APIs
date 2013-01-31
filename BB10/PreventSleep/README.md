@@ -4,9 +4,11 @@ Prevent Sleep
 This BlackBerry 10 WebWorks extension keeps the screen from dimming while the application is in the foreground. It can be turned on or off and a property is set that is _true_ when sleep is being prevented, and _false_ otherwise.
 
 ** Tested On **
+
 BlackBerry 10 Dev Alpha B 10.0.10.261
 
 ** Author **
+
 [Tim Windsor](https://github.com/timwindsor)
 
 ## Building and Testing the Sample
@@ -17,8 +19,8 @@ BlackBerry 10 Dev Alpha B 10.0.10.261
 3. Load it on your phone using the Ant Build Script, or with the _blackberry-deploy_ command found in the dependencies/tools folder of your WebWorks SDK.
 4. When the application runs, a series of divs on the screen will appear with an orange background, tapping the top div will toggle prevent sleep on and off. When sucessful calls to the extension of any type occur, the div backgrounds will change to blue as the screenshots below.
 
-![Screenshot](screenshot1.png)
-![Screenshot](screenshot2.png)
+![Screenshot](screenshot1.png) &nbsp;
+![Screenshot](screenshot2.png) &nbsp;
 ![Screenshot](screenshot3.png)
 
 ## Including the feature in your application
@@ -70,7 +72,7 @@ If you wish to do the copying manually, continue with these steps:
 2. The device and simulator folders should contain the libPreventSleep.so files built by the NDK.
 3. Copy the community.preventsleep folder into your WebWorks SDK, placing it in the Framework/ext directory.
 
-If you have Ant installed and would like to use the build script provided, edit the script as follows (you will find it in the /ext directory, called [build.xml](Extension-Template/blob/master/ext/build.xml) ).
+If you have Ant installed and would like to use the build script provided, edit the script as follows (you will find it in the /ext directory, called [build.xml](/timwindsor/WebWorks-Community-APIs/tree/master/BB10/PreventSleep/ext/build.xml) ).
 
 1. Change the project name to match the extension name in manifest.json.
 2. Change the bbwp.native.dir value to match the SDK you want to deploy to.
@@ -92,7 +94,7 @@ All the methods in the extension will be prefixed by that feature id, so a metho
 community.preventsleep.setPreventSleep(true);
 ```
 
-### Modifying the Template Extension
+### Modifying the Extension
 
 See the examples in the [Template Extension](/blackberry/WebWorks-Community-APIs/blob/master/BB10/Template) for how to add additional features to this extension
 
