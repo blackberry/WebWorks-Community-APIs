@@ -20,7 +20,7 @@
 	
 	<name>VibrationTest</name>
 	<description>Vibration test application</description>
-	<author> Research In Motion Ltd. </author>
+	<author> Alex Kwan </author>
 	
 	<rim:orientation mode="auto" />
 	
