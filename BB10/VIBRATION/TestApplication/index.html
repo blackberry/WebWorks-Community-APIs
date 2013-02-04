@@ -24,36 +24,50 @@
 	var rippleLoaded = false;
     var intensity = 1;
     var startTime, endTime;
+    var currentlevel = 0;
 	document.addEventListener('webworksready', function(e) {
 		// This is a hack for Ripple calling webworksready multiple times
 		if (rippleLoaded) return;
 		rippleLoaded = true;
 		
 		if (community.vibration) {
-
-			div = document.getElementById('vibrationRequestField');
-			var jsonData = { "duration": 5000, "intensity": 100 };
-			community.vibration.vibration_request(jsonData, requestVibrationCallbackResult(jsonData));
+			//do vibration functionality in here knowing that for sure the vibration library is valid
+			// and webworks has loaded
 		}
 	}, false);
-    
-	function requestVibrationCallbackResult(data) {
-		alert( data.id);
-		var div = document.getElementById('vibrationRequestField');
-		if (data) {
-			div.className = 'invoked';
-		}
-	}
-    
+
 	function vibrate(){
-		var jsonData = { "duration": 10, "intensity": 100 };
-		community.vibration.vibration_request(jsonData, requestVibrationCallbackResult);
+		var chance = Math.floor((Math.random()*3)+1);
+		if ( chance == 1 ) {
+			currentlevel++;
+			document.getElementById('scoreCounter').innerHTML = 'Score : '+currentlevel;
+			if( currentlevel == 10 ){
+				alert('You win');
+				currentlevel = 0;
+				document.getElementById('scoreCounter').innerHTML = 'Score : '+currentlevel;
+			}
+		} else {
+			currentlevel = 0;
+			document.getElementById('scoreCounter').innerHTML = 'Score : '+currentlevel;
+			var jsonData = { "duration": 500, "intensity": 1000 };
+			community.vibration.vibration_request(jsonData, null);
+		}
 	}
 
 	</script>
 </head>
 <body>
-	
-	<div id='vibrationRequestField' class='notInvoked'onclick="vibrate();"></div>
+	<div id="title" class='title'>Pick the right button!<br/> 2 of the 3 buttons are rigged to buzz <br/> 1 is not <br/> choose correctly...</div>
+	<br/> 
+	<br/>
+	<div id="scoreCounter" class='scoreBoard'> Score : 0</div>
+	<br/>
+	<br/>
+	<div id="button1" class='buzz1' onclick="vibrate();"></div>
+	<br/>
+	<div id="button2" class='buzz2' onclick="vibrate();"></div>
+	<br/>
+	<div id="button3" class='buzz3' onclick="vibrate();"></div>
+	<br/>
 </body>
 </html>
