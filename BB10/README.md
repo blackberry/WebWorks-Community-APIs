@@ -16,16 +16,14 @@ Start with the [Template](https://github.com/blackberry/WebWorks-Community-APIs/
 2. [Prevent Sleep](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/PreventSleep)
 	1.  setPreventSleep(boolean) - true prevents the screen from sleeping, false allows it to.
 	2.  isSleepPrevented - true if sleep is prevented, false otherwise.
-3. [Screen](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/screen)
-    1. setWallpaper (<file>) - allows setting the wallpaper using an absolute file path.
-4. [LED](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/LED)
+3. [LED](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/LED)
 	1. var id = community.led.startLed("FFFF00", "10") - start the LED blinking with the given colour, for the number of times requested. 0 is indefinite.
     2. community.led.stopLed(id) - stop the LED blink request with the given id.
-5. [thumbnail](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/thumbnail)
+4. [thumbnail](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/thumbnail)
 	1. createThumbNail(path, {width: width, height: height, quality:quality}) - Create a thumbnail of the image at "path" with the given options.
-6. [UNZIP](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/UNZIP)
+5. [UNZIP](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/UNZIP)
 	1. unzipPackage("shared/documents/bbtest.zip", "shared/documents/") - unzip the given file to the directory given.
-7. [VIBRATION](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/VIBRATION)
+6. [VIBRATION](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/VIBRATION)
 	1. vibration_request({ "duration" : [int: duration], "intensity" : [int: intensity]}, [function: callback]) - vibrate phone with given intensity and duration, with optional callback.
 
 
