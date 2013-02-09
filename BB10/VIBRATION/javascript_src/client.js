@@ -26,7 +26,7 @@ var _self = {},
 	_self.vibration_request = function (input, callback) {
 		
 		if ( typeof(callback) == "function" ) {
-			window.webworks.event.once(_ID, "requestVibrationCallbackResult", callback);
+			window.webworks.event.once(_ID, "vibration_requestCallbackResult", callback);
 		} 
 
 		window.webworks.execAsync(_ID, "vibration_request", { input: input});
