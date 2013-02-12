@@ -23,25 +23,24 @@
 #include <zxing/common/HybridBinarizer.h>
 #include <zxing/qrcode/QRCodeReader.h>
 #include <zxing/MultiFormatReader.h>
-
+#include <sstream>
 #include "qrcodereader_ndk.hpp"
 #include "qrcodereader_js.hpp"
-
 using namespace zxing;
 using namespace zxing::qrcode;
 
 namespace webworks {
 
 	QRCodeReaderJS *eventController;
-
+	QRCodeReaderNDK* self;
 	QRCodeReaderNDK::QRCodeReaderNDK(QRCodeReaderJS *parent) {
 			m_pParent = parent;
 			eventController = parent;
+			self = this;
 	}
 
-	QRCodeReaderNDK::~QRCodeReaderNDK() {}
-	void
-	printError(camera_error_t err)
+
+	void printError(camera_error_t err)
 	{
 		switch (err) {
 		case CAMERA_EAGAIN:
@@ -94,15 +93,12 @@ namespace webworks {
 		}
 	}
 
+
+	QRCodeReaderNDK::~QRCodeReaderNDK() {}
+
 	void
 	viewfinder_callback(camera_handle_t handle,camera_buffer_t* buf,void* arg)
 	{
-		Json::FastWriter writer;
-		Json::Reader reader;
-		Json::Value root;
-
-		std::string event = "community.QRCodeReader.codeFoundCallback.native";
-
 		camera_frame_nv12_t* data = (camera_frame_nv12_t*)(&(buf->framedesc));
 		uint8_t* buff = buf->framebuf;
 		int stride = data->stride;
@@ -133,10 +129,13 @@ namespace webworks {
 			result = reader->decode(bitmap, *hints);
 			std::string newBarcodeData = result->getText()->getText().data();
 
-			root["val"] =  newBarcodeData;
+			Json::FastWriter writer;
+			Json::Value root;
+			root["value"] =  newBarcodeData;
+			std::string event = "community.QRCodeReader.codeFoundCallback.native";
 
 			eventController->NotifyEvent(event + " " + writer.write(root));
-
+			self->stopQRCodeRead();
 			#ifdef DEBUG
 				fprintf(stderr, "This is the detected QR Code : %s\n", newBarcodeData.c_str());
 			#endif
@@ -157,18 +156,21 @@ namespace webworks {
 		camera_error_t err;
 
 		err = camera_open(CAMERA_UNIT_REAR,CAMERA_MODE_RW | CAMERA_MODE_ROLL,&mCameraHandle);
-
 		if ( err != CAMERA_EOK){
-		   fprintf(stderr, " error1 = %d\n ", err);
+#ifdef DEBUG
+		   fprintf(stderr, " Ran into an issue when initializing the camera = %d\n ", err);
 		   printError( err ) ;
+#endif
 		   return EIO;
 		}
 
 		err = camera_start_photo_viewfinder( mCameraHandle, &viewfinder_callback, NULL, NULL);
-		//err = camera_start_photo_viewfinder( mCameraHandle, (&QRCodeReaderNDK::viewfinder_callback), NULL, NULL);
+
 		if ( err != CAMERA_EOK) {
+#ifdef DEBUG
 		   fprintf(stderr, "Ran into a strange issue when starting up the camera viewfinder\n");
 		   printError( err ) ;
+#endif
 		   return EIO;
 		}
 		return EOK;
@@ -193,6 +195,13 @@ namespace webworks {
 		   return EIO;
 		}
 
+		Json::FastWriter writer;
+					Json::Value root;
+					root["disabled"] =  "true";
+					std::string event = "community.QRCodeReader.disabledCallback.native";
+
+					eventController->NotifyEvent(event + " " + writer.write(root));
+					self->stopQRCodeRead();
 		return EOK;
 	}
 

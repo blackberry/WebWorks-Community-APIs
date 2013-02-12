@@ -57,15 +57,21 @@ JNEXT.QRCodeReader = function () {
         // Event names are set in native code when fired,
         // and must be checked here.
         if (strEventDesc === "community.QRCodeReader.codeFoundCallback.native") {
+             // Slice off the event name and the rest of the data is our JSON
+            jsonData = arData.slice(1, arData.length).join(" ");
             _event.trigger("community.QRCodeReader.codeFoundCallback", JSON.parse(jsonData));
         } 
+        else if ( strEventDesc === "community.QRCodeReader.disabledCallback.native") {
+             jsonData = arData.slice(1, arData.length).join(" ");
+            _event.trigger("community.QRCodeReader.disabledCallback", JSON.parse(jsonData));
+        }
     };
 
     // Thread methods
-    self.startRead = function () {
+    self.QRCodeReaderStart = function () {
         return JNEXT.invoke(self.m_id, "QRCodeReaderStart");
     };
-    self.stopRead = function () {
+    self.QRCodeReaderStop = function () {
         return JNEXT.invoke(self.m_id, "QRCodeReaderStop");
     };
 

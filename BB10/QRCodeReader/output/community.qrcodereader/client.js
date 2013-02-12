@@ -17,14 +17,18 @@
 var _self = {},
 	_ID = require("./manifest.json").namespace;
 
-	_self.startRead = function (callback) {
-		window.webworks.event.add(_ID, "community.QRCodeReader.codeFoundCallback", callback);
-		return window.webworks.execSync(_ID, "startRead", null);
+	_self.QRCodeReaderStart = function (callback) {
+		if ( typeof(callback) == "function" ) {
+			window.webworks.event.once(_ID, "community.QRCodeReader.codeFoundCallback", callback);
+		} 
+		return window.webworks.execAsync(_ID, "QRCodeReaderStart", null);
 	};
 
-	_self.stopStopRead = function (callback) {
-		window.webworks.event.remove(_ID, "community.QRCodeReader.codeFoundCallback", callback);
-		return window.webworks.execSync(_ID, "stopRead", null);
+	_self.QRCodeReaderStop = function (callback) {
+		if ( typeof(callback) == "function" ) {
+			window.webworks.event.once(_ID, "community.QRCodeReader.disabledCallback", callback);
+		} 
+		return window.webworks.execAsync(_ID, "QRCodeReaderStop", null);
 	};
 
 module.exports = _self;
