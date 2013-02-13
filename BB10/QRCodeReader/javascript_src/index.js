@@ -5,11 +5,11 @@ var qrcodereader = require("./qrcodereaderJNEXT").qrcodereader,
 module.exports = {
 
 	// Thread methods to start and stop
-	QRCodeReaderStart: function (success, fail) {
+	startRead: function (success, fail) {
 		qrcodereader.getInstance().QRCodeReaderStart();
 		success();
 	},
-	QRCodeReaderStop: function (success, fail) {
+	stopRead: function (success, fail) {
 		qrcodereader.getInstance().QRCodeReaderStop();
 		success();
 	}
