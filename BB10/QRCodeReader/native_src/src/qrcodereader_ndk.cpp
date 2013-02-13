@@ -23,7 +23,6 @@
 #include <zxing/common/HybridBinarizer.h>
 #include <zxing/qrcode/QRCodeReader.h>
 #include <zxing/MultiFormatReader.h>
-#include <sstream>
 #include "qrcodereader_ndk.hpp"
 #include "qrcodereader_js.hpp"
 using namespace zxing;
@@ -37,64 +36,65 @@ namespace webworks {
 			m_pParent = parent;
 			eventController = parent;
 			self = this;
+			mCameraHandle = CAMERA_HANDLE_INVALID;
 	}
-
-
-	void printError(camera_error_t err)
-	{
-		switch (err) {
-		case CAMERA_EAGAIN:
-		fprintf(stderr,"The specified camera was not available. Try again.\n");
-		break;
-		case CAMERA_EINVAL:
-		fprintf(stderr,"The camera call failed because of an invalid parameter.\n");
-		break;
-		case CAMERA_ENODEV:
-		fprintf(stderr, "No such camera was found.\n");
-		break;
-		case CAMERA_EMFILE:
-		fprintf(stderr,"The camera called failed because of a file table overflow.\n");
-		break;
-		case CAMERA_EBADF:
-		fprintf(stderr,"Indicates that an invalid handle to a @c camera_handle_t value was used.\n");
-		break;
-		case CAMERA_EACCESS:
-		fprintf(stderr,"Indicates that the necessary permissions to access the camera are not available.\n");
-		break;
-		case CAMERA_EBADR:
-		fprintf(stderr,"Indicates that an invalid file descriptor was used.\n");
-		break;
-		case CAMERA_ENOENT:
-		fprintf(stderr,"Indicates that the access a file or directory that does not exist.\n");
-		break;
-		case CAMERA_ENOMEM:
-		fprintf(stderr, "Indicates that memory allocation failed.\n");
-		break;
-		case CAMERA_EOPNOTSUPP:
-		fprintf(stderr,
-		"Indicates that the requested operation is not supported.\n");
-		break;
-		case CAMERA_ETIMEDOUT:
-		fprintf(stderr,"Indicates an operation on the camera is already in progress. In addition, this error can indicate that an error could not be completed because i was already completed. For example, if you called the @c camera_stop_video() function but the camera had already stopped recording video, this error code would be returned.\n");
-		break;
-		case CAMERA_EALREADY:
-		fprintf(stderr,
-		"Indicates an operation on the camera is already in progress. In addition,this error can indicate that an error could not be completed because it was already completed. For example, if you called the @c camera_stop_video() function but the camera had already stopped recording video, this error code would be returned.\n");
-		break;
-		case CAMERA_EUNINIT:
-		fprintf(stderr,"Indicates that the Camera Library is not initialized.\n");
-		break;
-		case CAMERA_EREGFAULT:
-		fprintf(stderr,"Indicates that registration of a callback failed.\n");
-		break;
-		case CAMERA_EMICINUSE:
-		fprintf(stderr,"Indicates that it failed to open because microphone is already in use.\n");
-		break;
-		}
-	}
-
 
 	QRCodeReaderNDK::~QRCodeReaderNDK() {}
+    //need to refactor and allow for all possible errors to bubble up to JS layer
+	//we need to return up all the possible errors
+	char*
+	getCameraErrorDesc(camera_error_t err)
+		{
+			char* ret;
+			switch (err) {
+			case CAMERA_EAGAIN:
+				return "The specified camera was not available. Try again.";
+			case CAMERA_EINVAL:
+				return "The camera call failed because of an invalid parameter.";
+			break;
+			case CAMERA_ENODEV:
+				return "No such camera was found.";
+			break;
+			case CAMERA_EMFILE:
+				return "The camera called failed because of a file table overflow.";
+			break;
+			case CAMERA_EBADF:
+				return "Indicates that an invalid handle to a @c camera_handle_t value was used.";
+			break;
+			case CAMERA_EACCESS:
+				return "Indicates that the necessary permissions to access the camera are not available.";
+			break;
+			case CAMERA_EBADR:
+				return "Indicates that an invalid file descriptor was used.";
+			break;
+			case CAMERA_ENOENT:
+				return "Indicates that the access a file or directory that does not exist.";
+			break;
+			case CAMERA_ENOMEM:
+				return "Indicates that memory allocation failed.";
+			break;
+			case CAMERA_EOPNOTSUPP:
+				return "Indicates that the requested operation is not supported.";
+			break;
+			case CAMERA_ETIMEDOUT:
+				return "Indicates an operation on the camera is already in progress. In addition, this error can indicate that an error could not be completed because i was already completed. For example, if you called the @c camera_stop_video() function but the camera had already stopped recording video, this error code would be returned.";
+			break;
+			case CAMERA_EALREADY:
+				return "Indicates an operation on the camera is already in progress. In addition,this error can indicate that an error could not be completed because it was already completed. For example, if you called the @c camera_stop_video() function but the camera had already stopped recording video, this error code would be returned.";
+			break;
+			case CAMERA_EUNINIT:
+				return "Indicates that the Camera Library is not initialized.";
+			break;
+			case CAMERA_EREGFAULT:
+				return "Indicates that registration of a callback failed.";
+			break;
+			case CAMERA_EMICINUSE:
+				return "Indicates that it failed to open because microphone is already in use.";
+			break;
+			}
+			return NULL;
+		}
+
 
 	void
 	viewfinder_callback(camera_handle_t handle,camera_buffer_t* buf,void* arg)
@@ -131,9 +131,11 @@ namespace webworks {
 
 			Json::FastWriter writer;
 			Json::Value root;
+			root["successful"] = true;
+			root["error"] = EOK;
+			root["reason"] = "";
 			root["value"] =  newBarcodeData;
 			std::string event = "community.QRCodeReader.codeFoundCallback.native";
-
 			eventController->NotifyEvent(event + " " + writer.write(root));
 			self->stopQRCodeRead();
 			#ifdef DEBUG
@@ -152,15 +154,22 @@ namespace webworks {
 
 	// Asynchronous callback with JSON data input and output
 	int QRCodeReaderNDK::startQRCodeRead(){
-		mCameraHandle = CAMERA_HANDLE_INVALID;
+		std::string event = "community.QRCodeReader.codeFoundCallback.native";
+		Json::FastWriter writer;
+		Json::Value root;
+
 		camera_error_t err;
 
 		err = camera_open(CAMERA_UNIT_REAR,CAMERA_MODE_RW | CAMERA_MODE_ROLL,&mCameraHandle);
 		if ( err != CAMERA_EOK){
 #ifdef DEBUG
 		   fprintf(stderr, " Ran into an issue when initializing the camera = %d\n ", err);
-		   printError( err ) ;
+
 #endif
+		   root["successful"] = false;
+		   root["error"] = err;
+		   root["reason"] = getCameraErrorDesc( err );
+		   eventController->NotifyEvent(event + " " + writer.write(root));
 		   return EIO;
 		}
 
@@ -169,8 +178,11 @@ namespace webworks {
 		if ( err != CAMERA_EOK) {
 #ifdef DEBUG
 		   fprintf(stderr, "Ran into a strange issue when starting up the camera viewfinder\n");
-		   printError( err ) ;
 #endif
+		   root["successful"] = false;
+		   root["error"] = err;
+		   root["reason"] = getCameraErrorDesc( err );
+		   eventController->NotifyEvent(event + " " + writer.write(root));
 		   return EIO;
 		}
 		return EOK;
@@ -178,30 +190,43 @@ namespace webworks {
 
 	int QRCodeReaderNDK::stopQRCodeRead(){
 		camera_error_t err;
-		//check to see if the view finder is enabled, if it is enabled, disable it
+		Json::FastWriter writer;
+		Json::Value root;
+		std::string event = "community.QRCodeReader.disabledCallback.native";
+		root["disabled"] =  "true";
+
+
 		err = camera_stop_photo_viewfinder(mCameraHandle);
 		if ( err != CAMERA_EOK)
 		{
+#ifndef DEBUG
 		   fprintf(stderr, "Error with turning off the photo viewfinder \n");
-		   printError( err ) ;
+#endif
+		   root["successful"] = false;
+		   root["error"] = err;
+		   root["reason"] = getCameraErrorDesc( err );
+		   eventController->NotifyEvent(event + " " + writer.write(root));
 		   return EIO;
 		}
 
 		//check to see if the camera is open, if it is open, then close it
 		err = camera_close(mCameraHandle);
 		if ( err != CAMERA_EOK){
+#ifndef DEBUG
 		   fprintf(stderr, "Error with closing the camera \n");
-		   printError( err ) ;
+#endif
+		   root["successful"] = false;
+		   root["error"] = err;
+		   root["reason"] = getCameraErrorDesc( err );
+		   eventController->NotifyEvent(event + " " + writer.write(root));
 		   return EIO;
 		}
 
-		Json::FastWriter writer;
-					Json::Value root;
-					root["disabled"] =  "true";
-					std::string event = "community.QRCodeReader.disabledCallback.native";
-
-					eventController->NotifyEvent(event + " " + writer.write(root));
-					self->stopQRCodeRead();
+		root["successful"] = true;
+	    root["error"] = EOK;
+	    root["reason"] = "";
+	    mCameraHandle = CAMERA_HANDLE_INVALID;
+	    eventController->NotifyEvent(event + " " + writer.write(root));
 		return EOK;
 	}
 
