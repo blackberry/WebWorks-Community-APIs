@@ -23,7 +23,7 @@ This template includes examples for communicating in several ways:
 3. Load it on your phone using the Ant Build Script, or with the _blackberry-deploy_ command found in the dependencies/tools folder of your WebWorks SDK.
 4. When the application runs, a series of divs on the screen will appear with an orange background, and the extension methods will be called. When sucessful results or retrieved, the div backgrounds will change to blue as the screenshot below.
 
-![Screenshot](/timwindsor/WebWorks-Community-APIs/raw/master/BB10/Template/screenshot.png)
+![Screenshot](screenshot.png)
 
 ## Starting an Extension from the Template
 
@@ -49,7 +49,7 @@ for the project. Select Device-Release and Simulator-Debug and click ok.
 
 1. Under the ext folder in this project should be the community.templateExt folder with the following file structure underneath it:
 
-![Screenshot](/timwindsor/WebWorks-Community-APIs/raw/master/BB10/Template/templatefiles.png)
+![Screenshot](templatefiles.png)
 
 If you wish to do the copying manually, continue with these steps:
 
