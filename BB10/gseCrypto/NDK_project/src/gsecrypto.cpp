@@ -19,12 +19,14 @@
 #include <json/reader.h>
 #include <json/writer.h>
 #include <pthread.h>
-#include "template_ndk.hpp"
-#include "template_js.hpp"
+#include "gsecrypto.hpp"
+#include "gsecryptojs.hpp"
+
+class GSECryptoJS;
 
 namespace webworks {
 
-TemplateNDK::TemplateNDK(TemplateJS *parent) {
+GSECrypto::GSECrypto(GSECryptoJS *parent) {
 	m_pParent = parent;
 	templateProperty = 50;
 	templateThreadCount = 1;
@@ -34,61 +36,61 @@ TemplateNDK::TemplateNDK(TemplateJS *parent) {
 	threadHalt = true;
 }
 
-TemplateNDK::~TemplateNDK() {
+GSECrypto::~GSECrypto() {
 }
 
 // These methods are the true native code we intend to reach from WebWorks
-std::string TemplateNDK::templateTestString() {
+std::string GSECrypto::templateTestString() {
 	return "Template Test Function";
 }
 
 // Take in input and return a value
-std::string TemplateNDK::templateTestString(const std::string& inputString) {
+std::string GSECrypto::templateTestString(const std::string& inputString) {
 	return "Template Test Function, got: " + inputString;
 }
 
 // Get an integer property
-std::string TemplateNDK::getTemplateProperty() {
+std::string GSECrypto::getTemplateProperty() {
 	stringstream ss;
 	ss << templateProperty;
 	return ss.str();
 }
 
 // set an integer property
-void TemplateNDK::setTemplateProperty(const std::string& inputString) {
+void GSECrypto::setTemplateProperty(const std::string& inputString) {
 	templateProperty = (int) strtoul(inputString.c_str(), NULL, 10);
 }
 
 // Asynchronous call
-void TemplateNDK::templateTestAsync() {
+void GSECrypto::templateTestAsync() {
 	templateCallback();
 }
 
 // Asynchronous call returning JSON data
-void TemplateNDK::templateTestAsyncJSON() {
+void GSECrypto::templateTestAsyncJSON() {
 	templateCallbackJSON();
 }
 
 // Asynchronous callback
-void TemplateNDK::templateCallback() {
-	std::string event = "community.templateExt.aSyncCallback";
+void GSECrypto::templateCallback() {
+	std::string event = "community.gseCrypto.aSyncCallback";
 	m_pParent->NotifyEvent(event);
 }
 
 // Asynchronous callback with JSON data object
-void TemplateNDK::templateCallbackJSON() {
+void GSECrypto::templateCallbackJSON() {
 	Json::FastWriter writer;
 	Json::Value root;
-	root["templateJSONString"] = "JSON String";
-	root["templateJSONInt"] = 85;
+	root["GSECryptoJSONString"] = "JSON String";
+	root["GSECryptoJSONInt"] = 85;
 
-	std::string event = "community.templateExt.aSyncJSONCallback";
+	std::string event = "community.gseCrypto.aSyncJSONCallback";
 	m_pParent->NotifyEvent(event + " " + writer.write(root));
 }
 
 // Asynchronous callback with JSON data input and output
-void TemplateNDK::templateCallbackJSONio(const std::string& inputString) {
-	std::string event = "community.templateExt.aSyncJSONCallbackResult";
+void GSECrypto::templateCallbackJSONio(const std::string& inputString) {
+	std::string event = "community.gseCrypto.aSyncJSONCallbackResult";
 
 	// Parse the arg string as JSON
 	Json::FastWriter writer;
@@ -112,7 +114,7 @@ void TemplateNDK::templateCallbackJSONio(const std::string& inputString) {
 // The actual thread (must appear before the startThread method)
 // Loops and runs the callback method
 void* TemplateThread(void* parent) {
-	TemplateNDK *pParent = static_cast<TemplateNDK *>(parent);
+	GSECrypto *pParent = static_cast<GSECrypto *>(parent);
 
 	// Loop calls the callback function and continues until stop is set
 	while (!pParent->isThreadHalt()) {
@@ -124,7 +126,7 @@ void* TemplateThread(void* parent) {
 }
 
 // Starts the thread and returns a message on status
-std::string TemplateNDK::templateStartThread() {
+std::string GSECrypto::templateStartThread() {
 	if (!m_thread) {
 		int rc;
 	    rc = pthread_mutex_lock(&mutex);
@@ -146,7 +148,7 @@ std::string TemplateNDK::templateStartThread() {
 }
 
 // Sets the stop value
-std::string TemplateNDK::templateStopThread() {
+std::string GSECrypto::templateStopThread() {
 	int rc;
 	// Request thread to set prevent sleep to false and terminate
 	rc = pthread_mutex_lock(&mutex);
@@ -168,8 +170,8 @@ std::string TemplateNDK::templateStopThread() {
 }
 
 // The callback method that sends an event through JNEXT
-void TemplateNDK::templateThreadCallback() {
-	std::string event = "community.templateExt.jsonThreadCallback";
+void GSECrypto::templateThreadCallback() {
+	std::string event = "community.gseCrypto.jsonThreadCallback";
 	Json::FastWriter writer;
 	Json::Value root;
 	root["threadCount"] = templateThreadCount++;
@@ -177,7 +179,7 @@ void TemplateNDK::templateThreadCallback() {
 }
 
 // getter for the stop value
-bool TemplateNDK::isThreadHalt() {
+bool GSECrypto::isThreadHalt() {
 	int rc;
 	bool isThreadHalt;
 	rc = pthread_mutex_lock(&mutex);

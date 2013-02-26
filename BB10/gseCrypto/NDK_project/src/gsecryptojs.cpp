@@ -16,23 +16,23 @@
 
 #include <string>
 #include "../public/tokenizer.h"
-#include "template_js.hpp"
-#include "template_ndk.hpp"
+#include "gsecryptojs.hpp"
+#include "gsecrypto.hpp"
 
 using namespace std;
 
 /**
  * Default constructor.
  */
-TemplateJS::TemplateJS(const std::string& id) :
+GSECryptoJS::GSECryptoJS(const std::string& id) :
 		m_id(id) {
-	m_pTemplateController = new webworks::TemplateNDK(this);
+	m_pTemplateController = new webworks::GSECrypto(this);
 }
 
 /**
- * TemplateJS destructor.
+ * GSECryptoJS destructor.
  */
-TemplateJS::~TemplateJS() {
+GSECryptoJS::~GSECryptoJS() {
 	if (m_pTemplateController)
 		delete m_pTemplateController;
 }
@@ -42,17 +42,17 @@ TemplateJS::~TemplateJS() {
  * extension.
  */
 char* onGetObjList() {
-	static char name[] = "TemplateJS";
+	static char name[] = "GSECryptoJS";
 	return name;
 }
 
 /**
- * This method is used by JNext to instantiate the TemplateJS object when
+ * This method is used by JNext to instantiate the GSECryptoJS object when
  * an object is created on the JavaScript server side.
  */
 JSExt* onCreateObject(const string& className, const string& id) {
-	if (className == "TemplateJS") {
-		return new TemplateJS(id);
+	if (className == "GSECryptoJS") {
+		return new GSECryptoJS(id);
 	}
 
 	return NULL;
@@ -61,7 +61,7 @@ JSExt* onCreateObject(const string& className, const string& id) {
 /**
  * Method used by JNext to determine if the object can be deleted.
  */
-bool TemplateJS::CanDelete() {
+bool GSECryptoJS::CanDelete() {
 	return true;
 }
 
@@ -71,7 +71,7 @@ bool TemplateJS::CanDelete() {
  * for invoking native code. This method is triggered when JNext.invoke is
  * called on the JavaScript side with this native objects id.
  */
-string TemplateJS::InvokeMethod(const string& command) {
+string GSECryptoJS::InvokeMethod(const string& command) {
 	// command appears with parameters following after a space
 	int index = command.find_first_of(" ");
 	std::string strCommand = command.substr(0, index);
@@ -107,7 +107,7 @@ string TemplateJS::InvokeMethod(const string& command) {
 }
 
 // Notifies JavaScript of an event
-void TemplateJS::NotifyEvent(const std::string& event) {
+void GSECryptoJS::NotifyEvent(const std::string& event) {
 	std::string eventString = m_id + " ";
 	eventString.append(event);
 	SendPluginEvent(eventString.c_str(), m_pContext);

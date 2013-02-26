@@ -14,20 +14,20 @@
 * limitations under the License.
 */
 
-#ifndef TEMPLATENDK_HPP_
-#define TEMPLATENDK_HPP_
+#ifndef GSECrypto_HPP_
+#define GSECrypto_HPP_
 
 #include <string>
 #include <pthread.h>
 
-class TemplateJS;
+class GSECryptoJS;
 
 namespace webworks {
 
-class TemplateNDK {
+class GSECrypto {
 public:
-	explicit TemplateNDK(TemplateJS *parent = NULL);
-	virtual ~TemplateNDK();
+	explicit GSECrypto(GSECryptoJS *parent = NULL);
+	virtual ~GSECrypto();
 
 	// The extension methods are defined here
 	std::string templateTestString();
@@ -57,7 +57,7 @@ public:
 	void templateThreadCallback();
 
 private:
-	TemplateJS *m_pParent;
+	GSECryptoJS *m_pParent;
 	int templateProperty;
 	int templateThreadCount;
 	bool threadHalt;
@@ -68,4 +68,4 @@ private:
 
 } // namespace webworks
 
-#endif /* TEMPLATENDK_H_ */
+#endif /* GSECrypto_H_ */
