@@ -55,7 +55,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1764180006" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.227797113" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs"/>
+								<option id="com.qnx.qcc.option.linker.libraries.227797113" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
 								<inputType id="com.qnx.qcc.inputType.linker.1025464239" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
