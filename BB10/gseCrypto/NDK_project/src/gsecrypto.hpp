@@ -19,6 +19,7 @@
 
 #include <string>
 #include <pthread.h>
+#include <huctx.h>
 
 class GSECryptoJS;
 
@@ -57,6 +58,12 @@ public:
 	void templateThreadCallback();
 
 private:
+	std::string toString(unsigned char * data, size_t dataLen);
+	std::string toHex(unsigned char * data, size_t dataLen);
+	std::string toB64(unsigned char * data, size_t dataLen);
+	void fromHex(std::string encoded, unsigned char * & data, size_t & dataLen);
+	void fromB64(std::string encoded, unsigned char * & data, size_t & dataLen);
+	int nibble(const char c);
 	GSECryptoJS *m_pParent;
 	int templateProperty;
 	int templateThreadCount;
@@ -64,6 +71,11 @@ private:
 	pthread_t m_thread;
 	pthread_cond_t cond;
 	pthread_mutex_t mutex;
+
+
+    sb_GlobalCtx sbCtx;
+	std::string lastError;
+	std::string lastMessage;
 };
 
 } // namespace webworks
