@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!--
+ * Copyright 2013 Research In Motion Limited.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link href="css/styles.css" rel="stylesheet" type="text/css">
+	<title>Extension Template Test</title>
+	<script type="text/javascript" src="local:///chrome/webworks.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+
+	var rippleLoaded = false;
+	
+	function scoop() {
+		var div = document.getElementById('templateTestInput');
+		var val = document.getElementById('toHash').value;
+		var hash = community.gseCrypto.testInput({ raw: val });
+		if ("error" in hash) {
+			div.innerHTML = hash["error"];
+			alert(hash["error"]);
+		} else {
+			div.innerHTML = "<div style='font-size: 8pt;'><div>" + hash["b64"] + "</div><div>"+hash["hex"]+"</div></div>";
+		}
+		if ("lastMessage" in hash) {
+			alert(hash["lastMessage"]);
+		}
+		div.className = 'invoked';
+	}
+
+	document.addEventListener('webworksready', function(e) {
+		// This is a hack for Ripple calling webworksready multiple times
+		if (rippleLoaded) return;
+		rippleLoaded = true;
+		
+		if (community.gseCrypto) {
+			var div = document.getElementById('templateTest');
+			div.innerHTML = community.gseCrypto.test();
+			div.className = 'invoked';
+
+			scoop();
+
+			div = document.getElementById('templateProperty');
+			div.innerHTML = 'Template Property<br>was: ' + community.gseCrypto.templateProperty;
+			community.gseCrypto.templateProperty = 99;
+			div.innerHTML += ' now: ' + community.gseCrypto.templateProperty;
+			div.className = 'invoked';
+
+			div = document.getElementById('templateTestAsync');
+			community.gseCrypto.testAsync(aSyncCallback);
+			div.innerHTML += " Sent";
+
+			div = document.getElementById('templateTestAsyncJSON');
+			community.gseCrypto.testAsyncJSON(aSyncJSONCallback);
+
+			div = document.getElementById('templateTestAsyncJSONio');
+			var jsonData = { "value1": 10, "value2": 14 };
+			community.gseCrypto.testAsyncJSONio(jsonData, aSyncJSONCallbackResult);
+
+			div = document.getElementById('templateThread');
+			var start = community.gseCrypto.startThread(threadCallback);
+			console.log(start);
+		}
+	}, false);
+
+	function aSyncCallback() {
+		var div = document.getElementById('templateTestAsync');
+		div.innerHTML += " and Received";
+		div.className = 'invoked';
+	}
+
+	function aSyncJSONCallback(data) {
+		var div = document.getElementById('templateTestAsyncJSON');
+		if (data) {
+			console.log(data);
+			div.innerHTML += "<br>Int: " + data.templateJSONInt + "<br>String: " + data.templateJSONString;
+			div.className = 'invoked';
+		}
+	}
+
+	function aSyncJSONCallbackResult(data) {
+		var div = document.getElementById('templateTestAsyncJSONio');
+		if (data) {
+			console.log(data);
+			div.innerHTML += "<br>" + data.value1 + " + " + data.value2 + " = " + data.result;
+			div.className = 'invoked';
+		}
+	}
+
+	function threadCallback(data) {
+		var div = document.getElementById('templateThread');
+		div.className = 'invoked';
+		if (data) {
+			div.innerHTML = "Thread Callback: " + data.threadCount;
+			if (data.threadCount >= 100) {
+				community.gseCrypto.stopThread(threadCallback);
+			}
+		}
+	}
+	</script>
+	<div id='templateTest' class='notInvoked'>Test Function Not Invoked</div>
+	<div id='templateTestInput' class='notInvoked'>Test Function Not Invoked</div>
+	<div id='templateProperty' class='notInvoked'>Test Property Not Tested</div>
+	<div id='templateTestAsync' class='notInvoked'>Test Async Function</div>
+	<div id='templateTestAsyncJSON' class='notInvoked'>Test Async JSON</div>
+	<div id='templateTestAsyncJSONio' class='notInvoked'>Test Async JSON IO</div>
+	<div id='templateThread' class='notInvoked'>Test Thread Callback</div>
+	<input id='toHash' type="text" value="r" /><br />
+	
+	<input type='button' value='rehash' onclick="scoop()" />
+</body>
+</html>
