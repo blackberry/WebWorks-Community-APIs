@@ -17,56 +17,8 @@
 var _self = {},
 	_ID = require("./manifest.json").namespace;
 
-	// These methods are called by your App's JavaScript
-	// They make WebWorks function calls to the methods
-	// in the index.js of the Extension
-
-	// Simple Synchronous test function to get a string
-	_self.test = function () {
-		return window.webworks.execSync(_ID, "test", null);
-	};
-	_self.testInput = function (input) {
-		return window.webworks.execSync(_ID, "testInput", { input: input});
-	};
-
-	// Basic Asynchronous test function
-	// Sets up a one time call back, and then calls into the index
-	_self.testAsync = function (callback) {
-		window.webworks.event.once(_ID, "community.gseCrypto.aSyncCallback", callback);
-		return window.webworks.execAsync(_ID, "testAsync", null);
-	};
-
-	// Asynchronous with returning a JSON object
-	_self.testAsyncJSON = function (callback) {
-		window.webworks.event.once(_ID, "community.gseCrypto.aSyncJSONCallback", callback);
-		return window.webworks.execAsync(_ID, "testAsyncJSON", null);
-	};
-
-	// Asynchronous with sending and returning a JSON object
-	_self.testAsyncJSONio = function (input, callback) {
-		window.webworks.event.once(_ID, "community.gseCrypto.aSyncJSONCallbackResult", callback);
-		return window.webworks.execAsync(_ID, "testAsyncJSONio", { input: input });
-	};
-
-	// Define a property on the extension object
-	// Omit the getter or setter as needed to restrict the property
-	Object.defineProperty(_self, "templateProperty", {
-		get: function () {
-			return window.webworks.execSync(_ID, "templateProperty", null);
-		},
-		set: function (arg) {
-			window.webworks.execSync(_ID, "templateProperty", {"value": arg });
-		}
-	});
-
-	_self.startThread = function (callback) {
-		window.webworks.event.add(_ID, "community.gseCrypto.jsonThreadEvent", callback);
-		return window.webworks.execSync(_ID, "startThread", null);
-	};
-
-	_self.stopThread = function (callback) {
-		window.webworks.event.remove(_ID, "community.gseCrypto.jsonThreadEvent", callback);
-		return window.webworks.execSync(_ID, "stopThread", null);
+	_self.hash = function (input) {
+		return window.webworks.execSync(_ID, "hash", { input: input});
 	};
 
 module.exports = _self;

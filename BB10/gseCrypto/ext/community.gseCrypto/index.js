@@ -26,44 +26,8 @@ module.exports = {
 
 	// These methods call into templateJNEXT.js which handles the
 	// communication through the JNEXT plugin to template_js.cpp
-	test: function (success, fail) {
-		success(gseCrypto.getInstance().test());
-	},
-	testInput: function (success, fail, args) {
-		alert("index.js s: " + args + "\n" + args.hex);
+	hash: function (success, fail, args) {
 		args = JSON.parse(decodeURIComponent(args["input"]));
-		alert("index.js t: " + args + "\n" + args.hex);
-		success(gseCrypto.getInstance().testInput(args));
-	},
-	// Asynchronous function calls into the plugin and returns
-	testAsync: function (success, fail) {
-		gseCrypto.getInstance().testAsync();
-		success();
-	},
-	testAsyncJSON: function (success, fail) {
-		gseCrypto.getInstance().testAsyncJSON();
-		success();
-	},
-	testAsyncJSONio: function (success, fail, args) {
-		args = JSON.parse(decodeURIComponent(args["input"]));
-		gseCrypto.getInstance().testAsyncJSONio(args);
-		success();
-	},
-	templateProperty: function (success, fail, args) {
-		var value;
-		if (args && args["value"]) {
-            value = JSON.parse(decodeURIComponent(args["value"]));
-			gseCrypto.getInstance().templateProperty(value);
-            success();
-        } else {
-            success(gseCrypto.getInstance().templateProperty());
-        }
-	},
-	// Thread methods to start and stop
-	startThread: function (success, fail) {
-		success(gseCrypto.getInstance().startThread());
-	},
-	stopThread: function (success, fail) {
-		success(gseCrypto.getInstance().stopThread());
+		success(gseCrypto.getInstance().hash(args));
 	}
 };
