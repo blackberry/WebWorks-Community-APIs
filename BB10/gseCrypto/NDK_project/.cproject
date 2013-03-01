@@ -7,11 +7,9 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.sharedLib.debug.1877214659" moduleId="org.eclipse.cdt.core.settings" name="Device-Debug">
 				<externalSettings>
 					<externalSetting>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Device-Debug"/>
-						<entry flags="" kind="libraryFile" name="Template"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="Template"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/gseCrypto"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/gseCrypto/Device-Debug"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="gseCrypto"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -27,15 +25,25 @@
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.debug.191768618" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<option id="com.qnx.qcc.option.cpu.1578303771" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.436831450" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/Template/Device-Debug}" id="com.qnx.nto.606064165" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/Template/Device-Debug}" id="com.qnx.nto.606064165" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto">
+								<outputEntries>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Device-Debug"/>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Device-Release"/>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Device-Profile"/>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Device-Coverage"/>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Simulator-Debug"/>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Simulator-Profile"/>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Simulator-Coverage"/>
+								</outputEntries>
+							</builder>
 							<tool id="com.qnx.qcc.tool.compiler.1879271926" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.shared.1417199508" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.optlevel.970212540" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
 								<option id="com.qnx.qcc.option.compile.debug.1460927572" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.includePath.2099952700" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
-									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/gseCrypto/gseCrypto/public}&quot;"/>
+									<listOptionValue builtIn="false" value="C:/bbndk/target_10_1_0_338/qnx6/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="C:/bbndk/target_10_1_0_338/target-override/usr/include"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1666296795" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1549451068" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -45,15 +53,20 @@
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.646317396" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.1334708386" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.assembler.includePath.894100946" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/gseCrypto/gseCrypto/public}&quot;"/>
+									<listOptionValue builtIn="false" value="C:/bbndk/target_10_1_0_338/qnx6/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="C:/bbndk/target_10_1_0_338/target-override/usr/include"/>
+								</option>
+								<option id="com.qnx.qcc.option.assembler.defines.1913138934" name="Defines (-D)" superClass="com.qnx.qcc.option.assembler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.assembler.911447541" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.1892404701" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
 								<option id="com.qnx.qcc.option.linker.debug.2066515291" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.linker.shared.935213389" name="Shared (-shared)" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraryPaths.2116373961" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
-								</option>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.2116373961" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths"/>
 								<option id="com.qnx.qcc.option.linker.security.1764180006" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.linker.libraries.227797113" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
 								<inputType id="com.qnx.qcc.inputType.linker.1025464239" superClass="com.qnx.qcc.inputType.linker">
@@ -78,9 +91,12 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/gseCrypto"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Device-Release"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/gseCrypto/Device-Release"/>
 						<entry flags="" kind="libraryFile" name="Template"/>
 						<entry flags="RESOLVED" kind="libraryFile" name="Template"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="gseCrypto"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -146,8 +162,11 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/gseCrypto"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Device-Profile"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/gseCrypto/Device-Profile"/>
 						<entry flags="" kind="libraryFile" name="Template"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="gseCrypto"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -193,8 +212,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1708860491" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.2086313169" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
-								</option>
+								<option id="com.qnx.qcc.option.linker.libraries.2086313169" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
 								<inputType id="com.qnx.qcc.inputType.linker.802392274" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -216,8 +234,11 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/gseCrypto"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Device-Coverage"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/gseCrypto/Device-Coverage"/>
 						<entry flags="" kind="libraryFile" name="Template"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="gseCrypto"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -263,8 +284,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.565853353" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.152967788" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
-								</option>
+								<option id="com.qnx.qcc.option.linker.libraries.152967788" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
 								<inputType id="com.qnx.qcc.inputType.linker.224554770" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -286,8 +306,11 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/gseCrypto"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Simulator-Debug"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/gseCrypto/Simulator-Debug"/>
 						<entry flags="" kind="libraryFile" name="Template"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="gseCrypto"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -330,8 +353,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1272333045" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.1509711055" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
-								</option>
+								<option id="com.qnx.qcc.option.linker.libraries.1509711055" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
 								<inputType id="com.qnx.qcc.inputType.linker.819355949" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -353,8 +375,11 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/gseCrypto"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Simulator-Profile"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/gseCrypto/Simulator-Profile"/>
 						<entry flags="" kind="libraryFile" name="Template"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="gseCrypto"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -399,8 +424,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1422840260" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.203659667" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
-								</option>
+								<option id="com.qnx.qcc.option.linker.libraries.203659667" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
 								<inputType id="com.qnx.qcc.inputType.linker.318181422" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -422,8 +446,11 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/gseCrypto"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Simulator-Coverage"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/gseCrypto/Simulator-Coverage"/>
 						<entry flags="" kind="libraryFile" name="Template"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="gseCrypto"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -468,8 +495,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.295270180" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.433937596" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
-								</option>
+								<option id="com.qnx.qcc.option.linker.libraries.433937596" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
 								<inputType id="com.qnx.qcc.inputType.linker.1536810093" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
