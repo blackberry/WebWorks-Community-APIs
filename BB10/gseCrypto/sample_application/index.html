@@ -29,7 +29,7 @@
 	function scoop() {
 		var div = document.getElementById('templateTestInput');
 		var val = document.getElementById('toHash').value;
-		var hash = community.gseCrypto.testInput({ raw: val });
+		var hash = community.gseCrypto.hash({ raw: val });
 		if ("error" in hash) {
 			div.innerHTML = hash["error"];
 			alert(hash["error"]);
@@ -48,11 +48,12 @@
 		rippleLoaded = true;
 		
 		if (community.gseCrypto) {
+			scoop();
+			
 			var div = document.getElementById('templateTest');
 			div.innerHTML = community.gseCrypto.test();
 			div.className = 'invoked';
 
-			scoop();
 
 			div = document.getElementById('templateProperty');
 			div.innerHTML = 'Template Property<br>was: ' + community.gseCrypto.templateProperty;
