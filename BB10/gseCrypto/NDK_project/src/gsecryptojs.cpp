@@ -77,30 +77,9 @@ string GSECryptoJS::InvokeMethod(const string& command) {
 	std::string strCommand = command.substr(0, index);
 	std::string arg = command.substr(index + 1, command.length());
 
-	// based on the command given, run the appropriate method in template_ndk.cpp
-	if (strCommand == "testString") {
-		return m_pTemplateController->templateTestString();
-	} else if (strCommand == "testStringInput") {
-		return m_pTemplateController->templateTestString(arg);
-	} else if (strCommand == "templateProperty") {
-		// if arg exists we are setting property
-		if (arg != strCommand) {
-			m_pTemplateController->setTemplateProperty(arg);
-		} else {
-			return m_pTemplateController->getTemplateProperty();
-		}
-	} else if (strCommand == "testAsync") {
-		m_pTemplateController->templateTestAsync();
-	} else if (strCommand == "testAsyncJSON") {
-		m_pTemplateController->templateTestAsyncJSON();
-	} else if (strCommand == "testAsyncJSONio") {
-		m_pTemplateController->templateCallbackJSONio(arg);
-	} else if (strCommand == "templateStartThread") {
-		return m_pTemplateController->templateStartThread();
-	} else if (strCommand == "templateStopThread") {
-		return m_pTemplateController->templateStopThread();
+	if (strCommand == "hash") {
+		return m_pTemplateController->hash(arg);
 	}
-
 	strCommand.append(";");
 	strCommand.append(command);
 	return strCommand;
