@@ -24,8 +24,6 @@ module.exports = {
 	// but any functions to be called by client.js need to be declared
 	// here in this object.
 
-	// These methods call into templateJNEXT.js which handles the
-	// communication through the JNEXT plugin to template_js.cpp
 	hash: function (success, fail, args) {
 		args = JSON.parse(decodeURIComponent(args["input"]));
 		success(gseCrypto.getInstance().hash(args));
