@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--
+ * Copyright 2013 Research In Motion Limited.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="css/styles.css" rel="stylesheet" type="text/css">
+<title>GSECrypto</title>
+<script type="text/javascript" src="local:///chrome/webworks.js"></script>
+<script type="text/javascript" src="katSHA.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		var rippleLoaded = false;
+
+		function log(toLog) {
+			var logDiv = document.getElementById("log");
+			logDiv.innerHTML += toLog;
+			logDiv.className = "output";
+		}
+
+		function hash() {
+			var div = document.getElementById('hashOutput');
+			var val = document.getElementById('toHash').value;
+			var select = document.getElementById('hashAlg');
+			var alg = select.options[select.selectedIndex].value;
+
+			var hash = community.gseCrypto.hash({
+				raw : val,
+				alg : alg
+			});
+			if ("error" in hash) {
+				div.innerHTML = hash["error"];
+				alert(hash["error"]);
+			} else {
+				div.innerHTML = "<div style='font-size: 8pt;'><div>"
+						+ hash["b64"] + "</div><div>" + hash["hex"]
+						+ "</div></div>";
+			}
+			if ("lastMessage" in hash) {
+				alert(hash["lastMessage"]);
+			}
+			div.className = 'output';
+		}
+
+		document.addEventListener('webworksready', function(e) {
+			// This is a hack for Ripple calling webworksready multiple times
+			if (rippleLoaded)
+				return;
+			rippleLoaded = true;
+		}, false);
+	</script>
+	<div>
+		<h1>Hash Some Text</h1>
+		<input id='toHash' type="text" value="r" /> <select id='hashAlg'>
+			<option value="sha1">SHA1</option>
+			<option value="sha224">SHA224</option>
+			<option selected="true" value="sha256">SHA256</option>
+			<option value="sha384">SHA384</option>
+			<option value="sha512">SHA512</option>
+		</select> <input type='button' value='Hash' onclick="hash()" />
+		<div id="hashOutput"></div>
+	</div>
+
+
+	<div>
+		<h1>Known Answer Tests</h1>
+		<input type='button' value='Run SHA KAT' onclick='katSHA()' />
+		<div id="log"></div>
+	</div>
+
+</body>
+</html>
