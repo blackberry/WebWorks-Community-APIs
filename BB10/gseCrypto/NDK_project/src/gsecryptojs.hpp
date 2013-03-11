@@ -33,7 +33,7 @@ public:
 private:
     std::string m_id;
     // Definition of a pointer to the actual native extension code
-    class webworks::GSECrypto *m_pTemplateController;
+    class webworks::GSECrypto *gseCryptoController;
 };
 
 #endif /* GSECryptoJS_HPP_ */

@@ -26,15 +26,15 @@ using namespace std;
  */
 GSECryptoJS::GSECryptoJS(const std::string& id) :
 		m_id(id) {
-	m_pTemplateController = new webworks::GSECrypto(this);
+	gseCryptoController = new webworks::GSECrypto(this);
 }
 
 /**
  * GSECryptoJS destructor.
  */
 GSECryptoJS::~GSECryptoJS() {
-	if (m_pTemplateController)
-		delete m_pTemplateController;
+	if (gseCryptoController)
+		delete gseCryptoController;
 }
 
 /**
@@ -78,7 +78,7 @@ string GSECryptoJS::InvokeMethod(const string& command) {
 	std::string arg = command.substr(index + 1, command.length());
 
 	if (strCommand == "hash") {
-		return m_pTemplateController->hash(arg);
+		return gseCryptoController->hash(arg);
 	}
 	strCommand.append(";");
 	strCommand.append(command);
