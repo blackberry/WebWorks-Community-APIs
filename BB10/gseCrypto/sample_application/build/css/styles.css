@@ -1,0 +1,19 @@
+body {
+	margin: 0;
+}
+
+div,input,select {
+	font-size: 40pt;
+}
+
+div.output {
+	background: #9f9fff;
+}
+
+.pass {
+	background: #9fff9f;
+}
+
+.fail {
+	background: #ff9f9f;
+}
