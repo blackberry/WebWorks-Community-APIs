@@ -74,7 +74,7 @@ public:
 	;
 	virtual ~DataTracker() {
 		cleanUp();
-	}
+ 	}
 	void cleanUp() {
 		if (data != NULL) {
 			delete[] data;
@@ -117,6 +117,8 @@ std::string GSECrypto::hash(const std::string& inputString) {
 
 		std::string alg = args.get("alg", "SHA1").asString();
 		std::transform(alg.begin(), alg.end(), alg.begin(), tolower);
+		alg.erase(std::remove(alg.begin(), alg.end(), '-'), alg.end());
+
 
 		size_t digestLen = 0;
 
