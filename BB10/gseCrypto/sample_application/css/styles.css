@@ -2,17 +2,18 @@ body {
 	margin: 0;
 }
 
-div {
-	padding: 7%;
-	color: #F8F8F8;
-	font-size: 3em;
-	text-align: center;
+div,input,select {
+	font-size: 40pt;
 }
 
-.notInvoked {
-	background-color: #cc3f10;
+div.output {
+	background: #9f9fff;
 }
 
-.invoked {
-	background-color: #0098f0;
+.pass {
+	background: #9fff9f;
+}
+
+.fail {
+	background: #ff9f9f;
 }

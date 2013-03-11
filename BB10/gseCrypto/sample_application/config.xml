@@ -18,9 +18,9 @@
         xmlns:rim="http://www.blackberry.com/ns/widgets" 
         version="1.0.0" id="community.extension.test" xml:lang="en">
 	
-	<name>Extension Template Test</name>
-	<description>Test App for the Extension Template</description>
-	<author rim:copyright="2013" email="@timothywindsor" href="http://www.blackberry.com/developers">Tim Windsor</author>
+	<name>GSE Crypto Test</name>
+	<description>Demo app for GSE Crypto</description>
+	<author rim:copyright="2013" email="@robbieDubya" href="http://www.blackberry.com/developers">Rob Williams</author>
 	
 	<rim:orientation mode="auto" />
 	
