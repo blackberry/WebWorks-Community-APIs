@@ -66,7 +66,7 @@
 							<tool id="com.qnx.qcc.tool.linker.1892404701" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
 								<option id="com.qnx.qcc.option.linker.debug.2066515291" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.linker.shared.935213389" name="Shared (-shared)" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraryPaths.2116373961" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.2116373961" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths"/>
 								<option id="com.qnx.qcc.option.linker.security.1764180006" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.linker.libraries.227797113" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
 								<inputType id="com.qnx.qcc.inputType.linker.1025464239" superClass="com.qnx.qcc.inputType.linker">
