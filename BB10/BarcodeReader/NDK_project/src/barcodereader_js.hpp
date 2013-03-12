@@ -14,34 +14,25 @@
 * limitations under the License.
 */
 
-#ifndef QRCODEREADERNDK_HPP_
-#define QRCODEREADERNDK_HPP_
+#ifndef BarcodeReaderJS_HPP_
+#define BarcodeReaderJS_HPP_
 
-#include <pthread.h>
+#include "../public/plugin.h"
+#include "barcodereader_ndk.hpp"
 
-#include <camera/camera_api.h>
+class BarcodeReaderJS: public JSExt {
 
-class QRCodeReaderJS;
-
-namespace webworks {
-
-class QRCodeReaderNDK {
 public:
-	explicit QRCodeReaderNDK(QRCodeReaderJS *parent = NULL);
-
-	virtual ~QRCodeReaderNDK();
-
-	int stopQRCodeRead();
-
-	int startQRCodeRead();
-
-	//void viewfinder_callback(camera_handle_t handle,camera_buffer_t* buf,void* arg);
+    explicit BarcodeReaderJS(const std::string& id);
+    virtual ~BarcodeReaderJS();
+    virtual bool CanDelete();
+    virtual std::string InvokeMethod(const std::string& command);
+    void NotifyEvent(const std::string& event);
 
 private:
-	QRCodeReaderJS *m_pParent;
-	camera_handle_t mCameraHandle;
+    std::string m_id;
+    // Definition of a pointer to the actual native extension code
+    webworks::BarcodeReaderNDK *m_pBarcodeReaderController;
 };
 
-} // namespace webworks
-
-#endif /* QRCODEREADERNDK_H_ */
+#endif /* BarcodeReaderJS_HPP_ */

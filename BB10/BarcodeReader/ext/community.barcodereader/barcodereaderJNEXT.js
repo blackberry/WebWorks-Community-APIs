@@ -19,10 +19,10 @@
 // JavaScript wrapper for JNEXT plugin for connection
 ///////////////////////////////////////////////////////////////////
 
-var qrcodereader,
+var barcodereader,
     _event = require("../../lib/event");
 
-JNEXT.QRCodeReader = function () {
+JNEXT.BarcodeReader = function () {
     var self = this,
         hasInstance = false;
 
@@ -31,11 +31,11 @@ JNEXT.QRCodeReader = function () {
     };
 
     self.init = function () {
-        if (!JNEXT.require("libQRCodeReader")) {
+        if (!JNEXT.require("libBarcodeReader")) {
             return false;
         }
 
-        self.m_id = JNEXT.createObject("libQRCodeReader.QRCodeReaderJS");
+        self.m_id = JNEXT.createObject("libBarcodeReader.BarcodeReaderJS");
 
         if (self.m_id === "") {
             return false;
@@ -56,23 +56,36 @@ JNEXT.QRCodeReader = function () {
             jsonData;
         // Event names are set in native code when fired,
         // and must be checked here.
-        if (strEventDesc === "community.QRCodeReader.codeFoundCallback.native") {
+        i
+        if (strEventDesc === "community.barcodereader.codefound.native") {
              // Slice off the event name and the rest of the data is our JSON
             jsonData = arData.slice(1, arData.length).join(" ");
-            _event.trigger("community.QRCodeReader.codeFoundCallback", JSON.parse(jsonData));
-        } 
-        else if ( strEventDesc === "community.QRCodeReader.disabledCallback.native") {
+            _event.trigger("community.barcodereader.codefound", JSON.parse(jsonData));
+        }
+        else if ( strEventDesc === "community.barcodereader.errorfound.native") {
              jsonData = arData.slice(1, arData.length).join(" ");
-            _event.trigger("community.QRCodeReader.disabledCallback", JSON.parse(jsonData));
+            _event.trigger("community.barcodereader.errorfound", JSON.parse(jsonData));
+        }
+        else if ( strEventDesc === "community.barcodereader.frameavailable.native") {
+             jsonData = arData.slice(1, arData.length).join(" ");
+            _event.trigger("community.barcodereader.frameavailable", JSON.parse(jsonData));
+        }
+         else if ( strEventDesc === "community.barcodereader.started.native"){
+              jsonData = arData.slice(1, arData.length).join(" ");
+            _event.trigger("community.barcodereader.started", JSON.parse(jsonData));
+        } 
+        else if ( strEventDesc === "community.barcodereader.ended.native") {
+             jsonData = arData.slice(1, arData.length).join(" ");
+            _event.trigger("community.barcodereader.ended", JSON.parse(jsonData));
         }
     };
 
     // Thread methods
-    self.QRCodeReaderStart = function () {
-        return JNEXT.invoke(self.m_id, "QRCodeReaderStart");
+    self.startRead = function () {
+        return JNEXT.invoke(self.m_id, "startRead");
     };
-    self.QRCodeReaderStop = function () {
-        return JNEXT.invoke(self.m_id, "QRCodeReaderStop");
+    self.stopRead = function () {
+        return JNEXT.invoke(self.m_id, "stopRead");
     };
 
     // ************************
@@ -90,8 +103,8 @@ JNEXT.QRCodeReader = function () {
 
 };
 
-qrcodereader = new JNEXT.QRCodeReader();
+barcodereader = new JNEXT.BarcodeReader();
 
 module.exports = {
-    qrcodereader: qrcodereader
+    barcodereader: barcodereader
 };

@@ -1,4 +1,4 @@
-var qrcodereader = require("./qrcodereaderJNEXT").qrcodereader,
+var barcodereader = require("./barcodereaderJNEXT").barcodereader,
 	_event = require("../../lib/event"),
     _utils = require("../../lib/utils");
 
@@ -6,11 +6,11 @@ module.exports = {
 
 	// Thread methods to start and stop
 	startRead: function (success, fail) {
-		qrcodereader.getInstance().QRCodeReaderStart();
+		barcodereader.getInstance().startRead();
 		success();
 	},
 	stopRead: function (success, fail) {
-		qrcodereader.getInstance().QRCodeReaderStop();
+		barcodereader.getInstance().stopRead();
 		success();
 	}
 };
