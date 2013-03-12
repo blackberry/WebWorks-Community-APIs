@@ -18,7 +18,7 @@
  -->
  
 <!-- Set name to the Extension name as in manifest.json -->
-<project default="build" basedir="." name="community.barcodereader">
+<project default="build" basedir="." name="community.barcodescanner">
 
 	<!-- Your WebWorks SDK directory -->
 	<property name="bbwp.native.dir" value="C:\Program Files\Research In Motion\BlackBerry 10 WebWorks SDK 1.0.4.7"/>
