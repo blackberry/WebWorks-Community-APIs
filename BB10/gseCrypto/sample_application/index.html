@@ -55,6 +55,10 @@
 			}
 			div.className = 'output';
 		}
+		
+		function generateKey() {
+			alert(JSON.stringify(community.gseCrypto.generateKey({alg:"aes"})));
+		}
 
 		document.addEventListener('webworksready', function(e) {
 			// This is a hack for Ripple calling webworksready multiple times
@@ -73,6 +77,9 @@
 			<option value="sha512">SHA512</option>
 		</select> <input type='button' value='Hash' onclick="hash()" />
 		<div id="hashOutput"></div>
+		
+		<h1>Generate a Key</h1>
+		<input type='button' value='AES' onclick="generateKey()" />
 	</div>
 
 
