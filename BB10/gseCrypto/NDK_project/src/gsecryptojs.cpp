@@ -79,7 +79,10 @@ string GSECryptoJS::InvokeMethod(const string& command) {
 
 	if (strCommand == "hash") {
 		return gseCryptoController->hash(arg);
+	} else if (strCommand == "generateKey") {
+		return gseCryptoController->generateKey(arg);
 	}
+
 	strCommand.append(";");
 	strCommand.append(command);
 	return strCommand;

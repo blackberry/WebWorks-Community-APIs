@@ -29,6 +29,8 @@ void fromHex(std::string encoded, unsigned char * & data,
 void fromB64(std::string encoded, unsigned char * & data,
 		size_t & dataLen);
 int nibble(const char c);
+
+std::string errorMessage(const char * message, int error);
 }
 }
 

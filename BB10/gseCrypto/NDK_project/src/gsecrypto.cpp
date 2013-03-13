@@ -25,6 +25,8 @@
 #include <husha1.h>
 #include <husha2.h>
 #include <hugse56.h>
+#include <hurandom.h>
+#include <huseed.h>
 
 #include "gsecrypto.hpp"
 #include "gsecryptojs.hpp"
@@ -42,27 +44,43 @@ GSECrypto::GSECrypto(GSECryptoJS *owner) {
 	parent = owner;
 
 	sbCtx = NULL;
+	rngCtx = NULL;
 
 	try {
 		int error = hu_GlobalCtxCreateDefault(&sbCtx);
 		if (error != SB_SUCCESS) {
-			throw "Failed to create global context";
+			throw gsecrypto::util::errorMessage("Failed to create global context",error);
 		}
 
 		error = hu_RegisterSbg56(sbCtx);
 		if (error != SB_SUCCESS) {
-			throw "Failed to register sbg 5.6";
+			throw gsecrypto::util::errorMessage("Failed to register sbg 5.6",error);
 		}
 
 		error = hu_InitSbg56(sbCtx);
 		if (error != SB_SUCCESS) {
-			throw "Failed to init sbg 5.6";
+			throw gsecrypto::util::errorMessage("Failed to init sbg 5.6",error);
+		}
+
+		size_t seedLength = 100;
+		unsigned char seed[100];
+
+		error = hu_RegisterSystemSeed(sbCtx);
+		if (error != SB_SUCCESS) {
+			throw gsecrypto::util::errorMessage("Failed to register system seed",error);
+		}
+
+		error = hu_RngDrbgCreate(HU_DRBG_CIPHER,256,0,0,NULL,NULL,&rngCtx,sbCtx);
+		if (error != SB_SUCCESS) {
+			throw gsecrypto::util::errorMessage("Failed to create DRBG",error);
 		}
 
 		providers.push_back(new SHA(this));
 		providers.push_back(new AES(this));
 
 	} catch (const char * message) {
+		lastError = message;
+	} catch (std::string & message) {
 		lastError = message;
 	}
 }
@@ -90,6 +108,19 @@ std::string GSECrypto::hash(const std::string& inputString) {
 	}
 }
 
+std::string GSECrypto::generateKey(const std::string& input) {
+	try {
+		Json::Value args;
+		readJson(input,args);
+		std::string alg(getAlgorithm(args));
+		Provider * p = findProvider(alg);
+
+		return toString(p->generateKey(alg,args));
+	} catch (std::string & error) {
+		return fail(error);
+	}
+}
+
 void GSECrypto::readJson(const std::string & inputStream, Json::Value & value) {
 	Json::Reader reader;
 	if (reader.parse(inputStream,value)) {
@@ -100,14 +131,16 @@ void GSECrypto::readJson(const std::string & inputStream, Json::Value & value) {
 }
 
 Provider * GSECrypto::findProvider(const std::string & algorithm) {
+	int count(0);
 	for (std::list<Provider*>::iterator i = providers.begin(); i!=providers.end(); ++i) {
+		++count;
 		if ((*i)->doesSupport(algorithm)) {
 			return (*i);
 		}
 	}
-	std::string message = "Could not find support for ";
-	message += algorithm;
-	throw message;
+	std::stringstream stream;
+	stream << "Could not find support for " << algorithm.c_str() << ". Tried " << count << " providers.";
+	throw stream.str();
 }
 
 std::string GSECrypto::getAlgorithm(Json::Value & value, const std::string & defaultAlgorithm) {
@@ -128,7 +161,7 @@ sb_GlobalCtx GSECrypto::context() {
 }
 
 sb_RngCtx GSECrypto::randomContext() {
-	return NULL;
+	return rngCtx;
 }
 
 std::string GSECrypto::toString(const Json::Value & value) {
@@ -138,7 +171,8 @@ std::string GSECrypto::toString(const Json::Value & value) {
 
 std::string GSECrypto::fail(const std::string & error) {
 	Json::Value value;
-	value["error"] = error;
+	value["error"] = error + (lastError.length()!=0 ? " [" + lastError + "]": "");
+	lastError="";
 	return toString(value);
 }
 

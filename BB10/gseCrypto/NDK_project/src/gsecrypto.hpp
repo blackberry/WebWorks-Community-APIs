@@ -36,7 +36,7 @@ public:
 
 	std::string hash(const std::string& inputString);
 
-	std::string generateKey(const std::string & inputString) {return "";}
+	std::string generateKey(const std::string & inputString);
 
 	std::string encrypt(const std::string & inputString) {return "";}
 	std::string decrypt(const std::string & inputString) {return "";}
@@ -45,7 +45,7 @@ public:
 	std::string verify(const std::string & inputString) {return "";}
 
 	sb_GlobalCtx context();
-	sb_RngCtx randomContext();
+	sb_RNGCtx randomContext();
 
 private:
 	void readJson(const std::string & inputString, Json::Value & result);
@@ -59,6 +59,8 @@ private:
 	GSECryptoJS * parent;
 
 	sb_GlobalCtx sbCtx;
+	sb_RNGCtx rngCtx;
+
 	std::string lastError;
 	std::string lastMessage;
 	std::list<Provider*> providers;

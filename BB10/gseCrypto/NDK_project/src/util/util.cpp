@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 #include "util.hpp"
-
+#include <sstream>
 namespace gsecrypto {
 namespace util {
 
@@ -148,5 +148,12 @@ std::string toHex(unsigned char * data, size_t dataLen) {
 	}
 	return toReturn;
 }
+
+std::string errorMessage(const char * message, int error) {
+	std::stringstream out;
+	out << message << " " << error;
+	return out.str();
+}
+
 }
 } // namespace
