@@ -46,11 +46,12 @@ JNEXT.GSECrypto = function () {
 	self.hash = function (input) {
 		return JSON.parse(JNEXT.invoke(self.m_id, "hash " + JSON.stringify(input)));
 	};
-	
+
 	self.generateKey = function (input) {
 		return JSON.parse(JNEXT.invoke(self.m_id, "generateKey " + JSON.stringify(input)));
 	};
 
+/*	
 	self.encrypt = function (input) {
 		return JSON.parse(JNEXT.invoke(self.m_id, "encrypt " + JSON.stringify(input)));
 	};
@@ -66,6 +67,8 @@ JNEXT.GSECrypto = function () {
 	self.verify = function (input) {
 		return JSON.parse(JNEXT.invoke(self.m_id, "verify " + JSON.stringify(input)));
 	};
+
+*/
 
 	self.getInstance = function () {
 		if (!hasInstance) {
