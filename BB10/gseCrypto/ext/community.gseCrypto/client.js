@@ -20,5 +20,25 @@ var _self = {},
 	_self.hash = function (input) {
 		return window.webworks.execSync(_ID, "hash", { input: input});
 	};
+	
+	_self.generateKey = function (input) {
+		return window.webworks.execSync(_ID, "generateKey",{ input: input });
+	};
+	
+	_self.encrypt = function (input) {
+		return window.webworks.execSync(_ID, "encrypt", { input: input});
+	};
+	
+	_self.decrypt = function (input) {
+		return window.webworks.execSync(_ID, "decrypt", { input: input});
+	};
+	
+	_self.sign = function (input) {
+		return window.webworks.execSync(_ID, "sign", { input: input});
+	};
+	
+	_self.verify = function (input) {
+		return window.webworks.execSync(_ID, "verify", { input: input});
+	};
 
 module.exports = _self;

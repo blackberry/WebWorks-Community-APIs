@@ -28,4 +28,30 @@ module.exports = {
 		args = JSON.parse(decodeURIComponent(args["input"]));
 		success(gseCrypto.getInstance().hash(args));
 	}
+
+	generateKey: function (success, fail, args) {
+		args = JSON.parse(decodeURIComponent(args["input"]));
+		success(gseCrypto.getInstance().generateKey(args));
+	}
+	
+	encrypt: function (success, fail, args) {
+		args = JSON.parse(decodeURIComponent(args["input"]));
+		success(gseCrypto.getInstance().encrypt(args));
+	}
+	
+	decrypt: function (success, fail, args) {
+		args = JSON.parse(decodeURIComponent(args["input"]));
+		success(gseCrypto.getInstance().decrypt(args));
+	}
+	
+	sign: function (success, fail, args) {
+		args = JSON.parse(decodeURIComponent(args["input"]));
+		success(gseCrypto.getInstance().sign(args));
+	}
+	
+	verify: function (success, fail, args) {
+		args = JSON.parse(decodeURIComponent(args["input"]));
+		success(gseCrypto.getInstance().verify(args));
+	}
+
 };
