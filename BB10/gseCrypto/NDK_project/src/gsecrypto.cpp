@@ -28,7 +28,11 @@
 
 #include "gsecrypto.hpp"
 #include "gsecryptojs.hpp"
+#include "aes.hpp"
 #include "util/util.hpp"
+
+#include "aes.hpp"
+#include "sha.hpp"
 
 class GSECryptoJS;
 
@@ -54,6 +58,10 @@ GSECrypto::GSECrypto(GSECryptoJS *owner) {
 		if (error != SB_SUCCESS) {
 			throw "Failed to init sbg 5.6";
 		}
+
+		providers.push_back(new SHA(this));
+		providers.push_back(new AES(this));
+
 	} catch (const char * message) {
 		lastError = message;
 	}
@@ -66,126 +74,72 @@ GSECrypto::~GSECrypto() {
 	}
 }
 
-class DataTracker {
-public:
-	DataTracker() :
-			data(0), dataLen(0) {
-	}
-	;
-	virtual ~DataTracker() {
-		cleanUp();
- 	}
-	void cleanUp() {
-		if (data != NULL) {
-			delete[] data;
-			data = NULL;
-			dataLen = 0;
-		}
-	}
-	void setData(std::string in) {
-		cleanUp();
-		dataLen = in.length();
-		data = new unsigned char[dataLen + 1];
-		strcpy((char*) data, in.data());
-	}
-	unsigned char * data;
-	size_t dataLen;
-};
-
 // Take in input and return a value
 std::string GSECrypto::hash(const std::string& inputString) {
-	DataTracker data;
-	std::string toReturn;
-
 	try {
-
 		Json::Value args;
-		Json::Reader reader;
-		if (!reader.parse(inputString, args, 0)) {
-			throw "Input is not decodable Json";
-		}
 
-		if (args.isMember("hex")) {
-			gsecrypto::util::fromHex(args["hex"].asString(), data.data, data.dataLen);
-		} else if (args.isMember("b64")) {
-			gsecrypto::util::fromB64(args["b64"].asString(), data.data, data.dataLen);
-		} else if (args.isMember("raw")) {
-			data.setData(args["raw"].asString());
-		} else {
-			throw "Input must have one of hex,b64,raw";
-		}
+		readJson(inputString,args);
+		std::string alg(getAlgorithm(args,"sha1"));
+		Provider * p = findProvider(alg);
 
-		std::string alg = args.get("alg", "SHA1").asString();
-		std::transform(alg.begin(), alg.end(), alg.begin(), tolower);
-		alg.erase(std::remove(alg.begin(), alg.end(), '-'), alg.end());
+		return toString(p->hash(alg,args));
 
-
-		size_t digestLen = 0;
-
-		int (*algFunc)(size_t, sb_YieldCtx, size_t, const unsigned char *,
-				unsigned char *, sb_GlobalCtx) = NULL;
-
-		if (alg == "sha1") {
-			digestLen = SB_SHA1_DIGEST_LEN;
-			algFunc = hu_SHA1Msg;
-		} else if (alg == "sha224") {
-			digestLen = SB_SHA224_DIGEST_LEN;
-			algFunc = hu_SHA224Msg;
-		} else if (alg == "sha256") {
-			digestLen = SB_SHA256_DIGEST_LEN;
-			algFunc = hu_SHA256Msg;
-		} else if (alg == "sha384") {
-			digestLen = SB_SHA384_DIGEST_LEN;
-			algFunc = hu_SHA384Msg;
-		} else if (alg == "sha512") {
-			digestLen = SB_SHA512_DIGEST_LEN;
-			algFunc = hu_SHA512Msg;
-		} else {
-			throw "Unknown SHA operation";
-		}
-
-		lastMessage = "";
-		std::stringstream tmp;
-		tmp << "dataLength: " << data.dataLen << " data: ";
-		for (size_t i = 0; i < data.dataLen; ++i) {
-			tmp << data.data[i];
-		}
-		tmp << "\n";
-		tmp << "Input: " << inputString;
-		lastMessage = tmp.str();
-
-		unsigned char digest[digestLen];
-		for (size_t i = 0; i < digestLen; ++i) {
-			digest[i] = i;
-		}
-		if (SB_SUCCESS
-				!= algFunc(digestLen, NULL, data.dataLen, data.data, digest,
-						sbCtx)) {
-			throw "Could not call hash function";
-		}
-
-		toReturn = toString(digest, digestLen);
-	} catch (const char * error) {
-		Json::Value errorJ;
-		Json::FastWriter writer;
-		errorJ["error"] = error;
-		return writer.write(errorJ);
+	} catch (std::string & error) {
+		return fail(error);
 	}
-
-	return toReturn;
 }
 
-std::string GSECrypto::toString(unsigned char * data, size_t dataLen) {
-	Json::Value toReturn;
-	Json::FastWriter writer;
-	toReturn["hex"] = gsecrypto::util::toHex(data, dataLen);
-	toReturn["b64"] = gsecrypto::util::toB64(data, dataLen);
-	if (lastMessage.length() != 0) {
-		toReturn["lastMessage"] = lastMessage;
-		lastMessage = "";
+void GSECrypto::readJson(const std::string & inputStream, Json::Value & value) {
+	Json::Reader reader;
+	if (reader.parse(inputStream,value)) {
+		// great!
+	} else {
+		throw std::string("Could not read JSON input");
 	}
+}
 
-	return writer.write(toReturn);
+Provider * GSECrypto::findProvider(const std::string & algorithm) {
+	for (std::list<Provider*>::iterator i = providers.begin(); i!=providers.end(); ++i) {
+		if ((*i)->doesSupport(algorithm)) {
+			return (*i);
+		}
+	}
+	std::string message = "Could not find support for ";
+	message += algorithm;
+	throw message;
+}
+
+std::string GSECrypto::getAlgorithm(Json::Value & value, const std::string & defaultAlgorithm) {
+	if (value.isMember("alg")) {
+		std::string toReturn = value.get("alg",defaultAlgorithm).asString();
+		std::transform(toReturn.begin(), toReturn.end(), toReturn.begin(), tolower);
+		toReturn.erase(std::remove(toReturn.begin(), toReturn.end(), '-'), toReturn.end());
+
+		return toReturn;
+	} else if (defaultAlgorithm.size()!=0) {
+		return defaultAlgorithm;
+	}
+	throw std::string("Could not determine algorithm");
+}
+
+sb_GlobalCtx GSECrypto::context() {
+	return sbCtx;
+}
+
+sb_RngCtx GSECrypto::randomContext() {
+	return NULL;
+}
+
+std::string GSECrypto::toString(const Json::Value & value) {
+	Json::FastWriter writer;
+	return writer.write(value);
+}
+
+std::string GSECrypto::fail(const std::string & error) {
+	Json::Value value;
+	value["error"] = error;
+	return toString(value);
 }
 
 } /* namespace webworks */
