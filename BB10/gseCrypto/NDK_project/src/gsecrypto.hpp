@@ -38,7 +38,7 @@ public:
 
 	std::string generateKey(const std::string & inputString);
 
-	std::string encrypt(const std::string & inputString) {return "";}
+	std::string encrypt(const std::string & inputString);
 	std::string decrypt(const std::string & inputString) {return "";}
 
 	std::string sign(const std::string & inputString) {return "";}

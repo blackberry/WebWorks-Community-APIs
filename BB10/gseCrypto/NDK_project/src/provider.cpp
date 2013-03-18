@@ -4,7 +4,6 @@
  *  Created on: 2013-03-13
  *      Author: robwilliams
  */
-
 #include "provider.hpp"
 
 #include "util/util.hpp"
@@ -15,7 +14,7 @@
 
 namespace webworks {
 
-Provider::Provider(GSECrypto * own) :
+Provider::Provider(GSECrypto & own) :
 		owner(own) {
 }
 
@@ -38,11 +37,11 @@ void Provider::getData(Json::Value & args, DataTracker & data) {
 }
 
 sb_GlobalCtx Provider::context() {
-	return owner->context();
+	return owner.context();
 }
 
 sb_RngCtx Provider::randomContext() {
-	return owner->randomContext();
+	return owner.randomContext();
 }
 
 Json::Value Provider::toJson(unsigned char * data, size_t dataLen) {
@@ -50,7 +49,12 @@ Json::Value Provider::toJson(unsigned char * data, size_t dataLen) {
 	Json::FastWriter writer;
 	toReturn["hex"] = gsecrypto::util::toHex(data, dataLen);
 	toReturn["b64"] = gsecrypto::util::toB64(data, dataLen);
+	toReturn["raw"] = std::string((char*)data,dataLen);
 	return toReturn;
+}
+
+Json::Value Provider::toJson(DataTracker & dt) {
+	return toJson(dt.data,dt.dataLen);
 }
 
 Json::Value Provider::generateKey(const std::string & algorithm, Json::Value & input) {

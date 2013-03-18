@@ -19,6 +19,10 @@ public:
 			data(0), dataLen(0) {
 	}
 	;
+	DataTracker(size_t size) {
+		data = new unsigned char[size];
+		dataLen = size;
+	}
 	virtual ~DataTracker() {
 		cleanUp();
  	}

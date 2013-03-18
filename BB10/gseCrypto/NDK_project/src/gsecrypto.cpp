@@ -75,8 +75,8 @@ GSECrypto::GSECrypto(GSECryptoJS *owner) {
 			throw gsecrypto::util::errorMessage("Failed to create DRBG",error);
 		}
 
-		providers.push_back(new SHA(this));
-		providers.push_back(new AES(this));
+		providers.push_back(new SHA(*this));
+		providers.push_back(new AES(*this));
 
 	} catch (const char * message) {
 		lastError = message;
@@ -120,6 +120,20 @@ std::string GSECrypto::generateKey(const std::string& input) {
 		return fail(error);
 	}
 }
+
+std::string GSECrypto::encrypt(const std::string & input) {
+	try {
+		Json::Value args;
+		readJson(input,args);
+		std::string alg(getAlgorithm(args));
+		Provider * p = findProvider(alg);
+
+		return toString(p->encrypt(alg,args));
+	} catch (std::string & error) {
+		return fail(error);
+	}
+}
+
 
 void GSECrypto::readJson(const std::string & inputStream, Json::Value & value) {
 	Json::Reader reader;

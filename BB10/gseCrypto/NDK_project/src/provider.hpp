@@ -21,7 +21,7 @@ namespace webworks {
 
 class Provider {
 public:
-	Provider(class GSECrypto * owner);
+	Provider(class GSECrypto & owner);
 	virtual ~Provider();
 
 	virtual bool doesSupport(const std::string & algorithm) = 0;
@@ -39,8 +39,9 @@ public:
 protected:
 	void getData(Json::Value & value, DataTracker & data);
 	Json::Value toJson(unsigned char * data, size_t dataLen);
+	Json::Value toJson(DataTracker & data);
 
-	GSECrypto * owner;
+	GSECrypto & owner;
 
 	sb_GlobalCtx context();
 	sb_RngCtx randomContext();

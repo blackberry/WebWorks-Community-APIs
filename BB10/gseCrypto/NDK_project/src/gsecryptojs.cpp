@@ -18,6 +18,7 @@
 #include "../public/tokenizer.h"
 #include "gsecryptojs.hpp"
 #include "gsecrypto.hpp"
+#include "json/writer.h"
 
 using namespace std;
 
@@ -81,11 +82,14 @@ string GSECryptoJS::InvokeMethod(const string& command) {
 		return gseCryptoController->hash(arg);
 	} else if (strCommand == "generateKey") {
 		return gseCryptoController->generateKey(arg);
+	} else if (strCommand == "encrypt") {
+		return gseCryptoController->encrypt(arg);
 	}
 
-	strCommand.append(";");
-	strCommand.append(command);
-	return strCommand;
+	Json::Value error;
+	error["error"] = "No implementation found for " + strCommand + "(" + command + ")";
+	Json::FastWriter writer;
+	return writer.write(error);
 }
 
 // Notifies JavaScript of an event

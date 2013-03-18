@@ -15,13 +15,10 @@
 
 namespace webworks {
 
-SHA::SHA(GSECrypto * owner) : Provider(owner) {
-	// TODO Auto-generated constructor stub
-
+SHA::SHA(GSECrypto & owner) : Provider(owner) {
 }
 
 SHA::~SHA() {
-	// TODO Auto-generated destructor stub
 }
 
 bool SHA::doesSupport(const std::string & algorithm) {

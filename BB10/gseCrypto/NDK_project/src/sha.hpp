@@ -14,7 +14,7 @@ namespace webworks {
 
 class SHA : public Provider {
 public:
-	SHA(class GSECrypto *);
+	SHA(class GSECrypto &);
 	virtual ~SHA();
 
 	virtual bool doesSupport(const std::string &);
