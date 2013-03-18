@@ -51,11 +51,11 @@ JNEXT.GSECrypto = function () {
 		return JSON.parse(JNEXT.invoke(self.m_id, "generateKey " + JSON.stringify(input)));
 	};
 
-/*	
 	self.encrypt = function (input) {
 		return JSON.parse(JNEXT.invoke(self.m_id, "encrypt " + JSON.stringify(input)));
 	};
 
+	/*	
 	self.decrypt = function (input) {
 		return JSON.parse(JNEXT.invoke(self.m_id, "decrypt " + JSON.stringify(input)));
 	};

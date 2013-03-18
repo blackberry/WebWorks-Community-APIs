@@ -24,12 +24,12 @@ var _self = {},
 	_self.generateKey = function (input) {
 		return window.webworks.execSync(_ID, "generateKey", { input: input });
 	};
-/*
 	
 	_self.encrypt = function (input) {
 		return window.webworks.execSync(_ID, "encrypt", { input: input});
 	};
 	
+	/*
 	_self.decrypt = function (input) {
 		return window.webworks.execSync(_ID, "decrypt", { input: input});
 	};

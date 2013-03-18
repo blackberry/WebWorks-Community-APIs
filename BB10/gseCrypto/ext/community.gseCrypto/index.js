@@ -32,14 +32,14 @@ module.exports = {
 	generateKey: function (success, fail, args) {
 		args = JSON.parse(decodeURIComponent(args["input"]));
 		success(gseCrypto.getInstance().generateKey(args));
-	}
+	},
 
-/*
 	encrypt: function (success, fail, args) {
 		args = JSON.parse(decodeURIComponent(args["input"]));
 		success(gseCrypto.getInstance().encrypt(args));
 	}
 	
+	/*
 	decrypt: function (success, fail, args) {
 		args = JSON.parse(decodeURIComponent(args["input"]));
 		success(gseCrypto.getInstance().decrypt(args));
