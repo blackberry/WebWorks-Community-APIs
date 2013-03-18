@@ -56,10 +56,32 @@
 			div.className = 'output';
 		}
 		
+		var aesKey;
+		
 		function generateKey() {
-			alert(JSON.stringify(community.gseCrypto.generateKey({alg:"aes"})));
+			aesKey = community.gseCrypto.generateKey({alg:"aes"});
+			alert("Generated key: " + JSON.stringify(aesKey));
+			aesKey = aesKey.key;
 		}
-
+		
+		function aesEncrypt() {
+			var data=document.getElementById('aesText').value;
+			while(data.length%16!=0) {
+				data += " ";
+			};
+			var iv = "                ";
+			var params = {alg:"aes",key:aesKey,input:{raw:data},iv:{raw:iv}};
+			alert("Params: " + JSON.stringify(params));
+			var result = community.gseCrypto.encrypt(params);
+			alert(result);
+			try {
+			alert("Result of encrypt: " + JSON.stringify(result));
+			} catch (e) {
+				alert(e);
+			}
+		}
+		
+		
 		document.addEventListener('webworksready', function(e) {
 			// This is a hack for Ripple calling webworksready multiple times
 			if (rippleLoaded)
@@ -80,6 +102,10 @@
 		
 		<h1>Generate a Key</h1>
 		<input type='button' value='AES' onclick="generateKey()" />
+		<h3>Encrypt Text</h3>
+		<input id='aesText' type='text' value='robbie' />
+		<input type='button' value='Encrypt' onclick="aesEncrypt()" />
+		
 	</div>
 
 
