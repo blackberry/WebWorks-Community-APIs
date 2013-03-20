@@ -17,7 +17,7 @@
 
 using namespace gsecrypto::util;
 
-namespace webworks {
+namespace gsecrypto {
 
 AES::AES(GSECrypto & owner) :
 		Provider(owner) {
@@ -66,6 +66,14 @@ Json::Value AES::generateKey(const std::string & algorithm,
 }
 
 Json::Value AES::encrypt(const std::string & algorithm, Json::Value & args) {
+	return crypt(algorithm,args,true);
+}
+
+Json::Value AES::decrypt(const std::string & algorithm, Json::Value & args) {
+	return crypt(algorithm,args,false);
+}
+
+Json::Value AES::crypt(const std::string & algorithm, Json::Value & args,bool isEncrypt) {
 	if (!args.isMember("key")) {
 		throw std::string("key missing");
 	}
@@ -74,6 +82,14 @@ Json::Value AES::encrypt(const std::string & algorithm, Json::Value & args) {
 	}
 	if (!args.isMember("iv")) {
 		throw std::string("iv missing");
+	}
+	if (!args.isMember("mode")) {
+		throw std::string("mode missing");
+	}
+
+	std::string modeString(gsecrypto::util::lowerCaseRemoveDashes(args["mode"].asString()));
+	if ("cbc" != modeString) {
+		throw std::string("Only CBC currently supported");
 	}
 
 	DataTracker input;
@@ -96,10 +112,12 @@ Json::Value AES::encrypt(const std::string & algorithm, Json::Value & args) {
 
 	DataTracker result(input.dataLen);
 	if (input.dataLen!=0) {
-		context.encrypt(input,result);
+		context.crypt(input,result,isEncrypt);
 	}
 
-	return toJson(result);
+	Json::Value toReturn;
+	toReturn["output"] = toJson(result);
+	return toReturn;
 }
 
 AESParams::AESParams(AES & own) :
@@ -180,8 +198,13 @@ AESContext::~AESContext() {
 	}
 }
 
-void AESContext::encrypt(DataTracker & in, DataTracker & out) {
-	int rc = hu_AESEncrypt(context,in.dataLen,in.data,out.data,params.owner.context());
+void AESContext::crypt(DataTracker & in, DataTracker & out, bool isEncrypt) {
+	int rc(0);
+	if (isEncrypt) {
+		rc = hu_AESEncrypt(context,in.dataLen,in.data,out.data,params.owner.context());
+	} else {
+		rc = hu_AESDecrypt(context,in.dataLen,in.data,out.data,params.owner.context());
+	}
 	if (rc!=SB_SUCCESS) {
 		throw errorMessage("Could not encrypt data",rc);
 	}

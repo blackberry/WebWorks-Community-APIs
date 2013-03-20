@@ -10,7 +10,7 @@
 
 #include "provider.hpp"
 
-namespace webworks {
+namespace gsecrypto {
 
 class AES : public Provider {
 public:
@@ -21,10 +21,14 @@ public:
 
 	virtual Json::Value generateKey(const std::string & alg, Json::Value & args);
 	virtual Json::Value encrypt(const std::string & alg, Json::Value & args);
+	virtual Json::Value decrypt(const std::string & alg, Json::Value & args);
 
 	friend class AESParams;
 	friend class AESKey;
 	friend class AESContext;
+
+private:
+	Json::Value crypt(const std::string & alg, Json::Value & args, bool isEncrypt);
 };
 
 class AESParams {
@@ -60,12 +64,12 @@ public:
 	AESContext(AESParams &, AESKey &, int mode, DataTracker & iv);
 	virtual ~AESContext();
 
-	void encrypt(DataTracker & in, DataTracker & out);
+	void crypt(DataTracker & in, DataTracker & out, bool isEncrypt);
 
 private:
 	AESParams & params;
 	sb_Context context;
 };
 
-} /* namespace webworks */
+} /* namespace gsecrypto */
 #endif /* AES_HPP_ */
