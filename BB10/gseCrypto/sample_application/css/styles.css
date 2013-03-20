@@ -13,12 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-body {
-	margin: 0;
+body,html {
+	font-size: 25pt;
 }
 
 div,input,select {
-	font-size: 40pt;
+	font-size: 1em;
+}
+
+input[type=text] {
+	width: 480px;
+}
+
+h1 {
+	font-size: 1.5em;
+	font-weight: bold;
+	margin: 0 0 0 0;
 }
 
 div.output {
