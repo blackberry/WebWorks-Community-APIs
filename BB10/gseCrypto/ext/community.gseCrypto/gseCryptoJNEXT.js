@@ -55,11 +55,15 @@ JNEXT.GSECrypto = function () {
 		return JSON.parse(JNEXT.invoke(self.m_id, "encrypt " + JSON.stringify(input)));
 	};
 
-	/*	
 	self.decrypt = function (input) {
 		return JSON.parse(JNEXT.invoke(self.m_id, "decrypt " + JSON.stringify(input)));
 	};
 	
+	self.random = function (input) {
+		return JSON.parse(JNEXT.invoke(self.m_id, "random " + JSON.stringify(input)));
+	};
+	
+	/*	
 	self.sign = function (input) {
 		return JSON.parse(JNEXT.invoke(self.m_id, "sign " + JSON.stringify(input)));
 	};

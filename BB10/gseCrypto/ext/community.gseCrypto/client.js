@@ -29,11 +29,15 @@ var _self = {},
 		return window.webworks.execSync(_ID, "encrypt", { input: input});
 	};
 	
-	/*
 	_self.decrypt = function (input) {
 		return window.webworks.execSync(_ID, "decrypt", { input: input});
 	};
 	
+	_self.random = function (input) {
+		return window.webworks.execSync(_ID, "random", { input: input});
+	};
+	
+	/*
 	_self.sign = function (input) {
 		return window.webworks.execSync(_ID, "sign", { input: input});
 	};

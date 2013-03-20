@@ -37,18 +37,22 @@ module.exports = {
 	encrypt: function (success, fail, args) {
 		args = JSON.parse(decodeURIComponent(args["input"]));
 		success(gseCrypto.getInstance().encrypt(args));
-	}
+	},
 	
-	/*
 	decrypt: function (success, fail, args) {
 		args = JSON.parse(decodeURIComponent(args["input"]));
 		success(gseCrypto.getInstance().decrypt(args));
-	}
+	},
+	
+	random: function (success, fail, args) {
+		args = JSON.parse(decodeURIComponent(args["input"]));
+		success(gseCrypto.getInstance().random(args));
+	} /*   ,
 	
 	sign: function (success, fail, args) {
 		args = JSON.parse(decodeURIComponent(args["input"]));
 		success(gseCrypto.getInstance().sign(args));
-	}
+	},
 	
 	verify: function (success, fail, args) {
 		args = JSON.parse(decodeURIComponent(args["input"]));
