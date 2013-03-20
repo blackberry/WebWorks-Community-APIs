@@ -15,6 +15,8 @@
  */
 #include "util.hpp"
 #include <sstream>
+#include <algorithm>
+
 namespace gsecrypto {
 namespace util {
 
@@ -153,6 +155,13 @@ std::string errorMessage(const char * message, int error) {
 	std::stringstream out;
 	out << message << " " << error;
 	return out.str();
+}
+
+std::string lowerCaseRemoveDashes(const std::string & input) {
+	std::string toReturn(input);
+	std::transform(toReturn.begin(), toReturn.end(), toReturn.begin(), std::tolower);
+	toReturn.erase(std::remove(toReturn.begin(), toReturn.end(), '-'), toReturn.end());
+	return toReturn;
 }
 
 }

@@ -31,6 +31,8 @@ void fromB64(std::string encoded, unsigned char * & data,
 int nibble(const char c);
 
 std::string errorMessage(const char * message, int error);
+
+std::string lowerCaseRemoveDashes(const std::string &);
 }
 }
 
