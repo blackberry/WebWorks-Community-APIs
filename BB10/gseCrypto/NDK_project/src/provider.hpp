@@ -17,7 +17,7 @@
 
 #include "datatracker.hpp"
 
-namespace webworks {
+namespace gsecrypto {
 
 class Provider {
 public:
@@ -36,10 +36,10 @@ public:
 	virtual Json::Value sign(const std::string & algorithm, Json::Value & input);
 	virtual Json::Value verify(const std::string & algorithm, Json::Value & input);
 
+	static Json::Value toJson(unsigned char * data, size_t dataLen);
+	static Json::Value toJson(DataTracker & data);
 protected:
 	void getData(Json::Value & value, DataTracker & data);
-	Json::Value toJson(unsigned char * data, size_t dataLen);
-	Json::Value toJson(DataTracker & data);
 
 	GSECrypto & owner;
 
@@ -47,5 +47,5 @@ protected:
 	sb_RngCtx randomContext();
 };
 
-} /* namespace webworks */
+} /* namespace gsecrypto */
 #endif /* PROVIDER_HPP_ */

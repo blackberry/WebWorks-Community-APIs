@@ -12,7 +12,7 @@
 
 #include <json/writer.h>
 
-namespace webworks {
+namespace gsecrypto {
 
 Provider::Provider(GSECrypto & own) :
 		owner(own) {
