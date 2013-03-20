@@ -38,7 +38,7 @@
 
 class GSECryptoJS;
 
-namespace webworks {
+namespace gsecrypto {
 
 GSECrypto::GSECrypto(GSECryptoJS *owner) {
 	parent = owner;
@@ -134,6 +134,19 @@ std::string GSECrypto::encrypt(const std::string & input) {
 	}
 }
 
+std::string GSECrypto::decrypt(const std::string & input) {
+	try {
+		Json::Value args;
+		readJson(input,args);
+		std::string alg(getAlgorithm(args));
+		Provider * p = findProvider(alg);
+
+		return toString(p->decrypt(alg,args));
+	} catch (std::string & error) {
+		return fail(error);
+	}
+}
+
 
 void GSECrypto::readJson(const std::string & inputStream, Json::Value & value) {
 	Json::Reader reader;
@@ -159,11 +172,7 @@ Provider * GSECrypto::findProvider(const std::string & algorithm) {
 
 std::string GSECrypto::getAlgorithm(Json::Value & value, const std::string & defaultAlgorithm) {
 	if (value.isMember("alg")) {
-		std::string toReturn = value.get("alg",defaultAlgorithm).asString();
-		std::transform(toReturn.begin(), toReturn.end(), toReturn.begin(), tolower);
-		toReturn.erase(std::remove(toReturn.begin(), toReturn.end(), '-'), toReturn.end());
-
-		return toReturn;
+		return gsecrypto::util::lowerCaseRemoveDashes(value.get("alg",defaultAlgorithm).asString());
 	} else if (defaultAlgorithm.size()!=0) {
 		return defaultAlgorithm;
 	}
@@ -190,4 +199,34 @@ std::string GSECrypto::fail(const std::string & error) {
 	return toString(value);
 }
 
-} /* namespace webworks */
+std::string GSECrypto::random(const std::string & inputString) {
+	try {
+		Json::Value args;
+		readJson(inputString,args);
+		if (args.isMember("size")) {
+			Json::Value sizeValue(args["size"]);
+			if (sizeValue.isInt()) {
+				size_t size = sizeValue.asInt();
+
+				DataTracker dt(size);
+
+				int rc = hu_RngGetBytes(rngCtx,dt.dataLen,dt.data,sbCtx);
+				if (rc!=SB_SUCCESS) {
+					throw gsecrypto::util::errorMessage("Could not get random bytes",rc);
+				}
+
+				Json::Value toReturn;
+				toReturn["output"] = Provider::toJson(dt);
+				return toString(toReturn);
+			} else {
+				throw std::string("size must be an integer");
+			}
+		} else {
+			throw std::string("size is missing");
+		}
+	} catch (std::string & error) {
+		return fail(error);
+	}
+}
+
+} /* namespace gsecrypto */

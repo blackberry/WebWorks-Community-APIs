@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef GSECrypto_HPP_
 #define GSECrypto_HPP_
 
@@ -27,7 +26,7 @@
 
 class GSECryptoJS;
 
-namespace webworks {
+namespace gsecrypto {
 
 class GSECrypto {
 public:
@@ -39,10 +38,12 @@ public:
 	std::string generateKey(const std::string & inputString);
 
 	std::string encrypt(const std::string & inputString);
-	std::string decrypt(const std::string & inputString) {return "";}
+	std::string decrypt(const std::string & inputString);
 
 	std::string sign(const std::string & inputString) {return "";}
 	std::string verify(const std::string & inputString) {return "";}
+
+	std::string random(const std::string & inputStream);
 
 	sb_GlobalCtx context();
 	sb_RNGCtx randomContext();
