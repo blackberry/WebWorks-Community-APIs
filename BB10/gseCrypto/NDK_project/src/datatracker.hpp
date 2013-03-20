@@ -11,38 +11,21 @@
 #include <string>
 #include <string.h>
 
-namespace webworks {
+namespace gsecrypto {
 
 class DataTracker {
 public:
-	DataTracker() :
-			data(0), dataLen(0) {
-	}
-	;
-	DataTracker(size_t size) {
-		data = new unsigned char[size];
-		dataLen = size;
-	}
-	virtual ~DataTracker() {
-		cleanUp();
- 	}
-	void cleanUp() {
-		if (data != NULL) {
-			delete[] data;
-			data = NULL;
-			dataLen = 0;
-		}
-	}
-	void setData(std::string in) {
-		cleanUp();
-		dataLen = in.length();
-		data = new unsigned char[dataLen + 1];
-		strcpy((char*) data, in.data());
-	}
+	DataTracker();
+	DataTracker(size_t size);
+	virtual ~DataTracker();
+
+	void cleanUp();
+	void setData(const std::string & in);
+
 	unsigned char * data;
 	size_t dataLen;
 };
 
 
-} /* namespace webworks */
+} /* namespace gsecrypto */
 #endif /* DATATRACKER_HPP_ */
