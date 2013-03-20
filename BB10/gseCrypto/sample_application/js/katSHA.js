@@ -29,8 +29,8 @@ function katSHA() {
 			var encoding = which[j];
 			var toHash = suite[encoding];
 
-			var params = Object();
-			params[encoding] = toHash;
+			var params = { input: {} };
+			params.input[encoding] = toHash;
 
 			var results = suite.results;
 			for ( var k = 0; k < results.length; ++k) {
