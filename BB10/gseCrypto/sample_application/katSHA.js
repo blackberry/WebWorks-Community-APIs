@@ -38,7 +38,7 @@ function katSHA() {
 				var alg = kat.alg;
 				params.alg = alg;
 				
-				var live = community.gseCrypto.hash(params);
+				var live = community.gseCrypto.hash(params).output;
 
 				var match = kat.hex == live.hex;
 				message += ("<tr>");
