@@ -13,7 +13,7 @@
 #include "datatracker.hpp"
 #include "util/util.hpp"
 
-namespace webworks {
+namespace gsecrypto {
 
 SHA::SHA(GSECrypto & owner) : Provider(owner) {
 }
@@ -30,7 +30,11 @@ bool SHA::doesSupport(const std::string & algorithm) {
 Json::Value SHA::hash(const std::string & alg, Json::Value & args) {
 	DataTracker data;
 
-	getData(args,data);
+	if (!args.isMember("input")) {
+		throw std::string("Missing input");
+	}
+	Json::Value input(args["input"]);
+	getData(input,data);
 
 	size_t digestLen = 0;
 
@@ -53,7 +57,7 @@ Json::Value SHA::hash(const std::string & alg, Json::Value & args) {
 		digestLen = SB_SHA512_DIGEST_LEN;
 		algFunc = hu_SHA512Msg;
 	} else {
-		throw "Unknown SHA operation";
+		throw std::string("Unknown SHA operation");
 	}
 
 	unsigned char digest[digestLen];
@@ -66,7 +70,9 @@ Json::Value SHA::hash(const std::string & alg, Json::Value & args) {
 		throw std::string("Could not call hash function");
 	}
 
-	return toJson(digest,digestLen);
+	Json::Value toReturn;
+	toReturn["output"] = toJson(digest,digestLen);
+	return toReturn;
 }
 
-} /* namespace webworks */
+} /* namespace gsecrypto */

@@ -10,7 +10,7 @@
 
 #include "provider.hpp"
 
-namespace webworks {
+namespace gsecrypto {
 
 class SHA : public Provider {
 public:
@@ -22,5 +22,5 @@ public:
 
 };
 
-} /* namespace webworks */
+} /* namespace gsecrypto */
 #endif /* SHA_HPP_ */
