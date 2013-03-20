@@ -27,7 +27,7 @@ using namespace std;
  */
 GSECryptoJS::GSECryptoJS(const std::string& id) :
 		m_id(id) {
-	gseCryptoController = new webworks::GSECrypto(this);
+	gseCryptoController = new gsecrypto::GSECrypto(this);
 }
 
 /**
@@ -84,6 +84,10 @@ string GSECryptoJS::InvokeMethod(const string& command) {
 		return gseCryptoController->generateKey(arg);
 	} else if (strCommand == "encrypt") {
 		return gseCryptoController->encrypt(arg);
+	} else if (strCommand == "decrypt") {
+		return gseCryptoController->decrypt(arg);
+	} else if (strCommand == "random") {
+		return gseCryptoController->random(arg);
 	}
 
 	Json::Value error;
