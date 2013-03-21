@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <string>
 #include <sstream>
 #include <cctype>
@@ -25,36 +24,65 @@
 #include <husha1.h>
 #include <husha2.h>
 #include <hugse56.h>
+#include <hurandom.h>
+#include <huseed.h>
 
 #include "gsecrypto.hpp"
 #include "gsecryptojs.hpp"
+#include "aes.hpp"
 #include "util/util.hpp"
+
+#include "aes.hpp"
+#include "sha.hpp"
 
 class GSECryptoJS;
 
-namespace webworks {
+namespace gsecrypto {
 
 GSECrypto::GSECrypto(GSECryptoJS *owner) {
 	parent = owner;
 
 	sbCtx = NULL;
+	rngCtx = NULL;
 
 	try {
 		int error = hu_GlobalCtxCreateDefault(&sbCtx);
 		if (error != SB_SUCCESS) {
-			throw "Failed to create global context";
+			throw gsecrypto::util::errorMessage(
+					"Failed to create global context", error);
 		}
 
 		error = hu_RegisterSbg56(sbCtx);
 		if (error != SB_SUCCESS) {
-			throw "Failed to register sbg 5.6";
+			throw gsecrypto::util::errorMessage("Failed to register sbg 5.6",
+					error);
 		}
 
 		error = hu_InitSbg56(sbCtx);
 		if (error != SB_SUCCESS) {
-			throw "Failed to init sbg 5.6";
+			throw gsecrypto::util::errorMessage("Failed to init sbg 5.6",
+					error);
 		}
-	} catch (const char * message) {
+
+		size_t seedLength = 100;
+		unsigned char seed[100];
+
+		error = hu_RegisterSystemSeed(sbCtx);
+		if (error != SB_SUCCESS) {
+			throw gsecrypto::util::errorMessage(
+					"Failed to register system seed", error);
+		}
+
+		error = hu_RngDrbgCreate(HU_DRBG_CIPHER, 256, 0, 0, NULL, NULL, &rngCtx,
+				sbCtx);
+		if (error != SB_SUCCESS) {
+			throw gsecrypto::util::errorMessage("Failed to create DRBG", error);
+		}
+
+		providers.push_back(new SHA(*this));
+		providers.push_back(new AES(*this));
+
+	} catch (std::string & message) {
 		lastError = message;
 	}
 }
@@ -66,126 +94,145 @@ GSECrypto::~GSECrypto() {
 	}
 }
 
-class DataTracker {
-public:
-	DataTracker() :
-			data(0), dataLen(0) {
-	}
-	;
-	virtual ~DataTracker() {
-		cleanUp();
- 	}
-	void cleanUp() {
-		if (data != NULL) {
-			delete[] data;
-			data = NULL;
-			dataLen = 0;
-		}
-	}
-	void setData(std::string in) {
-		cleanUp();
-		dataLen = in.length();
-		data = new unsigned char[dataLen + 1];
-		strcpy((char*) data, in.data());
-	}
-	unsigned char * data;
-	size_t dataLen;
-};
-
-// Take in input and return a value
 std::string GSECrypto::hash(const std::string& inputString) {
-	DataTracker data;
-	std::string toReturn;
-
 	try {
-
 		Json::Value args;
-		Json::Reader reader;
-		if (!reader.parse(inputString, args, 0)) {
-			throw "Input is not decodable Json";
-		}
 
-		if (args.isMember("hex")) {
-			gsecrypto::util::fromHex(args["hex"].asString(), data.data, data.dataLen);
-		} else if (args.isMember("b64")) {
-			gsecrypto::util::fromB64(args["b64"].asString(), data.data, data.dataLen);
-		} else if (args.isMember("raw")) {
-			data.setData(args["raw"].asString());
-		} else {
-			throw "Input must have one of hex,b64,raw";
-		}
+		readJson(inputString, args);
+		std::string alg(getAlgorithm(args, "sha1"));
+		Provider * p = findProvider(alg);
 
-		std::string alg = args.get("alg", "SHA1").asString();
-		std::transform(alg.begin(), alg.end(), alg.begin(), tolower);
-		alg.erase(std::remove(alg.begin(), alg.end(), '-'), alg.end());
+		return toString(p->hash(alg, args));
 
-
-		size_t digestLen = 0;
-
-		int (*algFunc)(size_t, sb_YieldCtx, size_t, const unsigned char *,
-				unsigned char *, sb_GlobalCtx) = NULL;
-
-		if (alg == "sha1") {
-			digestLen = SB_SHA1_DIGEST_LEN;
-			algFunc = hu_SHA1Msg;
-		} else if (alg == "sha224") {
-			digestLen = SB_SHA224_DIGEST_LEN;
-			algFunc = hu_SHA224Msg;
-		} else if (alg == "sha256") {
-			digestLen = SB_SHA256_DIGEST_LEN;
-			algFunc = hu_SHA256Msg;
-		} else if (alg == "sha384") {
-			digestLen = SB_SHA384_DIGEST_LEN;
-			algFunc = hu_SHA384Msg;
-		} else if (alg == "sha512") {
-			digestLen = SB_SHA512_DIGEST_LEN;
-			algFunc = hu_SHA512Msg;
-		} else {
-			throw "Unknown SHA operation";
-		}
-
-		lastMessage = "";
-		std::stringstream tmp;
-		tmp << "dataLength: " << data.dataLen << " data: ";
-		for (size_t i = 0; i < data.dataLen; ++i) {
-			tmp << data.data[i];
-		}
-		tmp << "\n";
-		tmp << "Input: " << inputString;
-		lastMessage = tmp.str();
-
-		unsigned char digest[digestLen];
-		for (size_t i = 0; i < digestLen; ++i) {
-			digest[i] = i;
-		}
-		if (SB_SUCCESS
-				!= algFunc(digestLen, NULL, data.dataLen, data.data, digest,
-						sbCtx)) {
-			throw "Could not call hash function";
-		}
-
-		toReturn = toString(digest, digestLen);
-	} catch (const char * error) {
-		Json::Value errorJ;
-		Json::FastWriter writer;
-		errorJ["error"] = error;
-		return writer.write(errorJ);
+	} catch (std::string & error) {
+		return fail(error);
 	}
-
-	return toReturn;
 }
 
-std::string GSECrypto::toString(unsigned char * data, size_t dataLen) {
-	Json::Value toReturn;
+std::string GSECrypto::generateKey(const std::string& input) {
+	try {
+		Json::Value args;
+		readJson(input, args);
+		std::string alg(getAlgorithm(args));
+		Provider * p = findProvider(alg);
+
+		return toString(p->generateKey(alg, args));
+	} catch (std::string & error) {
+		return fail(error);
+	}
+}
+
+std::string GSECrypto::encrypt(const std::string & input) {
+	try {
+		Json::Value args;
+		readJson(input, args);
+		std::string alg(getAlgorithm(args));
+		Provider * p = findProvider(alg);
+
+		return toString(p->encrypt(alg, args));
+	} catch (std::string & error) {
+		return fail(error);
+	}
+}
+
+std::string GSECrypto::decrypt(const std::string & input) {
+	try {
+		Json::Value args;
+		readJson(input, args);
+		std::string alg(getAlgorithm(args));
+		Provider * p = findProvider(alg);
+
+		return toString(p->decrypt(alg, args));
+	} catch (std::string & error) {
+		return fail(error);
+	}
+}
+
+void GSECrypto::readJson(const std::string & inputStream, Json::Value & value) {
+	Json::Reader reader;
+	if (reader.parse(inputStream, value)) {
+		// great!
+	} else {
+		throw std::string("Could not read JSON input");
+	}
+}
+
+Provider * GSECrypto::findProvider(const std::string & algorithm) {
+	int count(0);
+	for (std::list<Provider*>::iterator i = providers.begin();
+			i != providers.end(); ++i) {
+		++count;
+		if ((*i)->doesSupport(algorithm)) {
+			return (*i);
+		}
+	}
+	std::stringstream stream;
+	stream << "Could not find support for " << algorithm.c_str() << ". Tried "
+			<< count << " providers.";
+	throw stream.str();
+}
+
+std::string GSECrypto::getAlgorithm(Json::Value & value,
+		const std::string & defaultAlgorithm) {
+	if (value.isMember("alg")) {
+		return gsecrypto::util::lowerCaseRemoveDashes(
+				value.get("alg", defaultAlgorithm).asString());
+	} else if (defaultAlgorithm.size() != 0) {
+		return defaultAlgorithm;
+	}
+	throw std::string("Could not determine algorithm");
+}
+
+sb_GlobalCtx GSECrypto::context() {
+	return sbCtx;
+}
+
+sb_RngCtx GSECrypto::randomContext() {
+	return rngCtx;
+}
+
+std::string GSECrypto::toString(const Json::Value & value) {
 	Json::FastWriter writer;
-	toReturn["hex"] = gsecrypto::util::toHex(data, dataLen);
-	toReturn["b64"] = gsecrypto::util::toB64(data, dataLen);
-	if (lastMessage.length() != 0) {
-		toReturn["lastMessage"] = lastMessage;
-		lastMessage = "";
-	}
-
-	return writer.write(toReturn);
+	return writer.write(value);
 }
 
-} /* namespace webworks */
+std::string GSECrypto::fail(const std::string & error) {
+	Json::Value value;
+	value["error"] = error
+			+ (lastError.length() != 0 ? " [" + lastError + "]" : "");
+	lastError = "";
+	return toString(value);
+}
+
+std::string GSECrypto::random(const std::string & inputString) {
+	try {
+		Json::Value args;
+		readJson(inputString, args);
+		if (args.isMember("size")) {
+			Json::Value sizeValue(args["size"]);
+			if (sizeValue.isInt()) {
+				size_t size = sizeValue.asInt();
+
+				DataTracker dt(size);
+
+				int rc = hu_RngGetBytes(rngCtx, dt.dataLen, dt.data, sbCtx);
+				if (rc != SB_SUCCESS) {
+					throw gsecrypto::util::errorMessage(
+							"Could not get random bytes", rc);
+				}
+
+				Json::Value toReturn;
+				toReturn["output"] = Provider::toJson(dt);
+				return toString(toReturn);
+			} else {
+				throw std::string("size must be an integer");
+			}
+		} else {
+			throw std::string("size is missing");
+		}
+	} catch (std::string & error) {
+		return fail(error);
+	}
+}
+
+} /* namespace gsecrypto */

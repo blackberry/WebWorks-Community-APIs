@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef GSECryptoJS_HPP_
 #define GSECryptoJS_HPP_
 
@@ -21,19 +20,22 @@
 #include "../public/plugin.h"
 #include "gsecrypto.hpp"
 
+/**
+ * JSExt implementation.
+ */
 class GSECryptoJS: public JSExt {
 
 public:
-    explicit GSECryptoJS(const std::string& id);
-    virtual ~GSECryptoJS();
-    virtual bool CanDelete();
-    virtual std::string InvokeMethod(const std::string& command);
-    void NotifyEvent(const std::string& event);
+	explicit GSECryptoJS(const std::string& id);
+	virtual ~GSECryptoJS();
+	virtual bool CanDelete();
+	virtual std::string InvokeMethod(const std::string& command);
+	void NotifyEvent(const std::string& event);
 
 private:
-    std::string m_id;
-    // Definition of a pointer to the actual native extension code
-    class webworks::GSECrypto *gseCryptoController;
+	std::string m_id;
+	// Definition of a pointer to the actual native extension code
+	class gsecrypto::GSECrypto *gseCryptoController;
 };
 
 #endif /* GSECryptoJS_HPP_ */
