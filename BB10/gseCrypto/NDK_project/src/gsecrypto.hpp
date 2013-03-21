@@ -63,7 +63,7 @@ private:
 	sb_RNGCtx rngCtx;
 
 	std::string lastError;
-	std::string lastMessage;
+
 	std::list<Provider*> providers;
 };
 

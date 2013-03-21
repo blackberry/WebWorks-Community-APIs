@@ -77,8 +77,6 @@ GSECrypto::GSECrypto(GSECryptoJS *owner) {
 		providers.push_back(new SHA(*this));
 		providers.push_back(new AES(*this));
 
-	} catch (const char * message) {
-		lastError = message;
 	} catch (std::string & message) {
 		lastError = message;
 	}
@@ -91,7 +89,6 @@ GSECrypto::~GSECrypto() {
 	}
 }
 
-// Take in input and return a value
 std::string GSECrypto::hash(const std::string& inputString) {
 	try {
 		Json::Value args;
