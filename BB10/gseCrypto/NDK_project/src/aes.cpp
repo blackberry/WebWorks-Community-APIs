@@ -59,8 +59,7 @@ Json::Value AES::generateKey(const std::string & algorithm,
 		}
 	}
 
-	AESParams params(*this);
-	params.create(SB_AES_CBC, SB_AES_128_BLOCK_BITS, true);
+	AESParams params(*this,SB_AES_CBC, SB_AES_128_BLOCK_BITS, true);
 
 	DataTracker dt;
 	AESKey key(params,keySize);
@@ -103,48 +102,46 @@ Json::Value AES::crypt(const std::string & algorithm, Json::Value & args,bool is
 	DataTracker input;
 	getData(args["input"],input);
 
+	DataTracker result(input.dataLen);
+
+	if (input.dataLen==0) {
+		Json::Value toReturn;
+		toReturn["output"] = toJson(result);
+		return toReturn;
+	}
+
 	DataTracker keyBytes;
 	getData(args["key"],keyBytes);
 
 	DataTracker iv;
 	getData(args["iv"],iv);
 
-	AESParams params(*this);
-	params.create(SB_AES_CBC,SB_AES_128_BLOCK_BITS,false);
-
-	AESKey key(params,keyBytes);
-
 	int mode = SB_AES_CBC;
 
+	AESParams params(*this,SB_AES_CBC,SB_AES_128_BLOCK_BITS,false);
+	AESKey key(params,keyBytes);
 	AESContext context(params,key,mode,iv);
-
-	DataTracker result(input.dataLen);
-	if (input.dataLen!=0) {
-		context.crypt(input,result,isEncrypt);
-	}
+	context.crypt(input,result,isEncrypt);
 
 	Json::Value toReturn;
 	toReturn["output"] = toJson(result);
 	return toReturn;
 }
 
-AESParams::AESParams(AES & own) :
+AESParams::AESParams(AES & own, int mode, size_t blockLength, bool withRandom) :
 		owner(own), params(NULL) {
+	int rc = hu_AESParamsCreate(mode, blockLength,
+			withRandom ? owner.randomContext() : NULL, NULL, &params,
+			owner.context());
+	if (rc != SB_SUCCESS) {
+		throw errorMessage("Could not create AES params",rc);
+	}
 }
 
 AESParams::~AESParams() {
 	if (params != NULL) {
 		hu_AESParamsDestroy(&params, owner.context());
 		params = NULL;
-	}
-}
-
-void AESParams::create(int mode, size_t blockLength, bool withRandom) {
-	int rc = hu_AESParamsCreate(mode, blockLength,
-			withRandom ? owner.randomContext() : NULL, NULL, &params,
-			owner.context());
-	if (rc != SB_SUCCESS) {
-		throw errorMessage("Could not create AES params",rc);
 	}
 }
 
@@ -218,4 +215,4 @@ void AESContext::crypt(DataTracker & in, DataTracker & out, bool isEncrypt) {
 	}
 }
 
-} /* namespace webworks */
+} /* namespace gsecrypto */
