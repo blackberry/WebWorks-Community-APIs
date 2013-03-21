@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <string>
 #include "../public/tokenizer.h"
 #include "gsecryptojs.hpp"
 #include "gsecrypto.hpp"
+#include "json/writer.h"
 
 using namespace std;
 
@@ -26,7 +26,7 @@ using namespace std;
  */
 GSECryptoJS::GSECryptoJS(const std::string& id) :
 		m_id(id) {
-	gseCryptoController = new webworks::GSECrypto(this);
+	gseCryptoController = new gsecrypto::GSECrypto(this);
 }
 
 /**
@@ -79,10 +79,21 @@ string GSECryptoJS::InvokeMethod(const string& command) {
 
 	if (strCommand == "hash") {
 		return gseCryptoController->hash(arg);
+	} else if (strCommand == "generateKey") {
+		return gseCryptoController->generateKey(arg);
+	} else if (strCommand == "encrypt") {
+		return gseCryptoController->encrypt(arg);
+	} else if (strCommand == "decrypt") {
+		return gseCryptoController->decrypt(arg);
+	} else if (strCommand == "random") {
+		return gseCryptoController->random(arg);
 	}
-	strCommand.append(";");
-	strCommand.append(command);
-	return strCommand;
+
+	Json::Value error;
+	error["error"] = "No implementation found for " + strCommand + "(" + command
+			+ ")";
+	Json::FastWriter writer;
+	return writer.write(error);
 }
 
 // Notifies JavaScript of an event

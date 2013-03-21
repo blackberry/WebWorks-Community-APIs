@@ -29,8 +29,8 @@ function katSHA() {
 			var encoding = which[j];
 			var toHash = suite[encoding];
 
-			var params = Object();
-			params[encoding] = toHash;
+			var params = { input: {} };
+			params.input[encoding] = toHash;
 
 			var results = suite.results;
 			for ( var k = 0; k < results.length; ++k) {
@@ -38,7 +38,7 @@ function katSHA() {
 				var alg = kat.alg;
 				params.alg = alg;
 				
-				var live = community.gseCrypto.hash(params);
+				var live = community.gseCrypto.hash(params).output;
 
 				var match = kat.hex == live.hex;
 				message += ("<tr>");

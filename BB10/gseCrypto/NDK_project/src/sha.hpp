@@ -13,28 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _UTIL_UTIL_HPP
-#define _UTIL_UTIL_HPP
+#ifndef SHA_HPP_
+#define SHA_HPP_
 
-#include <string>
-#include <stddef.h>
-#include <algorithm>
+#include "provider.hpp"
 
 namespace gsecrypto {
+
 /**
- * A bunch of helper functions... Utility like!
+ * Provider implementing SHA functionality.
  */
-namespace util {
-std::string toHex(unsigned char * data, size_t dataLen);
-std::string toB64(unsigned char * data, size_t dataLen);
-void fromHex(std::string encoded, unsigned char * & data, size_t & dataLen);
-void fromB64(std::string encoded, unsigned char * & data, size_t & dataLen);
-int nibble(const char c);
+class SHA: public Provider {
+public:
+	SHA(class GSECrypto &);
+	virtual ~SHA();
 
-std::string errorMessage(const char * message, int error);
+	virtual bool doesSupport(const std::string &);
+	virtual Json::Value hash(const std::string & algorithm, Json::Value &);
 
-std::string lowerCaseRemoveDashes(const std::string &);
-}
-}
+};
 
-#endif
+} /* namespace gsecrypto */
+#endif /* SHA_HPP_ */

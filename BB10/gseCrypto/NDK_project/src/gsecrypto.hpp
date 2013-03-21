@@ -13,31 +13,66 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef GSECrypto_HPP_
 #define GSECrypto_HPP_
 
 #include <string>
+#include <list>
 #include <pthread.h>
 #include <huctx.h>
 
+#include "provider.hpp"
+#include <json/value.h>
+
 class GSECryptoJS;
 
-namespace webworks {
+namespace gsecrypto {
 
+/**
+ * Manager of a set of providers, all crypto operations go via an instance of GSECrypto.
+ */
 class GSECrypto {
 public:
 	explicit GSECrypto(GSECryptoJS *parent = NULL);
 	virtual ~GSECrypto();
 
 	std::string hash(const std::string& inputString);
+
+	std::string generateKey(const std::string & inputString);
+
+	std::string encrypt(const std::string & inputString);
+	std::string decrypt(const std::string & inputString);
+
+	std::string sign(const std::string & inputString) {
+		return "";
+	}
+	std::string verify(const std::string & inputString) {
+		return "";
+	}
+
+	std::string random(const std::string & inputStream);
+
+	sb_GlobalCtx context();
+	sb_RNGCtx randomContext();
+
 private:
-	std::string toString(unsigned char * data, size_t dataLen);
+	void readJson(const std::string & inputString, Json::Value & result);
+	std::string getAlgorithm(Json::Value & args,
+			const std::string & defaultAlgorithm = "");
+	Provider * findProvider(const std::string & algorithm);
+
+	std::string fail(const std::string & error);
+
+	std::string toString(const Json::Value &);
+
 	GSECryptoJS * parent;
 
 	sb_GlobalCtx sbCtx;
+	sb_RNGCtx rngCtx;
+
 	std::string lastError;
-	std::string lastMessage;
+
+	std::list<Provider*> providers;
 };
 
 } // namespace

@@ -13,28 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _UTIL_UTIL_HPP
-#define _UTIL_UTIL_HPP
+#ifndef DATATRACKER_HPP_
+#define DATATRACKER_HPP_
 
 #include <string>
-#include <stddef.h>
-#include <algorithm>
+#include <string.h>
 
 namespace gsecrypto {
+
 /**
- * A bunch of helper functions... Utility like!
+ * Managed heap allocated buffers.
  */
-namespace util {
-std::string toHex(unsigned char * data, size_t dataLen);
-std::string toB64(unsigned char * data, size_t dataLen);
-void fromHex(std::string encoded, unsigned char * & data, size_t & dataLen);
-void fromB64(std::string encoded, unsigned char * & data, size_t & dataLen);
-int nibble(const char c);
+class DataTracker {
+public:
+	DataTracker();
+	DataTracker(size_t size);
+	virtual ~DataTracker();
 
-std::string errorMessage(const char * message, int error);
+	void cleanUp();
+	void setData(const std::string & in);
 
-std::string lowerCaseRemoveDashes(const std::string &);
-}
-}
+	unsigned char * data;
+	size_t dataLen;
+};
 
-#endif
+} /* namespace gsecrypto */
+#endif /* DATATRACKER_HPP_ */
