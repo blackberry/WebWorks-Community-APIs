@@ -90,7 +90,8 @@ string GSECryptoJS::InvokeMethod(const string& command) {
 	}
 
 	Json::Value error;
-	error["error"] = "No implementation found for " + strCommand + "(" + command + ")";
+	error["error"] = "No implementation found for " + strCommand + "(" + command
+			+ ")";
 	Json::FastWriter writer;
 	return writer.write(error);
 }

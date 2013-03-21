@@ -21,6 +21,9 @@
 
 namespace gsecrypto {
 
+/**
+ * Managed heap allocated buffers.
+ */
 class DataTracker {
 public:
 	DataTracker();
@@ -33,7 +36,6 @@ public:
 	unsigned char * data;
 	size_t dataLen;
 };
-
 
 } /* namespace gsecrypto */
 #endif /* DATATRACKER_HPP_ */

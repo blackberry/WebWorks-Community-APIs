@@ -27,6 +27,9 @@
 
 namespace gsecrypto {
 
+/**
+ * Algorithms are implemente as providers. They it's not expected that a Provider implement each of the virtual functions...
+ */
 class Provider {
 public:
 	Provider(class GSECrypto & owner);
@@ -34,15 +37,21 @@ public:
 
 	virtual bool doesSupport(const std::string & algorithm) = 0;
 
-	virtual Json::Value generateKey(const std::string & algorithm, Json::Value & input);
+	virtual Json::Value generateKey(const std::string & algorithm,
+			Json::Value & input);
 
-	virtual Json::Value hash(const std::string & algorithm, Json::Value & input);
+	virtual Json::Value hash(const std::string & algorithm,
+			Json::Value & input);
 
-	virtual Json::Value encrypt(const std::string & algorithm, Json::Value & input);
-	virtual Json::Value decrypt(const std::string & algorithm, Json::Value & input);
+	virtual Json::Value encrypt(const std::string & algorithm,
+			Json::Value & input);
+	virtual Json::Value decrypt(const std::string & algorithm,
+			Json::Value & input);
 
-	virtual Json::Value sign(const std::string & algorithm, Json::Value & input);
-	virtual Json::Value verify(const std::string & algorithm, Json::Value & input);
+	virtual Json::Value sign(const std::string & algorithm,
+			Json::Value & input);
+	virtual Json::Value verify(const std::string & algorithm,
+			Json::Value & input);
 
 	static Json::Value toJson(unsigned char * data, size_t dataLen);
 	static Json::Value toJson(DataTracker & data);

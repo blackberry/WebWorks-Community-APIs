@@ -48,17 +48,20 @@ GSECrypto::GSECrypto(GSECryptoJS *owner) {
 	try {
 		int error = hu_GlobalCtxCreateDefault(&sbCtx);
 		if (error != SB_SUCCESS) {
-			throw gsecrypto::util::errorMessage("Failed to create global context",error);
+			throw gsecrypto::util::errorMessage(
+					"Failed to create global context", error);
 		}
 
 		error = hu_RegisterSbg56(sbCtx);
 		if (error != SB_SUCCESS) {
-			throw gsecrypto::util::errorMessage("Failed to register sbg 5.6",error);
+			throw gsecrypto::util::errorMessage("Failed to register sbg 5.6",
+					error);
 		}
 
 		error = hu_InitSbg56(sbCtx);
 		if (error != SB_SUCCESS) {
-			throw gsecrypto::util::errorMessage("Failed to init sbg 5.6",error);
+			throw gsecrypto::util::errorMessage("Failed to init sbg 5.6",
+					error);
 		}
 
 		size_t seedLength = 100;
@@ -66,12 +69,14 @@ GSECrypto::GSECrypto(GSECryptoJS *owner) {
 
 		error = hu_RegisterSystemSeed(sbCtx);
 		if (error != SB_SUCCESS) {
-			throw gsecrypto::util::errorMessage("Failed to register system seed",error);
+			throw gsecrypto::util::errorMessage(
+					"Failed to register system seed", error);
 		}
 
-		error = hu_RngDrbgCreate(HU_DRBG_CIPHER,256,0,0,NULL,NULL,&rngCtx,sbCtx);
+		error = hu_RngDrbgCreate(HU_DRBG_CIPHER, 256, 0, 0, NULL, NULL, &rngCtx,
+				sbCtx);
 		if (error != SB_SUCCESS) {
-			throw gsecrypto::util::errorMessage("Failed to create DRBG",error);
+			throw gsecrypto::util::errorMessage("Failed to create DRBG", error);
 		}
 
 		providers.push_back(new SHA(*this));
@@ -93,11 +98,11 @@ std::string GSECrypto::hash(const std::string& inputString) {
 	try {
 		Json::Value args;
 
-		readJson(inputString,args);
-		std::string alg(getAlgorithm(args,"sha1"));
+		readJson(inputString, args);
+		std::string alg(getAlgorithm(args, "sha1"));
 		Provider * p = findProvider(alg);
 
-		return toString(p->hash(alg,args));
+		return toString(p->hash(alg, args));
 
 	} catch (std::string & error) {
 		return fail(error);
@@ -107,11 +112,11 @@ std::string GSECrypto::hash(const std::string& inputString) {
 std::string GSECrypto::generateKey(const std::string& input) {
 	try {
 		Json::Value args;
-		readJson(input,args);
+		readJson(input, args);
 		std::string alg(getAlgorithm(args));
 		Provider * p = findProvider(alg);
 
-		return toString(p->generateKey(alg,args));
+		return toString(p->generateKey(alg, args));
 	} catch (std::string & error) {
 		return fail(error);
 	}
@@ -120,11 +125,11 @@ std::string GSECrypto::generateKey(const std::string& input) {
 std::string GSECrypto::encrypt(const std::string & input) {
 	try {
 		Json::Value args;
-		readJson(input,args);
+		readJson(input, args);
 		std::string alg(getAlgorithm(args));
 		Provider * p = findProvider(alg);
 
-		return toString(p->encrypt(alg,args));
+		return toString(p->encrypt(alg, args));
 	} catch (std::string & error) {
 		return fail(error);
 	}
@@ -133,20 +138,19 @@ std::string GSECrypto::encrypt(const std::string & input) {
 std::string GSECrypto::decrypt(const std::string & input) {
 	try {
 		Json::Value args;
-		readJson(input,args);
+		readJson(input, args);
 		std::string alg(getAlgorithm(args));
 		Provider * p = findProvider(alg);
 
-		return toString(p->decrypt(alg,args));
+		return toString(p->decrypt(alg, args));
 	} catch (std::string & error) {
 		return fail(error);
 	}
 }
 
-
 void GSECrypto::readJson(const std::string & inputStream, Json::Value & value) {
 	Json::Reader reader;
-	if (reader.parse(inputStream,value)) {
+	if (reader.parse(inputStream, value)) {
 		// great!
 	} else {
 		throw std::string("Could not read JSON input");
@@ -155,21 +159,25 @@ void GSECrypto::readJson(const std::string & inputStream, Json::Value & value) {
 
 Provider * GSECrypto::findProvider(const std::string & algorithm) {
 	int count(0);
-	for (std::list<Provider*>::iterator i = providers.begin(); i!=providers.end(); ++i) {
+	for (std::list<Provider*>::iterator i = providers.begin();
+			i != providers.end(); ++i) {
 		++count;
 		if ((*i)->doesSupport(algorithm)) {
 			return (*i);
 		}
 	}
 	std::stringstream stream;
-	stream << "Could not find support for " << algorithm.c_str() << ". Tried " << count << " providers.";
+	stream << "Could not find support for " << algorithm.c_str() << ". Tried "
+			<< count << " providers.";
 	throw stream.str();
 }
 
-std::string GSECrypto::getAlgorithm(Json::Value & value, const std::string & defaultAlgorithm) {
+std::string GSECrypto::getAlgorithm(Json::Value & value,
+		const std::string & defaultAlgorithm) {
 	if (value.isMember("alg")) {
-		return gsecrypto::util::lowerCaseRemoveDashes(value.get("alg",defaultAlgorithm).asString());
-	} else if (defaultAlgorithm.size()!=0) {
+		return gsecrypto::util::lowerCaseRemoveDashes(
+				value.get("alg", defaultAlgorithm).asString());
+	} else if (defaultAlgorithm.size() != 0) {
 		return defaultAlgorithm;
 	}
 	throw std::string("Could not determine algorithm");
@@ -190,15 +198,16 @@ std::string GSECrypto::toString(const Json::Value & value) {
 
 std::string GSECrypto::fail(const std::string & error) {
 	Json::Value value;
-	value["error"] = error + (lastError.length()!=0 ? " [" + lastError + "]": "");
-	lastError="";
+	value["error"] = error
+			+ (lastError.length() != 0 ? " [" + lastError + "]" : "");
+	lastError = "";
 	return toString(value);
 }
 
 std::string GSECrypto::random(const std::string & inputString) {
 	try {
 		Json::Value args;
-		readJson(inputString,args);
+		readJson(inputString, args);
 		if (args.isMember("size")) {
 			Json::Value sizeValue(args["size"]);
 			if (sizeValue.isInt()) {
@@ -206,9 +215,10 @@ std::string GSECrypto::random(const std::string & inputString) {
 
 				DataTracker dt(size);
 
-				int rc = hu_RngGetBytes(rngCtx,dt.dataLen,dt.data,sbCtx);
-				if (rc!=SB_SUCCESS) {
-					throw gsecrypto::util::errorMessage("Could not get random bytes",rc);
+				int rc = hu_RngGetBytes(rngCtx, dt.dataLen, dt.data, sbCtx);
+				if (rc != SB_SUCCESS) {
+					throw gsecrypto::util::errorMessage(
+							"Could not get random bytes", rc);
 				}
 
 				Json::Value toReturn;

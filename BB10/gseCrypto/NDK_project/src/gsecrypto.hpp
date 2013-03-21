@@ -28,6 +28,9 @@ class GSECryptoJS;
 
 namespace gsecrypto {
 
+/**
+ * Manager of a set of providers, all crypto operations go via an instance of GSECrypto.
+ */
 class GSECrypto {
 public:
 	explicit GSECrypto(GSECryptoJS *parent = NULL);
@@ -40,8 +43,12 @@ public:
 	std::string encrypt(const std::string & inputString);
 	std::string decrypt(const std::string & inputString);
 
-	std::string sign(const std::string & inputString) {return "";}
-	std::string verify(const std::string & inputString) {return "";}
+	std::string sign(const std::string & inputString) {
+		return "";
+	}
+	std::string verify(const std::string & inputString) {
+		return "";
+	}
 
 	std::string random(const std::string & inputStream);
 
@@ -50,7 +57,8 @@ public:
 
 private:
 	void readJson(const std::string & inputString, Json::Value & result);
-	std::string getAlgorithm(Json::Value & args, const std::string & defaultAlgorithm = "");
+	std::string getAlgorithm(Json::Value & args,
+			const std::string & defaultAlgorithm = "");
 	Provider * findProvider(const std::string & algorithm);
 
 	std::string fail(const std::string & error);

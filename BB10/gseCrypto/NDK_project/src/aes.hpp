@@ -20,14 +20,18 @@
 
 namespace gsecrypto {
 
-class AES : public Provider {
+/**
+ * AES provider to plug into GSECrypto
+ */
+class AES: public Provider {
 public:
 	AES(class GSECrypto & owner);
 	virtual ~AES();
 
 	virtual bool doesSupport(const std::string &);
 
-	virtual Json::Value generateKey(const std::string & alg, Json::Value & args);
+	virtual Json::Value generateKey(const std::string & alg,
+			Json::Value & args);
 	virtual Json::Value encrypt(const std::string & alg, Json::Value & args);
 	virtual Json::Value decrypt(const std::string & alg, Json::Value & args);
 
@@ -36,9 +40,13 @@ public:
 	friend class AESContext;
 
 private:
-	Json::Value crypt(const std::string & alg, Json::Value & args, bool isEncrypt);
+	Json::Value crypt(const std::string & alg, Json::Value & args,
+			bool isEncrypt);
 };
 
+/**
+ * c++ wrapper for AES sb_Params
+ */
 class AESParams {
 public:
 	AESParams(AES & owner, int mode, size_t blockLen, bool withRandom);
@@ -52,6 +60,9 @@ private:
 	friend class AESContext;
 };
 
+/**
+ * c++ wrapper for AES sb_key
+ */
 class AESKey {
 public:
 	AESKey(AESParams & owner, size_t size);
@@ -66,6 +77,9 @@ private:
 	friend class AESContext;
 };
 
+/**
+ * c++ wrapper for AES sb_Context
+ */
 class AESContext {
 public:
 	AESContext(AESParams &, AESKey &, int mode, DataTracker & iv);

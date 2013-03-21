@@ -20,7 +20,10 @@
 
 namespace gsecrypto {
 
-class SHA : public Provider {
+/**
+ * Provider implementing SHA functionality.
+ */
+class SHA: public Provider {
 public:
 	SHA(class GSECrypto &);
 	virtual ~SHA();

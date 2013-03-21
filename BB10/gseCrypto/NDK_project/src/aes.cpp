@@ -38,6 +38,18 @@ bool AES::doesSupport(const std::string & algorithm) {
 	return "aes" == algorithm;
 }
 
+/**
+ * Expected input:
+ * {
+ * 		alg: "aes",
+ * 		keySize : an int - 128/192/256
+ * }
+ *
+ * Output:
+ * {
+ * 		key: generated key data
+ * }
+ */
 Json::Value AES::generateKey(const std::string & algorithm,
 		Json::Value & args) {
 	size_t keySize = 128;
@@ -48,39 +60,61 @@ Json::Value AES::generateKey(const std::string & algorithm,
 			throw std::string("keySize must be an int");
 		}
 		keySize = keySizeV.asInt();
-		switch(keySize) {
+		switch (keySize) {
 		case 128:
 		case 192:
 		case 256:
 			// awesome!
 			break;
 		default:
-			throw errorMessage("Not a valid key size: ",keySize);
+			throw errorMessage("Not a valid key size: ", keySize);
 		}
 	}
 
-	AESParams params(*this,SB_AES_CBC, SB_AES_128_BLOCK_BITS, true);
+	AESParams params(*this, SB_AES_CBC, SB_AES_128_BLOCK_BITS, true);
 
 	DataTracker dt;
-	AESKey key(params,keySize);
+	AESKey key(params, keySize);
 	key.get(dt);
 
-	Json::Value keyData = toJson(dt.data,dt.dataLen);
+	Json::Value keyData = toJson(dt.data, dt.dataLen);
 	Json::Value toReturn;
 	toReturn["key"] = keyData;
 
 	return toReturn;
 }
 
+/**
+ * See crypt for input/output
+ */
 Json::Value AES::encrypt(const std::string & algorithm, Json::Value & args) {
-	return crypt(algorithm,args,true);
+	return crypt(algorithm, args, true);
 }
 
+/**
+ * See crypt for input/output
+ */
 Json::Value AES::decrypt(const std::string & algorithm, Json::Value & args) {
-	return crypt(algorithm,args,false);
+	return crypt(algorithm, args, false);
 }
 
-Json::Value AES::crypt(const std::string & algorithm, Json::Value & args,bool isEncrypt) {
+/**
+ * Expected input:
+ * {
+ * 	alg: "aes",
+ * 	mode: "cbc",
+ * 	key: key data,
+ * 	iv: iv data (16 bytes),
+ * 	input: data to encrypt or decrypt
+ * }
+ *
+ * Good output:
+ * {
+ * 	output: data
+ * }
+ */
+Json::Value AES::crypt(const std::string & algorithm, Json::Value & args,
+		bool isEncrypt) {
 	if (!args.isMember("key")) {
 		throw std::string("key missing");
 	}
@@ -94,34 +128,35 @@ Json::Value AES::crypt(const std::string & algorithm, Json::Value & args,bool is
 		throw std::string("mode missing");
 	}
 
-	std::string modeString(gsecrypto::util::lowerCaseRemoveDashes(args["mode"].asString()));
+	std::string modeString(
+			gsecrypto::util::lowerCaseRemoveDashes(args["mode"].asString()));
 	if ("cbc" != modeString) {
 		throw std::string("Only CBC currently supported");
 	}
 
 	DataTracker input;
-	getData(args["input"],input);
+	getData(args["input"], input);
 
 	DataTracker result(input.dataLen);
 
-	if (input.dataLen==0) {
+	if (input.dataLen == 0) {
 		Json::Value toReturn;
 		toReturn["output"] = toJson(result);
 		return toReturn;
 	}
 
 	DataTracker keyBytes;
-	getData(args["key"],keyBytes);
+	getData(args["key"], keyBytes);
 
 	DataTracker iv;
-	getData(args["iv"],iv);
+	getData(args["iv"], iv);
 
 	int mode = SB_AES_CBC;
 
-	AESParams params(*this,SB_AES_CBC,SB_AES_128_BLOCK_BITS,false);
-	AESKey key(params,keyBytes);
-	AESContext context(params,key,mode,iv);
-	context.crypt(input,result,isEncrypt);
+	AESParams params(*this, SB_AES_CBC, SB_AES_128_BLOCK_BITS, false);
+	AESKey key(params, keyBytes);
+	AESContext context(params, key, mode, iv);
+	context.crypt(input, result, isEncrypt);
 
 	Json::Value toReturn;
 	toReturn["output"] = toJson(result);
@@ -134,7 +169,7 @@ AESParams::AESParams(AES & own, int mode, size_t blockLength, bool withRandom) :
 			withRandom ? owner.randomContext() : NULL, NULL, &params,
 			owner.context());
 	if (rc != SB_SUCCESS) {
-		throw errorMessage("Could not create AES params",rc);
+		throw errorMessage("Could not create AES params", rc);
 	}
 }
 
@@ -147,8 +182,9 @@ AESParams::~AESParams() {
 
 AESKey::AESKey(AESParams & own, DataTracker & dt) :
 		params(own), key(NULL) {
-	int rc = hu_AESKeySet(params.params,dt.dataLen*8,dt.data,&key,params.owner.context());
-	if (rc!=SB_SUCCESS) {
+	int rc = hu_AESKeySet(params.params, dt.dataLen * 8, dt.data, &key,
+			params.owner.context());
+	if (rc != SB_SUCCESS) {
 		std::stringstream s;
 		s << "Could not set AES Key" << rc;
 		s << " dtLen: " << dt.dataLen;
@@ -156,7 +192,8 @@ AESKey::AESKey(AESParams & own, DataTracker & dt) :
 	}
 }
 
-AESKey::AESKey(AESParams & own, size_t size) : params(own), key(NULL) {
+AESKey::AESKey(AESParams & own, size_t size) :
+		params(own), key(NULL) {
 	if (key != NULL) {
 		throw std::string("Key already exists");
 	}
@@ -175,30 +212,34 @@ AESKey::~AESKey() {
 void AESKey::get(DataTracker & dt) {
 	size_t keyLen = 0;
 
-	int rc = hu_AESKeyGet(params.params,key,&keyLen,NULL,params.owner.context());
+	int rc = hu_AESKeyGet(params.params, key, &keyLen, NULL,
+			params.owner.context());
 	if (rc != SB_SUCCESS) {
 		throw std::string("Could not get AES key size");
 	}
 
-	dt.data = new unsigned char [keyLen/8];
+	dt.data = new unsigned char[keyLen / 8];
 	dt.dataLen = keyLen / 8;
 
-	rc = hu_AESKeyGet(params.params,key,&keyLen,dt.data,params.owner.context());
+	rc = hu_AESKeyGet(params.params, key, &keyLen, dt.data,
+			params.owner.context());
 	if (rc != SB_SUCCESS) {
-		throw errorMessage("Could not get AES key content",rc);
+		throw errorMessage("Could not get AES key content", rc);
 	}
 }
 
-AESContext::AESContext(AESParams & p, AESKey & key, int mode, DataTracker & iv) : params(p), context(NULL) {
-	int rc = hu_AESBeginV2(params.params,key.key,mode,iv.dataLen,iv.data,&context,params.owner.context());
-	if (rc!=SB_SUCCESS) {
-		throw errorMessage("Could not create AES context",rc);
+AESContext::AESContext(AESParams & p, AESKey & key, int mode, DataTracker & iv) :
+		params(p), context(NULL) {
+	int rc = hu_AESBeginV2(params.params, key.key, mode, iv.dataLen, iv.data,
+			&context, params.owner.context());
+	if (rc != SB_SUCCESS) {
+		throw errorMessage("Could not create AES context", rc);
 	}
 }
 
 AESContext::~AESContext() {
-	if (context!=NULL) {
-		hu_AESEnd(&context,params.owner.context());
+	if (context != NULL) {
+		hu_AESEnd(&context, params.owner.context());
 		context = NULL;
 	}
 }
@@ -206,12 +247,14 @@ AESContext::~AESContext() {
 void AESContext::crypt(DataTracker & in, DataTracker & out, bool isEncrypt) {
 	int rc(0);
 	if (isEncrypt) {
-		rc = hu_AESEncrypt(context,in.dataLen,in.data,out.data,params.owner.context());
+		rc = hu_AESEncrypt(context, in.dataLen, in.data, out.data,
+				params.owner.context());
 	} else {
-		rc = hu_AESDecrypt(context,in.dataLen,in.data,out.data,params.owner.context());
+		rc = hu_AESDecrypt(context, in.dataLen, in.data, out.data,
+				params.owner.context());
 	}
-	if (rc!=SB_SUCCESS) {
-		throw errorMessage("Could not encrypt data",rc);
+	if (rc != SB_SUCCESS) {
+		throw errorMessage("Could not encrypt data", rc);
 	}
 }
 

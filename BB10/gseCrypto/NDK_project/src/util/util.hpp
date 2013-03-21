@@ -21,13 +21,14 @@
 #include <algorithm>
 
 namespace gsecrypto {
+/**
+ * A bunch of helper functions... Utility like!
+ */
 namespace util {
 std::string toHex(unsigned char * data, size_t dataLen);
 std::string toB64(unsigned char * data, size_t dataLen);
-void fromHex(std::string encoded, unsigned char * & data,
-		size_t & dataLen);
-void fromB64(std::string encoded, unsigned char * & data,
-		size_t & dataLen);
+void fromHex(std::string encoded, unsigned char * & data, size_t & dataLen);
+void fromB64(std::string encoded, unsigned char * & data, size_t & dataLen);
 int nibble(const char c);
 
 std::string errorMessage(const char * message, int error);

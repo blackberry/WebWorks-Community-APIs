@@ -64,7 +64,8 @@ void fromHex(std::string en, unsigned char * & data, size_t & dataLen) {
 	data = new unsigned char[dataLen];
 
 	for (size_t i = 0; i < dataLen; ++i) {
-		data[i] = (nibble(encoded[i<<1]) << 4) | nibble(encoded[(i<<1)+1]);
+		data[i] = (nibble(encoded[i << 1]) << 4)
+				| nibble(encoded[(i << 1) + 1]);
 	}
 }
 
@@ -77,20 +78,19 @@ int nibble(const char c) {
 }
 
 unsigned char b64Nibble(unsigned char c) {
-	if (c>='A' && c<='Z') {
-		return c-'A';
-	} else if (c>='a' && c<='z') {
-		return c-'a'+26;
-	} else if (c>='0' && c<='9') {
-		return c-'0'+52;
-	} else if (c=='+') {
+	if (c >= 'A' && c <= 'Z') {
+		return c - 'A';
+	} else if (c >= 'a' && c <= 'z') {
+		return c - 'a' + 26;
+	} else if (c >= '0' && c <= '9') {
+		return c - '0' + 52;
+	} else if (c == '+') {
 		return 62;
-	} else if (c=='/') {
+	} else if (c == '/') {
 		return 63;
 	}
 	return 0;
 }
-
 
 void fromB64(std::string encoded, unsigned char * & data, size_t & dataLen) {
 	std::string encoded2;
@@ -159,8 +159,10 @@ std::string errorMessage(const char * message, int error) {
 
 std::string lowerCaseRemoveDashes(const std::string & input) {
 	std::string toReturn(input);
-	std::transform(toReturn.begin(), toReturn.end(), toReturn.begin(), std::tolower);
-	toReturn.erase(std::remove(toReturn.begin(), toReturn.end(), '-'), toReturn.end());
+	std::transform(toReturn.begin(), toReturn.end(), toReturn.begin(),
+			std::tolower);
+	toReturn.erase(std::remove(toReturn.begin(), toReturn.end(), '-'),
+			toReturn.end());
 	return toReturn;
 }
 

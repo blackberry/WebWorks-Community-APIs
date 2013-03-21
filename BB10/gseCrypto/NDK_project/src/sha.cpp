@@ -23,7 +23,8 @@
 
 namespace gsecrypto {
 
-SHA::SHA(GSECrypto & owner) : Provider(owner) {
+SHA::SHA(GSECrypto & owner) :
+		Provider(owner) {
 }
 
 SHA::~SHA() {
@@ -42,7 +43,7 @@ Json::Value SHA::hash(const std::string & alg, Json::Value & args) {
 		throw std::string("Missing input");
 	}
 	Json::Value input(args["input"]);
-	getData(input,data);
+	getData(input, data);
 
 	size_t digestLen = 0;
 
@@ -79,7 +80,7 @@ Json::Value SHA::hash(const std::string & alg, Json::Value & args) {
 	}
 
 	Json::Value toReturn;
-	toReturn["output"] = toJson(digest,digestLen);
+	toReturn["output"] = toJson(digest, digestLen);
 	return toReturn;
 }
 
