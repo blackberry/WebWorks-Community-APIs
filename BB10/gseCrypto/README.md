@@ -3,10 +3,10 @@
 This extension allows WebWorks code to call features of the cryptographic library included in BlackBerry 10.
 
 Currently implemented algorithms include:
-* All SHA.
+* All SHA
+ * SHA1, SHA224, SHA256, SHA384, SHA512
 * AES CBC
-
-It is a basis – right now – it has SHA1,SHA224,SHA256,SHA384,SHA512 and AES/CBC (all key sizes). 
+ * All key sizes. (128, 192, 256 bit)
 
 # Getting Started
 ## Data
@@ -106,12 +106,11 @@ Encrypt expects an object with algorithm (alg) set. Each individual encryption i
 
 ### encrypt – AES
 Encrypt – AES expects the following values in the parameter object.
-*	Algorithm (alg) 
-*	Mode (mode) (only CBC is currently implemented)
-*	Key (key)
-*	Initialization Vector (IV) (only CBC is current implemented – so this is required)
-* Data to encrypt (input)
-Eg:
+* Algorithm (alg) 
+* Mode (mode) (only CBC is currently implemented)
+* Key (key)
+* Initialization Vector (iv) (only CBC is current implemented – so this is required)
+* Data to encrypt (input); Eg:
 
 ```javascript
 {
