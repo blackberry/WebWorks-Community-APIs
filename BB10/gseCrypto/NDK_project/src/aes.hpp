@@ -41,10 +41,8 @@ private:
 
 class AESParams {
 public:
-	AESParams(AES & owner);
+	AESParams(AES & owner, int mode, size_t blockLen, bool withRandom);
 	virtual ~AESParams();
-
-	void create(int mode, size_t blockLen, bool withRandom);
 
 private:
 	AES & owner;
@@ -59,6 +57,7 @@ public:
 	AESKey(AESParams & owner, size_t size);
 	AESKey(AESParams & owner, DataTracker & dt);
 	virtual ~AESKey();
+
 	void get(DataTracker & dt);
 private:
 	AESParams & params;
