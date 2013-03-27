@@ -151,6 +151,16 @@ BarcodeScannerJS* eventDispatcher = NULL;
 #endif
         }
     }
+
+    /*
+     * image_callback
+     *
+     * handles the burst frames from the camera
+     */
+    void image_callback(camera_handle_t handle,camera_buffer_t* buf,void* arg) {
+       	camera_frame_jpeg_t* data = (camera_frame_jpeg_t*)(&(buf->framedesc));
+       	uint8_t* buff = buf->framebuf;
+    }
 //
 //    camera_handle_t BarcodeReaderNDK::getCameraHandle(){
 //    	return mCameraHandle;
@@ -162,6 +172,8 @@ BarcodeScannerJS* eventDispatcher = NULL;
         m_pParent     = parent;
         eventDispatcher = parent;
         mCameraHandle = CAMERA_HANDLE_INVALID;
+        filecounter = 0;
+        rotation = 0;
     }
 
     BarcodeScannerNDK::~BarcodeScannerNDK() {}
@@ -186,6 +198,7 @@ BarcodeScannerJS* eventDispatcher = NULL;
 #ifdef DEBUG
             fprintf(stderr, " Ran into an issue when initializing the camera = %d\n ", err);
 #endif
+            root["state"] = "Open Camera";
             root["error"] = err;
             root["description"] = getCameraErrorDesc( err );
             m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
@@ -198,11 +211,39 @@ BarcodeScannerJS* eventDispatcher = NULL;
 #ifdef DEBUG
             fprintf(stderr, "Ran into a strange issue when starting up the camera viewfinder\n");
 #endif
+            root["state"] = "ViewFinder Start";
             root["error"] = err;
             root["description"] = getCameraErrorDesc( err );
             m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
             return EIO;
         }
+
+
+        err = camera_set_focus_mode(mCameraHandle, CAMERA_FOCUSMODE_CONTINUOUS_MACRO);
+		if ( err != CAMERA_EOK){
+#ifdef DEBUG
+			fprintf(stderr, " Ran into an issue when setting focus mode = %d\n ", err);
+#endif
+			root["state"] = "Set Focus Mode";
+			root["error"] = err;
+			root["description"] =  getCameraErrorDesc( err );
+			m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
+			return EIO;
+		}
+
+		err = camera_start_burst(mCameraHandle, NULL, NULL, NULL, &image_callback, NULL);
+
+		if ( err != CAMERA_EOK) {
+#ifdef DEBUG
+			fprintf(stderr, "Ran into an issue when starting up the camera in burst mode\n");
+#endif
+			root["state"] = "Start Camera Burst";
+			root["error"] = err;
+			root["description"] = getCameraErrorDesc( err );
+			m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
+			return EIO;
+		}
+
         std::string successEvent = "community.barcodescanner.started.native";
         root["successful"] = true;
         m_pParent->NotifyEvent(successEvent + " " + writer.write(root));
@@ -222,6 +263,18 @@ BarcodeScannerJS* eventDispatcher = NULL;
 		Json::FastWriter writer;
 		Json::Value root;
         camera_error_t err;
+
+        err = camera_stop_burst(mCameraHandle);
+		if ( err != CAMERA_EOK)
+		{
+#ifdef DEBUG
+			fprintf(stderr, "Error with turning off the burst \n");
+#endif
+			root["error"] = err;
+			root["description"] = getCameraErrorDesc( err );
+			m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
+			return EIO;
+		}
 
         err = camera_stop_photo_viewfinder(mCameraHandle);
         if ( err != CAMERA_EOK)
