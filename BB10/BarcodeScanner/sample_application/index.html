@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+ * Copyright 2013 Research In Motion Limited.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link href="css/styles.css" rel="stylesheet" type="text/css">
+	<title>Extension Template Test</title>
+	<script type="text/javascript" src="local:///chrome/webworks.js"></script>
+	<script type="text/javascript">
+	var rippleLoaded = false;
+    var intensity = 1;
+    var startTime, endTime;
+    var currentlevel = 0;
+
+	document.addEventListener('webworksready', function(e) {
+		// This is a hack for Ripple calling webworksready multiple times
+		if (rippleLoaded) return;
+		rippleLoaded = true;
+		
+	}, false);
+
+
+	function frameAvailable(data){
+	//		alert( data. );// + " "  + data.frame);
+	//		showImage( data. something )
+	}
+
+	function errorFound(data){
+		alert("Error : "+data.error + " description : "+ data.description);
+	}
+
+	function codeFound(data) {
+		     	alert("Detected : "+data.value);
+	}
+
+	function onStartRead(data){
+		alert("Started : "+data.success);
+	}
+
+	function onStopRead(data){
+		alert("Stopped : " +data.success);
+	}
+
+	function showImage( imageBase64String ){
+		var canvas = document.getElementById("myCanvas");
+		var ctx = canvas.getContext("2d");
+
+		var image = new Image();
+		image.src = "data:image/bmp;base64,"+imageBase64String;
+		image.onload = function() {
+		    ctx.drawImage(image, 0, 0);
+		};
+	}
+
+    function startBarcodeRead(){
+    	community.barcodescanner.startRead(codeFound, null, null, null );
+    }
+
+    function stopBarcodeReade(){
+    	community.barcodescanner.stopRead(codeFound, null, null, null);
+    }
+
+
+	</script>
+</head>
+<body>
+	<br/>
+	<br/>
+	<div id="button1" class='buzz1' onclick="startBarcodeRead();"></div>
+	<br/>
+	<div id="button2" class='buzz2' onclick="stopBarcodeReade();"></div>
+	<br/>
+	<br/>
+	<canvas id="myCanvas" width="1024" height="768"></canvas>
+</body>
+</html>
