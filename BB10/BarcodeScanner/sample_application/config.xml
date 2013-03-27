@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2010-2012 Research In Motion Limited.
+  Copyright 2010-2013 Research In Motion Limited.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
   limitations under the License.
 -->
 <widget xmlns="http://www.w3.org/ns/widgets" 
-        xmlns:rim="http://www.blackberry.com/ns/widgets" 
-        version="1.0.8" id="community.extension.test" xml:lang="en">
+		xmlns:rim="http://www.blackberry.com/ns/widgets" 
+		version="1.0.8" id="community.extension.test" xml:lang="en">
 	
 	<name>Barcode Test</name>
 	<description>Barcode Test Application</description>
@@ -29,13 +29,12 @@
 	<feature id="blackberry.app" />
 	
 	<feature id="community.barcodescanner" />
-	<feature id="community.vibration" />
 	<access subdomains="true" uri="*"/>
 
 	<rim:permissions>
-        <rim:permit>use_camera</rim:permit>
-         <rim:permit>access_shared</rim:permit>
-    </rim:permissions>
+		<rim:permit>use_camera</rim:permit>
+		<rim:permit>access_shared</rim:permit>
+	</rim:permissions>
 	<license href="http://www.apache.org/licenses/LICENSE-2.0">
 		Licensed under the Apache License, Version 2.0 (the "License");
 		you may not use this file except in compliance with the License.
