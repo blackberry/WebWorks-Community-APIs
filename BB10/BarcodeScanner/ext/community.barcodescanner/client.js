@@ -20,23 +20,23 @@ var _self = {},
 	_self.startRead = function (codeFound, errorFound, frameAvailable, successStart) {
 		if ( typeof(successStart) == "function" ) {
 			window.webworks.event.once(_ID, "community.barcodescanner.started", successStart);
-		} 
+		}
 		if ( typeof(frameAvailable) == "function" ) {
 			window.webworks.event.add(_ID, "community.barcodescanner.frameavailable", frameAvailable);
-		} 
+		}
 		if ( typeof(errorFound) == "function" ) {
 			window.webworks.event.once(_ID, "community.barcodescanner.errorfound", errorFound);
-		} 
+		}
 		if ( typeof(codeFound) == "function" ) {
 			window.webworks.event.add(_ID, "community.barcodescanner.codefound", codeFound);
-		} 
+		}
 		return window.webworks.execAsync(_ID, "startRead", null);
 	};
 
 	_self.stopRead = function (codeFound, errorFound, frameAvailable, successfulEnd) {
 		if ( typeof(errorFound) == "function" ) {
 			window.webworks.event.once(_ID, "community.barcodescanner.errorfound", errorFound);
-		} 
+		}
 		if ( typeof(successfulEnd) == "function" ) {
 			window.webworks.event.once(_ID, "community.barcodescanner.ended", successfulEnd);
 		}
@@ -44,7 +44,7 @@ var _self = {},
 			window.webworks.event.remove(_ID, "community.barcodescanner.frameavailable", frameAvailable);
 		}
 		if ( typeof(codeFound) == "function" ) {
-			window.webworks.event.remove(_ID, "community.barcodescanner.frameavailable", codeFound);
+			window.webworks.event.remove(_ID, "community.barcodescanner.codefound", codeFound);
 		}
 		return window.webworks.execAsync(_ID, "stopRead", null);
 	};

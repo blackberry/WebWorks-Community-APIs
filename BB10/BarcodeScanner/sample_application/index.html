@@ -22,9 +22,6 @@
 	<script type="text/javascript" src="local:///chrome/webworks.js"></script>
 	<script type="text/javascript">
 	var rippleLoaded = false;
-    var intensity = 1;
-    var startTime, endTime;
-    var currentlevel = 0;
 
 	document.addEventListener('webworksready', function(e) {
 		// This is a hack for Ripple calling webworksready multiple times
@@ -44,7 +41,7 @@
 	}
 
 	function codeFound(data) {
-		     	alert("Detected : "+data.value);
+		alert("Detected : "+data.value);
 	}
 
 	function onStartRead(data){
@@ -62,17 +59,17 @@
 		var image = new Image();
 		image.src = "data:image/bmp;base64,"+imageBase64String;
 		image.onload = function() {
-		    ctx.drawImage(image, 0, 0);
+			ctx.drawImage(image, 0, 0);
 		};
 	}
 
-    function startBarcodeRead(){
-    	community.barcodescanner.startRead(codeFound, null, null, null );
-    }
+	function startBarcodeRead(){
+		community.barcodescanner.startRead(codeFound, errorFound, frameAvailable, onStartRead );
+	}
 
-    function stopBarcodeReade(){
-    	community.barcodescanner.stopRead(codeFound, null, null, null);
-    }
+	function stopBarcodeReade(){
+		community.barcodescanner.stopRead(codeFound, errorFound, frameAvailable, onStopRead);
+	}
 
 
 	</script>

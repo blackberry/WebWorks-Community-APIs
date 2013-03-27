@@ -48,7 +48,6 @@ JNEXT.BarcodeScanner = function () {
     // Enter your methods here
     // ************************
 
-  
     // Fired by the Event framework (used by asynchronous callbacks)
     self.onEvent = function (strData) {
         var arData = strData.split(" "),
@@ -56,7 +55,6 @@ JNEXT.BarcodeScanner = function () {
             jsonData;
         // Event names are set in native code when fired,
         // and must be checked here.
-        i
         if (strEventDesc === "community.barcodescanner.codefound.native") {
              // Slice off the event name and the rest of the data is our JSON
             jsonData = arData.slice(1, arData.length).join(" ");
@@ -74,7 +72,7 @@ JNEXT.BarcodeScanner = function () {
          else if ( strEventDesc === "community.barcodescanner.started.native"){
               jsonData = arData.slice(1, arData.length).join(" ");
             _event.trigger("community.barcodescanner.started", JSON.parse(jsonData));
-        } 
+        }
         else if ( strEventDesc === "community.barcodescanner.ended.native") {
              jsonData = arData.slice(1, arData.length).join(" ");
             _event.trigger("community.barcodescanner.ended", JSON.parse(jsonData));
