@@ -26,8 +26,7 @@
 	
 	<content src="index.html"/>
 	
-	<feature id="blackberry.app" />
-	
+	<feature id="blackberry.io" />
 	<feature id="community.barcodescanner" />
 	<access subdomains="true" uri="*"/>
 

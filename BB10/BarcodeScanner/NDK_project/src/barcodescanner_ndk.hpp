@@ -39,10 +39,6 @@ public:
 private:
     BarcodeScannerJS *m_pParent;
     camera_handle_t mCameraHandle;
-    int filecounter;
-    #define TMP_PATH "tmp/"
-    uint32_t rotation;
-//    img_lib_t ilib = NULL;
 
 };
 

@@ -21,6 +21,8 @@
 #include <zxing/common/HybridBinarizer.h>
 #include <zxing/qrcode/QRCodeReader.h>
 #include <zxing/MultiFormatReader.h>
+#include <img/img.h>
+#include <stdio.h>
 
 #include "../public/base64/base64.h"
 
@@ -35,6 +37,11 @@ using namespace zxing::qrcode;
 namespace webworks {
 
 BarcodeScannerJS* eventDispatcher = NULL;
+static int filecounter = 0;
+#define TMP_PATH "tmp/"
+static uint32_t rotation = 0;
+static img_lib_t ilib = NULL;
+
     /*
      * getCameraErrorDesc
      *
@@ -103,7 +110,7 @@ BarcodeScannerJS* eventDispatcher = NULL;
 //        // push encoded frame back to caller
 //        QRCodeReaderNDK::m_pParent->NotifyEvent(event + " " + writer.write(root));
 
-        try{
+        try {
             Ref<LuminanceSource> source(new GreyscaleLuminanceSource((unsigned char *)buff, stride, height, 0,0,width,height));
 
             Ref<Binarizer> binarizer(new HybridBinarizer(source));
@@ -152,6 +159,12 @@ BarcodeScannerJS* eventDispatcher = NULL;
         }
     }
 
+    std::string convertIntToString(int i) {
+		stringstream ss;
+		ss << i;
+		return ss.str();
+	}
+
     /*
      * image_callback
      *
@@ -160,11 +173,67 @@ BarcodeScannerJS* eventDispatcher = NULL;
     void image_callback(camera_handle_t handle,camera_buffer_t* buf,void* arg) {
        	camera_frame_jpeg_t* data = (camera_frame_jpeg_t*)(&(buf->framedesc));
        	uint8_t* buff = buf->framebuf;
+
+       	if (buf->frametype == CAMERA_FRAMETYPE_JPEG) {
+			fprintf(stderr, "still image size: %lld\n", buf->framedesc.jpeg.bufsize);
+
+			Json::FastWriter writer;
+			Json::Value root;
+
+			std::string tempFileName = "barcode" + convertIntToString(filecounter) + ".jpg";
+			if (++filecounter >=10) {
+				filecounter = 0;
+			}
+			std::string tempFilePath = std::string(getcwd(NULL, 0)) + "/" + TMP_PATH + tempFileName;
+			FILE* fp = fopen(tempFilePath.c_str(), "wb");
+			if (fp!= NULL) {
+				fwrite((const unsigned char *)buf->framebuf, buf->framedesc.jpeg.bufsize, 1, fp);
+				fclose(fp);
+			}
+
+			img_t img;
+			if (rotation == 0 || rotation == 2) {
+				img.w = 720;
+				img.flags = IMG_W;
+			} else {
+				img.h = 720;
+				img.flags = IMG_H;
+			}
+			int resizeResult = img_load_resize_file( ilib, tempFilePath.c_str(), NULL, &img );
+			img_t dst;
+			img_fixed_t angle = 0;
+			switch (rotation) {
+			case 1:
+				angle = IMG_ANGLE_90CCW;
+				break;
+			case 2:
+				angle = IMG_ANGLE_180;
+				break;
+			case 3:
+				angle = IMG_ANGLE_90CW;
+				break;
+			default:
+				break;
+			}
+			if (angle != 0) {
+				int err = img_rotate_ortho(&img, &dst, angle);
+			} else {
+				dst = img;
+			}
+			int writeResult = img_write_file( ilib, tempFilePath.c_str(), NULL, &dst );
+
+			root["frame"]  = tempFilePath;
+			root["orientation"] = buf->frameorientation;
+			root["frametype"] = buf->frametype;
+			root["rotation"] = rotation;
+			std::string event = "community.barcodescanner.frameavailable.native";
+			if ( eventDispatcher != NULL ){
+				 eventDispatcher->NotifyEvent(event + " " + writer.write(root));
+			}
+       	}
+
     }
-//
-//    camera_handle_t BarcodeReaderNDK::getCameraHandle(){
-//    	return mCameraHandle;
-//    }
+
     /*
      * Constructor for Barcode Scanner NDK class
      */
@@ -172,8 +241,6 @@ BarcodeScannerJS* eventDispatcher = NULL;
         m_pParent     = parent;
         eventDispatcher = parent;
         mCameraHandle = CAMERA_HANDLE_INVALID;
-        filecounter = 0;
-        rotation = 0;
     }
 
     BarcodeScannerNDK::~BarcodeScannerNDK() {}
@@ -191,6 +258,11 @@ BarcodeScannerJS* eventDispatcher = NULL;
         Json::FastWriter writer;
         Json::Value root;
 
+        int rc;
+		if ((rc = img_lib_attach(&ilib)) != IMG_ERR_OK) {
+			fprintf(stderr, "img_lib_attach() failed: %d\n", rc);
+		}
+
         camera_error_t err;
 
         err = camera_open(CAMERA_UNIT_REAR,CAMERA_MODE_RW | CAMERA_MODE_ROLL,&mCameraHandle);
@@ -205,8 +277,54 @@ BarcodeScannerJS* eventDispatcher = NULL;
             return EIO;
         }
 
-        err = camera_start_photo_viewfinder( mCameraHandle, &viewfinder_callback, NULL, NULL);
+        int numRates = 0;
+		err = camera_get_photo_vf_framerates(mCameraHandle, true, 0, &numRates, NULL, NULL);
+		double* camFramerates = new double[numRates];
+		bool maxmin = false;
+		err = camera_get_photo_vf_framerates(mCameraHandle, true, numRates, &numRates, camFramerates, &maxmin);
+//		for (int x=0; x<numRates; x++) {
+//			root["framerate"] = camFramerates[x];
+//			root["maxmin"] = maxmin;
+//			m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
+//		}
 
+		uint32_t* rotations = new uint32_t[8];
+		int numRotations = 0;
+		bool nonsquare = false;
+		err = camera_get_photo_rotations(mCameraHandle, CAMERA_FRAMETYPE_JPEG, true, 8, &numRotations, rotations, &nonsquare);
+		rotation = rotations[0] / 90;
+//		root["rotation"] = rotations[0];
+//		root["numRotations"] = numRotations;
+//		m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
+
+		err = camera_set_photovf_property(mCameraHandle,
+			CAMERA_IMGPROP_BURSTMODE, 1,
+			CAMERA_IMGPROP_FRAMERATE, camFramerates[0]);
+		if ( err != CAMERA_EOK){
+#ifdef DEBUG
+			fprintf(stderr, " Ran into an issue when configuring the camera viewfinder = %d\n ", err);
+#endif
+			root["state"] = "Set VF Props";
+			root["error"] = err;
+			root["description"] = getCameraErrorDesc( err );
+			m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
+			return EIO;
+		}
+
+		err = camera_set_photo_property(mCameraHandle,
+			CAMERA_IMGPROP_BURSTDIVISOR, camFramerates[0]);
+		if ( err != CAMERA_EOK){
+#ifdef DEBUG
+			fprintf(stderr, " Ran into an issue when configuring the camera properties = %d\n ", err);
+#endif
+			root["state"] = "Set Cam Props";
+			root["error"] = err;
+			root["description"] = getCameraErrorDesc( err );
+			m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
+			return EIO;
+		}
+
+        err = camera_start_photo_viewfinder( mCameraHandle, &viewfinder_callback, NULL, NULL);
         if ( err != CAMERA_EOK) {
 #ifdef DEBUG
             fprintf(stderr, "Ran into a strange issue when starting up the camera viewfinder\n");
@@ -217,7 +335,6 @@ BarcodeScannerJS* eventDispatcher = NULL;
             m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
             return EIO;
         }
-
 
         err = camera_set_focus_mode(mCameraHandle, CAMERA_FOCUSMODE_CONTINUOUS_MACRO);
 		if ( err != CAMERA_EOK){
@@ -232,7 +349,6 @@ BarcodeScannerJS* eventDispatcher = NULL;
 		}
 
 		err = camera_start_burst(mCameraHandle, NULL, NULL, NULL, &image_callback, NULL);
-
 		if ( err != CAMERA_EOK) {
 #ifdef DEBUG
 			fprintf(stderr, "Ran into an issue when starting up the camera in burst mode\n");
@@ -299,6 +415,8 @@ BarcodeScannerJS* eventDispatcher = NULL;
             m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
             return EIO;
         }
+
+        img_lib_detach(ilib);
 
         std::string successEvent = "community.barcodescanner.ended.native";
         root["successful"] = true;

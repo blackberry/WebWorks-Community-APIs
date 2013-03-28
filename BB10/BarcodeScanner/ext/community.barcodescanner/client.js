@@ -28,7 +28,7 @@ var _self = {},
 			window.webworks.event.once(_ID, "community.barcodescanner.errorfound", errorFound);
 		}
 		if ( typeof(codeFound) == "function" ) {
-			window.webworks.event.add(_ID, "community.barcodescanner.codefound", codeFound);
+			window.webworks.event.once(_ID, "community.barcodescanner.codefound", codeFound);
 		}
 		return window.webworks.execAsync(_ID, "startRead", null);
 	};
@@ -40,7 +40,7 @@ var _self = {},
 		if ( typeof(successfulEnd) == "function" ) {
 			window.webworks.event.once(_ID, "community.barcodescanner.ended", successfulEnd);
 		}
-		if ( typeof(successfulEnd) == "function" ) {
+		if ( typeof(frameAvailable) == "function" ) {
 			window.webworks.event.remove(_ID, "community.barcodescanner.frameavailable", frameAvailable);
 		}
 		if ( typeof(codeFound) == "function" ) {
