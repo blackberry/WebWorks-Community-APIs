@@ -26,36 +26,19 @@
 	<br/>
 	<div id="button1" class='buzz1' onclick="startBarcodeRead();"></div>
 	<br/>
-	<div id="button2" class='buzz2' onclick="stopBarcodeReade();"></div>
+	<div id="button2" class='buzz2' onclick="stopBarcodeRead();"></div>
 	<br/>
 	<br/>
 	<canvas id="myCanvas" width="1024" height="768"></canvas>
 	<script type="text/javascript">
 	var rippleLoaded = false;
-	var latestFrame;
-
+	
 	document.addEventListener('webworksready', function(e) {
 		// This is a hack for Ripple calling webworksready multiple times
 		if (rippleLoaded) return;
 		rippleLoaded = true;
-		blackberry.io.sandbox = false;
 		
 	}, false);
-
-
-	function frameAvailable(data){
-		if (latestFrame == null && data.frame != null) {
-			latestFrame = data.frame;
-			window.webkitRequestAnimationFrame(setImage);
-		} else {
-			latestFrame = data.frame;
-		}
-		console.log(data);
-	}
-
-	function setImage() {
-		readFile(latestFrame);
-	}
 
 	function errorFound(data){
 		console.log("Error : "+data.error + " description : "+ data.description);
@@ -74,82 +57,13 @@
 		console.log("Stopped : " +data.successful);
 	}
 
-	function showImage( imageBase64String ){
-		var canvas = document.getElementById("myCanvas");
-		var ctx = canvas.getContext("2d");
-
-		var image = new Image();
-		image.src = "data:image/bmp;base64,"+imageBase64String;
-		image.onload = function() {
-			ctx.drawImage(image, 0, 0);
-		};
-	}
-
 	function startBarcodeRead(){
-		community.barcodescanner.startRead(codeFound, errorFound, frameAvailable, onStartRead );
+		community.barcodescanner.startRead(codeFound, errorFound, "myCanvas", onStartRead);
 	}
 
-	function stopBarcodeReade(){
-		community.barcodescanner.stopRead(codeFound, errorFound, frameAvailable, onStopRead);
+	function stopBarcodeRead(){
+		community.barcodescanner.stopRead(codeFound, errorFound, "myCanvas", onStopRead);
 	}
-
-	function readFile(filename) {
-
-		window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-
-		window.requestFileSystem(window.TEMPORARY, 1024 * 1024,
-			function (fs) {
-				fs.root.getFile(filename, {create: false},
-					function (fileEntry) {
-						fileEntry.file(function (file) {
-				 			var reader = new FileReader();
-
-							reader.onloadend = function (e) {
-								var canvas = document.getElementById("myCanvas");
-								var ctx = canvas.getContext("2d");
-								// img = document.getElementById('viewfinder');
-								var img = new Image();
-								img.onload = function() {
-									ctx.drawImage(img, 0, 0);
-									URL.revokeObjectURL(img.src);
-								};
-								img.src = e.target.result;
-								window.webkitRequestAnimationFrame(setImage);
-							};
-
-							reader.readAsDataURL(file);
-						}, errorHandler);
-					}, errorHandler);
-				});
-	}
-
-	function errorHandler(e) {
-		var msg = '';
-
-		switch (e.code) {
-			case FileError.QUOTA_EXCEEDED_ERR:
-			msg = 'QUOTA_EXCEEDED_ERR';
-			break;
-			case FileError.NOT_FOUND_ERR:
-			msg = 'NOT_FOUND_ERR';
-			break;
-			case FileError.SECURITY_ERR:
-			msg = 'SECURITY_ERR';
-			break;
-			case FileError.INVALID_MODIFICATION_ERR:
-			msg = 'INVALID_MODIFICATION_ERR';
-			break;
-			case FileError.INVALID_STATE_ERR:
-			msg = 'INVALID_STATE_ERR';
-			break;
-			default:
-			msg = 'Unknown Error';
-			break;
-		};
-
-		console.log('Error: ' + msg);
-	}
-
 
 	</script>
 </body>

@@ -132,6 +132,11 @@ static img_lib_t ilib = NULL;
             hints->addFormat(BarcodeFormat_ITF);
             hints->addFormat(BarcodeFormat_AZTEC);
 
+            // Rotate bitmap if the preview frames are in landscape for 1D codes
+			if (buf->frameorientation != 0 || buf->frameorientation != 180) {
+				bitmap->rotateCounterClockwise();
+			}
+
             // attempt to decode and retrieve a valid QR code from the image bitmap
             result = reader->decode(bitmap, *hints);
             std::string newBarcodeData = result->getText()->getText().data();
@@ -142,7 +147,7 @@ static img_lib_t ilib = NULL;
             std::string event = "community.barcodescanner.codefound.native";
 
             // notify caller that a valid QR code has been decoded
-            if ( eventDispatcher != NULL ){
+            if ( eventDispatcher != NULL){
             	 eventDispatcher->NotifyEvent(event + " " + writer.write(root));
             }
 
