@@ -18,6 +18,9 @@ var _self = {},
 	_ID = require("./manifest.json").namespace;
 
 	_self.startRead = function (codeFound, errorFound, canvasID, successStart) {
+		if (reading === true) {
+			return "Stop Scanning before scanning again";
+		}
 		if ( typeof(successStart) == "function" ) {
 			window.webworks.event.once(_ID, "community.barcodescanner.started", successStart);
 		}
@@ -34,11 +37,16 @@ var _self = {},
 			window.webworks.event.once(_ID, "community.barcodescanner.codefound", codefoundCallback);
 		}
 		blackberry.io.sandbox = false;
+		reading = true;
 		return window.webworks.execAsync(_ID, "startRead", null);
 	};
 
-	_self.stopRead = function (successfulEnd) {
+	_self.stopRead = function (successfulEnd, errorFound) {
 		if ( typeof(errorfoundCallback) == "function" ) {
+			window.webworks.event.remove(_ID, "community.barcodescanner.errorfound", errorfoundCallback);
+		}
+		if ( typeof(errorFound) == "function" ) {
+			errorfoundCallback = errorFound;
 			window.webworks.event.once(_ID, "community.barcodescanner.errorfound", errorfoundCallback);
 		}
 		if ( typeof(successfulEnd) == "function" ) {
@@ -50,10 +58,11 @@ var _self = {},
 		if ( typeof(codefoundCallback) == "function" ) {
 			window.webworks.event.remove(_ID, "community.barcodescanner.codefound", codefoundCallback);
 		}
+		reading = false;
 		return window.webworks.execAsync(_ID, "stopRead", null);
 	};
 
-	var canvas, timeout, fs, latestFrame = null;
+	var reading, canvas, timeout, fs, latestFrame = null;
 	var fsSize = 1024 * 1024;
 	var codefoundCallback, errorfoundCallback;
 
