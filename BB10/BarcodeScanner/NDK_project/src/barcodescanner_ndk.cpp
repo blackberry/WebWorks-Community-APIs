@@ -98,18 +98,6 @@ static img_lib_t ilib = NULL;
         int width = data->width;
         int height = data->height;
 
-//        std::string rgbFrame = YUV_NV12_TO_RGB((unsigned char *)buff, width, height);
-//        std::string bitmapHeader = getBitmapHeader(width, height);
-//
-//        Json::FastWriter writer;
-//        Json::Value root;
-//        root["header"] = base64_encode((const unsigned char *)bitmapHeader.c_str(), bitmapHeader.length());
-//        root["frame"]  = base64_encode((const unsigned char *)rgbFrame.c_str(), rgbFrame.length());;
-//        std::string event = "community.QRCodeReader.cameraFrameCallback.native";
-//
-//        // push encoded frame back to caller
-//        QRCodeReaderNDK::m_pParent->NotifyEvent(event + " " + writer.write(root));
-
         try {
             Ref<LuminanceSource> source(new GreyscaleLuminanceSource((unsigned char *)buff, stride, height, 0,0,width,height));
 
@@ -287,20 +275,12 @@ static img_lib_t ilib = NULL;
 		double* camFramerates = new double[numRates];
 		bool maxmin = false;
 		err = camera_get_photo_vf_framerates(mCameraHandle, true, numRates, &numRates, camFramerates, &maxmin);
-//		for (int x=0; x<numRates; x++) {
-//			root["framerate"] = camFramerates[x];
-//			root["maxmin"] = maxmin;
-//			m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
-//		}
 
 		uint32_t* rotations = new uint32_t[8];
 		int numRotations = 0;
 		bool nonsquare = false;
 		err = camera_get_photo_rotations(mCameraHandle, CAMERA_FRAMETYPE_JPEG, true, 8, &numRotations, rotations, &nonsquare);
 		rotation = rotations[0] / 90;
-//		root["rotation"] = rotations[0];
-//		root["numRotations"] = numRotations;
-//		m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
 
 		err = camera_set_photovf_property(mCameraHandle,
 			CAMERA_IMGPROP_BURSTMODE, 1,
@@ -431,71 +411,4 @@ static img_lib_t ilib = NULL;
         return EOK;
     }
 
-    std::string YUV_NV12_TO_RGB(const unsigned char* yuv, int width, int height) {
-
-    	std::string rgbString = "";
-    	const int frameSize = width * height;
-
-    	const int di = +1;
-    	const int dj = +1;
-
-    	int a = 0;
-    	for (int i = 0, ci = 0; i < height; ++i, ci += di) {
-    		for (int j = 0, cj = 0; j < width; ++j, cj += dj) {
-    			int y = (0xff & ((int) yuv[ci * width + cj]));
-    			int u = (0xff & ((int) yuv[frameSize + (ci >> 1) * width + (cj & ~1) + 0]));
-    			int v = (0xff & ((int) yuv[frameSize + (ci >> 1) * width + (cj & ~1) + 1]));
-    			y = y < 16 ? 16 : y;
-
-    			int r = (int) (1.164f * (y - 16) + 1.596f * (v - 128));
-    			int g = (int) (1.164f * (y - 16) - 0.813f * (v - 128) - 0.391f * (u - 128));
-    			int b = (int) (1.164f * (y - 16) + 2.018f * (u - 128));
-
-    			r = r < 0 ? 0 : (r > 255 ? 255 : r);
-    			g = g < 0 ? 0 : (g > 255 ? 255 : g);
-    			b = b < 0 ? 0 : (b > 255 ? 255 : b);
-
-    			rgbString += (char)r;
-    			rgbString += (char)g;
-    			rgbString += (char)b;
-    			//argb[a++] = 0xff000000 | (r << 16) | (g << 8) | b;
-    		}
-    	}
-
-    	return rgbString;
-    }
-
-    std::string getBitmapHeader(const unsigned int width, const unsigned int height) {
-
-    	std::stringstream ss (std::stringstream::in);
-    	ss << hex << (width * height);
-    	std::string numFileBytes = ss.str();
-
-        ss.str("");
-        ss.clear();
-    	ss << hex << (width);
-    	std::string w = ss.str();
-
-        ss.str("");
-        ss.clear();
-    	ss << hex << (height);
-    	std::string h = ss.str();
-
-    	return "BM" +                    // Signature
-    		numFileBytes +            // size of the file (bytes)*
-    	    "\x00\x00" +              // reserved
-    	    "\x00\x00" +              // reserved
-    	    "\x36\x00\x00\x00" +      // offset of where BMP data lives (54 bytes)
-    	    "\x28\x00\x00\x00" +      // number of remaining bytes in header from here (40 bytes)
-    	    w +                       // the width of the bitmap in pixels*
-    	    h +                       // the height of the bitmap in pixels*
-    	    "\x01\x00" +              // the number of color planes (1)
-    	    "\x20\x00" +              // 32 bits / pixel
-    	    "\x00\x00\x00\x00" +      // No compression (0)
-    	    "\x00\x00\x00\x00" +      // size of the BMP data (bytes)*
-    	    "\x13\x0B\x00\x00" +      // 2835 pixels/meter - horizontal resolution
-    	    "\x13\x0B\x00\x00" +      // 2835 pixels/meter - the vertical resolution
-    	    "\x00\x00\x00\x00" +      // Number of colors in the palette (keep 0 for 32-bit)
-    	    "\x00\x00\x00\x00";       // 0 important colors (means all colors are important)
-    }
 }

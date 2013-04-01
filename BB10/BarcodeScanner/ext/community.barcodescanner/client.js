@@ -26,37 +26,41 @@ var _self = {},
 			window.webworks.event.add(_ID, "community.barcodescanner.frameavailable", frameAvailable);
 		}
 		if ( typeof(errorFound) == "function" ) {
-			window.webworks.event.once(_ID, "community.barcodescanner.errorfound", errorFound);
+			errorfoundCallback = errorFound;
+			window.webworks.event.once(_ID, "community.barcodescanner.errorfound", errorfoundCallback);
 		}
 		if ( typeof(codeFound) == "function" ) {
-			window.webworks.event.once(_ID, "community.barcodescanner.codefound", codeFound);
+			codefoundCallback = codeFound;
+			window.webworks.event.once(_ID, "community.barcodescanner.codefound", codefoundCallback);
 		}
 		blackberry.io.sandbox = false;
 		return window.webworks.execAsync(_ID, "startRead", null);
 	};
 
-	_self.stopRead = function (codeFound, errorFound, canvasID, successfulEnd) {
-		if ( typeof(errorFound) == "function" ) {
-			window.webworks.event.once(_ID, "community.barcodescanner.errorfound", errorFound);
+	_self.stopRead = function (successfulEnd) {
+		if ( typeof(errorfoundCallback) == "function" ) {
+			window.webworks.event.once(_ID, "community.barcodescanner.errorfound", errorfoundCallback);
 		}
 		if ( typeof(successfulEnd) == "function" ) {
 			window.webworks.event.once(_ID, "community.barcodescanner.ended", successfulEnd);
 		}
-		if ( canvasID !== null ) {
+		if ( canvas !== null ) {
 			window.webworks.event.remove(_ID, "community.barcodescanner.frameavailable", frameAvailable);
 		}
-		if ( typeof(codeFound) == "function" ) {
-			window.webworks.event.remove(_ID, "community.barcodescanner.codefound", codeFound);
+		if ( typeof(codefoundCallback) == "function" ) {
+			window.webworks.event.remove(_ID, "community.barcodescanner.codefound", codefoundCallback);
 		}
 		return window.webworks.execAsync(_ID, "stopRead", null);
 	};
 
 	var canvas, timeout, fs, latestFrame = null;
+	var fsSize = 1024 * 1024;
+	var codefoundCallback, errorfoundCallback;
 
 	function readFile(filename) {
 		window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 
-		window.requestFileSystem(window.TEMPORARY, 1024 * 1024,
+		window.requestFileSystem(window.TEMPORARY, fsSize,
 			function (fs) {
 				fs.root.getFile(filename, {create: false},
 					function (fileEntry) {
