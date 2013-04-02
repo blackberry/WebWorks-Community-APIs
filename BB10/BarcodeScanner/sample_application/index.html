@@ -77,7 +77,7 @@
 		gotCode = false;
 		blackberry.app.lockOrientation("portrait-primary", false);
 		community.barcodescanner.startRead(codeFound, errorFound, "myCanvas", onStartRead);
-		scanTimeout = setTimeout(scanTimeoutHalt, 30000);
+		scanTimeout = setTimeout(scanTimeoutHalt, 60000);
 	}
 
 	function stopBarcodeRead(){
@@ -88,7 +88,7 @@
 	}
 
 	function scanTimeoutHalt() {
-		blackberry.ui.toast.show("No Code found in 30s. Stopping Scanner");
+		blackberry.ui.toast.show("No Code found in 60s. Stopping Scanner");
 		stopBarcodeRead();
 	}
 

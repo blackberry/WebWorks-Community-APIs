@@ -122,11 +122,13 @@ static img_lib_t ilib = NULL;
 
             // Rotate bitmap if the preview frames are in landscape for 1D codes
 			if (buf->frameorientation != 0 || buf->frameorientation != 180) {
-				bitmap->rotateCounterClockwise();
+				Ref<BinaryBitmap> rotated = bitmap->rotateCounterClockwise();
+				result = reader->decode(rotated, *hints);
+			} else {
+				// attempt to decode and retrieve a valid QR code from the image bitmap
+				result = reader->decode(bitmap, *hints);
 			}
 
-            // attempt to decode and retrieve a valid QR code from the image bitmap
-            result = reader->decode(bitmap, *hints);
             std::string newBarcodeData = result->getText()->getText().data();
 
             Json::FastWriter writer;
@@ -186,10 +188,10 @@ static img_lib_t ilib = NULL;
 
 			img_t img;
 			if (rotation == 0 || rotation == 2) {
-				img.w = 720;
+				img.w = 240;
 				img.flags = IMG_W;
 			} else {
-				img.h = 720;
+				img.h = 240;
 				img.flags = IMG_H;
 			}
 			int resizeResult = img_load_resize_file( ilib, tempFilePath.c_str(), NULL, &img );
@@ -297,7 +299,7 @@ static img_lib_t ilib = NULL;
 		}
 
 		err = camera_set_photo_property(mCameraHandle,
-			CAMERA_IMGPROP_BURSTDIVISOR, camFramerates[0]);
+			CAMERA_IMGPROP_BURSTDIVISOR, (double) 5.0);
 		if ( err != CAMERA_EOK){
 #ifdef DEBUG
 			fprintf(stderr, " Ran into an issue when configuring the camera properties = %d\n ", err);
