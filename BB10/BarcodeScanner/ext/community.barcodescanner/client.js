@@ -79,7 +79,7 @@ var _self = {},
 								var ctx = canvas.getContext("2d");
 								var img = new Image();
 								img.onload = function() {
-									ctx.drawImage(img, 0, 0);
+									ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
 									URL.revokeObjectURL(img.src);
 									img.src = null;
 								};

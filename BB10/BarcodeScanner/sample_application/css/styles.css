@@ -10,32 +10,29 @@ div {
 }
 
 
-.buzz1 {
-	height: 75px;
-	width: 75px;
+.start {
+	height: 2em;
+	width: 2em;
 	background-color: #0098f0;
+	position: fixed;
+	left: 0;
+	top: 1em;
+	z-index: 1;
 }
 
-.buzz2 {
-	height: 75px;
-	width: 75px;
+.stop {
+	height: 2em;
+	width: 2em;
 	background-color: #F27878;
+	position: fixed;
+	right: 0;
+	top: 1em;
+	z-index: 1;
 }
 
-
-.buzz3 {
-	height: 75px;
-	width: 75px;
-	background-color: #99DF83;
-}
-
-
-.scoreBoard {
-	color:#000000;
-	font-size:25px;
-}
-
-.title {
-	color:#000000;
-	font-size:30px;
+canvas {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: -1;
 }

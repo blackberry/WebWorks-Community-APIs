@@ -18,19 +18,26 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link href="css/styles.css" rel="stylesheet" type="text/css">
-	<title>Extension Template Test</title>
+	<title>Barcode Extension Test</title>
 	<script type="text/javascript" src="local:///chrome/webworks.js"></script>
 </head>
 <body>
 	<br/>
 	<br/>
-	<div id="button1" class='buzz1' onclick="startBarcodeRead();"></div>
+	<div id="button1" class='start' onclick="startBarcodeRead();">Scan</div>
 	<br/>
-	<div id="button2" class='buzz2' onclick="stopBarcodeRead();"></div>
+	<div id="button2" class='stop' onclick="stopBarcodeRead();">Stop</div>
 	<br/>
 	<br/>
-	<canvas id="myCanvas" width="1024" height="1024"></canvas>
+	<canvas id="myCanvas" width="768" height="1280"></canvas>
 	<script type="text/javascript">
+
+	// Set Viewport
+	var meta = document.createElement("meta");
+	meta.setAttribute('name','viewport');
+	meta.setAttribute('content','initial-scale='+ (1/window.devicePixelRatio) + ',user-scalable=no');
+	document.getElementsByTagName('head')[0].appendChild(meta);
+
 	var rippleLoaded = false;
 	var gotCode = false;
 	var scanTimeout;
@@ -76,6 +83,7 @@
 	function stopBarcodeRead(){
 		community.barcodescanner.stopRead(onStopRead, errorFound);
 		clearTimeout(scanTimeout);
+		scanTimeout = null;
 		blackberry.app.unlockOrientation();
 	}
 
@@ -85,7 +93,9 @@
 	}
 
 	function onResume() {
-		blackberry.ui.toast.show("Application Minimized. Scanner Stopped");
+		if (scanTimeout !== null) {
+			blackberry.ui.toast.show("Application Minimized. Scanner Stopped");
+		}
 	}
 
 	</script>
