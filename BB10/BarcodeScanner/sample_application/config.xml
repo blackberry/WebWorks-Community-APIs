@@ -28,6 +28,9 @@
 	
 	<feature id="blackberry.io" />
 	<feature id="community.barcodescanner" />
+	<feature id="blackberry.ui.toast" />
+	<feature id="blackberry.app" />
+
 	<access subdomains="true" uri="*"/>
 
 	<rim:permissions>

@@ -29,14 +29,19 @@
 	<div id="button2" class='buzz2' onclick="stopBarcodeRead();"></div>
 	<br/>
 	<br/>
-	<canvas id="myCanvas" width="1024" height="768"></canvas>
+	<canvas id="myCanvas" width="1024" height="1024"></canvas>
 	<script type="text/javascript">
 	var rippleLoaded = false;
+	var gotCode = false;
+	var scanTimeout;
 	
 	document.addEventListener('webworksready', function(e) {
 		// This is a hack for Ripple calling webworksready multiple times
 		if (rippleLoaded) return;
 		rippleLoaded = true;
+
+		blackberry.event.addEventListener("pause", stopBarcodeRead);
+		blackberry.event.addEventListener("resume", onResume);
 		
 	}, false);
 
@@ -46,7 +51,11 @@
 
 	function codeFound(data) {
 		console.log(data);
-		alert("Detected : "+data.value);
+		if (gotCode === false) {
+			gotCode = true;
+			stopBarcodeRead();
+			blackberry.ui.toast.show("Detected : "+data.value);
+		}
 	}
 
 	function onStartRead(data){
@@ -58,11 +67,25 @@
 	}
 
 	function startBarcodeRead(){
+		gotCode = false;
+		blackberry.app.lockOrientation("portrait-primary", false);
 		community.barcodescanner.startRead(codeFound, errorFound, "myCanvas", onStartRead);
+		scanTimeout = setTimeout(scanTimeoutHalt, 30000);
 	}
 
 	function stopBarcodeRead(){
 		community.barcodescanner.stopRead(onStopRead, errorFound);
+		clearTimeout(scanTimeout);
+		blackberry.app.unlockOrientation();
+	}
+
+	function scanTimeoutHalt() {
+		blackberry.ui.toast.show("No Code found in 30s. Stopping Scanner");
+		stopBarcodeRead();
+	}
+
+	function onResume() {
+		blackberry.ui.toast.show("Application Minimized. Scanner Stopped");
 	}
 
 	</script>

@@ -59,12 +59,12 @@ JNEXT.BarcodeScanner = function () {
 			// Slice off the event name and the rest of the data is our JSON
 			jsonData = arData.slice(1, arData.length).join(" ");
 			_event.trigger("community.barcodescanner.codefound", JSON.parse(jsonData));
-			self.stopRead();
+			// self.stopRead();
 		}
 		else if ( strEventDesc === "community.barcodescanner.errorfound.native") {
 			jsonData = arData.slice(1, arData.length).join(" ");
 			_event.trigger("community.barcodescanner.errorfound", JSON.parse(jsonData));
-			self.stopRead();
+			// self.stopRead();
 		}
 		else if ( strEventDesc === "community.barcodescanner.frameavailable.native") {
 			jsonData = arData.slice(1, arData.length).join(" ");
