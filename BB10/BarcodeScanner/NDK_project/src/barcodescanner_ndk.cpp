@@ -116,14 +116,8 @@ static img_lib_t ilib = NULL;
             hints->addFormat(BarcodeFormat_ITF);
             hints->addFormat(BarcodeFormat_AZTEC);
 
-            // Rotate bitmap if the preview frames are in landscape for 1D codes
-			if (buf->frameorientation != 0 || buf->frameorientation != 180) {
-				Ref<BinaryBitmap> rotated = bitmap->rotateCounterClockwise();
-				result = reader->decode(rotated, *hints);
-			} else {
-				// attempt to decode and retrieve a valid QR code from the image bitmap
-				result = reader->decode(bitmap, *hints);
-			}
+			// attempt to decode and retrieve a valid QR code from the image bitmap
+			result = reader->decode(bitmap, *hints);
 
             std::string newBarcodeData = result->getText()->getText().data();
 

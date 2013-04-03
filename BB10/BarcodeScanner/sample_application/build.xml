@@ -33,8 +33,7 @@
 	
 	The buildProperties.xml file is optional but allows you to separate out certain settings, like passwords.
 	-->
-	<!-- <property name="device.bb10.ip" value="10.251.162.64"/> -->
-	<!-- <property name="device.bb10.pw" value="pass" /> -->
+	
 	<!-- <include file="${ant.home}/../buildProperties.xml" /> -->
 	<include file="${ant.home}/../buildTasks.xml" />
 
@@ -65,6 +64,6 @@
 	- only for bb10 builds, use device for real devices and sim for VMWare based simulators
 	- test, prod, beta to load the matching build created above
 	-->
-	<target name="build" depends="build.bb10.test,build.deploy.bb10.device.test"></target>
+	<target name="build" depends="build.bb10.beta,build.deploy.bb10.device.beta"></target>
 	
 </project>
