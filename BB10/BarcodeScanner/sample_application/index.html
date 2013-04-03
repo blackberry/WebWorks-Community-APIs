@@ -29,7 +29,7 @@
 	<div id="button2" class='stop' onclick="stopBarcodeRead();">Stop</div>
 	<br/>
 	<br/>
-	<canvas id="myCanvas" width="768" height="1280"></canvas>
+	<canvas id="myCanvas" width="720" height="720"></canvas>
 	<script type="text/javascript">
 
 	// Set Viewport
@@ -38,16 +38,22 @@
 	meta.setAttribute('content','initial-scale='+ (1/window.devicePixelRatio) + ',user-scalable=no');
 	document.getElementsByTagName('head')[0].appendChild(meta);
 
+	// resize canvas
+	var canvas = document.getElementById('myCanvas');
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+
 	var rippleLoaded = false;
 	var gotCode = false;
-	var scanTimeout;
+	var scanTimeout = null;
+	var showResumeToast = false;
 	
 	document.addEventListener('webworksready', function(e) {
 		// This is a hack for Ripple calling webworksready multiple times
 		if (rippleLoaded) return;
 		rippleLoaded = true;
 
-		blackberry.event.addEventListener("pause", stopBarcodeRead);
+		blackberry.event.addEventListener("pause", onPause);
 		blackberry.event.addEventListener("resume", onResume);
 		
 	}, false);
@@ -92,9 +98,17 @@
 		stopBarcodeRead();
 	}
 
-	function onResume() {
+	function onPause() {
 		if (scanTimeout !== null) {
+			showResumeToast = true;
+			stopBarcodeRead();
+		}
+	}
+
+	function onResume() {
+		if (showResumeToast === true) {
 			blackberry.ui.toast.show("Application Minimized. Scanner Stopped");
+			showResumeToast = false;
 		}
 	}
 

@@ -299,7 +299,7 @@ static img_lib_t ilib = NULL;
 		}
 
 		err = camera_set_photo_property(mCameraHandle,
-			CAMERA_IMGPROP_BURSTDIVISOR, (double) 5.0);
+			CAMERA_IMGPROP_BURSTDIVISOR, (double) 3.0);
 		if ( err != CAMERA_EOK){
 #ifdef DEBUG
 			fprintf(stderr, " Ran into an issue when configuring the camera properties = %d\n ", err);

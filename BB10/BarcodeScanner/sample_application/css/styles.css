@@ -9,25 +9,22 @@ div {
 	text-align: center;
 }
 
-
-.start {
-	height: 2em;
+.start, .stop {
+	height: 1.5em;
 	width: 2em;
-	background-color: #0098f0;
 	position: fixed;
-	left: 0;
 	top: 1em;
 	z-index: 1;
 }
 
+.start {
+	background-color: #0098f0;
+	left: 0;
+}
+
 .stop {
-	height: 2em;
-	width: 2em;
 	background-color: #F27878;
-	position: fixed;
 	right: 0;
-	top: 1em;
-	z-index: 1;
 }
 
 canvas {
