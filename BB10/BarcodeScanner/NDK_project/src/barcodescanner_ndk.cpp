@@ -19,7 +19,6 @@
 
 #include <zxing/common/GreyscaleLuminanceSource.h>
 #include <zxing/common/HybridBinarizer.h>
-#include <zxing/qrcode/QRCodeReader.h>
 #include <zxing/MultiFormatReader.h>
 #include <img/img.h>
 #include <stdio.h>
@@ -30,7 +29,6 @@
 #include <sstream>
 
 using namespace zxing;
-using namespace zxing::qrcode;
 
 namespace webworks {
 
@@ -103,8 +101,8 @@ static img_lib_t ilib = NULL;
             Ref<BinaryBitmap> bitmap(new BinaryBitmap(binarizer));
             Ref<Result> result;
 
-            // setup the QR code reader
-            QRCodeReader *reader = new QRCodeReader();
+            // setup the code reader
+            MultiFormatReader *reader = new MultiFormatReader();
             DecodeHints *hints = new DecodeHints();
 
             hints->addFormat(BarcodeFormat_QR_CODE);
