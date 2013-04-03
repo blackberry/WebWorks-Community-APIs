@@ -24,8 +24,6 @@
 #include <img/img.h>
 #include <stdio.h>
 
-#include "../public/base64/base64.h"
-
 #include "barcodescanner_ndk.hpp"
 #include "barcodescanner_js.hpp"
 
