@@ -6,13 +6,17 @@ This BlackBerry 10 WebWorks extension scans all types of barcodes supported by t
 ** Tested On **
 
 BlackBerry 10 Dev Alpha B 10.0.10.263
+
 BlackBerry Z10 10.1.0.1622
+
 BlackBerry Q10 10.1.0.1020
 
-** Author **
+** Authors **
 
-[Tim Windsor](https://github.com/timwindsor)
+[Tim Windsor](https://github.com/timwindso)
+
 [Alex Kwan](https://github.com/greentea0)
+
 [Mike Delong](https://github.com/mdelong)
 
 ## Building and Testing the Sample
@@ -144,6 +148,7 @@ See the examples in the [Template Extension](https://github.com/blackberry/WebWo
 When making changes, rebuild regularly so you don't make a really hard to find typo.
 
 Follow the steps above to:
+
 1. [Build the native portion](#how-to-build-your-native-extension),
 2. [Copy the extension to your SDK](#copying-the-extension-to-the-sdk), and
 3. [Use the extension in your test app](#using-the-extension-in-an-application).
