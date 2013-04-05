@@ -86,6 +86,7 @@ static img_lib_t ilib = NULL;
      *
      * This callback is invoked when an image frame from the camera viewfinder becomes available.
      * The frame is analyzed to determine if a barcode can be matched.
+     * Frames come in NV12 format which makes code analysis very fast.
      */
     void viewfinder_callback(camera_handle_t handle,camera_buffer_t* buf,void* arg) {
         camera_frame_nv12_t* data = (camera_frame_nv12_t*)(&(buf->framedesc));
@@ -153,7 +154,8 @@ static img_lib_t ilib = NULL;
     /*
      * image_callback
      *
-     * handles the burst frames from the camera
+     * handles the burst frames from the camera, which are standard JPEG images.
+     * These will be sent to the front end for display.
      */
     void image_callback(camera_handle_t handle,camera_buffer_t* buf,void* arg) {
        	camera_frame_jpeg_t* data = (camera_frame_jpeg_t*)(&(buf->framedesc));
@@ -165,10 +167,12 @@ static img_lib_t ilib = NULL;
 			Json::FastWriter writer;
 			Json::Value root;
 
+			// saving temporary files barcode0.jpg to barcode9.jpg
 			std::string tempFileName = "barcode" + convertIntToString(filecounter) + ".jpg";
 			if (++filecounter >=10) {
 				filecounter = 0;
 			}
+			// saving in the /tmp directory of the application which gets cleaned out when the app exits
 			std::string tempFilePath = std::string(getcwd(NULL, 0)) + "/" + TMP_PATH + tempFileName;
 			FILE* fp = fopen(tempFilePath.c_str(), "wb");
 			if (fp!= NULL) {
@@ -176,6 +180,8 @@ static img_lib_t ilib = NULL;
 				fclose(fp);
 			}
 
+			// QC8960 based devices create jpegs with exif orientation and need rotating
+			// We'll also scale down as much as possible to reduce file size.
 			img_t img;
 			if (rotation == 0 || rotation == 2) {
 				img.w = 240;
@@ -206,11 +212,8 @@ static img_lib_t ilib = NULL;
 				dst = img;
 			}
 			int writeResult = img_write_file( ilib, tempFilePath.c_str(), NULL, &dst );
-
+			// Send the file path for loading in the front end since JNEXT only handles strings
 			root["frame"]  = tempFilePath;
-			root["orientation"] = buf->frameorientation;
-			root["frametype"] = buf->frametype;
-			root["rotation"] = rotation;
 			std::string event = "community.barcodescanner.frameavailable.native";
 			if ( eventDispatcher != NULL ){
 				 eventDispatcher->NotifyEvent(event + " " + writer.write(root));
@@ -249,7 +252,7 @@ static img_lib_t ilib = NULL;
 		}
 
         camera_error_t err;
-
+        // Open the camera first before running any operations on it
         err = camera_open(CAMERA_UNIT_REAR,CAMERA_MODE_RW | CAMERA_MODE_ROLL,&mCameraHandle);
         if ( err != CAMERA_EOK){
 #ifdef DEBUG
@@ -262,18 +265,21 @@ static img_lib_t ilib = NULL;
             return EIO;
         }
 
+        // We want maximum framerate from the viewfinder which will scan for codes
         int numRates = 0;
 		err = camera_get_photo_vf_framerates(mCameraHandle, true, 0, &numRates, NULL, NULL);
 		double* camFramerates = new double[numRates];
 		bool maxmin = false;
 		err = camera_get_photo_vf_framerates(mCameraHandle, true, numRates, &numRates, camFramerates, &maxmin);
 
+		// QC8960 doesn't allow for changing the rotation, so we'll just take note of it here and rotate later.
 		uint32_t* rotations = new uint32_t[8];
 		int numRotations = 0;
 		bool nonsquare = false;
 		err = camera_get_photo_rotations(mCameraHandle, CAMERA_FRAMETYPE_JPEG, true, 8, &numRotations, rotations, &nonsquare);
 		rotation = rotations[0] / 90;
 
+		// We're going to turn on burst mode for the camera and set maximum framerate for the viewfinder
 		err = camera_set_photovf_property(mCameraHandle,
 			CAMERA_IMGPROP_BURSTMODE, 1,
 			CAMERA_IMGPROP_FRAMERATE, camFramerates[0]);
@@ -288,6 +294,7 @@ static img_lib_t ilib = NULL;
 			return EIO;
 		}
 
+		// The actual camera will get frames at a slower rate than the viewfinder
 		err = camera_set_photo_property(mCameraHandle,
 			CAMERA_IMGPROP_BURSTDIVISOR, (double) 3.0);
 		if ( err != CAMERA_EOK){
@@ -301,6 +308,7 @@ static img_lib_t ilib = NULL;
 			return EIO;
 		}
 
+		// Starting viewfinder up which will call the viewfinder callback - this gets the NV12 images for scanning
         err = camera_start_photo_viewfinder( mCameraHandle, &viewfinder_callback, NULL, NULL);
         if ( err != CAMERA_EOK) {
 #ifdef DEBUG
@@ -313,6 +321,7 @@ static img_lib_t ilib = NULL;
             return EIO;
         }
 
+        // Focus mode can't be set until the viewfinder is started. We need Continuous Macro for barcodes
         err = camera_set_focus_mode(mCameraHandle, CAMERA_FOCUSMODE_CONTINUOUS_MACRO);
 		if ( err != CAMERA_EOK){
 #ifdef DEBUG
@@ -325,6 +334,7 @@ static img_lib_t ilib = NULL;
 			return EIO;
 		}
 
+		// Now start capturing burst frames in JPEG format for sending to the front end.
 		err = camera_start_burst(mCameraHandle, NULL, NULL, NULL, &image_callback, NULL);
 		if ( err != CAMERA_EOK) {
 #ifdef DEBUG

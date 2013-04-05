@@ -33,10 +33,15 @@ BlackBerry Q10 10.1.0.1020
 ![Screenshot](screenshot4.png)
 
 ## Including the feature in your application
-This feature depends on the blackberry.io feature as well, so both much be included in your applications config.xml file.
+This feature depends on the blackberry.io feature as well, so both must be included in your applications config.xml file. Also, permission for the camera and shared filesystem is required.
 ```xml
 <feature id="blackberry.io" />
 <feature id="community.barcodescanner" />
+
+<rim:permissions>
+	<rim:permit>use_camera</rim:permit>
+	<rim:permit>access_shared</rim:permit>
+</rim:permissions>
 ```
 
 It's also recommended that you stop scanning if the app goes into the background. To respond to app state, include the following feature:
