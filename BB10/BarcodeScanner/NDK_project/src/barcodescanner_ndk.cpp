@@ -36,7 +36,6 @@ BarcodeScannerJS* eventDispatcher = NULL;
 static int filecounter = 0;
 #define TMP_PATH "tmp/"
 static uint32_t rotation = 0;
-static img_lib_t ilib = NULL;
 
     /*
      * getCameraErrorDesc
@@ -158,8 +157,6 @@ static img_lib_t ilib = NULL;
      * These will be sent to the front end for display.
      */
     void image_callback(camera_handle_t handle,camera_buffer_t* buf,void* arg) {
-       	camera_frame_jpeg_t* data = (camera_frame_jpeg_t*)(&(buf->framedesc));
-       	uint8_t* buff = buf->framebuf;
 
        	if (buf->frametype == CAMERA_FRAMETYPE_JPEG) {
 			fprintf(stderr, "still image size: %lld\n", buf->framedesc.jpeg.bufsize);
@@ -182,6 +179,12 @@ static img_lib_t ilib = NULL;
 
 			// QC8960 based devices create jpegs with exif orientation and need rotating
 			// We'll also scale down as much as possible to reduce file size.
+			img_lib_t ilib;
+			int rc;
+			if ((rc = img_lib_attach(&ilib)) != IMG_ERR_OK) {
+				fprintf(stderr, "img_lib_attach() failed: %d\n", rc);
+			}
+
 			img_t img;
 			if (rotation == 0 || rotation == 2) {
 				img.w = 240;
@@ -212,6 +215,9 @@ static img_lib_t ilib = NULL;
 				dst = img;
 			}
 			int writeResult = img_write_file( ilib, tempFilePath.c_str(), NULL, &dst );
+
+			img_lib_detach(ilib);
+
 			// Send the file path for loading in the front end since JNEXT only handles strings
 			root["frame"]  = tempFilePath;
 			std::string event = "community.barcodescanner.frameavailable.native";
@@ -245,11 +251,6 @@ static img_lib_t ilib = NULL;
         std::string errorEvent = "community.barcodescanner.errorfound.native";
         Json::FastWriter writer;
         Json::Value root;
-
-        int rc;
-		if ((rc = img_lib_attach(&ilib)) != IMG_ERR_OK) {
-			fprintf(stderr, "img_lib_attach() failed: %d\n", rc);
-		}
 
         camera_error_t err;
         // Open the camera first before running any operations on it
@@ -402,8 +403,6 @@ static img_lib_t ilib = NULL;
             m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
             return EIO;
         }
-
-        img_lib_detach(ilib);
 
         std::string successEvent = "community.barcodescanner.ended.native";
         root["successful"] = true;
