@@ -20,11 +20,17 @@ The LED API allows you to control the LED.
 4. Copy **output/community.led/ledJnext.so** to **/path/to/sdk/ext/community.led/device/ledJnext.so**
 5. Copy everything in **javascript_src** to **/path/to/sdk/ext/community.led/**
 
-## Required Feature ID
+## Required Feature ID and Permission
 Whenever you use the below feature id in any of your WebWorks applications this extension will be loaded for use.
 
     <feature id="community.led" required="true" version="1.0.0.0" />
 
+Add the following permission to your config.xml file as well:
+
+	<rim:permissions>
+		<rim:permit>access_led_control</rim:permit>
+	</rim:permissions>
+	
 ## Summary
 
 var id = community.led.startLed([String: color], [String: blinkCount])
