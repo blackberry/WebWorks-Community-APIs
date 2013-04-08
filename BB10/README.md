@@ -25,5 +25,8 @@ Start with the [Template](https://github.com/blackberry/WebWorks-Community-APIs/
 	1. unzipPackage("shared/documents/bbtest.zip", "shared/documents/") - unzip the given file to the directory given.
 6. [VIBRATION](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/VIBRATION)
 	1. vibration_request({ "duration" : [int: duration], "intensity" : [int: intensity]}, [function: callback]) - vibrate phone with given intensity and duration, with optional callback.
+7. [BarcodeScanner](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/BarcodeScanner)
+	1.  startRead(codeFound, errorFound, "myCanvas", onStartRead) - Scan for barcodes and paint viewfinder on myCanvas
+	2.  stopRead(onStopRead, errorFound) - stop the reading process
 
 
