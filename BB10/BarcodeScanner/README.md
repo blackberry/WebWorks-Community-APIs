@@ -13,7 +13,7 @@ BlackBerry Q10 10.1.0.1020
 
 ** Authors **
 
-[Tim Windsor](https://github.com/timwindso)
+[Tim Windsor](https://github.com/timwindsor)
 
 [Alex Kwan](https://github.com/greentea0)
 
@@ -82,15 +82,21 @@ The Barcode Scanner Extension provides the following API:
 	}
 ```
 
-## Known Issues and Implementation Details
+## Known Issues
 
-1D Barcodes like UPC product codes need to be scanned with the bar lines running horizontally, so the code looks something like a stack of paper.
+1. Follow the best practices in the Sample Application for shutting of the scanner when going the background or leaving the part of your app which is doing the scanning. It's also recommended to timeout the scan. Scanning is an intensive operation and will continue until stopRead() is called, but starting and stopping is quick, so don't hesitate to shut it down.
+
+2. 1D Barcodes like UPC product codes need to be scanned with the bar lines running horizontally, so the code looks something like a stack of paper.
+
+3. Scanning for a very long time time or repeatedly scanning does seem to use up device memory slowly, so there's also some optimization to be done yet.
+
+## Implementation Details
 
 There are two parts to this Barcode Scanner - 1. Scanning camera frames for Barcodes, and 2. Showing the user what they are aiming at.
 The first part works identically to any native implementation and takes advantage of BlackBerry 10's capabilities with the camera, continuous macro focus, and high speed barcode interpretation.
 
 The second part is a little trickier.
-It's not possible to send video data from the viewfinder through to the webview directly. In native barcode scanners, the viewfinder is able to paint right onto it's own window, but that approach is not possible in WebWorks. Instead, the camera is operated in burst mode and frames are captured at 1/3rd the speed of the barcode scanning. These frames are scaled down, rotated as necessary, and saved to the filesystem. Then the WebWorks side of the extension is notified of the file path so it can load the image and paint it to a Canvas. These images are slightly delayed, lower quality, and at a reduced framerate from native video solutions, so be forewarned that the solution does not compare well. Scanning for a very long time time or repeatedly scanning does seem to use up device memory, so there's also some optimization to be done yet.
+It's not possible to send video data from the viewfinder through to the webview directly. In native barcode scanners, the viewfinder is able to paint right onto it's own window, but that approach is not possible in WebWorks. Instead, the camera is operated in burst mode and frames are captured at 1/3rd the speed of the barcode scanning. These frames are scaled down, rotated as necessary, and saved to the filesystem. Then the WebWorks side of the extension is notified of the file path so it can load the image and paint it to a Canvas. These images are slightly delayed, lower quality, and at a reduced framerate from native video solutions, so be forewarned that the solution does not compare well.
 
 ## Building the extension from source
 
