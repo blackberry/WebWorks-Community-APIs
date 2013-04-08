@@ -16,13 +16,11 @@
 -->
 <widget xmlns="http://www.w3.org/ns/widgets" 
 		xmlns:rim="http://www.blackberry.com/ns/widgets" 
-		version="1.0.8" id="community.extension.test" xml:lang="en">
+		version="1.0.8" id="community.barcodescanner.test" xml:lang="en">
 	
 	<name>Barcode Test</name>
 	<description>Barcode Test Application</description>
 	<author rim:copyright="2013" email="@alexkwan" href="http://www.blackberry.com/developers">Alex Kwan</author>
-	
-	<rim:orientation mode="auto" />
 	
 	<content src="index.html"/>
 	
