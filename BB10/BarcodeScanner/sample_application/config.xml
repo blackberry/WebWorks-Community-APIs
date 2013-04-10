@@ -25,6 +25,7 @@
 	<content src="index.html"/>
 	
 	<feature id="blackberry.io" />
+	<feature id="community.preventsleep" />
 	<feature id="community.barcodescanner" />
 	<feature id="blackberry.ui.toast" />
 	<feature id="blackberry.app" />
