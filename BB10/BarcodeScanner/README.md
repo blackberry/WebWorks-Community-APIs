@@ -49,7 +49,11 @@ It's also recommended that you stop scanning if the app goes into the background
 <feature id="blackberry.app" />
 ```
 
-When you start scanning, you can make the experience better for your users with the [Prevent Sleep Extension](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/PreventSleep), by disabling sleep when scanning and enabling sleep when finished.
+When you start scanning, you can make the experience better for your users with the [Prevent Sleep Extension](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/PreventSleep). If you include Prevent Sleep in your app, the BarcodeScanner will automatically use it as needed to keep the screen on. Instructions for installing are in the Preven Sleep [README](https://github.com/blackberry/WebWorks-Community-APIs/blob/master/BB10/PreventSleep/README.md)
+
+```xml
+<feature id="community.preventsleep" />
+```
 
 ## The Extension API
 The Barcode Scanner Extension provides the following API:
