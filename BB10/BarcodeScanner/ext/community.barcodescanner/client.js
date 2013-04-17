@@ -38,6 +38,13 @@ var _self = {},
 		}
 		blackberry.io.sandbox = false;
 		reading = true;
+		// Turn on prevent sleep, if it's in the app
+		if (community.preventsleep) {
+			if (!community.preventsleep.isSleepPrevented) {
+				community.preventsleep.setPreventSleep(true);
+				sleepPrevented = true;
+			}
+		}
 		return window.webworks.execAsync(_ID, "startRead", null);
 	};
 
@@ -59,12 +66,20 @@ var _self = {},
 			window.webworks.event.remove(_ID, "community.barcodescanner.codefound", codefoundCallback);
 		}
 		reading = false;
+		// Return sleep setting to original if changed.
+		if (community.preventsleep) {
+			if (sleepPrevented === true) {
+				community.preventsleep.setPreventSleep(false);
+				sleepPrevented = false;
+			}
+		}
 		return window.webworks.execAsync(_ID, "stopRead", null);
 	};
 
 	var reading, canvas, timeout, fs, latestFrame = null;
 	var fsSize = 1024 * 1024;
 	var codefoundCallback, errorfoundCallback;
+	var sleepPrevented = false;
 
 	function readFile(filename) {
 		window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
