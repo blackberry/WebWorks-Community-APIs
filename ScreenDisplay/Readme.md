@@ -11,7 +11,7 @@ A simple example is that you design for a 36px font on a device with 356 ppi (a 
 
 ** Tested On **
 
-BlackBerry Z10 10.1.0.1483
+BlackBerry Z10 10.0.9.2372
 
 BlackBerry 10 Dev Alpha C 10.1.0.1483
 
@@ -94,8 +94,6 @@ for the project. Select Device-Release and Simulator-Debug and click ok.
 ### Copying the Extension to the SDK</a>
 
 1. Under the ext folder in this project should be the community.screendisplay folder with the following file structure underneath it:
-
-![Screenshot](files.png)
 
 If you wish to do the copying manually, continue with these steps:
 
