@@ -12,6 +12,9 @@ A simple example is that you design for a 36px font on a device with 356 ppi (a 
 ** Tested On **
 
 BlackBerry Z10 10.0.9.2372
+BlackBerry Z10 10.0.10.82 (Same device - downgrade DA-B for tests)
+
+BlackBerry 10 Dev Alpha B 10.0.9.2372
 
 BlackBerry 10 Dev Alpha C 10.1.0.1483
 
