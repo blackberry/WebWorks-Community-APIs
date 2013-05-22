@@ -32,7 +32,15 @@ Have a problem with this extension?  [Log an Issue](https://github.com/blackberr
 
 5. Copy the _**library.xml**_ file from the downloaded _**Smartphone\MessageList**_ directory to your new _**ext\webworks.message.list**_ directory
 
-6. Copy the downloaded _**Smartphone\MessageList\src\webworks**_ directory to your new _**ext\webworks.message.list\webworks**_ directory
+6. Copy the downloaded _**Smartphone\MessageList\src**_ directory to your new _**ext\webworks.message.list**_ directory
+
+Your Directory should look like this:
+
+* C:\Program Files\Research In Motion\BlackBerry WebWorks Packager\ext\webworks.message.list\
+
+	** src
+
+	** library.xml
 
 **NOTE:** Be sure to back-up this _**ext\webworks.message.list**_ directory in your WebWorks SDK extensions directory before performing a WebWorks SDK upgrade. Simply copy it back into the _**ext**_ directory after you have completed your SDK upgrade.
 
