@@ -28,5 +28,24 @@ Start with the [Template](https://github.com/blackberry/WebWorks-Community-APIs/
 7. [BarcodeScanner](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/BarcodeScanner)
 	1.  startRead(codeFound, errorFound, "myCanvas", onStartRead) - Scan for barcodes and paint viewfinder on myCanvas
 	2.  stopRead(onStopRead, errorFound) - stop the reading process
+8. [ScreenDisplay](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/ScreenDisplay)
+	1. var result = community.screendisplay.sdgetsize();
+
+	Result is a javascript object with the following properties
+
+```javascript
+
+	pixelWidth,      // Pixel Size - width
+	pixelHeight,     // Pixel Size - height
+	physicalWidth,   // Physical Size mm - width
+	physicalHeight,  // Physical Size mm - height
+	ppmm,            // Pixels Per mm
+	ppmmX,           // Pixels Per mm - X
+	ppmmY,           // Pixels Per mm - Y
+	ppi,             // Pixels Per Inch
+	ppiX,            // Pixels Per Inch - X
+	ppiY,            // Pixels Per Inch - Y
+	pixelShape;      // Physical Shape
+```
 
 
