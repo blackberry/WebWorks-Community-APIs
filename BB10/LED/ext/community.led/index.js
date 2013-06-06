@@ -67,11 +67,11 @@ JNEXT.LedJNext = function ()
     };
 
     _self.init = function () {
-        if (!JNEXT.require("ledJnext")) {
+        if (!JNEXT.require("libLED")) {
             return false;
         }
 
-        _self._id = JNEXT.createObject("ledJnext.FlashLed");
+        _self._id = JNEXT.createObject("libLED.FlashLed");
 
         if (!_self._id || _self._id === "") {
             return false;
