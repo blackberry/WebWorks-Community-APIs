@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns="http://www.w3.org/ns/widgets"
         xmlns:rim="http://www.blackberry.com/ns/widgets"
-        version="1.0.0.5" id="helloworld" xml:lang="en">
+        version="1.0.0" id="helloworld" xml:lang="en">
   <author href="http://www.example.com/"
           rim:copyright="Copyright 1998-2012 My Corp">My Corp</author>
   <name>Hello LED</name>
