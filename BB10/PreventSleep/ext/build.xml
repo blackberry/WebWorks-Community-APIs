@@ -21,7 +21,7 @@
 <project default="build" basedir="." name="community.preventsleep">
 
 	<!-- Your WebWorks SDK directory -->
-	<property name="bbwp.native.dir" value="C:\Program Files\Research In Motion\BlackBerry 10 WebWorks SDK 1.0.4.7"/>
+	<property name="bbwp.native.dir" value="C:\Program Files\Research In Motion\BlackBerry 10 WebWorks SDK 1.0.4.11"/>
 	<!-- Destination directory for built extension -->
 	<property name="ext.dest.dir" value="${bbwp.native.dir}/Framework/ext/${ant.project.name}" />
 
