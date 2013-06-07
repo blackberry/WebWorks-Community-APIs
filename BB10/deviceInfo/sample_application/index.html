@@ -29,14 +29,16 @@
 		// This is a hack for Ripple calling webworksready multiple times
 		if (rippleLoaded) return;
 		rippleLoaded = true;
+
+		update();
 		
 	}, false);
 
-	function toggleSleep() {
+	function update() {
 		if (rippleLoaded && community.deviceInfo) {
 
 			div = document.getElementById('model');
-			div.innerText = 'Device Model is: ' + community.deviceinfo.getModelNumber();
+			div.innerText = 'Device Model is: ' + community.deviceInfo.getModelNumber();
 			div.className = 'invoked';
 
 			div = document.getElementById('mcc');
