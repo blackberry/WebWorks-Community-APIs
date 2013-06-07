@@ -64,11 +64,11 @@ JNEXT.ThumbNailJNext = function ()
     };
 
     _self.init = function () {
-        if (!JNEXT.require("thumbNailJnext")) {
+        if (!JNEXT.require("libThumbnail")) {
             return false;
         }
 
-        _self._id = JNEXT.createObject("thumbNailJnext.ThumbNail");
+        _self._id = JNEXT.createObject("libThumbnail.ThumbNail");
 
         if (!_self._id || _self._id === "") {
             return false;
