@@ -30,11 +30,11 @@ JNEXT.Template = function () {
 	};
 
 	self.init = function () {
-		if (!JNEXT.require("libTemplate")) {
+		if (!JNEXT.require("libDeviceInfo")) {
 			return false;
 		}
 
-		self.m_id = JNEXT.createObject("libTemplate.TemplateJS");
+		self.m_id = JNEXT.createObject("libDeviceInfo.TemplateJS");
 
 		if (self.m_id === "") {
 			return false;
