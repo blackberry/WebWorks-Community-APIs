@@ -23,36 +23,36 @@
 				<configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="" id="com.qnx.qcc.configuration.sharedLib.debug.2023735425" name="Device-Debug" parent="com.qnx.qcc.configuration.sharedLib.debug">
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.debug.2023735425." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.debug.317206966" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
-							<option id="com.qnx.qcc.option.cpu.909362535" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<option id="com.qnx.qcc.option.cpu.909362535" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1639221762" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/LED/Device-Debug}" id="com.qnx.nto.1214995408" keepEnvironmentInBuildfile="false" name="CDT Internal Builder.Debug" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/LED/Device-Debug}" id="com.qnx.nto.1214995408" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
 							<tool id="com.qnx.qcc.tool.compiler.821370396" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
-								<option id="com.qnx.qcc.option.compiler.shared.1756443891" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.optlevel.150506334" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
-								<option id="com.qnx.qcc.option.compile.debug.367047869" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.includePath.443160772" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+								<option id="com.qnx.qcc.option.compiler.shared.1756443891" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.optlevel.150506334" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.367047869" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.443160772" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.security.1713794274" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.defines.1852563918" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+								<option id="com.qnx.qcc.option.compiler.security.1713794274" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1852563918" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1081934227" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.972922986" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
-								<option id="com.qnx.qcc.option.assembler.debug.1616100851" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.assembler.debug.1616100851" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.1120600088" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.1123497148" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
-								<option id="com.qnx.qcc.option.linker.debug.1018189648" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.shared.1882737493" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraryPaths.1099332586" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+								<option id="com.qnx.qcc.option.linker.debug.1018189648" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.shared.1882737493" name="Shared (-shared)" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.1099332586" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
-								<option id="com.qnx.qcc.option.linker.security.643002642" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.security.643002642" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
 								<inputType id="com.qnx.qcc.inputType.linker.847004696" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -89,22 +89,22 @@
 				<configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="" id="com.qnx.qcc.configuration.sharedLib.release.1557859505" name="Device-Release" parent="com.qnx.qcc.configuration.sharedLib.release">
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.release.1557859505." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.release.121062438" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
-							<option id="com.qnx.qcc.option.cpu.241128500" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<option id="com.qnx.qcc.option.cpu.241128500" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.479738198" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/LED/Device-Release}" id="com.qnx.nto.1775574758" keepEnvironmentInBuildfile="false" name="CDT Internal Builder.Release" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/LED/Device-Release}" id="com.qnx.nto.1775574758" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
 							<tool id="com.qnx.qcc.tool.compiler.728951971" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
-								<option id="com.qnx.qcc.option.compiler.shared.1940915614" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.optlevel.1892420514" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.2" valueType="enumerated"/>
-								<option id="com.qnx.qcc.option.compiler.includePath.1562858037" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+								<option id="com.qnx.qcc.option.compiler.shared.1940915614" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.optlevel.1892420514" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.2" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1562858037" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.security.1849554724" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.defines.1598562668" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+								<option id="com.qnx.qcc.option.compiler.security.1849554724" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1598562668" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.qccoptions.188815497" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.qccoptions.188815497" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-frecord-gcc-switches"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.730195631" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -113,12 +113,12 @@
 								<inputType id="com.qnx.qcc.inputType.assembler.1766323133" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.1577895138" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
-								<option id="com.qnx.qcc.option.linker.shared.491638997" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraryPaths.22966765" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+								<option id="com.qnx.qcc.option.linker.shared.491638997" name="Shared (-shared)" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.22966765" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
-								<option id="com.qnx.qcc.option.linker.security.2065702151" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.security.2065702151" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
 								<inputType id="com.qnx.qcc.inputType.linker.39597712" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -155,38 +155,38 @@
 				<configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.profile,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="Build for Profiling" id="com.qnx.qcc.configuration.sharedLib.profile.1157539637" name="Device-Profile" parent="com.qnx.qcc.configuration.sharedLib.profile">
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.profile.1157539637." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.profile.1613148712" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
-							<option id="com.qnx.qcc.option.cpu.236125458" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<option id="com.qnx.qcc.option.cpu.236125458" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1137089300" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/LED/Device-Profile}" id="com.qnx.nto.1195088255" keepEnvironmentInBuildfile="false" name="CDT Internal Builder.Profile" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/LED/Device-Profile}" id="com.qnx.nto.1195088255" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
 							<tool id="com.qnx.qcc.tool.compiler.2070043259" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
-								<option id="com.qnx.qcc.option.compiler.shared.30335759" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.optlevel.132716856" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
-								<option id="com.qnx.qcc.option.compile.debug.742011269" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.profile2.1299338685" superClass="com.qnx.qcc.option.compiler.profile2" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.includePath.175097067" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+								<option id="com.qnx.qcc.option.compiler.shared.30335759" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.optlevel.132716856" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.742011269" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.profile2.1299338685" name="Build for Profiling (Function Instrumentation) (-finstrument-functions)" superClass="com.qnx.qcc.option.compiler.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.175097067" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.security.990835165" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.defines.1509690884" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+								<option id="com.qnx.qcc.option.compiler.security.990835165" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1509690884" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1912678593" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.638204732" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
-								<option id="com.qnx.qcc.option.assembler.debug.501463990" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.assembler.debug.501463990" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.253929555" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.896033180" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
-								<option id="com.qnx.qcc.option.linker.debug.912440135" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.profile2.1004415940" superClass="com.qnx.qcc.option.linker.profile2" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.shared.1703334759" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraryPaths.2056108537" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+								<option id="com.qnx.qcc.option.linker.debug.912440135" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.profile2.1004415940" name="Build for Profiling (Function Instrumentation) (-lprofiling)" superClass="com.qnx.qcc.option.linker.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.shared.1703334759" name="Shared (-shared)" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.2056108537" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
-								<option id="com.qnx.qcc.option.linker.security.878158235" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.security.878158235" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
 								<inputType id="com.qnx.qcc.inputType.linker.2128717671" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -223,38 +223,38 @@
 				<configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.coverage,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="Build with Code Coverage" id="com.qnx.qcc.configuration.sharedLib.coverage.1038542708" name="Device-Coverage" parent="com.qnx.qcc.configuration.sharedLib.coverage">
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.coverage.1038542708." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.coverage.1478451772" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
-							<option id="com.qnx.qcc.option.cpu.1958846610" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<option id="com.qnx.qcc.option.cpu.1958846610" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.2003424808" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/LED/Device-Coverage}" id="com.qnx.nto.1090981295" keepEnvironmentInBuildfile="false" name="CDT Internal Builder.Coverage" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/LED/Device-Coverage}" id="com.qnx.nto.1090981295" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
 							<tool id="com.qnx.qcc.tool.compiler.791986354" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
-								<option id="com.qnx.qcc.option.compiler.shared.360759058" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.optlevel.224153770" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
-								<option id="com.qnx.qcc.option.compile.debug.415527896" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.coverage.1499195892" superClass="com.qnx.qcc.option.compiler.coverage" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.includePath.1710623812" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+								<option id="com.qnx.qcc.option.compiler.shared.360759058" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.optlevel.224153770" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.415527896" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.coverage.1499195892" name="Build for Code Coverage (-Wc,-ftest-coverage -Wc,-fprofile-arcs)" superClass="com.qnx.qcc.option.compiler.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1710623812" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.security.2066085405" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.defines.1572621857" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+								<option id="com.qnx.qcc.option.compiler.security.2066085405" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1572621857" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1635244820" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.1016853472" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
-								<option id="com.qnx.qcc.option.assembler.debug.1628687172" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.assembler.debug.1628687172" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.280600942" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.1221198784" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
-								<option id="com.qnx.qcc.option.linker.debug.527447092" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.coverage.1490839515" superClass="com.qnx.qcc.option.linker.coverage" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.shared.597404889" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraryPaths.178942323" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+								<option id="com.qnx.qcc.option.linker.debug.527447092" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.coverage.1490839515" name="Build for Code Coverage (-ftest-coverage -fprofile-arcs)" superClass="com.qnx.qcc.option.linker.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.shared.597404889" name="Shared (-shared)" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.178942323" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
-								<option id="com.qnx.qcc.option.linker.security.1872917133" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.security.1872917133" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
 								<inputType id="com.qnx.qcc.inputType.linker.36993109" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -292,34 +292,34 @@
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.debug.737288105." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.debug.531841846" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1579861285" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/LED/Simulator-Debug}" id="com.qnx.nto.406440510" keepEnvironmentInBuildfile="false" name="CDT Internal Builder.Debug" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/LED/Simulator-Debug}" id="com.qnx.nto.406440510" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
 							<tool id="com.qnx.qcc.tool.compiler.1712007054" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
-								<option id="com.qnx.qcc.option.compiler.shared.2139160510" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.optlevel.1156673323" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
-								<option id="com.qnx.qcc.option.compile.debug.998734166" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.includePath.1014043659" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+								<option id="com.qnx.qcc.option.compiler.shared.2139160510" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.optlevel.1156673323" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.998734166" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1014043659" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.security.315235823" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.defines.2056656135" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+								<option id="com.qnx.qcc.option.compiler.security.315235823" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.2056656135" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1288120734" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.1694832532" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
-								<option id="com.qnx.qcc.option.assembler.debug.352337870" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.assembler.debug.352337870" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.1320569171" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.1884775061" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
-								<option id="com.qnx.qcc.option.linker.debug.1103286921" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.shared.1386715030" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraryPaths.2075389820" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+								<option id="com.qnx.qcc.option.linker.debug.1103286921" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.shared.1386715030" name="Shared (-shared)" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.2075389820" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
-								<option id="com.qnx.qcc.option.linker.security.768237283" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.security.768237283" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
 								<inputType id="com.qnx.qcc.inputType.linker.486914100" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -357,36 +357,36 @@
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.profile.1543068571." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.profile.208039592" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1498915517" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/LED/Simulator-Profile}" id="com.qnx.nto.1688761875" keepEnvironmentInBuildfile="false" name="CDT Internal Builder.Profile" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/LED/Simulator-Profile}" id="com.qnx.nto.1688761875" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
 							<tool id="com.qnx.qcc.tool.compiler.1093730933" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
-								<option id="com.qnx.qcc.option.compiler.shared.2139436825" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.optlevel.1161108915" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
-								<option id="com.qnx.qcc.option.compile.debug.347163685" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.profile2.654778686" superClass="com.qnx.qcc.option.compiler.profile2" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.includePath.564009698" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+								<option id="com.qnx.qcc.option.compiler.shared.2139436825" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.optlevel.1161108915" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.347163685" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.profile2.654778686" name="Build for Profiling (Function Instrumentation) (-finstrument-functions)" superClass="com.qnx.qcc.option.compiler.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.564009698" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.security.311594051" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.defines.39285823" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+								<option id="com.qnx.qcc.option.compiler.security.311594051" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.39285823" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.335082549" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.233155867" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
-								<option id="com.qnx.qcc.option.assembler.debug.1848258614" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.assembler.debug.1848258614" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.3097584" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.586895621" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
-								<option id="com.qnx.qcc.option.linker.debug.1703391280" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.profile2.219739926" superClass="com.qnx.qcc.option.linker.profile2" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.shared.2126132365" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraryPaths.1815897225" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+								<option id="com.qnx.qcc.option.linker.debug.1703391280" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.profile2.219739926" name="Build for Profiling (Function Instrumentation) (-lprofiling)" superClass="com.qnx.qcc.option.linker.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.shared.2126132365" name="Shared (-shared)" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.1815897225" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
-								<option id="com.qnx.qcc.option.linker.security.593215741" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.security.593215741" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
 								<inputType id="com.qnx.qcc.inputType.linker.2033400441" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -424,36 +424,36 @@
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.coverage.1239140411." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.coverage.1641966954" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1741863178" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/LED/Simulator-Coverage}" id="com.qnx.nto.603924383" keepEnvironmentInBuildfile="false" name="CDT Internal Builder.Coverage" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/LED/Simulator-Coverage}" id="com.qnx.nto.603924383" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
 							<tool id="com.qnx.qcc.tool.compiler.1765568862" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
-								<option id="com.qnx.qcc.option.compiler.shared.1397285509" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.optlevel.560717691" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
-								<option id="com.qnx.qcc.option.compile.debug.1875073940" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.coverage.1491407592" superClass="com.qnx.qcc.option.compiler.coverage" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.includePath.2025732283" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+								<option id="com.qnx.qcc.option.compiler.shared.1397285509" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.optlevel.560717691" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.1875073940" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.coverage.1491407592" name="Build for Code Coverage (-Wc,-ftest-coverage -Wc,-fprofile-arcs)" superClass="com.qnx.qcc.option.compiler.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.2025732283" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.security.1164422570" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.compiler.defines.1842588911" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+								<option id="com.qnx.qcc.option.compiler.security.1164422570" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1842588911" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.423089037" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.1305452946" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
-								<option id="com.qnx.qcc.option.assembler.debug.490012843" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.assembler.debug.490012843" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.288562653" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.337243686" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
-								<option id="com.qnx.qcc.option.linker.debug.606909352" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.coverage.1912248335" superClass="com.qnx.qcc.option.linker.coverage" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.shared.1395548874" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraryPaths.1193340689" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+								<option id="com.qnx.qcc.option.linker.debug.606909352" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.coverage.1912248335" name="Build for Code Coverage (-ftest-coverage -fprofile-arcs)" superClass="com.qnx.qcc.option.linker.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.shared.1395548874" name="Shared (-shared)" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.1193340689" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
-								<option id="com.qnx.qcc.option.linker.security.1603367833" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.security.1603367833" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
 								<inputType id="com.qnx.qcc.inputType.linker.1837271275" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -473,6 +473,9 @@
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="LED.null.143808571" name="LED"/>
+	</storageModule>
+	<storageModule moduleId="refreshScope" versionNumber="1">
+		<resource resourceType="PROJECT" workspacePath="/LED"/>
 	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
@@ -509,14 +512,15 @@
 		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.coverage.1038542708">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.profile.1543068571">
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.release.608922875">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.release.608922875">
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.profile.1543068571">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.release.1557859505">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>
