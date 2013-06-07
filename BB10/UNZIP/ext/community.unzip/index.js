@@ -54,11 +54,11 @@ JNEXT.UnzipJNext = function ()
     };
 
     _self.init = function () {
-        if (!JNEXT.require("unzipJnext")) {
+        if (!JNEXT.require("libUnzip")) {
             return false;
         }
 
-        _self._id = JNEXT.createObject("unzipJnext.Unzip");
+        _self._id = JNEXT.createObject("libUnzip.Unzip");
 
         if (!_self._id || _self._id === "") {
             return false;
