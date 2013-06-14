@@ -34,7 +34,6 @@
 
 	<rim:permissions>
 		<rim:permit>use_camera</rim:permit>
-		<rim:permit>access_shared</rim:permit>
 	</rim:permissions>
 	<license href="http://www.apache.org/licenses/LICENSE-2.0">
 		Licensed under the Apache License, Version 2.0 (the "License");

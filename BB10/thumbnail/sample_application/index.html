@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title>Hello ThumbNail</title>
+   <script src="local:///chrome/webworks.js"></script>
+   <script>
+function invokeCameraCard() {
+      var mode = blackberry.invoke.card.CAMERA_MODE_PHOTO;
+      blackberry.invoke.card.invokeCamera(mode, function (path) {
+			
+             var image = community.thumbnail.createThumbNail(path, {width:480});
+			 document.getElementById("image").innerHTML = "";
+			 document.getElementById("image").appendChild(image);
+         },
+         function (reason) {
+             alert("cancelled " + reason);
+         },
+         function (error) {
+             if (error) {
+                 alert("invoke error "+ error);
+              } else {
+                 console.log("invoke success " );
+              }
+      });
+ }
+
+</script>
+<style>
+#take_picture{
+	width:100%;
+	height:40px;
+}
+</style>
+</head>
+<body>
+  	<button id ="take_picture">Take Picture</button>
+	<div id="image"></div>
+</body>
+<script>
+document.getElementById("take_picture").onclick = function(){
+	invokeCameraCard();
+};
+</script>
+
+</html>
