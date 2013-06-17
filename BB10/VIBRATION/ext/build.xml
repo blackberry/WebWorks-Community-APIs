@@ -18,7 +18,7 @@
  -->
  
 <!-- Set name to the Extension name as in manifest.json -->
-<project default="build" basedir="." name="community.preventsleep">
+<project default="build" basedir="." name="community.vibration">
 
 	<!-- Your WebWorks SDK directory -->
 	<property name="bbwp.native.dir" value="C:\Program Files\Research In Motion\BlackBerry 10 WebWorks SDK 1.0.4.11"/>

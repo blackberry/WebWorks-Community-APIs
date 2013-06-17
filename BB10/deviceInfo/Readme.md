@@ -12,7 +12,7 @@ This extension provides additional APIs to identify the device.
 
 ## Set up
 
-Copy the community.deviceInfo into the Framework\ext folder of the WebWorks SDK
+Copy the ext\community.deviceInfo folder into the Framework\ext folder of the WebWorks SDK
 
 ## Use
 

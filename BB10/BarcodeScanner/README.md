@@ -33,14 +33,13 @@ BlackBerry Q10 10.1.0.1020
 ![Screenshot](screenshot4.png)
 
 ## Including the feature in your application
-This feature depends on the blackberry.io feature as well, so both must be included in your applications config.xml file. Also, permission for the camera and shared filesystem is required.
+This feature depends on the blackberry.io feature as well, so both must be included in your applications config.xml file. Also, permission for the camera is required.
 ```xml
 <feature id="blackberry.io" />
 <feature id="community.barcodescanner" />
 
 <rim:permissions>
 	<rim:permit>use_camera</rim:permit>
-	<rim:permit>access_shared</rim:permit>
 </rim:permissions>
 ```
 
