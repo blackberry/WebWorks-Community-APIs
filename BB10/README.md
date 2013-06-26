@@ -33,19 +33,32 @@ Start with the [Template](https://github.com/blackberry/WebWorks-Community-APIs/
 
 	Result is a javascript object with the following properties
 
-```javascript
+	```javascript
 
-	pixelWidth,      // Pixel Size - width
-	pixelHeight,     // Pixel Size - height
-	physicalWidth,   // Physical Size mm - width
-	physicalHeight,  // Physical Size mm - height
-	ppmm,            // Pixels Per mm
-	ppmmX,           // Pixels Per mm - X
-	ppmmY,           // Pixels Per mm - Y
-	ppi,             // Pixels Per Inch
-	ppiX,            // Pixels Per Inch - X
-	ppiY,            // Pixels Per Inch - Y
-	pixelShape;      // Physical Shape
-```
+		pixelWidth,      // Pixel Size - width
+		pixelHeight,     // Pixel Size - height
+		physicalWidth,   // Physical Size mm - width
+		physicalHeight,  // Physical Size mm - height
+		ppmm,            // Pixels Per mm
+		ppmmX,           // Pixels Per mm - X
+		ppmmY,           // Pixels Per mm - Y
+		ppi,             // Pixels Per Inch
+		ppiX,            // Pixels Per Inch - X
+		ppiY,            // Pixels Per Inch - Y
+		pixelShape;      // Physical Shape
+	```
+
+9. [deviceInfo](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/deviceInfo)
+	1. getModelNumber() - returns model number such as 'Z10', 'Q10', 'Q5'
+	2. getMCC() - returns Mobile Country Code
+	3. getMNC() - returns Mobile Network Code, that identifies the carrier
+
+10. [gseCrypto](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/gseCrypto)
+	1. hash( params ) - Hash using any SHA or AES CBC algorithm
+	2. generateKey( params ) - generate a key using AES CBC
+	3. encrypt( params ) - encrypt the input using AES CBC
+	4. decrypt( params ) - decrypt using AES CBC
+	5. random( size: int ) - return a random data string of the given length
+	
 
 
