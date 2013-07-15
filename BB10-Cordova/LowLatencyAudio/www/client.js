@@ -30,6 +30,9 @@ module.exports = {
     stop: function (data, success, fail) {
         exec(success, fail, service, "stop", { data: data });
     },
+    getDuration: function (data, success, fail) {
+        exec(success, fail, service, "getDuration", { data: data });
+    },
     loop: function (data, success, fail) {
         exec(success, fail, service, "loop", { data: data });
     }

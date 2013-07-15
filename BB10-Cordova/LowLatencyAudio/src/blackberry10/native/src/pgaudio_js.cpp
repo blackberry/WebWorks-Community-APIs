@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <string>
 #include <unistd.h>
+#include <sstream>
 
 using namespace std;
 
@@ -178,6 +179,24 @@ string PGaudio::stop(QString fileName)
     return "Stopped " + fileName.toStdString();
 }
 
+// Function to get Duration. Takes in sound file name.
+float PGaudio::getDuration(QString fileName)
+{
+
+    ALuint bufferID = m_soundBuffersHash[fileName];
+    QList<ALuint> sources = m_sourceIndexHash.values(fileName);
+    ALuint source = sources.at(sources.size() - 1);
+
+    ALint bufferSize, frequency, bitsPerSample, channels;
+    alGetBufferi(bufferID, AL_SIZE, &bufferSize);
+    alGetBufferi(bufferID, AL_FREQUENCY, &frequency);
+    alGetBufferi(bufferID, AL_CHANNELS, &channels);    
+    alGetBufferi(bufferID, AL_BITS, &bitsPerSample);   
+
+    float result = ((double)bufferSize) / (frequency * channels * (bitsPerSample / 8));
+    return result;
+}
+
 // Function to play single sound. Takes in one parameter, the sound file name.
 string PGaudio::play(QString fileName)
 {
@@ -298,6 +317,15 @@ string PGaudio::InvokeMethod(const string& command)
     // Stop the source.
     if (strCommand == "stop")
         return stop(fileName);
+
+    // Get duration
+    if (strCommand == "getDuration"){
+        float result = getDuration(fileName);
+        ostringstream buffer;
+        buffer << result;
+        string str = buffer.str();
+        return str;
+    }
 
     return "Command not found, choose either: load, unload, play ,loop, or stop";
 }
