@@ -1,4 +1,6 @@
-﻿PGLowLatencyAudio Plugin for BlackBerry10, using Cordova. Plays audio .wav files using openAL, ALUT, Qdir, and QtCore libraries.
+﻿## PGLowLatencyAudio Plugin for BlackBerry10, using Cordova. 
+
+Plays audio .wav files using openAL, ALUT, Qdir, and QtCore libraries.
 
 The plugin is currently under the name of PGLowLatencyAudio, and can be installed using the following command in your Cordova project location:
 
@@ -18,17 +20,22 @@ To start off, in the directory PGLowLatencyAudio/www contains the API. Every fun
     stop: function (data, success, fail) {
         exec(success, fail, service, "stop", { data: data });
     },
+    getDuration: function (data, success, fail) {
+        exec(success, fail, service, "getDuration", { data: data });
+    },
     loop: function (data, success, fail) {
         exec(success, fail, service, "loop", { data: data });
     }
 
 Note: In the exampled below we use the success call back to display messages for debugging purposes. To remove these messages, simply remove 'alert(echoValue)' from the function call, however if you do run into troubles, these call backs should provide useful information to debug. If you wanted you could include a fail function to each of these, for example your fail function could be function(){alert("FAIL")};
 
-Examples: If in our Cordova Applications www application folder, we have the path assets/sounds, to our sound location we can do the following:
+## Examples: 
+If in our Cordova Applications www application folder, we have the path assets/sounds, to our sound location we can do the following:
 
 ----------------------------------------------------------------------------------
 
-preloadAudio – preloads an audio file into a buffer so it can be played automatically without loading. Takes in three parameters, the file name, the path to the sounds, and how many unique voices it can have. Voices are how many simultaneous sounds that can be played at once.
+### preloadAudio
+Preloads an audio file into a buffer so it can be played automatically without loading. Takes in three parameters, the file name, the path to the sounds, and how many unique voices it can have. Voices are how many simultaneous sounds that can be played at once.
 
 Example:
 
@@ -38,7 +45,8 @@ Example:
 
 ----------------------------------------------------------------------------------
 
-unload – Unloads an audio file from the current buffer it holds up. Used to free and allocate space in openAL. Takes in one parameter, file name.
+### unload
+Unloads an audio file from the current buffer it holds up. Used to free and allocate space in openAL. Takes in one parameter, file name.
 
 
 
@@ -53,7 +61,8 @@ Example:
 
 ----------------------------------------------------------------------------------
 
-play – Plays an audio file using openAL. Takes in one parameter, file name.
+### play
+Plays an audio file using openAL. Takes in one parameter, file name.
 
 Example:
  
@@ -63,17 +72,34 @@ Example:
 
 ----------------------------------------------------------------------------------
 
-stop – Stops an audio file from playing or looping. Takes one parameter, file name.
+### stop
+Stops an audio file from playing or looping. Takes one parameter, file name.
 
 Example: 
 
 	PGLowLatencyAudio.stop("bounce.wav", function(echoValue) {
 		alert(echoValue); 
 	});
+----------------------------------------------------------------------------------
+
+### getDuration
+Get the duration of a file. Takes one parameter, file name.
+
+Example: 
+
+	PGLowLatencyAudio.stop("bounce.wav", function(duration) {
+		if (duration > 6.0) {
+			alert(“Greater than 6”);
+		} else {
+			alert(“Less than 6”);
+		} 
+	});
 
 ----------------------------------------------------------------------------------
 
-loop – Loops an audio file indefinitely until either unloaded or stopped. Takes in one parameter, file name.
+### loop
+
+Loops an audio file indefinitely until either unloaded or stopped. Takes in one parameter, file name.
 
 Example: 
 
