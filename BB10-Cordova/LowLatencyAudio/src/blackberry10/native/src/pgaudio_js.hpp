@@ -33,6 +33,7 @@ public:
     virtual std::string preload(QString path, QString name, int voices);
     virtual std::string unload(QString name);
     virtual std::string stop(QString name);
+    virtual float getDuration(QString name);
     virtual std::string play(QString filename);
     virtual std::string loop(QString filename);
     virtual bool CanDelete();

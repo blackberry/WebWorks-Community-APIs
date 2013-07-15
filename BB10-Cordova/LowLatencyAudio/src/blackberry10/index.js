@@ -43,6 +43,12 @@ module.exports = {
             response = pgaudio.getInstance().stop(data);
         result.ok(response, false);
     },
+    getDuration: function (success, fail, args, env) {
+        var result = new PluginResult(args, env),
+            data = JSON.parse(decodeURIComponent(args.data)),
+            response = pgaudio.getInstance().getDuration(data);
+        result.ok(response, false);
+    },
     loop: function (success, fail, args, env) {
         var result = new PluginResult(args, env),
             data = JSON.parse(decodeURIComponent(args.data)),
@@ -75,6 +81,10 @@ JNEXT.PGaudio = function () {
     self.stop = function (file) {
         //This is how Javascript calls into native
         return JNEXT.invoke(self.m_id, "stop " + file);
+    };
+    self.getDuration = function (file) {
+        //This is how Javascript calls into native
+        return JNEXT.invoke(self.m_id, "getDuration " + file);
     };
     self.loop = function (file) {
         //This is how Javascript calls into native
