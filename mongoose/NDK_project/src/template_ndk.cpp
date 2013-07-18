@@ -22,8 +22,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/param.h>
-#include <json/reader.h>
-#include <json/writer.h>
+#include "json/reader.h"
+#include "json/writer.h"
 #include <pthread.h>
 #include "template_ndk.hpp"
 #include "template_js.hpp"
@@ -68,12 +68,16 @@ std::string TemplateNDK::MGstart(const std::string& arg) {
 	} else {
 
  	if (parse) {
+ 		int xops = 0;
+
   		if(!root.isMember("document_root")) {
- 		    root["document_root"] = ptemp;
+   		  options[xops++] = sdup("document_root");
+   		  options[xops++] = sdup(ptemp);
  		}
 
   		if(!root.isMember("enable_directory_listing")) {
- 		    root["enable_directory_listing"] = "no";
+  			options[xops++] = sdup("enable_directory_listing");
+     		options[xops++] = sdup("no");
  		}
 
  		Json::Value::Members memberNames = root.getMemberNames();
@@ -82,8 +86,8 @@ std::string TemplateNDK::MGstart(const std::string& arg) {
 
   		for(unsigned int i=0; i<memberNames.size(); i++) {
  		  std::string memberName = memberNames[i];
- 		  options[i++] = sdup(memberName.c_str());
- 		  options[i] = urldecode(root[memberName].asCString());
+ 		  options[xops++] = sdup(memberName.c_str());
+ 		  options[xops++] = urldecode(root[memberName].asCString());
  		  }
 
  		ecount = start_mongoose(options);
