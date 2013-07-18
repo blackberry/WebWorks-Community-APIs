@@ -58,7 +58,9 @@ std::string TemplateNDK::MGstart(const std::string& arg) {
 
 	bool parse = reader.parse(arg, root);
 
-	options[0] = NULL;
+	for(unsigned int i=0; i<MAX_OPTIONS; i++) {
+		options[i] = NULL;
+	}
 
 	if(is_running) {
 		rval["status"] = false;
@@ -70,15 +72,18 @@ std::string TemplateNDK::MGstart(const std::string& arg) {
  		    root["document_root"] = ptemp;
  		}
 
+  		if(!root.isMember("enable_directory_listing")) {
+ 		    root["enable_directory_listing"] = "no";
+ 		}
+
  		Json::Value::Members memberNames = root.getMemberNames();
  		int ecount = 0;
 
 
-  		for(unsigned int i=0; i<memberNames.size(); ++i) {
+  		for(unsigned int i=0; i<memberNames.size(); i++) {
  		  std::string memberName = memberNames[i];
  		  options[i++] = sdup(memberName.c_str());
- 		  options[i++] = urldecode(root[memberName].asCString());
- 		  options[i] = NULL;
+ 		  options[i] = urldecode(root[memberName].asCString());
  		  }
 
  		ecount = start_mongoose(options);

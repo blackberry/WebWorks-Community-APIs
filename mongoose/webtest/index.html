@@ -67,10 +67,10 @@ document.addEventListener('webworksready', function(e) {
 		community.mongoose.stop(); // Just in case we're running in the web debugger
 		
 		// document_root = home will be our dir/data so chop off /data for demo so you can browse most places
-		res = JSON.parse(community.mongoose.start( { document_root : home.substr(0, home.length - 5)  } ));
+		res = JSON.parse(community.mongoose.start( { document_root : home.substr(0, home.length - 5) , listening_ports: 8090 } ));
 		if(res.status) {
 			var frame = document.getElementById('testframe');
-			frame.src = 'http://localhost:8080/';
+			frame.src = 'http://localhost:8090/';
 			frame.width = window.innerWidth;
 			frame.height = window.innerHeight;
 			}
