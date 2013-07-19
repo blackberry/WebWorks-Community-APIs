@@ -32,7 +32,10 @@
 	<access subdomains="true" uri="*"/>
 	
 	<feature id="blackberry.io" /> 
-	<rim:permit>access_shared</rim:permit> 
+	
+	<rim:permissions>
+		<rim:permit>access_shared</rim:permit> 
+	</rim:permissions>
 	
 	<license href="http://www.apache.org/licenses/LICENSE-2.0">
 		Licensed under the Apache License, Version 2.0 (the "License");

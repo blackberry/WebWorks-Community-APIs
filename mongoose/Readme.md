@@ -28,7 +28,7 @@ BlackBerry 10 Dev Alpha C 10.2.0.341
 ## Including the feature in your application
 Whenever you use the below feature id in any of your WebWorks applications this extension will be loaded for use.
 ```xml
-<feature id="community" required="true" version="1.0.0.0" />
+<feature id="community.mongoose" required="true" version="1.0.0.0" />
 ```
 
 ## The Extension API
