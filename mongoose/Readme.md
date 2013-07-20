@@ -23,8 +23,8 @@ Mongoose - [valenok] (https://github.com/valenok)
 ## Building and Testing the Sample
 
 1. Deploy the extension into your BB10 WebWorks SDK by copying the community folder from the ext folder to the Framework/ext folder in your WebWorks SDK, or run the Ant build script in the /ext folder to do so.
-2. Package the sample in the sdtest folder. Use the [Ant Build Script](https://github.com/blackberry/BB10-WebWorks-Community-Samples/tree/master/Ant-Build-Script), or you can do this with the WebWorks packager command:
-	__bbwp__ sdtest -g _signingpassword_
+2. Package the sample in the webtest folder. Use the [Ant Build Script](https://github.com/blackberry/BB10-WebWorks-Community-Samples/tree/master/Ant-Build-Script), or you can do this with the WebWorks packager command:
+	__bbwp__ webtest -g _signingpassword_
 3. Load it on your phone using the Ant Build Script, or with the _blackberry-deploy_ command found in the dependencies/tools folder of your WebWorks SDK.
 
 ## Including the feature in your application
