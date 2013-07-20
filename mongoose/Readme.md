@@ -14,9 +14,11 @@ BlackBerry Z10 10.1.0.2312
 
 BlackBerry 10 Dev Alpha C 10.2.0.341
 
-** Author **
+** Author(s) **
 
-[Peardox] (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/325249)
+Extension - [Peardox] (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/325249)
+
+Mongoose - [valenok] (https://github.com/valenok)
 
 ## Building and Testing the Sample
 
@@ -56,6 +58,8 @@ community.mongoose.stop();  // Stop the server
 
 ```
 
+```
+
 ## Options passed to community.mongoose.start();
 
 "cgi_pattern"               "**.cgi$|**.pl$|**.php$"
@@ -82,6 +86,10 @@ community.mongoose.stop();  // Stop the server
 "url_rewrite_patterns"      NULL
 "hide_files_patterns"       NULL
 "request_timeout_ms"        "30000"
+
+Note that the extension overrides the default for document_root and enable_directory_listing with $HOME/data and no respectively
+
+```
 
 Detailed descriptions of what all options do is available at ...
 
