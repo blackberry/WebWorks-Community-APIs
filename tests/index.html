@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>WebWorks Spec</title>
+  <link rel="stylesheet" type="text/css" href="lib/jasmine/lib/jasmine-core/jasmine.css">
+  <script type="text/javascript" src="lib/jasmine/lib/jasmine-core/jasmine.js"></script>
+  <script type="text/javascript" src="lib/jasmine/lib/jasmine-core/jasmine-html.js"></script>
+  <script type="text/javascript" src="lib/mock_environment.js"></script>
+
+  <!-- include plugin files here ... HACK: must load ns then disp -->
+  <script type="text/javascript" src="../Tablet/UploadDownload/js/common/filetransfer_ns.js"></script>
+  <script type="text/javascript" src="../Tablet/UploadDownload/js/common/filetransfer_dispatcher.js"></script>
+
+  <!-- include spec files here... -->
+  <script type="text/javascript" src="spec/mock_environment.js"></script>
+  <script type="text/javascript" src="../Tablet/UploadDownload/spec/filetransfer.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+  jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+  jasmine.getEnv().execute();
+</script>
+
+</body>
+</html>

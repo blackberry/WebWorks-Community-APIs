@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library>
+	<extension id="blackberry.system.locale">
+		<entryClass>blackberry.system.locale.Locale</entryClass>
+	</extension>
+  
+	<platforms>
+		<platform value="AIR">
+			<target version="default" config="AIR_XHR" />
+		</platform>
+	</platforms>
+
+	<configurations>
+		<configuration name="AIR_XHR" version="1.0" comment="XHR architecture/Air implementation">			
+			<src type="text/javascript" path="js/locale_dispatcher.js" comment="Locale JS XHR dispatcher" />
+			<src type="text/javascript" path="js/locale_ns.js" comment="Locale JS interface" />			
+			<src type="text/actionscript" path="src" comment="ActionScript implementation" />
+		</configuration>
+	</configurations>
+  
+	<features>
+		<feature id="blackberry.system.locale" version="1.0.0" />
+	</features>
+</library>

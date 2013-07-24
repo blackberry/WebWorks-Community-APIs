@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+    version="1.0.9">
+    <name>Prevent Sleep Demo</name>
+    <content src="index.html"/>
+    <access uri="*" />
+    <feature id="webworks.system.display" required="true" version="1.0.0.0"/>
+    <feature id="blackberry.io.dir" />
+</widget>
