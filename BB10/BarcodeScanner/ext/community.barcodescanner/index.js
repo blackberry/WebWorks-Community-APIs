@@ -28,5 +28,11 @@ module.exports = {
 	stopRead: function (success, fail) {
 		barcodescanner.getInstance().stopRead();
 		success();
+	},
+	add: function (success, fail) {
+		console.log('Frame Available event listening');
+	},
+	remove: function (success, fail) {
+		console.log('End listening to frames');
 	}
 };
