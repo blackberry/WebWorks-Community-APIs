@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+ * Copyright 2013 Research In Motion Limited.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Mongoose Extension Test</title>
+<style>
+body {
+  color: #900;
+  font-weight: bold;
+  font-size: 38px;
+  text-align: center;
+}
+
+input {
+  color: #900;
+  font-weight: bold;
+  font-size: 38px;
+}
+
+</style>
+
+<script type="text/javascript" src="local:///chrome/webworks.js"></script>
+<script type="text/javascript">
+var dpr = false;
+var rippleLoaded = false;
+var bfs = false;
+var bsfs = false;
+
+if(typeof window.devicePixelRatio != 'undefined') // Does device support devicePixelRatio?
+	{
+	dpr = window.devicePixelRatio;
+	}
+
+var meta = document.createElement("meta");
+meta.setAttribute('name','viewport');
+if(dpr) // Set up the right meta
+	{
+	meta.setAttribute('content','initial-scale='+ (1/window.devicePixelRatio) + ',user-scalable=no');
+	document.getElementsByTagName('head')[0].appendChild(meta); // Inject meta
+	}
+
+document.addEventListener('webworksready', function(e) {
+	// This is a hack for Ripple calling webworksready multiple times
+	if (rippleLoaded) return;
+	rippleLoaded = true;
+	var res = false;
+	
+	blackberry.io.sandbox = false;
+
+	if (community.mongoose) {
+		var home = blackberry.io.home;
+		community.mongoose.stop(); // Just in case we're running in the web debugger
+		
+		// document_root = home will be our dir/data so chop off /data for demo so you can browse most places
+		res = JSON.parse(community.mongoose.start( { document_root : home.substr(0, home.length - 5) , listening_ports: 8090, enable_directory_listing: 'yes' } ));
+		if(res.status) {
+			var frame = document.getElementById('testframe');
+			frame.src = 'http://localhost:8090/';
+			frame.width = window.innerWidth;
+			frame.height = window.innerHeight;
+			}
+		}
+	});
+	
+	
+	
+</script>  
+
+</head>
+<body style="margin: auto; height: 100%;">
+
+<iframe id="testframe" />
+
+</body>
+</html>
