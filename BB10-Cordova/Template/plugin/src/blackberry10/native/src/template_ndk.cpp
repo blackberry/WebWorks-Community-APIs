@@ -59,37 +59,8 @@ void TemplateNDK::setTemplateProperty(const std::string& inputString) {
 	templateProperty = (int) strtoul(inputString.c_str(), NULL, 10);
 }
 
-// Asynchronous call
-void TemplateNDK::templateTestAsync() {
-	templateCallback();
-}
-
-// Asynchronous call returning JSON data
-void TemplateNDK::templateTestAsyncJSON() {
-	templateCallbackJSON();
-}
-
-// Asynchronous callback
-void TemplateNDK::templateCallback() {
-	std::string event = "community.templateExt.aSyncCallback";
-	m_pParent->NotifyEvent(event);
-}
-
-// Asynchronous callback with JSON data object
-void TemplateNDK::templateCallbackJSON() {
-	Json::FastWriter writer;
-	Json::Value root;
-	root["templateJSONString"] = "JSON String";
-	root["templateJSONInt"] = 85;
-
-	std::string event = "community.templateExt.aSyncJSONCallback";
-	m_pParent->NotifyEvent(event + " " + writer.write(root));
-}
-
 // Asynchronous callback with JSON data input and output
-void TemplateNDK::templateCallbackJSONio(const std::string& inputString) {
-	std::string event = "community.templateExt.aSyncJSONCallbackResult";
-
+void TemplateNDK::templateTestAsync(const std::string& callbackId, const std::string& inputString) {
 	// Parse the arg string as JSON
 	Json::FastWriter writer;
 	Json::Reader reader;
@@ -99,10 +70,10 @@ void TemplateNDK::templateCallbackJSONio(const std::string& inputString) {
 	if (!parse) {
 		Json::Value error;
 		error["result"] = "Cannot parse JSON object";
-		m_pParent->NotifyEvent(event + " " + writer.write(error));
+		m_pParent->NotifyEvent(callbackId + " " + writer.write(error));
 	} else {
 		root["result"] = root["value1"].asInt() + root["value2"].asInt();
-		m_pParent->NotifyEvent(event + " " + writer.write(root));
+		m_pParent->NotifyEvent(callbackId + " " + writer.write(root));
 	}
 }
 
@@ -116,15 +87,15 @@ void* TemplateThread(void* parent) {
 
 	// Loop calls the callback function and continues until stop is set
 	while (!pParent->isThreadHalt()) {
-		pParent->templateThreadCallback();
 		sleep(1);
+		pParent->templateThreadCallback();
 	}
 
 	return NULL;
 }
 
 // Starts the thread and returns a message on status
-std::string TemplateNDK::templateStartThread() {
+std::string TemplateNDK::templateStartThread(const std::string& callbackId) {
 	if (!m_thread) {
 		int rc;
 	    rc = pthread_mutex_lock(&mutex);
@@ -139,6 +110,7 @@ std::string TemplateNDK::templateStartThread() {
 		pthread_create(&m_thread, &thread_attr, TemplateThread,
 				static_cast<void *>(this));
 		pthread_attr_destroy(&thread_attr);
+		threadCallbackId = callbackId;
 		return "Thread Started";
 	} else {
 		return "Thread Running";
@@ -169,11 +141,10 @@ std::string TemplateNDK::templateStopThread() {
 
 // The callback method that sends an event through JNEXT
 void TemplateNDK::templateThreadCallback() {
-	std::string event = "community.templateExt.jsonThreadCallback";
 	Json::FastWriter writer;
 	Json::Value root;
 	root["threadCount"] = templateThreadCount++;
-	m_pParent->NotifyEvent(event + " " + writer.write(root));
+	m_pParent->NotifyEvent(threadCallbackId + " " + writer.write(root));
 }
 
 // getter for the stop value

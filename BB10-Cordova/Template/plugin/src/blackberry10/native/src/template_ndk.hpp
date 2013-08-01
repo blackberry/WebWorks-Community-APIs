@@ -38,17 +38,9 @@ public:
 
 	void setTemplateProperty(const std::string& inputString);
 
-	void templateTestAsync();
+	void templateTestAsync(const std::string& callbackId, const std::string& inputString);
 
-	void templateTestAsyncJSON();
-
-	void templateCallback();
-
-	void templateCallbackJSON();
-
-	void templateCallbackJSONio(const std::string& inputString);
-
-	std::string templateStartThread();
+	std::string templateStartThread(const std::string& callbackId);
 
 	std::string templateStopThread();
 
@@ -61,6 +53,7 @@ private:
 	int templateProperty;
 	int templateThreadCount;
 	bool threadHalt;
+	std::string threadCallbackId;
 	pthread_t m_thread;
 	pthread_cond_t cond;
 	pthread_mutex_t mutex;

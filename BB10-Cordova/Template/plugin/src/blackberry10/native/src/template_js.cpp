@@ -72,10 +72,12 @@ bool TemplateJS::CanDelete() {
  * called on the JavaScript side with this native objects id.
  */
 string TemplateJS::InvokeMethod(const string& command) {
-	// command appears with parameters following after a space
-	int index = command.find_first_of(" ");
-	std::string strCommand = command.substr(0, index);
-	std::string arg = command.substr(index + 1, command.length());
+	// format must be: "command callbackId params"
+	size_t commandIndex = command.find_first_of(" ");
+	std::string strCommand = command.substr(0, commandIndex);
+	size_t callbackIndex = command.find_first_of(" ", commandIndex + 1);
+	std::string callbackId = command.substr(commandIndex + 1, callbackIndex - commandIndex - 1);
+	std::string arg = command.substr(callbackIndex + 1, command.length());
 
 	// based on the command given, run the appropriate method in template_ndk.cpp
 	if (strCommand == "testString") {
@@ -90,13 +92,9 @@ string TemplateJS::InvokeMethod(const string& command) {
 			return m_pTemplateController->getTemplateProperty();
 		}
 	} else if (strCommand == "testAsync") {
-		m_pTemplateController->templateTestAsync();
-	} else if (strCommand == "testAsyncJSON") {
-		m_pTemplateController->templateTestAsyncJSON();
-	} else if (strCommand == "testAsyncJSONio") {
-		m_pTemplateController->templateCallbackJSONio(arg);
+		m_pTemplateController->templateTestAsync(callbackId, arg);
 	} else if (strCommand == "templateStartThread") {
-		return m_pTemplateController->templateStartThread();
+		return m_pTemplateController->templateStartThread(callbackId);
 	} else if (strCommand == "templateStopThread") {
 		return m_pTemplateController->templateStopThread();
 	}
