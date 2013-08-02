@@ -14,7 +14,6 @@
 * limitations under the License.
 */
 
-// var template = require("./templateJNEXT").template,
 var template,
 	resultObjs = {},
 	threadCallback = null,
@@ -26,7 +25,7 @@ module.exports = {
 	// but any functions to be called by client.js need to be declared
 	// here in this object.
 
-	// These methods call into templateJNEXT.js which handles the
+	// These methods call into JNEXT.Template which handles the
 	// communication through the JNEXT plugin to template_js.cpp
 	test: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
@@ -132,8 +131,6 @@ JNEXT.Template = function () {
 			callbackId = arData[0],
 			result = resultObjs[callbackId],
 			data = arData.slice(1, arData.length).join(" ");
-
-		console.log(strData);
 
 		if (result) {
             if (callbackId != threadCallback) {
