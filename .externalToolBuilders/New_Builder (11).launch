@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<launchConfiguration type="org.eclipse.ui.externaltools.ProgramBuilderLaunchConfigurationType">
-<booleanAttribute key="org.eclipse.debug.ui.ATTR_LAUNCH_IN_BACKGROUND" value="false"/>
-<stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="C:\Users\abashkhaz\Google Drive\HTML5\WebWorks\buildBB10new.bat"/>
-<stringAttribute key="org.eclipse.ui.externaltools.ATTR_RUN_BUILD_KINDS" value="full,incremental,"/>
-<stringAttribute key="org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS" value="WebWorks-Community-APIs\BB10\deviceInfo\sample_application,deviceInfo,169.254.0.1,pass"/>
-<booleanAttribute key="org.eclipse.ui.externaltools.ATTR_TRIGGERS_CONFIGURED" value="true"/>
-</launchConfiguration>
