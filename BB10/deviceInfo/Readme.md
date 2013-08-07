@@ -21,6 +21,12 @@ Copy the ext\community.deviceInfo folder into the Framework\ext folder of the We
 community.deviceInfo.getModelNumber()
 </pre> 
 
+<pre>
+//returns Roaming Status as 'true' or 'false'
+community.deviceInfo.getRoamingStatus()
+</pre> 
+
+
 The following APIs require the following permission:
 <b>read_cellular_data</b>
 
