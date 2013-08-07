@@ -48,7 +48,10 @@
 			div = document.getElementById('mnc');
 			div.innerHTML = 'MNC is: ' + community.deviceInfo.getMNC();
 			div.className = 'invoked';
-
+			
+			div = document.getElementById('roaming');
+			div.innerHTML = 'Roaming status is: ' + community.deviceInfo.getRoamingStatus();
+			div.className = 'invoked';
 		}
 	}
 	
@@ -56,5 +59,6 @@
 	<div id='model' class='notInvoked'>Model is Unknown</div>
 	<div id='mcc' class='notInvoked'>MCC is Unknown</div>
 	<div id='mnc' class='notInvoked'>MNC is Unknown</div>
+	<div id='roaming' class='notInvoked'>RoamingStatus is Unknown</div>
 </body>
 </html>

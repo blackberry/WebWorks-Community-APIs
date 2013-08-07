@@ -50,8 +50,9 @@ Start with the [Template](https://github.com/blackberry/WebWorks-Community-APIs/
 
 9. [deviceInfo](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/deviceInfo)
 	1. getModelNumber() - returns model number such as 'Z10', 'Q10', 'Q5'
-	2. getMCC() - returns Mobile Country Code
-	3. getMNC() - returns Mobile Network Code, that identifies the carrier
+	2. getRoamingStatus() - return Roaming Status of the device as 'true' or 'false'
+	3. getMCC() - returns Mobile Country Code
+	4. getMNC() - returns Mobile Network Code, that identifies the carrier
 
 10. [gseCrypto](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/gseCrypto)
 	1. hash( params ) - Hash using any SHA or AES CBC algorithm
