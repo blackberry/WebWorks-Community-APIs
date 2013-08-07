@@ -55,6 +55,10 @@ JNEXT.Template = function () {
     self.getMCC = function () {
         return JNEXT.invoke(self.m_id, "getMCC");
     };
+    
+    self.getRoamingStatus = function () {
+        return JNEXT.invoke(self.m_id, "getRoamingStatus");
+    };
 
     self.getMNC = function () {
         return JNEXT.invoke(self.m_id, "getMNC");

@@ -27,6 +27,10 @@ module.exports = {
     getMCC: function (success, fail) {
         success(template.getInstance().getMCC());
     },
+        
+    getRoamingStatus: function (success, fail) {
+        success(template.getInstance().getRoamingStatus());
+    },
     
     getMNC: function (success, fail) {
         success(template.getInstance().getMNC());
