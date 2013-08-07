@@ -32,7 +32,7 @@ public:
 private:
     std::string m_id;
     // Definition of a pointer to the actual native extension code
-    webworks::TemplateNDK *m_pTemplateController;
+    webworks::DeviceInfo *m_pTemplateController;
 };
 
 #endif /* TemplateJS_HPP_ */
