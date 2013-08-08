@@ -48,12 +48,12 @@ module.exports = {
 		var result = new PluginResult(args, env);
 		var value;
 		if (args && args["value"]) {
-            value = JSON.parse(decodeURIComponent(args["value"]));
+			value = JSON.parse(decodeURIComponent(args["value"]));
 			template.getInstance().templateProperty(result.callbackId, value);
-            result.noResult(false);
-        } else {
-            result.ok(template.getInstance().templateProperty(), false);
-        }
+			result.noResult(false);
+		} else {
+			result.ok(template.getInstance().templateProperty(), false);
+		}
 	},
 	// Thread methods to start and stop
 	startThread: function (success, fail, args, env) {
@@ -133,13 +133,13 @@ JNEXT.Template = function () {
 			data = arData.slice(1, arData.length).join(" ");
 
 		if (result) {
-            if (callbackId != threadCallback) {
-	            result.callbackOk(data, false);
-	            delete resultObjs[callbackId];
-	        } else {
-	        	result.callbackOk(data, true);
-	        }
-        }
+			if (callbackId != threadCallback) {
+				result.callbackOk(data, false);
+				delete resultObjs[callbackId];
+			} else {
+				result.callbackOk(data, true);
+			}
+		}
 	};
 
 	// Thread methods
