@@ -16,7 +16,6 @@
 
 var _self = {},
 	_ID = "community.templateplugin",
-	// channel = cordova.require("cordova/channel"),
 	exec = cordova.require("cordova/exec");
 
 	// These methods are called by your App's JavaScript
