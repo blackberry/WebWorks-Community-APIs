@@ -15,9 +15,9 @@ This template includes examples for communicating in several ways:
 
 ## Building and Testing the Sample
 
-The included sample is the default Cordova Hello World application created by the __cordova/create__ command. It is ready to run on your simulator simply by calling __cordova/run__ in the sample directory. It has been altered to include a div in _index.html_ for displaying the test data, and a set of test functions in _js/index.js_ to excercise the template API and display some results.
+The included sample is the default Cordova Hello World application created by the __cordova create__ command. It is ready to run on your simulator simply by calling __cordova run__ in the sample directory. It has been altered to include a div in _index.html_ for displaying the test data, and a set of test functions in _js/index.js_ to excercise the template API and display some results.
 
-To use the plugin in another project, that's been created with Cordova, run __cordova/plugin add <path to this Template folder>/plugin__
+To use the plugin in another project, that's been created with Cordova, run __cordova plugin add <path to this Template folder>/plugin__
 
 Then you can call the methods with the namespace __community.templateplugin__, and that should appear in WebInspector as an Object so you can see what APIs are available. The example APIs included will be detailed later in this guide.
 
@@ -30,9 +30,23 @@ Copy the Template folder to a location on your computer to start working with it
 
 ### Momentics NDK setup
 
+You can either import the project from the Template folder, or use the New Project Wizard in Momentics to create a starter project.
+
+#### Using the New Project Wizard
+
+1. Open the Momentics IDE. Navigate to the workbench and from the program menu select File -> New -> New BlackBerry Project.
+2. Choose Native Extension from the Project Type list, then select BlackBerry WebWorks, and click Next.
+3. Change the project name to "Template" and click Finish.
+4. Right click your project again and select Build Configurations -> Manage..., then click New.
+5. Enter "device" for the name and choose to copy settings from Device-Release.
+6. Repeat to create a configuration named "simulator", and choose to copy settings from Simulator-Debug.
+7. You will need to copy the device and simulator folders to the _/plugin/src/blackberry10/native_ directory where you copied the Template, each time you build. You can configure a post build command if you'd like, in the project properties.
+
+#### Importing the Template
+
 1. Open the Momentics IDE. Navigate to the workbench and from the program menu
 select File -> Import and choose "Existing Projects into Workspace".
-2. Choose "Select root directory: " and browse to the _/plugin/src/blackberry10/native directory_ where you copied the Template. Select the Template project in the Projects list and uncheck "Copy projects into workspace". Click Finish.
+2. Choose "Select root directory: " and browse to the _/plugin/src/blackberry10/native_ directory where you copied the Template. Select the Template project in the Projects list and uncheck "Copy projects into workspace". Click Finish.
 3. Follow these next steps to build the template plugin to be sure the setup is working.
 
 #### How to build your native Plugin
@@ -45,7 +59,7 @@ for the project. Select __device__ and __simulator__ and click ok.
 
 ### Using the Plugin in an Application
 
-To use the plugin in another project, that's been created with Cordova, run __cordova/plugin add <path to this Template folder>/plugin__.
+To use the plugin in another project, that's been created with Cordova, run __cordova plugin add <path to this Template folder>/plugin__.
 That will copy the plugin into the project, and update the www/config.xml file to include the feature as below:
 
 ```xml
@@ -60,12 +74,12 @@ community.templateplugin.test();
 
 Depending on the plugin, these methods can also have return values, take arguments, or supply callback methods.
 
-To remove the plugin, run __cordova/plugin rm community.templateplugin__
+To remove the plugin, run __cordova plugin rm community.templateplugin__
 
 ### Modifying the Template Plugin
 
 #### Namespace
-Choose a amespace for your application that is concise and descriptive. Use community.pluginname as the general format. Change all the occurences of the name in plugin/plugin.xml. Update the _ID variable in client.js to match the namespace.
+Choose a namespace for your application that is concise and descriptive. Use community.pluginname as the general format. Change all the occurences of the name in plugin/plugin.xml. Update the _ID variable in client.js to match the namespace.
 
 #### JNEXT plugin files
 index.js and the template_js.cpp/hpp files are linked by the name of the library and the name of the class in the library. Change the Class Name from TemplateJS to something that matches the new plugin's role. Change the project name in the NDK as well. Then you will need to update the references in index.js to match the new values:
