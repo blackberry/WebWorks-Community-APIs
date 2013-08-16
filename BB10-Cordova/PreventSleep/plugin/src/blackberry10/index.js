@@ -82,7 +82,7 @@ JNEXT.PreventSleep = function () {
 
 	// calls into InvokeMethod(string command) in template_js.cpp
 	self.setPreventSleep = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "setPreventSleep " + callbackId + " " + input);
+		return JNEXT.invoke(self.m_id, "setPreventSleep " + callbackId + " " + JSON.stringify(input));
 	};
 	self.isSleepPrevented = function () {
 		return JNEXT.invoke(self.m_id, "isSleepPrevented");
