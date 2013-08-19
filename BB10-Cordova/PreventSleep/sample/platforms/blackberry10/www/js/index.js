@@ -34,6 +34,8 @@ var app = {
 	// function, we must explicity call 'app.receivedEvent(...);'
 	onDeviceReady: function() {
 		app.receivedEvent('deviceready');
+		var button = document.getElementById('test');
+		button.onclick = app.testPluginCalls;
 	},
 	// Update DOM on a Received Event
 	receivedEvent: function(id) {
@@ -45,12 +47,11 @@ var app = {
 		receivedElement.setAttribute('style', 'display:block;');
 
 		console.log('Received Event: ' + id);
-		app.testPluginCalls();
 	},
 	testPluginCalls: function() {
 		if (community && community.preventsleep) {
 			app.writeOut('Prevent Sleep is: ' + community.preventsleep.isSleepPrevented);
-			app.writeOut(community.preventsleep.setPreventSleep(true));
+			app.writeOut(community.preventsleep.setPreventSleep(!community.preventsleep.isSleepPrevented));
 			app.writeOut('Prevent Sleep is now: ' + community.preventsleep.isSleepPrevented);
 		} else {
 			app.writeOut("Plugin was not found");
