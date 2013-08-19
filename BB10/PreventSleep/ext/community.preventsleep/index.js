@@ -31,8 +31,10 @@ module.exports = {
 		// look for the UIWebView in the set of WebViews.
 		var views = qnx.webplatform.getWebViews();
 		var handle = null;
+		var z = -1;
 		for (var i = 0; i < views.length; i++) {
-			if (views[i].constructor.name == "UIWebView"){
+			if (views[i].visible && views[i].zOrder > z){
+				z = views[i].zOrder;
 				handle = views[i].jsScreenWindowHandle;
 			}
 		}
