@@ -32,7 +32,7 @@ module.exports = {
 		var handle = null;
 		var z = -1;
 		for (var i = 0; i < views.length; i++) {
-			if (views[i].zOrder > z){
+			if (views[i].visible && views[i].zOrder > z){
 				z = views[i].zOrder;
 				handle = views[i].jsScreenWindowHandle;
 			}
