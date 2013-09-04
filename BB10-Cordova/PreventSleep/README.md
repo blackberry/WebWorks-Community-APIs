@@ -5,7 +5,7 @@ This BlackBerry 10 Cordova Plugin keeps the screen from dimming while the applic
 
 ** Tested On **
 
-BlackBerry Z10 10.2.0.197
+BlackBerry Q5 10.2.0.1157
 
 ** Author **
 
