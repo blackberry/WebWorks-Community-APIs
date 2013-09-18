@@ -55,7 +55,7 @@ struct UPNPDev {
  * If sameport is not null, SSDP packets will be sent from the source port
  * 1900 (same as destination port) otherwise system assign a source port. */
 LIBSPEC struct UPNPDev *
-upnpDiscover(int delay, const char *deviceList, const char * multicastif,
+upnpDiscover(long int delay, const char *deviceList, const char * multicastif,
              const char * minissdpdsock, int sameport,
              int ipv6,
              int * error);

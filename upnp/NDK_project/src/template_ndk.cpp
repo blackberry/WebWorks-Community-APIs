@@ -90,12 +90,12 @@ std::string TemplateNDK::discover(const std::string& arg) {
 	char* service;
 	int descXMLsize = 0;
 	int idx = 0;
-	int timeout = 2000; // 2 seconds default
+	long int timeout = 2000; // 2 seconds default
 	char *deviceList = NULL;
 
 	bool parse = reader.parse(arg, root);
  	if (parse) {
-   		  timeout = (int) strtol(root["timeout"].asCString(), NULL, 10);
+   		  timeout = (int) strtoul(root["timeout"].asCString(), NULL, 10);
    		  deviceList = urldecode(root["devtype"].asCString());
  	}
 
@@ -113,7 +113,8 @@ std::string TemplateNDK::discover(const std::string& arg) {
         		{
         			service = (char*) malloc (descXMLsize + 1);
             		strncpy(service, descXML, descXMLsize);
-            		res["service"][idx++] = service;
+            		res["device"][idx]["url"] = device->descURL;
+            		res["device"][idx++]["xml"] = service;
         			free(descXML); descXML = NULL;
         			free(service);
        			}
@@ -127,7 +128,8 @@ std::string TemplateNDK::discover(const std::string& arg) {
     }
 
 	res["success"] = true;
-	res["timeout"] = timeout;
+	res["devcount"] = idx;
+	res["timeout"] = (float) (timeout);
 	res["devtype"] = deviceList;
 
 	free(deviceList);

@@ -48,7 +48,9 @@ The uPnP Extension provides the following API:
 	success,      	// [Bool] 	- Did it work?
 	timeout,    	// [Int] 	- Timeout used
 	devtype,  		// [String] - Device Type searched for
-	service			// [Array] 	- An array of XML documents returned from attached devices
+	device			// [Array] 	- An array of device objects
+		url			// [String]	- Announce URL from attached device
+		xml			// [String]	- XML documents returned from attached device
 	*/
 ```
 

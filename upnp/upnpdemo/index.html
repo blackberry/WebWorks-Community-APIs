@@ -64,13 +64,14 @@ function showxml(id) {
 	}
 
 function list_services(services) {
-	var txt = '<h1>Found ' + services.service.length + ' UPnP devices</h1><pre>\n';
-	for(var i=0; i< services.service.length; i++) {
+	var txt = '<h1>Found ' + services.devcount + ' UPnP devices</h1><pre>\n';
+	for(var i=0; i< services.devcount; i++) {
 		txt += '<button style="font-size: 48px; width: ' + (window.innerWidth - 16) +
-			   'px;" onclick="showxml(' + i + ')">' + $(services.service[i]).find('modelName').text() + '</button>';
+			   'px;" onclick="showxml(' + i + ')">' + $(services.device[i].xml).find('modelName').text() + '</button>';
 
 		txt += '<pre id="svc' + i + '" class="svclist" style="display: none;">\n';
-		txt += services.service[i].replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;').replace(/"/g, '&quot;');;
+		txt += 'Announce : ' + services.device[i].url + '\n';
+		txt += services.device[i].xml.replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;').replace(/"/g, '&quot;');;
 		txt += '</pre>\n';
 		}
 	

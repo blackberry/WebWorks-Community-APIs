@@ -321,7 +321,7 @@ parseMSEARCHReply(const char * reply, int size,
  * It is up to the caller to free the chained list
  * delay is in millisecond (poll) */
 LIBSPEC struct UPNPDev *
-upnpDiscover(int delay, const char *deviceList, const char * multicastif,
+upnpDiscover(long int delay, const char *deviceList, const char * multicastif,
              const char * minissdpdsock, int sameport,
              int ipv6,
              int * error)
@@ -421,9 +421,19 @@ upnpDiscover(int delay, const char *deviceList, const char * multicastif,
 		*error = UPNPDISCOVER_SUCCESS;
 	/* Calculating maximum response time in seconds */
 	mx = ((unsigned int)delay) / 1000u;
-	/* receiving SSDP response packet */
-	for(n = 0; 1; deviceIndex++)
+	/* receiving SSDP response packet with timeout */
+	struct timeval start, end;
+	unsigned int mtime;
+	gettimeofday(&start, NULL);
+
+	for(n = 0; 1; ) // 10ms usleep at end of loop
 	{
+	gettimeofday(&end, NULL);
+	mtime = ((end.tv_sec  - start.tv_sec) * 1000 + (end.tv_sec  - start.tv_sec)/1000.0);
+	if(mtime > delay) {
+		break;
+	}
+
 	if(n == 0)
 	{
 		/* sending the SSDP M-SEARCH packet */
@@ -521,6 +531,7 @@ upnpDiscover(int delay, const char *deviceList, const char * multicastif,
 			devlist = tmp;
 		}
 	}
+	usleep(10);
 	}
 	closesocket(sudp);
 	return devlist;
