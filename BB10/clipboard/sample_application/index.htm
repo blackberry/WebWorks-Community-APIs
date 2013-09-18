@@ -1,0 +1,24 @@
+<html>
+	<head>
+		<script src="local:///chrome/webworks.js"></script>
+	</head>
+	<body>
+		<textarea id="tx" rows="5" cols="20"></textarea>
+		<button id="get_text" onclick="pasteit();">Paste</button>
+		<button id="set_text" onclick="copyit();">Copy</button>
+		<script>
+			function pasteit(){
+				var c=community.clipboard.getText();
+				window.alert(c);
+				document.getElementById('tx').value=c;
+			}
+			function copyit(){
+				var cc=document.getElementById('tx').value;
+				window.alert(cc);
+				var ret=community.clipboard.setText(cc);
+				window.alert(ret);
+			}
+		</script>
+	</body>
+
+</html>
