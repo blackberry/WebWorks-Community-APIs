@@ -63,7 +63,7 @@ var app = {
 				community.extractzipfile.extractFile(
 					"blah.zip",
 					onSuccess,
-					onfail,
+					onFail,
 					"subfile.txt"
 					)
 			);

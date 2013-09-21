@@ -59,14 +59,12 @@ var app = {
 				app.writeout("=( " + status);
 			}
 			
-			app.writeOut(
-				community.extractzipfile.extractFile(
-					"blah.zip",
-					onSuccess,
-					onFail,
-					"subfile.txt"
-					)
-			);
+			community.extractzipfile.extractFile(
+				"blah.zip",
+				onSuccess,
+				onFail,
+				"subfile.txt"
+				);
 		} else {
 			app.writeOut("Plugin was not found");
 		}
