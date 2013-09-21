@@ -38,123 +38,38 @@ ExtractZIPFileNDK::~ExtractZIPFileNDK() {
 }
 
 // These methods are the true native code we intend to reach from WebWorks
-std::string ExtractZIPFileNDK::templateTestString() {
-	return "Template Test Function";
-}
 
-// Take in input and return a value
-std::string ExtractZIPFileNDK::templateTestString(const std::string& inputString) {
-	return "Template Test Function, got: " + inputString;
-}
-
-// Get an integer property
-std::string ExtractZIPFileNDK::getTemplateProperty() {
-	stringstream ss;
-	ss << templateProperty;
-	return ss.str();
-}
-
-// set an integer property
-void ExtractZIPFileNDK::setTemplateProperty(const std::string& inputString) {
-	templateProperty = (int) strtoul(inputString.c_str(), NULL, 10);
-}
-
-// Asynchronous callback with JSON data input and output
-void ExtractZIPFileNDK::templateTestAsync(const std::string& callbackId, const std::string& inputString) {
+// Async extract file from zip
+void ExtractZIPFileNDK::extractFile(const std::string& callbackId, const std::string& inputString) {
 	// Parse the arg string as JSON
 	Json::FastWriter writer;
 	Json::Reader reader;
 	Json::Value root;
+	Json::Value retval;
 	bool parse = reader.parse(inputString, root);
 
 	if (!parse) {
-		Json::Value error;
-		error["result"] = "Cannot parse JSON object";
-		m_pParent->NotifyEvent(callbackId + " " + writer.write(error));
-	} else {
-		root["result"] = root["value1"].asInt() + root["value2"].asInt();
-		m_pParent->NotifyEvent(callbackId + " " + writer.write(root));
-	}
-}
-
-// Thread functions
-// The following functions are for controlling a Thread in the extension
-
-// The actual thread (must appear before the startThread method)
-// Loops and runs the callback method
-void* TemplateThread(void* parent) {
-	ExtractZIPFileNDK *pParent = static_cast<ExtractZIPFileNDK *>(parent);
-
-	// Loop calls the callback function and continues until stop is set
-	while (!pParent->isThreadHalt()) {
-		sleep(1);
-		pParent->templateThreadCallback();
+		retval["result"] = "Cannot parse internal JSON object";
+		m_pParent->NotifyEvent(callbackId + " " + writer.write(retval));
+		return;
 	}
 
-	return NULL;
-}
+	string command =
+			"unzip " +
+			root["zip"].asString()
+			+ " " +
+			root["file"].asString();
 
-// Starts the thread and returns a message on status
-std::string ExtractZIPFileNDK::templateStartThread(const std::string& callbackId) {
-	if (!m_thread) {
-		int rc;
-	    rc = pthread_mutex_lock(&mutex);
-	    threadHalt = false;
-	    rc = pthread_cond_signal(&cond);
-	    rc = pthread_mutex_unlock(&mutex);
+	int unzip_result_raw = system(
+		//command.c_str()
+		"echo 'sda'"
+	);
 
-		pthread_attr_t thread_attr;
-		pthread_attr_init(&thread_attr);
-		pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_JOINABLE);
+	stringstream unzip_result;
+	unzip_result << unzip_result_raw;
+	retval["result"] = unzip_result.str();
+	m_pParent->NotifyEvent(callbackId + " " + writer.write(retval));
 
-		pthread_create(&m_thread, &thread_attr, TemplateThread,
-				static_cast<void *>(this));
-		pthread_attr_destroy(&thread_attr);
-		threadCallbackId = callbackId;
-		return "Thread Started";
-	} else {
-		return "Thread Running";
-	}
-}
-
-// Sets the stop value
-std::string ExtractZIPFileNDK::templateStopThread() {
-	int rc;
-	// Request thread to set prevent sleep to false and terminate
-	rc = pthread_mutex_lock(&mutex);
-	threadHalt = true;
-	rc = pthread_cond_signal(&cond);
-	rc = pthread_mutex_unlock(&mutex);
-
-    // Wait for the thread to terminate.
-    void *exit_status;
-    rc = pthread_join(m_thread, &exit_status) ;
-
-	// Clean conditional variable and mutex
-	pthread_cond_destroy(&cond);
-	pthread_mutex_destroy(&mutex);
-
-	m_thread = 0;
-	threadHalt = true;
-	return "Thread stopped";
-}
-
-// The callback method that sends an event through JNEXT
-void ExtractZIPFileNDK::templateThreadCallback() {
-	Json::FastWriter writer;
-	Json::Value root;
-	root["threadCount"] = templateThreadCount++;
-	m_pParent->NotifyEvent(threadCallbackId + " " + writer.write(root));
-}
-
-// getter for the stop value
-bool TemplateNDK::isThreadHalt() {
-	int rc;
-	bool isThreadHalt;
-	rc = pthread_mutex_lock(&mutex);
-	isThreadHalt = threadHalt;
-	rc = pthread_mutex_unlock(&mutex);
-	return isThreadHalt;
 }
 
 } /* namespace webworks */

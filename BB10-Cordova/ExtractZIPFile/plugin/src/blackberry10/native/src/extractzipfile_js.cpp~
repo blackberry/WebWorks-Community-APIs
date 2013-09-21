@@ -79,24 +79,9 @@ string ExtractZIPFileJS::InvokeMethod(const string& command) {
 	std::string callbackId = command.substr(commandIndex + 1, callbackIndex - commandIndex - 1);
 	std::string arg = command.substr(callbackIndex + 1, command.length());
 
-	// based on the command given, run the appropriate method in template_ndk.cpp
-	if (strCommand == "testString") {
-		return m_pTemplateController->templateTestString();
-	} else if (strCommand == "testStringInput") {
-		return m_pTemplateController->templateTestString(arg);
-	} else if (strCommand == "templateProperty") {
-		// if arg exists we are setting property
-		if (arg != strCommand) {
-			m_pTemplateController->setTemplateProperty(arg);
-		} else {
-			return m_pTemplateController->getTemplateProperty();
-		}
-	} else if (strCommand == "testAsync") {
-		m_pTemplateController->templateTestAsync(callbackId, arg);
-	} else if (strCommand == "templateStartThread") {
-		return m_pTemplateController->templateStartThread(callbackId);
-	} else if (strCommand == "templateStopThread") {
-		return m_pTemplateController->templateStopThread();
+	// based on the command given, run the method in extractzipfile_ndk.cpp
+	if (strCommand == "extractFile") {
+		//m_pTemplateController->extractFile(callbackId, arg);
 	}
 
 	strCommand.append(";");
@@ -105,7 +90,7 @@ string ExtractZIPFileJS::InvokeMethod(const string& command) {
 }
 
 // Notifies JavaScript of an event
-void TemplateJS::NotifyEvent(const std::string& event) {
+void ExtractZIPFileJS::NotifyEvent(const std::string& event) {
 	std::string eventString = m_id + " ";
 	eventString.append(event);
 	SendPluginEvent(eventString.c_str(), m_pContext);

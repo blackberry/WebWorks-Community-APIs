@@ -20,61 +20,11 @@ var extractzipfile,
    _utils = require("../../lib/utils");
 
 module.exports = {
-
-	// Code can be declared and used outside the module.exports object,
-	// but any functions to be called by client.js need to be declared
-	// here in this object.
-
-	// These methods call into JNEXT.Template which handles the
-	// communication through the JNEXT plugin to template_js.cpp
-	test: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		result.ok(extractzipfile.getInstance().test(), false);
-	},
-	testInput: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		args = JSON.parse(decodeURIComponent(args["input"]));
-		result.ok(extractzipfile.getInstance().testInput(result.callbackId, args), false);
-	},
-	// Asynchronous function calls into the plugin and returns
-	testAsync: function (success, fail, args, env) {
+	extractFile: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
-		args = JSON.parse(decodeURIComponent(args["input"]));
-		extractzipfile.getInstance().testAsync(result.callbackId, args);
+		extractzipfile.getInstance().extractFile(result.callbackId, args);
 		result.noResult(true);
-	},
-	templateProperty: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		var value;
-		if (args && args["value"]) {
-			value = JSON.parse(decodeURIComponent(args["value"]));
-			extractzipfile.getInstance().templateProperty(result.callbackId, value);
-			result.noResult(false);
-		} else {
-			result.ok(extractzipfile.getInstance().templateProperty(), false);
-		}
-	},
-	// Thread methods to start and stop
-	startThread: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		if (!threadCallback) {
-			threadCallback = result.callbackId;
-			resultObjs[result.callbackId] = result;
-			result.ok(extractzipfile.getInstance().startThread(result.callbackId), true);
-		} else {
-			result.error(extractzipfile.getInstance().startThread(result.callbackId), false);
-		}
-	},
-	stopThread: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		if (!threadCallback) {
-			result.error("Thread is not running", false);
-		} else {
-			delete resultObjs[threadCallback];
-			threadCallback = null;
-			result.ok(extractzipfile.getInstance().stopThread(), false);
-		}
 	}
 };
 
@@ -109,23 +59,11 @@ JNEXT.ExtractZIPFile = function () {
 	// ************************
 
 	// calls into InvokeMethod(string command) in template_js.cpp
-	self.test = function () {
-		return JNEXT.invoke(self.m_id, "testString");
+	self.extractFile = function (callbackId, input) {
+		console.log(input);
+		return JNEXT.invoke(self.m_id, "extractFile " + callbackId + " " + JSON.stringify(input));
 	};
-	self.testInput = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "testStringInput " + callbackId + " " + input);
-	};
-	self.testAsync = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "testAsync " + callbackId + " " + JSON.stringify(input));
-	};
-	self.templateProperty = function (callbackId, value) {
-		if (value) {
-			return JNEXT.invoke(self.m_id, "templateProperty " + callbackId + " " + value);
-		} else {
-			return JNEXT.invoke(self.m_id, "templateProperty");
-		}
-	};
-	// Fired by the Event framework (used by asynchronous callbacks)
+	
 	self.onEvent = function (strData) {
 		var arData = strData.split(" "),
 			callbackId = arData[0],
@@ -141,15 +79,6 @@ JNEXT.ExtractZIPFile = function () {
 			}
 		}
 	};
-
-	// Thread methods
-	self.startThread = function (callbackId) {
-		return JNEXT.invoke(self.m_id, "templateStartThread " + callbackId);
-	};
-	self.stopThread = function () {
-		return JNEXT.invoke(self.m_id, "templateStopThread");
-	};
-
 	// ************************
 	// End of methods to edit
 	// ************************

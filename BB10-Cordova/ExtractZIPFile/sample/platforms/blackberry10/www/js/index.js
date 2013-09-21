@@ -51,15 +51,22 @@ var app = {
 		app.writeOut("Test are being ran.");
 
 		if (community && community.extractzipfile) {
-			app.writeOut(community.extractzipfile.test());
-			app.writeOut(community.extractzipfile.testInput('My Test Data'));
-			app.writeOut('Template Property was: ' + community.extractzipfile.templateProperty);
-			community.extractzipfile.templateProperty = 99;
-			app.writeOut('Now: ' + community.extractzipfile.templateProperty);
-			app.writeOut('Sent Async Request');
-			var jsonData = {"value1":10,"value2":14};
-			community.extractzipfile.testAsync(jsonData, app.aSyncCallback);
-			community.extractzipfile.startThread(app.threadCallback);
+
+			var onSuccess = function(status) {
+				app.writeOut("yeah! " + status);
+			}
+			var onFail = function(status) {
+				app.writeout("=( " + status);
+			}
+			
+			app.writeOut(
+				community.extractzipfile.extractFile(
+					"blah.zip",
+					onSuccess,
+					onFail,
+					"subfile.txt"
+					)
+			);
 		} else {
 			app.writeOut("Plugin was not found");
 		}

@@ -20,14 +20,14 @@
 #include <string>
 #include <pthread.h>
 
-class TemplateJS;
+class ExtractZIPFileJS;
 
 namespace webworks {
 
-class TemplateNDK {
+class ExtractZIPFileNDK {
 public:
-	explicit TemplateNDK(TemplateJS *parent = NULL);
-	virtual ~TemplateNDK();
+	explicit ExtractZIPFileNDK(ExtractZIPFileJS *parent = NULL);
+	virtual ~ExtractZIPFileNDK();
 
 	// The extension methods are defined here
 	std::string templateTestString();
@@ -49,7 +49,7 @@ public:
 	void templateThreadCallback();
 
 private:
-	TemplateJS *m_pParent;
+	ExtractZIPFileJS *m_pParent;
 	int templateProperty;
 	int templateThreadCount;
 	bool threadHalt;

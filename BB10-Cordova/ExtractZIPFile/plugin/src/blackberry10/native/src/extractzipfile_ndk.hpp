@@ -30,23 +30,7 @@ public:
 	virtual ~ExtractZIPFileNDK();
 
 	// The extension methods are defined here
-	std::string templateTestString();
-
-	std::string templateTestString(const std::string& inputString);
-
-	std::string getTemplateProperty();
-
-	void setTemplateProperty(const std::string& inputString);
-
-	void templateTestAsync(const std::string& callbackId, const std::string& inputString);
-
-	std::string templateStartThread(const std::string& callbackId);
-
-	std::string templateStopThread();
-
-	bool isThreadHalt();
-
-	void templateThreadCallback();
+	void extractFile(const std::string& callbackId, const std::string& inputString);
 
 private:
 	ExtractZIPFileJS *m_pParent;
