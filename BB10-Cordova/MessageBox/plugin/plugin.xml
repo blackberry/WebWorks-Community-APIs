@@ -9,6 +9,9 @@
         <source-file src="src/blackberry10/index.js" />
         <config-file target="www/config.xml" parent="/widget">
             <feature name="org.apache.cordova.MessageBox" value="org.apache.cordova.MessageBox" />
+            <feature name="Notification">
+                <param name="blackberry-package" value="org.apache.cordova.notification.Notification" />
+            </feature>
         </config-file>
     </platform>
 </plugin>

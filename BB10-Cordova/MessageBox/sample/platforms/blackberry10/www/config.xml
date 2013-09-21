@@ -17,7 +17,11 @@
         <rim:permit>record_audio</rim:permit>
         <rim:permit>access_pimdomain_contacts</rim:permit>
     </rim:permissions>
+    <feature name="Notification" value="Notification" />
     <feature name="org.apache.cordova.MessageBox" value="org.apache.cordova.MessageBox" />
+    <feature name="Notification">
+        <param name="blackberry-package" value="org.apache.cordova.notification.Notification" />
+    </feature>
     <access origin="*" />
     <preference name="fullscreen" value="true" />
     <preference name="webviewbounce" value="true" />
