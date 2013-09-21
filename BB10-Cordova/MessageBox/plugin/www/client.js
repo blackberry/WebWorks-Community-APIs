@@ -1,110 +1,109 @@
-/*
-* Copyright (c) 2013 BlackBerry Limited
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+(function(cordova) {
+    var exec = cordova.require("cordova/exec"),
+        _ID = "org.apache.cordova.MessageBox";
 
-var _self = {},
-	_ID = "community.templateplugin",
-	exec = cordova.require("cordova/exec");
+    function MessageBox() {}
 
-	// These methods are called by your App's JavaScript
-	// They make WebWorks function calls to the methods
-	// in the index.js of the Extension
+    MessageBox.prototype.defaults = {
+        okButtonTitle: 'OK',
+        yesButtonTitle: 'Yes',
+        noButtonTitle: 'No',
+        cancelButtonTitle: 'Cancel'
+    };
 
-	// Simple Synchronous test function to get a string
-	_self.test = function () {
-		var result,
-			success = function (data, response) {
-				result = data;
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "test", null);
-		return result;
-	};
-	_self.testInput = function (input) {
-		var result,
-			success = function (data, response) {
-				result = data;
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "testInput", { input: input });
-		return result;
-	};
+    MessageBox.prototype.alert = function(options, callback) {
 
-	// Asynchronous with sending and returning a JSON object
-	_self.testAsync = function (input, callback) {
-		var success = function (data, response) {
-				var json = JSON.parse(data);
-				callback(json);
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "testAsync", { input: input });
-	};
+        var D_OK = 0;
+        var message = options['message'] || '';
+        var settings = {'title' : options['title'] || ''};
 
-	// Define a property on the extension object
-	// Omit the getter or setter as needed to restrict the property
-	Object.defineProperty(_self, "templateProperty", {
-		get: function () {
-			var result,
-				success = function (data, response) {
-					result = data;
-				},
-				fail = function (data, response) {
-					console.log("Error: " + data);
-				};
-			exec(success, fail, _ID, "templateProperty", null);
-			return result;
-		},
-		set: function (arg) {
-			var result,
-				success = function (data, response) {
-					result = data;
-				},
-				fail = function (data, response) {
-					console.log("Error: " + data);
-				};
-			exec(success, fail, _ID, "templateProperty", {"value": arg });
-			return result;
-		}
-	});
+        var args = { "message" : message, "type" : D_OK, "callback" : callback };
+        if (settings) {
+            args.settings = settings;
+        }
+        exec(callback, function () {}, _ID, "standardAskAsync", args);
 
-	_self.startThread = function (callback) {
-		var success = function (data, response) {
-				callback(data);
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "startThread", null);
-	};
+        // var D_OK = 0;
+        // var message = options['message'] || '';
+        // var settings = {'title' : options['title'] || ''};
 
-	_self.stopThread = function (callback) {
-		var result,
-			success = function (data, response) {
-				result = data;
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "stopThread", null);
-		return result;
-	};
+        // var result,
+        //     success = function (data, response) {
+        //         result = data;
+        //     },
+        //     fail = function (data, response) {
+        //         console.log("Error: " + data);
+        //     };
 
-module.exports = _self;
+
+        // exec(success, fail, _ID, "testInput", { message, D_OK, callback, settings });
+
+        // return result;
+
+        // blackberry.ui.dialog.standardAskAsync(message, D_OK, callback, settings);
+
+        // options || (options = {});
+        // var scope = options.scope || null;
+
+        // var config = {
+        //     title: options.title || '',
+        //     message: options.message || '',
+        //     okButtonTitle: options.okButtonTitle || this.defaults.okButtonTitle
+        // };
+
+        // var _callback = function(buttonIndex) {
+        //     var button = 'ok';
+        //     if(typeof callback == 'function') callback.call(scope, button);
+        // };
+
+        // return navigator.notification.alert(config.message, _callback, config.title, config.okButtonTitle + '');
+    };
+
+    MessageBox.prototype.confirm = function(options, callback) {
+        options || (options = {});
+        var scope = options.scope || null;
+
+        var config = {
+            title: options.title || '',
+            message: options.message || '',
+            yesButtonTitle: options.yesButtonTitle || this.defaults.yesButtonTitle,
+            noButtonTitle: options.noButtonTitle || this.defaults.noButtonTitle
+        };
+
+        var _callback = function(buttonIndex) {
+            var button = (buttonIndex === 2) ? 'yes' : 'no';
+            if(typeof callback == 'function') callback.call(scope, button);
+        };
+
+        return navigator.notification.confirm(config.message, _callback, config.title, config.noButtonTitle + ', ' + config.yesButtonTitle);
+    };
+
+    MessageBox.prototype.prompt = function(options, callback) {
+        options || (options = {});
+        var scope = options.scope || null;
+
+        var config = {
+            title: options.title || '',
+            message: options.message || '',
+            type : options.type || 'text',
+            placeholder : options.placeholder || '',
+            okButtonTitle: options.okButtonTitle || this.defaults.okButtonTitle,
+            cancelButtonTitle: options.cancelButtonTitle || this.defaults.cancelButtonTitle
+        };
+
+        var _callback = function(result) {
+            var value = (result.buttonIndex == 1) ? result.value : false;
+            button = (result.buttonIndex == 1) ? 'ok' : 'cancel';
+            if(typeof callback == 'function') callback.call(scope, button, value);
+        };
+
+        return cordova.exec(_callback, _callback, 'MessageBox', 'prompt', [config]);
+    };
+
+    cordova.addConstructor(function() {
+        if(!window.plugins) window.plugins = {};
+        console.log("ADDCONS")
+        window.plugins.messageBox = new MessageBox();
+    });
+
+})(window.cordova || window.Cordova);

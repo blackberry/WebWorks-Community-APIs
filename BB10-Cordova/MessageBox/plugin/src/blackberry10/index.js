@@ -1,168 +1,149 @@
 /*
-* Copyright (c) 2013 BlackBerry Limited
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright 2012 Research In Motion Limited.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+function validateIdMessageSettings(args) {
+    
+    if (args.settings) {
+        args.settings = JSON.parse(decodeURIComponent(args.settings));
+    }
+    else {
+        args.settings = {};
+    }
 
-var template,
-	resultObjs = {},
-	threadCallback = null,
-   _utils = require("../../lib/utils");
+    if (args.message) {
+        args.message = decodeURIComponent(args.message);
+        args.message = args.message = args.message.replace(/^"|"$/g, "").replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+    } else {
+        return 1;
+    }
 
+    return 0;
+}
+
+var dialog,
+    overlayWebView = require('../../lib/overlayWebView'),
+    _webview = require("../../lib/webview");
+    
 module.exports = {
+    customAskAsync: function (success, fail, args, env) {
+        var pluginResult = new PluginResult(args, env),
+            messageObj;
 
-	// Code can be declared and used outside the module.exports object,
-	// but any functions to be called by client.js need to be declared
-	// here in this object.
+        if (validateIdMessageSettings(args) === 1) {
+            pluginResult.error("message is undefined", false);
+            return;
+        }
 
-	// These methods call into JNEXT.Template which handles the
-	// communication through the JNEXT plugin to template_js.cpp
-	test: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		result.ok(template.getInstance().test(), false);
-	},
-	testInput: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		args = JSON.parse(decodeURIComponent(args["input"]));
-		result.ok(template.getInstance().testInput(result.callbackId, args), false);
-	},
-	// Asynchronous function calls into the plugin and returns
-	testAsync: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		resultObjs[result.callbackId] = result;
-		args = JSON.parse(decodeURIComponent(args["input"]));
-		template.getInstance().testAsync(result.callbackId, args);
-		result.noResult(true);
-	},
-	templateProperty: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		var value;
-		if (args && args["value"]) {
-			value = JSON.parse(decodeURIComponent(args["value"]));
-			template.getInstance().templateProperty(result.callbackId, value);
-			result.noResult(false);
-		} else {
-			result.ok(template.getInstance().templateProperty(), false);
-		}
-	},
-	// Thread methods to start and stop
-	startThread: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		if (!threadCallback) {
-			threadCallback = result.callbackId;
-			resultObjs[result.callbackId] = result;
-			result.ok(template.getInstance().startThread(result.callbackId), true);
-		} else {
-			result.error(template.getInstance().startThread(result.callbackId), false);
-		}
-	},
-	stopThread: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		if (!threadCallback) {
-			result.error("Thread is not running", false);
-		} else {
-			delete resultObjs[threadCallback];
-			threadCallback = null;
-			result.ok(template.getInstance().stopThread(), false);
-		}
-	}
+        if (args.buttons) {
+            args.buttons = JSON.parse(decodeURIComponent(args.buttons));
+        } else {
+            pluginResult.error("buttons is undefined", false);
+            return;
+        }
+
+        if (!Array.isArray(args.buttons)) {
+            pluginResult.error("buttons is not an array", false);
+            return;
+        }
+
+        messageObj = {
+            title : args.settings.title,
+            htmlmessage :  args.message,
+            dialogType : "CustomAsk",
+            optionalButtons : args.buttons
+        };
+        overlayWebView.showDialog(messageObj, function (result) {
+            pluginResult.callbackOk(result, false);
+        });
+        pluginResult.noResult(true);
+    },
+
+    standardAskAsync: function (success, fail, args, env) {
+        var pluginResult = new PluginResult(args, env),
+            buttons,
+            returnValue = {},
+            messageObj = {};
+
+        if (validateIdMessageSettings(args) === 1) {
+            pluginResult.error("message is undefined", false);
+            return;
+        }
+        
+        if (args.type) {
+            args.type = JSON.parse(decodeURIComponent(args.type));
+        } else {
+            pluginResult.error("type is undefined", false);
+            return;
+        }
+
+        if (args.type < 0 || args.type > 5) {
+            pluginResult.error("invalid dialog type: " + args.type, false);
+            return;
+        }
+        
+        buttons = {
+            0: "JavaScriptAlert",                       // D_OK
+            1: ["Save", "Discard"],                     // D_SAVE
+            2: ["Delete", "Cancel"],                    // D_DELETE
+            3: ["Yes", "No"],                           // D_YES_NO
+            4: "JavaScriptConfirm",                     // D_OK_CANCEL
+            5: "JavaScriptPrompt",                      // D_Prompt
+        };
+
+        if (!Array.isArray(buttons[args.type])) {
+            messageObj = {
+                title : args.settings.title,
+                htmlmessage :  args.message,
+                dialogType : buttons[args.type],
+            };
+            overlayWebView.showDialog(messageObj, function (result) {
+                if (args.type === 0) {//Ok dialog
+                    returnValue.return = "Ok";
+                } else if (args.type === 4) {//Confirm Dialog
+                    if (result.ok) {
+                        returnValue.return = "Ok";
+                    } else {
+                        returnValue.return = "Cancel";
+                    }
+                } else {
+                    if (result.ok) {
+                        returnValue.return = "Ok";
+                    } else {
+                        returnValue.return = "Cancel";
+                    }
+                    returnValue.promptText = (result.oktext) ? decodeURIComponent(result.oktext) : null;
+                }
+                pluginResult.callbackOk(returnValue, false);
+            });
+        } else {
+            messageObj = {
+                title : args.settings.title,
+                htmlmessage :  args.message,
+                dialogType : "JavaScriptConfirm",
+                oklabel : buttons[args.type][0],
+                cancellabel : buttons[args.type][1],
+            };
+            overlayWebView.showDialog(messageObj, function (result) {
+                if (result.ok) {
+                    returnValue.return = buttons[args.type][0];
+                } else {
+                    returnValue.return = buttons[args.type][1];
+                }
+                pluginResult.callbackOk(returnValue, false);
+            });
+        }
+        pluginResult.noResult(true);
+    }
 };
-
-///////////////////////////////////////////////////////////////////
-// JavaScript wrapper for JNEXT plugin for connection
-///////////////////////////////////////////////////////////////////
-
-JNEXT.Template = function () {
-	var self = this,
-		hasInstance = false;
-
-	self.getId = function () {
-		return self.m_id;
-	};
-
-	self.init = function () {
-		if (!JNEXT.require("libTemplate")) {
-			return false;
-		}
-
-		self.m_id = JNEXT.createObject("libTemplate.TemplateJS");
-
-		if (self.m_id === "") {
-			return false;
-		}
-
-		JNEXT.registerEvents(self);
-	};
-
-	// ************************
-	// Enter your methods here
-	// ************************
-
-	// calls into InvokeMethod(string command) in template_js.cpp
-	self.test = function () {
-		return JNEXT.invoke(self.m_id, "testString");
-	};
-	self.testInput = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "testStringInput " + callbackId + " " + input);
-	};
-	self.testAsync = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "testAsync " + callbackId + " " + JSON.stringify(input));
-	};
-	self.templateProperty = function (callbackId, value) {
-		if (value) {
-			return JNEXT.invoke(self.m_id, "templateProperty " + callbackId + " " + value);
-		} else {
-			return JNEXT.invoke(self.m_id, "templateProperty");
-		}
-	};
-	// Fired by the Event framework (used by asynchronous callbacks)
-	self.onEvent = function (strData) {
-		var arData = strData.split(" "),
-			callbackId = arData[0],
-			result = resultObjs[callbackId],
-			data = arData.slice(1, arData.length).join(" ");
-
-		if (result) {
-			if (callbackId != threadCallback) {
-				result.callbackOk(data, false);
-				delete resultObjs[callbackId];
-			} else {
-				result.callbackOk(data, true);
-			}
-		}
-	};
-
-	// Thread methods
-	self.startThread = function (callbackId) {
-		return JNEXT.invoke(self.m_id, "templateStartThread " + callbackId);
-	};
-	self.stopThread = function () {
-		return JNEXT.invoke(self.m_id, "templateStopThread");
-	};
-
-	// ************************
-	// End of methods to edit
-	// ************************
-	self.m_id = "";
-
-	self.getInstance = function () {
-		if (!hasInstance) {
-			hasInstance = true;
-			self.init();
-		}
-		return self;
-	};
-
-};
-
-template = new JNEXT.Template();

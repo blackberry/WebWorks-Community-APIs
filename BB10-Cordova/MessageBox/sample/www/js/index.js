@@ -17,6 +17,21 @@
  * under the License.
  */
 var app = {
+	options: {
+		alert: {
+			title: 'Title',
+			message: 'Message'
+		},
+		prompt: {
+			title: 'Title',
+			message: 'Message'
+		},
+		confirm: {
+			title: 'Title',
+			message: 'Message'
+		}
+	},
+
 	// Application Constructor
 	initialize: function() {
 		this.bindEvents();
@@ -35,58 +50,24 @@ var app = {
 	onDeviceReady: function() {
 		app.receivedEvent('deviceready');
 	},
-	// Update DOM on a Received Event
 	receivedEvent: function(id) {
-		var parentElement = document.getElementById(id);
-		var listeningElement = parentElement.querySelector('.listening');
-		var receivedElement = parentElement.querySelector('.received');
+		var btns = {
+			alert : document.getElementById("messagebox_alert"),
+			prompt : document.getElementById("messagebox_prompt"),
+			confirm : document.getElementById("messagebox_confirm")
+		}
 
-		listeningElement.setAttribute('style', 'display:none;');
-		receivedElement.setAttribute('style', 'display:block;');
+		for(var btn in btns) {
+			btns[btn].addEventListener("click", this.messagebox_btnClick, false)
+		}
+	},
 
-		console.log('Received Event: ' + id);
-		app.testPluginCalls();
-	},
-	testPluginCalls: function() {
-		if (community && community.templateplugin) {
-			app.writeOut(community.templateplugin.test());
-			app.writeOut(community.templateplugin.testInput('My Test Data'));
-			app.writeOut('Template Property was: ' + community.templateplugin.templateProperty);
-			community.templateplugin.templateProperty = 99;
-			app.writeOut('Now: ' + community.templateplugin.templateProperty);
-			app.writeOut('Sent Async Request');
-			var jsonData = {"value1":10,"value2":14};
-			community.templateplugin.testAsync(jsonData, app.aSyncCallback);
-			community.templateplugin.startThread(app.threadCallback);
-		} else {
-			app.writeOut("Plugin was not found");
-		}
-	},
-	writeOut: function(message) {
-		var output = document.getElementById('results');
-		output.innerText = output.innerText + message;
-		output.appendChild(document.createElement('br'));
-		console.log(message);
-	},
-	aSyncCallback: function(data) {
-		if (data) {
-			console.log(data);
-			app.writeOut(data.value1 + " + " + data.value2 + " = " + data.result);
-		}
-	},
-	threadCallback: function(data) {
-		if (app.threadStarted) {
-			console.log(data);
-			var json = JSON.parse(data);
-			app.writeOut("Thread Callback: " + json.threadCount);
-			if (json.threadCount >= 10) {
-				var end = community.templateplugin.stopThread();
-				app.writeOut(end);
-				app.threadStarted = false;
-			}
-		} else {
-			app.threadStarted = true;
-			app.writeOut(data);
-		}
+	messagebox_btnClick: function(evt) {
+		evt.preventDefault();
+		var btn_id_prepend = "messagebox_";
+		var messageBox = window.plugins.messageBox
+		var fn_name = evt.target.id.substring(btn_id_prepend.length);
+
+		messageBox[fn_name](app.options[fn_name], function(return_val){ console.log(return_val); })
 	}
 };
