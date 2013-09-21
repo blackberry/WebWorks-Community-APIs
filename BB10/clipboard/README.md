@@ -1,8 +1,11 @@
-##Clipboard Extension for BlackBerry 10 WebWorks
+Clipboard Extension for BlackBerry 10 WebWorks
+================================================
 
-###How to use
+This BlackBerry 10 WebWorks extension allows you to programmatically set and retrieve the device's clipboard.
 
-1. copy the `community.clipboard` folder under`ext` folder to your webworks installation directory's `/framework/ext` folder , and make it looks like this:
+## How to use
+
+1. copy the `community.clipboard` folder under`ext` folder to your webworks installation directory's `/framework/ext` folder, so that it looks like this:
 
 	`C:\Program Files (x86)\Research In Motion\BlackBerry 10 WebWorks SDK 1.0.4.11\Framework\ext\community.clipboard`
 	
@@ -29,6 +32,12 @@
 	
 	`community.clipboard.setText("String");`
 
-###About the author
+** Author **
 
-Merrick Zhang (anphorea@gmail.com), BlackBerry Developer
+[Merrick Zhang](https://github.com/anphorea)
+
+**To contribute code to this repository you must be [signed up as an official contributor](http://blackberry.github.com/howToContribute.html).**
+
+## Disclaimer
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
