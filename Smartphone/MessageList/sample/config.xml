@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:rim="http://www.blackberry.com/ns/widgets" version="1.0.0" rim:header="RIM-Widget:rim/widget">
+  <name>My Message List App</name>
+  <author>Me</author>
+  <content src="index.htm" />
+  <feature id="webworks.message.list" />
+  <feature id="blackberry.utils" />
+  <feature id="blackberry.app" />
+</widget>

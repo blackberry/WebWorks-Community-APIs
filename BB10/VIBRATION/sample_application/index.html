@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!--
+ * Copyright 2013 Research In Motion Limited.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link href="css/styles.css" rel="stylesheet" type="text/css">
+	<title>Extension Template Test</title>
+	<script type="text/javascript" src="local:///chrome/webworks.js"></script>
+	<script type="text/javascript">
+	var rippleLoaded = false;
+    var intensity = 1;
+    var startTime, endTime;
+    var currentlevel = 0;
+	document.addEventListener('webworksready', function(e) {
+		// This is a hack for Ripple calling webworksready multiple times
+		if (rippleLoaded) return;
+		rippleLoaded = true;
+		
+		if (community.vibration) {
+			//do vibration functionality in here knowing that for sure the vibration library is valid
+			// and webworks has loaded
+		}
+	}, false);
+
+	function vibrate(){
+		var chance = Math.floor((Math.random()*3)+1);
+		if ( chance == 1 ) {
+			currentlevel++;
+			document.getElementById('scoreCounter').innerHTML = 'Score : '+currentlevel;
+			if( currentlevel == 10 ){
+				alert('You win');
+				currentlevel = 0;
+				document.getElementById('scoreCounter').innerHTML = 'Score : '+currentlevel;
+			}
+		} else {
+			currentlevel = 0;
+			document.getElementById('scoreCounter').innerHTML = 'Score : '+currentlevel;
+			var jsonData = { "duration": 500, "intensity": 1000 };
+			community.vibration.vibration_request(jsonData, null);
+		}
+	}
+
+	</script>
+</head>
+<body>
+	<div id="title" class='title'>Pick the right button!<br/> 2 of the 3 buttons are rigged to buzz <br/> 1 is not <br/> choose correctly...</div>
+	<br/> 
+	<br/>
+	<div id="scoreCounter" class='scoreBoard'> Score : 0</div>
+	<br/>
+	<br/>
+	<div id="button1" class='buzz1' onclick="vibrate();"></div>
+	<br/>
+	<div id="button2" class='buzz2' onclick="vibrate();"></div>
+	<br/>
+	<div id="button3" class='buzz3' onclick="vibrate();"></div>
+	<br/>
+</body>
+</html>
