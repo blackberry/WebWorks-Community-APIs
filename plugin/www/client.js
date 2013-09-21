@@ -18,7 +18,7 @@
  */
 
 var _self = {},
-    _ID = "com.blackberry.ui.dialog",
+    _ID = "org.apache.cordova.MessageBox",
     exec = cordova.require("cordova/exec");
 
 function defineReadOnlyField(obj, field, value) {
