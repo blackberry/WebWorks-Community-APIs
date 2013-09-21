@@ -24,10 +24,10 @@ _self.extractFile = function (zipFile, successCallback,
 					filename) {
 
 	var success = function (data, response) {
-			sucessCallback.call(data);
+			successCallback(data["result"]);
 		},
 		fail = function (data, response) {
-			failureCallback.call(data);
+			failureCallback(data["result"]);
 		};
 	exec(success, fail, _ID, "extractFile", { zip: zipFile, file: filename });
 };
