@@ -75,26 +75,43 @@ cordova.define("org.apache.cordova.MessageBox.client", function(require, exports
         return navigator.notification.confirm(config.message, _callback, config.title, config.noButtonTitle + ', ' + config.yesButtonTitle);
     };
     
+    // MessageBox.prototype.prompt = function(options, callback) {
+    //     options || (options = {});
+    //     var scope = options.scope || null;
+
+    //     var config = {
+    //         title: options.title || '',
+    //         message: options.message || '',
+    //         type : options.type || 'text',
+    //         placeholder : options.placeholder || '',
+    //         okButtonTitle: options.okButtonTitle || this.defaults.okButtonTitle,
+    //         cancelButtonTitle: options.cancelButtonTitle || this.defaults.cancelButtonTitle
+    //     };
+
+    //     var _callback = function(result) {
+    //         var value = (result.buttonIndex == 1) ? result.value : false;
+    //         button = (result.buttonIndex == 1) ? 'ok' : 'cancel';
+    //         if(typeof callback == 'function') callback.call(scope, button, value);
+    //     };
+
+    //     return cordova.exec(_callback, _callback, 'MessageBox', 'prompt', [config]);
+    // };
+
     MessageBox.prototype.prompt = function(options, callback) {
         options || (options = {});
         var scope = options.scope || null;
 
         var config = {
             title: options.title || '',
-            message: options.message || '',
-            type : options.type || 'text',
-            placeholder : options.placeholder || '',
-            okButtonTitle: options.okButtonTitle || this.defaults.okButtonTitle,
-            cancelButtonTitle: options.cancelButtonTitle || this.defaults.cancelButtonTitle
+            message: options.message || ''
         };
 
-        var _callback = function(result) {
-            var value = (result.buttonIndex == 1) ? result.value : false;
-            button = (result.buttonIndex == 1) ? 'ok' : 'cancel';
-            if(typeof callback == 'function') callback.call(scope, button, value);
+        var _callback = function(buttonIndex) {
+            var button = (buttonIndex === 2) ? 'yes' : 'no';
+            if(typeof callback == 'function') callback.call(scope, button);
         };
 
-        return cordova.exec(_callback, _callback, 'MessageBox', 'prompt', [config]);
+        return navigator.notification.prompt(config.message, _callback, config.title, config.noButtonTitle + ', ' + config.yesButtonTitle, "TEST");
     };
 
     cordova.addConstructor(function() {
