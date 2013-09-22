@@ -52,19 +52,23 @@ var app = {
 
 		if (community && community.extractzipfile) {
 
+			// -----------------
+			// EXAMPLE USAGE ---
+			// The ExtractZIPFile specific code follows
 			var onSuccess = function(status) {
-				app.writeOut("yeah! " + status);
+				app.writeOut("Extract succeded, should not occur! [" + status + "]");
 			}
 			var onFail = function(status) {
-				app.writeOut("=( " + status);
+				app.writeOut("Extract failed, status [" + status + "]");
 			}
-			
 			community.extractzipfile.extractFile(
 				"blah.zip",
 				onSuccess,
 				onFail,
 				"subfile.txt"
 				);
+			// END EXAMPLE USAGE
+			// -----------------
 		} else {
 			app.writeOut("Plugin was not found");
 		}
@@ -74,26 +78,5 @@ var app = {
 		output.innerText = output.innerText + message;
 		output.appendChild(document.createElement('br'));
 		console.log(message);
-	},
-	aSyncCallback: function(data) {
-		if (data) {
-			console.log(data);
-			app.writeOut(data.value1 + " + " + data.value2 + " = " + data.result);
-		}
-	},
-	threadCallback: function(data) {
-		if (app.threadStarted) {
-			console.log(data);
-			var json = JSON.parse(data);
-			app.writeOut("Thread Callback: " + json.threadCount);
-			if (json.threadCount >= 10) {
-				var end = community.templateplugin.stopThread();
-				app.writeOut(end);
-				app.threadStarted = false;
-			}
-		} else {
-			app.threadStarted = true;
-			app.writeOut(data);
-		}
 	}
 };
