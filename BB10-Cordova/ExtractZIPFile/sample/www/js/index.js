@@ -48,7 +48,7 @@ var app = {
 		app.testPluginCalls();
 	},
 	testPluginCalls: function() {
-		app.writeOut("Test are being ran.");
+		app.writeOut("Note: Expect extraction failure.");
 
 		if (community && community.extractzipfile) {
 
