@@ -56,7 +56,7 @@ var app = {
 				app.writeOut("yeah! " + status);
 			}
 			var onFail = function(status) {
-				app.writeout("=( " + status);
+				app.writeOut("=( " + status);
 			}
 			
 			community.extractzipfile.extractFile(

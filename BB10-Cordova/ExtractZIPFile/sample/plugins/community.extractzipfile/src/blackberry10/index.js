@@ -72,7 +72,11 @@ JNEXT.ExtractZIPFile = function () {
 
 		if (result) {
 			if (callbackId != threadCallback) {
-				result.callbackOk(data, false);
+				if (data == "0") {
+					result.callbackOk(data, false);
+				} else {
+					result.callbackError(data, false);
+				}
 				delete resultObjs[callbackId];
 			} else {
 				result.callbackOk(data, true);

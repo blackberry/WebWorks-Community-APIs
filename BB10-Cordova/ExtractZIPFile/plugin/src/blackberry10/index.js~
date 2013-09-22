@@ -75,7 +75,11 @@ JNEXT.ExtractZIPFile = function () {
 				result.callbackOk(data, false);
 				delete resultObjs[callbackId];
 			} else {
-				result.callbackOk(data, true);
+				if (data == "0") {
+					result.callbackOk(data, true);
+				} else {
+					result.callbackError(data, true);
+				}
 			}
 		}
 	};
