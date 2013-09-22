@@ -106,12 +106,14 @@ cordova.define("org.apache.cordova.MessageBox.client", function(require, exports
             message: options.message || ''
         };
 
-        var _callback = function(buttonIndex) {
-            var button = (buttonIndex === 2) ? 'yes' : 'no';
-            if(typeof callback == 'function') callback.call(scope, button);
+       var _callback = function(result) {
+            console.log(result)
+            var value = result.input1 || "";
+            var button = (result.buttonIndex == 1) ? 'ok' : 'cancel';
+            if(typeof callback == 'function') callback.call(scope, button, value);
         };
 
-        return navigator.notification.prompt(config.message, _callback, config.title, config.noButtonTitle + ', ' + config.yesButtonTitle, "TEST");
+        return navigator.notification.prompt(config.message, _callback, config.title, config.noButtonTitle + ', ' + config.yesButtonTitle, "Prompt dialog");
     };
 
     cordova.addConstructor(function() {

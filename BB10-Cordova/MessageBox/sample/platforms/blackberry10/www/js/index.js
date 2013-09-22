@@ -68,6 +68,19 @@ var app = {
 		var messageBox = window.plugins.messageBox
 		var fn_name = evt.target.id.substring(btn_id_prepend.length);
 
-		messageBox[fn_name](app.options[fn_name], function(return_val){ console.log(return_val); })
+		var cb = function(return_val1, return_val2) {
+			var results = document.getElementById("results");
+			var results_cnt = "";
+
+			console.log(return_val1);
+			console.log(return_val2);
+
+			results_cnt += "return_val1: " + (return_val1 ? return_val1 : "") + "<br />";
+			results_cnt += "return_val2: " + (return_val2 ? return_val2 : "");
+
+			results.innerHTML = results_cnt; 
+		}
+
+		messageBox[fn_name](app.options[fn_name], cb);
 	}
 };
