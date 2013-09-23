@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+        xmlns:rim="http://www.blackberry.com/ns/widgets"
+        version="1.0.0" id="clipboardTest" xml:lang="en">
+  <author href="http://weibo.com/anpho"
+          rim:copyright="Copyleft 2009-2013">anpho</author>
+  <name>Hello clipboard</name>
+  <content src="index.htm"/>
+  <feature id="community.clipboard" required="true" version="1.0.0.0"/>
+</widget>

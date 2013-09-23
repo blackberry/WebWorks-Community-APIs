@@ -26,7 +26,7 @@ using namespace std;
  */
 TemplateJS::TemplateJS(const std::string& id) :
 		m_id(id) {
-	m_pTemplateController = new webworks::TemplateNDK(this);
+	m_pTemplateController = new webworks::DeviceInfo(this);
 }
 
 /**
@@ -81,6 +81,8 @@ string TemplateJS::InvokeMethod(const string& command) {
 		return m_pTemplateController->getModelNumber();
 	else if (strCommand == "getMCC")
 		return m_pTemplateController->getMCC();
+	else if (strCommand == "getRoamingStatus")
+		return m_pTemplateController->getRoamingStatus();
 	else if (strCommand == "getMNC")
 			return m_pTemplateController->getMNC();
 	return "Unknown C++ method";
