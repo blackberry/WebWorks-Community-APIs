@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<!--
+ * Copyright 2013 Research In Motion Limited.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<html>
+<head>
+<title>UPnP Demo</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+
+var webworksreadyFired = false;
+var dpr = false;
+var using_ripple = (window.location.port == "9910");
+var showing = -1;
+
+if(typeof window.devicePixelRatio != 'undefined') // Does device support devicePixelRatio?
+	{
+	dpr = window.devicePixelRatio;
+	}
+
+var meta = document.createElement("meta");
+meta.setAttribute('name','viewport');
+
+if(dpr) // Set up the right meta
+	{
+	meta.setAttribute('content','initial-scale='+ (1/window.devicePixelRatio) + ',user-scalable=no');
+	}
+else
+	{
+	dpr = 1;
+	meta.setAttribute('content','user-scalable=no,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,height=device-height,width=device-width');
+	}
+
+document.getElementsByTagName('head')[0].appendChild(meta); // Inject meta
+
+function showxml(id) {
+	var page = document.getElementsByClassName('svclist');
+	for(var i=0; i<page.length; i++) {
+		page[i].style.display = 'none';
+		}
+
+	if(id != showing) { 
+		document.getElementById('svc' + id).style.display = 'block';
+		showing = id;
+		}
+	else {
+		showing = -1;
+		}
+	
+	}
+
+function list_services(services) {
+	var txt = '<h1>Found ' + services.devcount + ' UPnP devices</h1><pre>\n';
+	for(var i=0; i< services.devcount; i++) {
+		txt += '<button style="font-size: 48px; width: ' + (window.innerWidth - 16) +
+			   'px;" onclick="showxml(' + i + ')">' + $(services.device[i].xml).find('modelName').text() + '</button>';
+
+		txt += '<pre id="svc' + i + '" class="svclist" style="display: none;">\n';
+		txt += 'Announce : ' + services.device[i].url + '\n';
+		txt += services.device[i].xml.replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;').replace(/"/g, '&quot;');;
+		txt += '</pre>\n';
+		}
+	
+	document.getElementById('content').innerHTML = txt;
+	}
+	
+if(!using_ripple) {
+	var bbww = document.createElement("script");
+	bbww.src = 'local:///chrome/webworks.js';
+	bbww.type = 'text/javascript';
+	document.getElementsByTagName('head')[0].appendChild(bbww); // Inject webworks on BB10
+	}
+		
+window.addEventListener('load',function() {
+	if(!using_ripple) {
+		document.addEventListener('webworksready', function(e) {
+			if (webworksreadyFired) return;
+			webworksreadyFired = true;
+			if(typeof community != 'undefined') {
+				if(typeof community.upnp != 'undefined') {
+					var services = community.upnp.discover(2000);
+					list_services(services);
+					}
+				else {
+					document.getElementById('content').innerHTML = "Extension not loaded - community.upnp not found";
+					}
+				}
+			else {
+				document.getElementById('content').innerHTML = "Extension not loaded - community not found";
+				}}, false);
+		}
+	else  {
+		document.getElementById('content').innerHTML = "Ripple is not supported";
+		}
+	});
+</script>
+<style>
+body {
+	font-size: 30px;
+	}
+</style>
+</head>
+<body>
+	<div id="content">
+	Looking for uPnP devices...
+	</div>
+</body>
+</html>

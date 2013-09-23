@@ -14,15 +14,17 @@ BlackBerry Z10 10.1.0.2312
 
 BlackBerry 10 Dev Alpha C 10.2.0.341
 
-** Author **
+** Author(s) **
 
-[Peardox] (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/325249)
+Extension - [Peardox] (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/325249)
+
+Mongoose - [valenok] (https://github.com/valenok)
 
 ## Building and Testing the Sample
 
 1. Deploy the extension into your BB10 WebWorks SDK by copying the community folder from the ext folder to the Framework/ext folder in your WebWorks SDK, or run the Ant build script in the /ext folder to do so.
-2. Package the sample in the sdtest folder. Use the [Ant Build Script](https://github.com/blackberry/BB10-WebWorks-Community-Samples/tree/master/Ant-Build-Script), or you can do this with the WebWorks packager command:
-	__bbwp__ sdtest -g _signingpassword_
+2. Package the sample in the webtest folder. Use the [Ant Build Script](https://github.com/blackberry/BB10-WebWorks-Community-Samples/tree/master/Ant-Build-Script), or you can do this with the WebWorks packager command:
+	__bbwp__ webtest -g _signingpassword_
 3. Load it on your phone using the Ant Build Script, or with the _blackberry-deploy_ command found in the dependencies/tools folder of your WebWorks SDK.
 
 ## Including the feature in your application
@@ -56,6 +58,8 @@ community.mongoose.stop();  // Stop the server
 
 ```
 
+```
+
 ## Options passed to community.mongoose.start();
 
 "cgi_pattern"               "**.cgi$|**.pl$|**.php$"
@@ -82,6 +86,10 @@ community.mongoose.stop();  // Stop the server
 "url_rewrite_patterns"      NULL
 "hide_files_patterns"       NULL
 "request_timeout_ms"        "30000"
+
+Note that the extension overrides the default for document_root and enable_directory_listing with $HOME/data and no respectively
+
+```
 
 Detailed descriptions of what all options do is available at ...
 
