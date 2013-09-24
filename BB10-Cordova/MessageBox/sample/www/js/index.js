@@ -26,6 +26,11 @@ var app = {
 			title: 'Title',
 			message: 'Message'
 		},
+		prompt_password: {
+			title: 'Title',
+			message: 'Message',
+			type: 'password'
+		},
 		confirm: {
 			title: 'Title',
 			message: 'Message'
@@ -54,6 +59,7 @@ var app = {
 		var btns = {
 			alert : document.getElementById("messagebox_alert"),
 			prompt : document.getElementById("messagebox_prompt"),
+			prompt_password : document.getElementById("messagebox_prompt_password"),
 			confirm : document.getElementById("messagebox_confirm")
 		}
 
@@ -72,12 +78,12 @@ var app = {
 			var results = document.getElementById("results");
 			var results_cnt = "";
 
-			results_cnt += "return_val1: " + (return_val1 ? return_val1 : "") + "<br />";
-			results_cnt += "return_val2: " + (return_val2 ? return_val2 : "");
+			results_cnt += "return_val1: " + (return_val1 != '' ? return_val1 : "") + "<br />";
+			results_cnt += "return_val2: " + (return_val2 != '' ? return_val2 : "");
 
-			results.innerHTML = results_cnt; 
+			results.innerHTML = results_cnt;
 		}
 
-		messageBox[fn_name](app.options[fn_name], cb);
+		messageBox[(fn_name == "prompt_password" ? "prompt" : fn_name)](app.options[fn_name], cb);
 	}
 };

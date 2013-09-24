@@ -11,33 +11,6 @@
         cancelButtonTitle: 'Cancel'
     };
 
-    // MessageBox.prototype.alert = function(options, callback) {
-    //     options || (options = {})
-    //     var D_OK = 0;
-    //     var message = options.message || '';
-    //     var settings = {'title' : options.title || ''};
-
-    //     var args = { "message" : message, "type" : D_OK, "callback" : callback };
-    //     if (settings) {
-    //         args.settings = settings;
-    //     }
-    //     exec(callback, function () {}, _ID, "standardAskAsync", args);
-    // };
-
-    // MessageBox.prototype.confirm = function(options, callback) {
-    //     options || (options = {})
-    //     var message = options.message || '';
-    //     var settings = {'title' : options.title || ''};
-    //     var btns = [options.yesButtonTitle || 'Yes',
-    //                 options.noButtonTitle || 'No'];
-    //     var args = { "message" : message, "callback" : callback, buttons: btns };
-        
-    //     if (settings) {
-    //         args.settings = settings;
-    //     }
-    //     exec(callback, function () {}, _ID, "customAskAsync", args);
-    // };
-
     MessageBox.prototype.alert = function(options, callback) {
         options || (options = {});
         var scope = options.scope || null;
@@ -53,7 +26,7 @@
             if(typeof callback == 'function') callback.call(scope, button);
         };
 
-        return navigator.notification.alert(config.message, _callback, config.title, config.okButtonTitle + '');
+        navigator.notification.alert(config.message, _callback, config.title, config.okButtonTitle + '');
     };
 
     MessageBox.prototype.confirm = function(options, callback) {
@@ -72,7 +45,7 @@
             if(typeof callback == 'function') callback.call(scope, button);
         };
 
-        return navigator.notification.confirm(config.message, _callback, config.title, config.noButtonTitle + ', ' + config.yesButtonTitle);
+        navigator.notification.confirm(config.message, _callback, config.title, config.noButtonTitle + ', ' + config.yesButtonTitle);
     };
     
     // MessageBox.prototype.prompt = function(options, callback) {
@@ -103,6 +76,8 @@
 
         var config = {
             title: options.title || '',
+            type: options.type || 'text',
+            placeholder: options.placeholder || '',
             message: options.message || ''
         };
 
@@ -112,7 +87,8 @@
             if(typeof callback == 'function') callback.call(scope, button, value);
         };
 
-        return navigator.notification.prompt(config.message, _callback, config.title, config.noButtonTitle + ', ' + config.yesButtonTitle, "Prompt dialog");
+        // console.log(blackberry.ui.dialog)
+        navigator.notification.prompt(config.message, _callback, config.title, config.noButtonTitle + ', ' + config.yesButtonTitle, "Prompt dialog");
     };
 
     cordova.addConstructor(function() {
