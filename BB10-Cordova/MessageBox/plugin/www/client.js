@@ -45,50 +45,31 @@
             if(typeof callback == 'function') callback.call(scope, button);
         };
 
-        navigator.notification.confirm(config.message, _callback, config.title, config.noButtonTitle + ', ' + config.yesButtonTitle);
+        navigator.notification.confirm(config.message, _callback, config.title, [config.noButtonTitle + ', ' + config.yesButtonTitle]);
     };
     
-    // MessageBox.prototype.prompt = function(options, callback) {
-    //     options || (options = {});
-    //     var scope = options.scope || null;
-
-    //     var config = {
-    //         title: options.title || '',
-    //         message: options.message || '',
-    //         type : options.type || 'text',
-    //         placeholder : options.placeholder || '',
-    //         okButtonTitle: options.okButtonTitle || this.defaults.okButtonTitle,
-    //         cancelButtonTitle: options.cancelButtonTitle || this.defaults.cancelButtonTitle
-    //     };
-
-    //     var _callback = function(result) {
-    //         var value = (result.buttonIndex == 1) ? result.value : false;
-    //         button = (result.buttonIndex == 1) ? 'ok' : 'cancel';
-    //         if(typeof callback == 'function') callback.call(scope, button, value);
-    //     };
-
-    //     return cordova.exec(_callback, _callback, 'MessageBox', 'prompt', [config]);
-    // };
-
     MessageBox.prototype.prompt = function(options, callback) {
         options || (options = {});
         var scope = options.scope || null;
 
-        var config = {
-            title: options.title || '',
-            type: options.type || 'text',
-            placeholder: options.placeholder || '',
-            message: options.message || ''
-        };
+        var config = [
+            options.message || '',
+            options.title || '',
+            options.type || 'text',
+            "Prompt Dialog"
+        ];
 
-       var _callback = function(result) {
+        var _callback = function(result) {
             var value = result.input1 || "";
             var button = (result.buttonIndex == 1) ? 'ok' : 'cancel';
             if(typeof callback == 'function') callback.call(scope, button, value);
-        };
+        }
 
-        // console.log(blackberry.ui.dialog)
-        navigator.notification.prompt(config.message, _callback, config.title, config.noButtonTitle + ', ' + config.yesButtonTitle, "Prompt dialog");
+        var cordova_callback = function(result) {
+            navigator.notification.prompt(config.message, _callback, config.title, config.noButtonTitle + ', ' + config.yesButtonTitle, "Prompt dialog");
+        }
+
+        exec(cordova_callback, null, _ID, 'prompt', config);
     };
 
     cordova.addConstructor(function() {
