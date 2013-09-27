@@ -5,7 +5,7 @@ module.exports = {
 		var field_type = JSON.parse(decodeURIComponent(args[2]))
 
 		if(field_type == "password") {
-			// inject add eventlistener into overlay webview
+			// inject DOMNodeInserted listener into overlay webview
 			var to_overlay_webview = '\
 			document.addEventListener("DOMNodeInserted", function(e) {\
 				if(e.target.className == "dialog-content-container" &&\
