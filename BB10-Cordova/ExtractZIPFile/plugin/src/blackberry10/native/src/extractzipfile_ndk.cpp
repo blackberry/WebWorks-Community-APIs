@@ -19,6 +19,12 @@
 #include <json/reader.h>
 #include <json/writer.h>
 #include <slog2.h>
+
+// zlib
+#include <string.h>
+#include <assert.h>
+#include <zlib.h>
+
 #include "extractzipfile_ndk.hpp"
 #include "extractzipfile_js.hpp"
 
