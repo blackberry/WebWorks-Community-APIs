@@ -30,7 +30,6 @@ namespace webworks {
 
 ExtractZIPFileNDK::ExtractZIPFileNDK(ExtractZIPFileJS *parent) {
 	m_pParent = parent;
-	m_thread = 0;
 }
 
 ExtractZIPFileNDK::~ExtractZIPFileNDK() {
@@ -43,7 +42,7 @@ void ExtractZIPFileNDK::extractFile(const std::string& callbackId, const std::st
 	Json::Reader reader;
 	Json::Value root;
 	Json::Value retval;
-	bool parse = reader.parse(inputString, root);
+	bool parse = reader.parse(inputString.c_str(), root);
 
 	if (!parse) {
 		retval["result"] = "Cannot parse internal JSON object";
@@ -51,7 +50,7 @@ void ExtractZIPFileNDK::extractFile(const std::string& callbackId, const std::st
 		return;
 	}
 
-	string command =
+	std::string command =
 			"unzip " +
 			root["zip"].asString()
 			+ " " +

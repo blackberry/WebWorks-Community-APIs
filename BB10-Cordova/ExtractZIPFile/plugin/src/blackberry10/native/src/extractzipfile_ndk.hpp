@@ -14,10 +14,8 @@
 * limitations under the License.
 */
 
-#ifndef TEMPLATENDK_HPP_
-#define TEMPLATENDK_HPP_
+#pragma once
 
-#include <string>
 #include <pthread.h>
 
 class ExtractZIPFileJS;
@@ -34,15 +32,7 @@ public:
 
 private:
 	ExtractZIPFileJS *m_pParent;
-	int templateProperty;
-	int templateThreadCount;
-	bool threadHalt;
 	std::string threadCallbackId;
-	pthread_t m_thread;
-	pthread_cond_t cond;
-	pthread_mutex_t mutex;
 };
 
-} // namespace webworks
-
-#endif /* TEMPLATENDK_H_ */
+}
