@@ -42,7 +42,7 @@ void ExtractZIPFileNDK::extractFile(const std::string& callbackId, const std::st
 	Json::Reader reader;
 	Json::Value root;
 	Json::Value retval;
-	bool parse = reader.parse(inputString.c_str(), root);
+	bool parse = reader.parse(inputString, root);
 
 	if (!parse) {
 		retval["result"] = "Cannot parse internal JSON object";
