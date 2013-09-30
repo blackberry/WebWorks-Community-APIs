@@ -56,7 +56,9 @@ cordova.define("org.apache.cordova.MessageBox.client", function(require, exports
             options.message || '',
             options.title || '',
             options.type || 'text',
-            "Prompt Dialog"
+            "Prompt Dialog",
+            options.okButtonTitle || this.defaults.okButtonTitle,
+            options.cancelButtonTitle || this.defaults.cancelButtonTitle
         ];
 
         var _callback = function(result) {
