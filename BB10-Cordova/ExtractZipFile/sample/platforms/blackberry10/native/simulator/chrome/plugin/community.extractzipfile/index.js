@@ -32,7 +32,7 @@ module.exports = {
 // JavaScript wrapper for JNEXT plugin for connection
 ///////////////////////////////////////////////////////////////////
 
-JNEXT.ExtractZIPFile = function () {
+JNEXT.ExtractZipFile = function () {
 	var self = this,
 		hasInstance = false;
 
@@ -41,11 +41,11 @@ JNEXT.ExtractZIPFile = function () {
 	};
 
 	self.init = function () {
-		if (!JNEXT.require("libTemplate")) {
+		if (!JNEXT.require("libExtractZipFile")) {
 			return false;
 		}
 
-		self.m_id = JNEXT.createObject("libTemplate.ExtractZIPFileJS");
+		self.m_id = JNEXT.createObject("libExtractZipFile.ExtractZipFileJS");
 
 		if (self.m_id === "") {
 			return false;
@@ -98,4 +98,4 @@ JNEXT.ExtractZIPFile = function () {
 
 };
 
-extractzipfile = new JNEXT.ExtractZIPFile();
+extractzipfile = new JNEXT.ExtractZipFile();
