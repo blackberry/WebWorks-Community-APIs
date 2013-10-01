@@ -21,11 +21,11 @@
 #include "../public/plugin.h"
 #include "extractzipfile_ndk.hpp"
 
-class TemplateJS: public JSExt {
+class ExtractZipFileJS: public JSExt {
 
 public:
-    explicit TemplateJS(const std::string& id);
-    virtual ~TemplateJS();
+    explicit ExtractZipFileJS(const std::string& id);
+    virtual ~ExtractZipFileJS();
     virtual bool CanDelete();
     virtual std::string InvokeMethod(const std::string& command);
     void NotifyEvent(const std::string& event);
@@ -33,7 +33,7 @@ public:
 private:
     std::string m_id;
     // Definition of a pointer to the actual native extension code
-    webworks::TemplateNDK *m_pTemplateController;
+    webworks::ExtractZipFileNDK *m_pTemplateController;
 };
 
 #endif /* TemplateJS_HPP_ */

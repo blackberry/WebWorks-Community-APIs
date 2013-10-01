@@ -14,26 +14,25 @@
 * limitations under the License.
 */
 
-#ifndef TemplateJS_HPP_
-#define TemplateJS_HPP_
+#pragma once
 
-#include <string>
-#include "../public/plugin.h"
-#include "extractzipfile_ndk.hpp"
+#include <pthread.h>
 
-class ExtractZIPFileJS: public JSExt {
+class ExtractZipFileJS;
 
+namespace webworks {
+
+class ExtractZipFileNDK {
 public:
-    explicit ExtractZIPFileJS(const std::string& id);
-    virtual ~ExtractZIPFileJS();
-    virtual bool CanDelete();
-    virtual std::string InvokeMethod(const std::string& command);
-    void NotifyEvent(const std::string& event);
+	explicit ExtractZipFileNDK(ExtractZipFileJS *parent = NULL);
+	virtual ~ExtractZipFileNDK();
+
+	// The extension methods are defined here
+	void extractFile(const std::string& callbackId, const std::string& inputString);
 
 private:
-    std::string m_id;
-    // Definition of a pointer to the actual native extension code
-    webworks::ExtractZIPFileNDK *m_pTemplateController;
+	ExtractZipFileJS *m_pParent;
+	std::string threadCallbackId;
 };
 
-#endif /* TemplateJS_HPP_ */
+}

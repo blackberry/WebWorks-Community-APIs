@@ -14,25 +14,29 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <errno.h>
 #include <string>
 #include <json/reader.h>
 #include <json/writer.h>
 #include <slog2.h>
+
+// minizip
+#include "unzip.h"
+
 #include "extractzipfile_ndk.hpp"
 #include "extractzipfile_js.hpp"
 
 namespace webworks {
 
-ExtractZIPFileNDK::ExtractZIPFileNDK(ExtractZIPFileJS *parent) {
+ExtractZipFileNDK::ExtractZipFileNDK(ExtractZipFileJS *parent) {
 	m_pParent = parent;
-	m_thread = 0;
 }
 
-ExtractZIPFileNDK::~ExtractZIPFileNDK() {
+ExtractZipFileNDK::~ExtractZipFileNDK() {
 }
 
 // Async extract file from zip
-void ExtractZIPFileNDK::extractFile(const std::string& callbackId, const std::string& inputString) {
+void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::string& inputString) {
 	// Parse the arg string as JSON
 	Json::FastWriter writer;
 	Json::Reader reader;
@@ -46,7 +50,7 @@ void ExtractZIPFileNDK::extractFile(const std::string& callbackId, const std::st
 		return;
 	}
 
-	string command =
+	std::string command =
 			"unzip " +
 			root["zip"].asString()
 			+ " " +
