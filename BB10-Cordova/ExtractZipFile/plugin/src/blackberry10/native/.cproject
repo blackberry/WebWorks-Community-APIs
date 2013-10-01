@@ -10,8 +10,8 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Device-Debug"/>
-						<entry flags="" kind="libraryFile" name="Template"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="Template"/>
+						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="RESOLVED" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -79,8 +79,8 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Device-Release"/>
-						<entry flags="" kind="libraryFile" name="Template"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="Template"/>
+						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="RESOLVED" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -147,7 +147,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Device-Profile"/>
-						<entry flags="" kind="libraryFile" name="Template"/>
+						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -216,7 +216,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Device-Coverage"/>
-						<entry flags="" kind="libraryFile" name="Template"/>
+						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -285,7 +285,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Simulator-Debug"/>
-						<entry flags="" kind="libraryFile" name="Template"/>
+						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -351,7 +351,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Simulator-Profile"/>
-						<entry flags="" kind="libraryFile" name="Template"/>
+						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -419,7 +419,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Simulator-Coverage"/>
-						<entry flags="" kind="libraryFile" name="Template"/>
+						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -487,7 +487,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Cordova-Template"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Cordova-Template/device"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="Cordova-Template"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="Cordova-Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -554,7 +554,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Cordova-Template"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Cordova-Template/simulator"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="Cordova-Template"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="Cordova-Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -649,4 +649,5 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 </cproject>
