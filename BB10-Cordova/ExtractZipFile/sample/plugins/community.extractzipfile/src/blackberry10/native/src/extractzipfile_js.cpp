@@ -24,15 +24,15 @@ using namespace std;
 /**
  * Default constructor.
  */
-ExtractZIPFileJS::ExtractZIPFileJS(const std::string& id) :
+ExtractZipFileJS::ExtractZipFileJS(const std::string& id) :
 		m_id(id) {
-	m_pTemplateController = new webworks::ExtractZIPFileNDK(this);
+	m_pTemplateController = new webworks::ExtractZipFileNDK(this);
 }
 
 /**
  * TemplateJS destructor.
  */
-ExtractZIPFileJS::~ExtractZIPFileJS() {
+ExtractZipFileJS::~ExtractZipFileJS() {
 	if (m_pTemplateController)
 		delete m_pTemplateController;
 }
@@ -42,7 +42,7 @@ ExtractZIPFileJS::~ExtractZIPFileJS() {
  * extension.
  */
 char* onGetObjList() {
-	static char name[] = "ExtractZIPFileJS";
+	static char name[] = "ExtractZipFileJS";
 	return name;
 }
 
@@ -51,8 +51,8 @@ char* onGetObjList() {
  * an object is created on the JavaScript server side.
  */
 JSExt* onCreateObject(const string& className, const string& id) {
-	if (className == "ExtractZIPFileJS") {
-		return new ExtractZIPFileJS(id);
+	if (className == "ExtractZipFileJS") {
+		return new ExtractZipFileJS(id);
 	}
 
 	return NULL;
@@ -61,7 +61,7 @@ JSExt* onCreateObject(const string& className, const string& id) {
 /**
  * Method used by JNext to determine if the object can be deleted.
  */
-bool ExtractZIPFileJS::CanDelete() {
+bool ExtractZipFileJS::CanDelete() {
 	return true;
 }
 
@@ -71,7 +71,7 @@ bool ExtractZIPFileJS::CanDelete() {
  * for invoking native code. This method is triggered when JNext.invoke is
  * called on the JavaScript side with this native objects id.
  */
-string ExtractZIPFileJS::InvokeMethod(const string& command) {
+string ExtractZipFileJS::InvokeMethod(const string& command) {
 	// format must be: "command callbackId params"
 	size_t commandIndex = command.find_first_of(" ");
 	std::string strCommand = command.substr(0, commandIndex);
@@ -90,7 +90,7 @@ string ExtractZIPFileJS::InvokeMethod(const string& command) {
 }
 
 // Notifies JavaScript of an event
-void ExtractZIPFileJS::NotifyEvent(const std::string& event) {
+void ExtractZipFileJS::NotifyEvent(const std::string& event) {
 	std::string eventString = m_id + " ";
 	eventString.append(event);
 	SendPluginEvent(eventString.c_str(), m_pContext);

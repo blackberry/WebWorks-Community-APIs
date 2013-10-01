@@ -7,8 +7,8 @@
 
     <platform name="blackberry10">
         <source-file src="src/blackberry10/index.js" />
-        <lib-file src="src/blackberry10/native/device/libTemplate.so" arch="device"/>
-        <lib-file src="src/blackberry10/native/simulator/libTemplate.so" arch="simulator"/>
+        <lib-file src="src/blackberry10/native/device/libExtractZipFile.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libExtractZipFile.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
             <feature name="community.extractzipfile" value="community.extractzipfile" />
         </config-file>

@@ -14,35 +14,25 @@
 * limitations under the License.
 */
 
-#ifndef TEMPLATENDK_HPP_
-#define TEMPLATENDK_HPP_
+#pragma once
 
-#include <string>
 #include <pthread.h>
 
-class ExtractZIPFileJS;
+class ExtractZipFileJS;
 
 namespace webworks {
 
-class ExtractZIPFileNDK {
+class ExtractZipFileNDK {
 public:
-	explicit ExtractZIPFileNDK(ExtractZIPFileJS *parent = NULL);
-	virtual ~ExtractZIPFileNDK();
+	explicit ExtractZipFileNDK(ExtractZipFileJS *parent = NULL);
+	virtual ~ExtractZipFileNDK();
 
 	// The extension methods are defined here
 	void extractFile(const std::string& callbackId, const std::string& inputString);
 
 private:
-	ExtractZIPFileJS *m_pParent;
-	int templateProperty;
-	int templateThreadCount;
-	bool threadHalt;
+	ExtractZipFileJS *m_pParent;
 	std::string threadCallbackId;
-	pthread_t m_thread;
-	pthread_cond_t cond;
-	pthread_mutex_t mutex;
 };
 
-} // namespace webworks
-
-#endif /* TEMPLATENDK_H_ */
+}
