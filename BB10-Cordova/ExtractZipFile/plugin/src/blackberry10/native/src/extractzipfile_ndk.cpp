@@ -35,34 +35,38 @@ ExtractZipFileNDK::ExtractZipFileNDK(ExtractZipFileJS *parent) {
 ExtractZipFileNDK::~ExtractZipFileNDK() {
 }
 
-// Async extract file from zip
-void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::string& inputString) {
+// ->extractFile
+// Returns a json obejct with "result" set to int ret code
+// ret code is < 0 on error.
+// and "result_message" a description of the error or success
+void ExtractZIPFileNDK::extractFile(const std::string& callbackId, const std::string& inputString) {
+	#define extractReturn(x,y) \
+		while (0) {retval["result"] = x; \
+		retval["result_message"] = y; \
+		m_pParent->NotifyEvent(callbackId + " " + writer.write(retval));}
+
 	// Parse the arg string as JSON
 	Json::FastWriter writer;
 	Json::Reader reader;
 	Json::Value root;
 	Json::Value retval;
 	bool parse = reader.parse(inputString, root);
-
 	if (!parse) {
-		retval["result"] = "Cannot parse internal JSON object";
+		extractReturn(-1, "Cannot parse internal JSON object");
 		m_pParent->NotifyEvent(callbackId + " " + writer.write(retval));
 		return;
 	}
 
-	std::string command =
-			"unzip " +
-			root["zip"].asString()
-			+ " " +
-			root["file"].asString();
+	// Perform the zip unpacking 
+	unxFile zipFile = unzOpen(root["zip"].asString().c_str());
+	if (zipFile == NULL)
+		extractReturn(-1, "Failed to open zip file.");
 
-	int unzip_result = system(
-		command.c_str()
-	);
+	unzClose(zipFile);
 
-	retval["result"] = errno;//unzip_result;
-	m_pParent->NotifyEvent(callbackId + " " + writer.write(retval));
-
+	// Success!
+	extractReturn(0, "Extract successful.");
+	#undef extractReturn
 }
 
 } /* namespace webworks */
