@@ -34,5 +34,9 @@ module.exports = {
     
     getMNC: function (success, fail) {
         success(template.getInstance().getMNC());
+    },
+	
+	isSimulator: function (success, fail) {
+        success(template.getInstance().isSimulator());
     }
 };

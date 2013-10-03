@@ -64,6 +64,10 @@ JNEXT.Template = function () {
         return JNEXT.invoke(self.m_id, "getMNC");
     };
     
+    self.isSimulator = function () {
+        return JNEXT.invoke(self.m_id, "isSimulator");
+    };
+    
 	// ************************
 	// End of methods to edit
 	// ************************

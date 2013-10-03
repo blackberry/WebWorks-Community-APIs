@@ -40,4 +40,10 @@ var _self = {},
     _self.getMNC = function () {
         return window.webworks.execSync(_ID, "getMNC", null);
     };
+	
+    //get Mobile Network Code
+    _self.isSimulator = function () {
+        return window.webworks.execSync(_ID, "isSimulator", null);
+    };
+
 module.exports = _self;

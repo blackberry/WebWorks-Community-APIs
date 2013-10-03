@@ -22,6 +22,11 @@ community.deviceInfo.getModelNumber()
 </pre> 
 
 <pre>
+//returns whether the device is a Simulator - 'true' or 'false'
+community.deviceInfo.isSimulator()
+</pre> 
+
+<pre>
 //returns Roaming Status as 'true' or 'false'
 community.deviceInfo.getRoamingStatus()
 </pre> 
