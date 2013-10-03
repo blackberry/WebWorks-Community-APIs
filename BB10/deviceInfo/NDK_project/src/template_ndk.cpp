@@ -16,6 +16,8 @@
 
 #include <string>
 #include <sstream>
+#include <bps/bps.h>
+#include <bps/deviceinfo.h>
 #include <bb/device/SimCardInfo>
 #include <bb/device/HardwareInfo>
 #include <bb/device/CellularNetworkInfo>
@@ -29,6 +31,7 @@ namespace webworks {
 
 DeviceInfo::DeviceInfo(TemplateJS *parent) {
 	m_pParent = parent;
+	bps_initialize();
 }
 
 std::string DeviceInfo::getModelNumber() {
@@ -52,7 +55,22 @@ std::string DeviceInfo::getMNC() {
 	return simInfo.mobileNetworkCode().toLocal8Bit().data();
 }
 
+std::string DeviceInfo::isSimulator() {
+    deviceinfo_details_t *details;
+
+    if (BPS_SUCCESS == deviceinfo_get_details(&details)) {
+        if(deviceinfo_details_is_simulator(details)) {
+        	return "true";
+        } else {
+        	return "false";
+        }
+        deviceinfo_free_details(&details);
+    }
+	return "null";
+}
+
 DeviceInfo::~DeviceInfo() {
+	bps_shutdown();
 }
 
 
