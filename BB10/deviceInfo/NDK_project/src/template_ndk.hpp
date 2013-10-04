@@ -32,6 +32,7 @@ public:
 	std::string getRoamingStatus();
 	std::string getMCC();
 	std::string getMNC();
+	std::string isSimulator();
 
 private:
 	TemplateJS *m_pParent;
