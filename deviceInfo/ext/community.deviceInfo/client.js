@@ -46,4 +46,9 @@ var _self = {},
         return window.webworks.execSync(_ID, "isSimulator", null);
     };
 
+    //get Network Information
+    _self.getNetwork = function () {
+        return window.webworks.execSync(_ID, "getNetwork", null);
+    };
+
 module.exports = _self;
