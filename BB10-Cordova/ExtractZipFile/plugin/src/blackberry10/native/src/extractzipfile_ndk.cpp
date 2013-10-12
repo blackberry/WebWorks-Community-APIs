@@ -15,6 +15,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <string>
 #include <json/reader.h>
 #include <json/writer.h>
@@ -39,7 +41,7 @@ ExtractZipFileNDK::~ExtractZipFileNDK() {
 // Returns a json obejct with "result" set to int ret code
 // ret code is < 0 on error.
 // and "result_message" a description of the error or success
-void ExtractZIPFileNDK::extractFile(const std::string& callbackId, const std::string& inputString) {
+void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::string& inputString) {
 	#define extractReturn(x,y) \
 		while (0) {retval["result"] = x; \
 		retval["result_message"] = y; \
@@ -63,7 +65,7 @@ void ExtractZIPFileNDK::extractFile(const std::string& callbackId, const std::st
 	}
 
 	// Perform the zip unpacking 
-	unxFile zipFile = unzOpen(root["zip"].asString().c_str());
+	unzFile zipFile = unzOpen(root["zip"].asString().c_str());
 	if (zipFile == NULL)
 		extractReturn(-1, "Failed to open zip file.");
 
@@ -77,7 +79,7 @@ void ExtractZIPFileNDK::extractFile(const std::string& callbackId, const std::st
 	// fixed size buf on stack, WATCH USAGE!
 	char fileBuffer[EZIPBUFSIZE];
 
-	int filesExtract = 0;
+	int filesExtracted = 0;
 	for (int i = 0; i < zipInfo.number_entry; i++) {
 
 		// single file metadata
@@ -94,17 +96,25 @@ void ExtractZIPFileNDK::extractFile(const std::string& callbackId, const std::st
 			unzClose(zipFile);
 			extractReturn(-1, "Failed to parse a file's metadata.");
 		}
-		filename[MAX_FILENAME] = "\0"; // ensure string termination
+		filename[MAX_FILENAME] = '\0'; // ensure string termination
 
 		// TODO: Support removing created dirs and files upon any failure
 		//       keep vector of filenames
 
 		// Handle Directories
-		if (filename[strlen(filename) - 1] == dir_delimiter) {
+		if (filename[strlen(filename) - 1] == '/') {
 			// Directory creation cannot lose data
 			// so we do not care if a dir already
 			// exists
-			mkdir(filename);
+			mkdir(filename, 0x777);
+			// Note: The zip format does store permissions
+			// except these are all in platform specific
+			// formats. I talked with the guy responsible
+			// for window's file navigator's zip lib.
+			// His stories have scared me into the thinking
+			// that providing a default permission is more
+			// user friendly than missing obscure edge cases
+			// which could leave files in "magical" states.
 
 		// Handle Files
 		} else {
@@ -114,7 +124,7 @@ void ExtractZIPFileNDK::extractFile(const std::string& callbackId, const std::st
 			//       "current" acts as an interator
 			if (unzOpenCurrentFile(zipFile) != UNZ_OK) {
 				unzClose(zipFile);
-				extractReturn(-1, "Failed to extract file: " + filename);
+				extractReturn(-1, "Failed to extract file");
 			}
 
 			// Open destination file in file system
@@ -122,7 +132,7 @@ void ExtractZIPFileNDK::extractFile(const std::string& callbackId, const std::st
 			if (destFile == NULL) {
 				unzCloseCurrentFile(zipFile);
 				unzClose(zipFile);
-				extractReturn(-1, "Failed to open destination file: " + filename);
+				extractReturn(-1, "Failed to open destination file");
 			}
 
 			// Ferry data into destination
@@ -134,7 +144,7 @@ void ExtractZIPFileNDK::extractFile(const std::string& callbackId, const std::st
 					unzCloseCurrentFile(zipFile);
 					unzClose(zipFile);
 					fclose(destFile);
-					extractReturn(-1, "Failed to read compressed file: " + filename);
+					extractReturn(-1, "Failed to read compressed file");
 				}
 
 				// Write
@@ -148,7 +158,7 @@ void ExtractZIPFileNDK::extractFile(const std::string& callbackId, const std::st
 						unzCloseCurrentFile(zipFile);
 						unzClose(zipFile);
 						fclose(destFile);
-						extractReturn(-1, "Failed to write to destination file: " + filename);
+						extractReturn(-1, "Failed to write to destination file");
 					}
 				}
 			} while (readResult > 0);
