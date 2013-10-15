@@ -38,5 +38,10 @@ module.exports = {
 	
 	isSimulator: function (success, fail) {
         success(template.getInstance().isSimulator());
+    },
+
+	getNetwork: function (success, fail) {
+        success(template.getInstance().getNetwork());
     }
+	
 };

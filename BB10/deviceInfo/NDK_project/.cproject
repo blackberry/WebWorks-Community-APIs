@@ -61,6 +61,7 @@
 								<option id="com.qnx.qcc.option.linker.security.230783029" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.linker.libraries.1387713775" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="QtCore"/>
+									<listOptionValue builtIn="false" value="bps"/>
 									<listOptionValue builtIn="false" value="bbdevice"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.1228510357" superClass="com.qnx.qcc.inputType.linker">
