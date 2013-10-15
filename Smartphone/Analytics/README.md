@@ -1,5 +1,13 @@
 # Analytics SDK extension Information
 
+## End of Life Notice
+
+The BlackBerry Analytics service that this extension depends on will be disctontinued on November 30th, 2013. At that time, the data captured by the service will no longer be accessible through the WebTrends portal. Applications will also stop reporting data to the service.
+
+If you desire a replacement service, it is recommended to use the free [Flurry](http://www.flurry.com/) service for HTML5/JS applications.
+
+---------------
+
 The BlackBerry Analytics SDK allows you to quickly capture analytics data from your applications and review this 
 aggregate data about your user base in the Analytics Portal.
 

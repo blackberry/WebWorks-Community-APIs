@@ -61,5 +61,9 @@ Start with the [Template](https://github.com/blackberry/WebWorks-Community-APIs/
 	4. decrypt( params ) - decrypt using AES CBC
 	5. random( size: int ) - return a random data string of the given length
 	
+11. [clipboard](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/clipboard)
+	1. community.clipboard.getText() - Get text from clipboard.
+	2. community.clipboard.setText( string ); - Set string to clipboard.
+
 
 
