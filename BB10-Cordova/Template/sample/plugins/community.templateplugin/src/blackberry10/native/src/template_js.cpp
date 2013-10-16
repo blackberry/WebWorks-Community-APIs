@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Research In Motion Limited.
+ * Copyright (c) 2013 BlackBerry Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ using namespace std;
 TemplateJS::TemplateJS(const std::string& id) :
 		m_id(id) {
 	m_pTemplateController = new webworks::TemplateNDK(this);
+	m_pLogger = new webworks::Logger("TemplateJS", this);
 }
 
 /**
@@ -35,6 +36,12 @@ TemplateJS::TemplateJS(const std::string& id) :
 TemplateJS::~TemplateJS() {
 	if (m_pTemplateController)
 		delete m_pTemplateController;
+	if (m_pLogger)
+		delete m_pLogger;
+}
+
+webworks::Logger* TemplateJS::getLog() {
+	return m_pLogger;
 }
 
 /**

@@ -10,8 +10,8 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Device-Debug"/>
-						<entry flags="" kind="libraryFile" name="Template"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="Template"/>
+						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="RESOLVED" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -55,7 +55,9 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1764180006" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.227797113" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
+								<option id="com.qnx.qcc.option.linker.libraries.227797113" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="slog2"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.1025464239" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -79,8 +81,8 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Device-Release"/>
-						<entry flags="" kind="libraryFile" name="Template"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="Template"/>
+						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="RESOLVED" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -124,7 +126,9 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.230783029" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.1387713775" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
+								<option id="com.qnx.qcc.option.linker.libraries.1387713775" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="slog2"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.1228510357" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -147,7 +151,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Device-Profile"/>
-						<entry flags="" kind="libraryFile" name="Template"/>
+						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -193,7 +197,9 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1708860491" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.2086313169" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
+								<option id="com.qnx.qcc.option.linker.libraries.2086313169" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="slog2"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.802392274" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -216,7 +222,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Device-Coverage"/>
-						<entry flags="" kind="libraryFile" name="Template"/>
+						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -262,7 +268,9 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.565853353" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.152967788" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
+								<option id="com.qnx.qcc.option.linker.libraries.152967788" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="slog2"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.224554770" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -285,7 +293,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Simulator-Debug"/>
-						<entry flags="" kind="libraryFile" name="Template"/>
+						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -328,7 +336,9 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1272333045" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.1509711055" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
+								<option id="com.qnx.qcc.option.linker.libraries.1509711055" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="slog2"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.819355949" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -351,7 +361,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Simulator-Profile"/>
-						<entry flags="" kind="libraryFile" name="Template"/>
+						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -396,7 +406,9 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1422840260" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.203659667" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
+								<option id="com.qnx.qcc.option.linker.libraries.203659667" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="slog2"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.318181422" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -419,7 +431,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Simulator-Coverage"/>
-						<entry flags="" kind="libraryFile" name="Template"/>
+						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -464,7 +476,9 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.295270180" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.433937596" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
+								<option id="com.qnx.qcc.option.linker.libraries.433937596" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="slog2"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.1536810093" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -487,7 +501,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Cordova-Template"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Cordova-Template/device"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="Cordova-Template"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="Cordova-Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -531,7 +545,9 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1157664997" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.1316432206" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
+								<option id="com.qnx.qcc.option.linker.libraries.1316432206" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="slog2"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.1028572887" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -554,7 +570,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Cordova-Template"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Cordova-Template/simulator"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="Cordova-Template"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="Cordova-Template" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -597,7 +613,9 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.9141791" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.220836649" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
+								<option id="com.qnx.qcc.option.linker.libraries.220836649" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="slog2"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.167117375" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -624,29 +642,30 @@
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.profile.941124085">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.coverage.1806890017">
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.debug.1877214659">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.debug.193597202">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.debug.1877214659">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.profile.27502649">
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.coverage.1806890017">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.release.608922875">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.release.608922875.1009704567">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
-		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.coverage.537092296">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.profile.941124085">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.release.608922875.1009704567">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.profile.27502649">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 </cproject>

@@ -1,5 +1,5 @@
 /*
-* Copyright 2013 Research In Motion Limited.
+* Copyright (c) 2013 BlackBerry Limited
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@
 #include <string>
 #include "../public/plugin.h"
 #include "template_ndk.hpp"
+#include "Logger.hpp"
 
 class TemplateJS: public JSExt {
 
@@ -29,11 +30,12 @@ public:
     virtual bool CanDelete();
     virtual std::string InvokeMethod(const std::string& command);
     void NotifyEvent(const std::string& event);
-
+    webworks::Logger* getLog();
 private:
     std::string m_id;
     // Definition of a pointer to the actual native extension code
     webworks::TemplateNDK *m_pTemplateController;
+    webworks::Logger *m_pLogger;
 };
 
 #endif /* TemplateJS_HPP_ */

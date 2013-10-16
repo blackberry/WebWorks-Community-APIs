@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Research In Motion Limited.
+ * Copyright (c) 2013 BlackBerry Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,14 +24,15 @@
 
 namespace webworks {
 
-TemplateNDK::TemplateNDK(TemplateJS *parent) {
-	m_pParent = parent;
-	templateProperty = 50;
-	templateThreadCount = 1;
-	m_thread = 0;
-	pthread_cond_t cond  = PTHREAD_COND_INITIALIZER;
-	pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-	threadHalt = true;
+TemplateNDK::TemplateNDK(TemplateJS *parent):
+	m_pParent(parent),
+	templateProperty(50),
+	templateThreadCount(1),
+	threadHalt(true),
+	m_thread(0) {
+		pthread_cond_t cond  = PTHREAD_COND_INITIALIZER;
+		pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+		m_pParent->getLog()->info("Template Created");
 }
 
 TemplateNDK::~TemplateNDK() {
@@ -39,16 +40,19 @@ TemplateNDK::~TemplateNDK() {
 
 // These methods are the true native code we intend to reach from WebWorks
 std::string TemplateNDK::templateTestString() {
+	m_pParent->getLog()->debug("testString");
 	return "Template Test Function";
 }
 
 // Take in input and return a value
 std::string TemplateNDK::templateTestString(const std::string& inputString) {
+	m_pParent->getLog()->debug("testStringInput");
 	return "Template Test Function, got: " + inputString;
 }
 
 // Get an integer property
 std::string TemplateNDK::getTemplateProperty() {
+	m_pParent->getLog()->debug("get templateProperty");
 	stringstream ss;
 	ss << templateProperty;
 	return ss.str();
@@ -56,11 +60,13 @@ std::string TemplateNDK::getTemplateProperty() {
 
 // set an integer property
 void TemplateNDK::setTemplateProperty(const std::string& inputString) {
+	m_pParent->getLog()->debug("set templateProperty");
 	templateProperty = (int) strtoul(inputString.c_str(), NULL, 10);
 }
 
 // Asynchronous callback with JSON data input and output
 void TemplateNDK::templateTestAsync(const std::string& callbackId, const std::string& inputString) {
+	m_pParent->getLog()->debug("Async Test");
 	// Parse the arg string as JSON
 	Json::FastWriter writer;
 	Json::Reader reader;
@@ -68,6 +74,7 @@ void TemplateNDK::templateTestAsync(const std::string& callbackId, const std::st
 	bool parse = reader.parse(inputString, root);
 
 	if (!parse) {
+		m_pParent->getLog()->error("Parse Error");
 		Json::Value error;
 		error["result"] = "Cannot parse JSON object";
 		m_pParent->NotifyEvent(callbackId + " " + writer.write(error));
@@ -111,8 +118,10 @@ std::string TemplateNDK::templateStartThread(const std::string& callbackId) {
 				static_cast<void *>(this));
 		pthread_attr_destroy(&thread_attr);
 		threadCallbackId = callbackId;
+		m_pParent->getLog()->info("Thread Started");
 		return "Thread Started";
 	} else {
+		m_pParent->getLog()->notice("Thread Started but already running");
 		return "Thread Running";
 	}
 }
@@ -136,6 +145,7 @@ std::string TemplateNDK::templateStopThread() {
 
 	m_thread = 0;
 	threadHalt = true;
+	m_pParent->getLog()->debug("Thread Stopped");
 	return "Thread stopped";
 }
 
