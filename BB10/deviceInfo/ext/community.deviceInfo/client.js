@@ -31,8 +31,19 @@ var _self = {},
         return window.webworks.execSync(_ID, "getMCC", null);
     };
     
+	//get Mobile Carrier Code
+	_self.getRoamingStatus = function () {
+        return window.webworks.execSync(_ID, "getRoamingStatus", null);
+    };
+    
     //get Mobile Network Code
     _self.getMNC = function () {
         return window.webworks.execSync(_ID, "getMNC", null);
     };
+	
+    //get Mobile Network Code
+    _self.isSimulator = function () {
+        return window.webworks.execSync(_ID, "isSimulator", null);
+    };
+
 module.exports = _self;

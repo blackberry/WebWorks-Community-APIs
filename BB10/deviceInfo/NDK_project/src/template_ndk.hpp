@@ -24,13 +24,15 @@ class TemplateJS;
 
 namespace webworks {
 
-class TemplateNDK {
+class DeviceInfo {
 public:
-	explicit TemplateNDK(TemplateJS *parent = NULL);
-	virtual ~TemplateNDK();
+	explicit DeviceInfo(TemplateJS *parent = NULL);
+	virtual ~DeviceInfo();
 	std::string getModelNumber();
+	std::string getRoamingStatus();
 	std::string getMCC();
 	std::string getMNC();
+	std::string isSimulator();
 
 private:
 	TemplateJS *m_pParent;

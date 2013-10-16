@@ -16,8 +16,11 @@
 
 #include <string>
 #include <sstream>
+#include <bps/bps.h>
+#include <bps/deviceinfo.h>
 #include <bb/device/SimCardInfo>
 #include <bb/device/HardwareInfo>
+#include <bb/device/CellularNetworkInfo>
 #include <json/reader.h>
 #include <json/writer.h>
 #include <pthread.h>
@@ -26,27 +29,48 @@
 
 namespace webworks {
 
-TemplateNDK::TemplateNDK(TemplateJS *parent) {
+DeviceInfo::DeviceInfo(TemplateJS *parent) {
 	m_pParent = parent;
+	bps_initialize();
 }
 
-std::string TemplateNDK::getModelNumber() {
+std::string DeviceInfo::getModelNumber() {
 	bb::device::HardwareInfo hwInfo;
 	std::string str = hwInfo.modelName().toLocal8Bit().data();
 	return str;
 }
 
-std::string TemplateNDK::getMCC() {
+std::string DeviceInfo::getMCC() {
 	bb::device::SimCardInfo simInfo;
 	return simInfo.mobileCountryCode().toLocal8Bit().data();
 }
 
-std::string TemplateNDK::getMNC() {
+std::string DeviceInfo::getRoamingStatus() {
+	bb::device::CellularNetworkInfo netInfo;
+	return netInfo.isRoaming() ? "true" : "false";
+}
+
+std::string DeviceInfo::getMNC() {
 	bb::device::SimCardInfo simInfo;
 	return simInfo.mobileNetworkCode().toLocal8Bit().data();
 }
 
-TemplateNDK::~TemplateNDK() {
+std::string DeviceInfo::isSimulator() {
+    deviceinfo_details_t *details;
+
+    if (BPS_SUCCESS == deviceinfo_get_details(&details)) {
+        if(deviceinfo_details_is_simulator(details)) {
+        	return "true";
+        } else {
+        	return "false";
+        }
+        deviceinfo_free_details(&details);
+    }
+	return "null";
+}
+
+DeviceInfo::~DeviceInfo() {
+	bps_shutdown();
 }
 
 

@@ -42,6 +42,7 @@ The README for the API should be updated to indicate the new Author.
 * [Jeffrey Heifetz](https://github.com/jeffheifetz)
 * [Alex Babut](https://github.com/ababut)
 * [Adam Stanley](https://github.com/adamstanley)
+* [Anzor Bashkhaz](https://github.com/anzorb)
 * [Ken Wallis](https://github.com/kwallis)
 * [Chris DelCol](https://github.com/cdelcol)
 * [Tim Neil](https://github.com/tneil)
