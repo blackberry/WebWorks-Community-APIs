@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+           id="org.apache.cordova.core.dialogs"
+      version="0.2.0">
+
+    <name>Notification</name>
+    <description>Cordova Notification Plugin</description>
+    <license>Apache 2.0</license>
+    <keywords>cordova,notification</keywords>
+
+    <js-module src="www/notification.js" name="notification">
+        <merges target="navigator.notification" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="Notification">
+                <param name="android-package" value="org.apache.cordova.dialogs.Notification"/>
+            </feature>
+        </config-file>
+        
+        <source-file src="src/android/Notification.java" target-dir="src/org/apache/cordova/dialogs" />
+
+        <!-- android specific notification apis -->
+        <js-module src="www/android/notification.js" name="notification_android">
+            <merges target="navigator.notification" />
+        </js-module>
+        
+    </platform>
+
+    <!-- ios -->
+    <platform name="ios">    
+        <config-file target="config.xml" parent="/*">
+            <feature name="Notification">
+                <param name="ios-package" value="CDVNotification"/>
+            </feature>
+        </config-file>
+        <header-file src="src/ios/CDVNotification.h" />
+	    <source-file src="src/ios/CDVNotification.m" />
+	    <resource-file src="src/ios/CDVNotification.bundle" />
+		<framework src="AudioToolbox.framework" weak="true" />	            
+    </platform>
+
+    <!-- blackberry10 -->
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" target-dir="Notification" />
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="Notification" value="Notification"/>
+        </config-file>
+    </platform>
+
+    <!-- wp7 -->
+    <platform name="wp7">
+        <config-file target="config.xml" parent="/*">
+            <feature name="Notification">
+                <param name="wp-package" value="Notification"/>
+            </feature>
+        </config-file>
+
+        <source-file src="src/wp/Notification.cs" />
+        <source-file src="src/wp/NotificationBox.xaml.cs" />
+        <source-file src="src/wp/NotificationBox.xaml" />
+        <source-file src="src/wp/notification-beep.wav" />
+    </platform>
+
+    <!-- wp8 -->
+    <platform name="wp8">
+        <config-file target="config.xml" parent="/*">
+            <feature name="Notification">
+                <param name="wp-package" value="Notification"/>
+            </feature>
+        </config-file>
+
+        <source-file src="src/wp/Notification.cs" />
+        <source-file src="src/wp/NotificationBox.xaml.cs" />
+        <source-file src="src/wp/NotificationBox.xaml" />
+        <source-file src="src/wp/notification-beep.wav" />
+    </platform>
+
+    <!-- windows8 -->
+    <platform name="windows8">
+        <js-module src="src/windows8/NotificationProxy.js" name="NotificationProxy">
+            <merges target="" />
+        </js-module>
+    </platform>
+
+</plugin>

@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.example.test" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:rim="http://www.blackberry.com/ns/widgets">
+    <name>MessageBox</name>
+    <author>Your Name Here</author>
+    <description>
+       A sample Apache Cordova application that responds to the deviceready event.
+  </description>
+    <license href="http://opensource.org/licenses/alphabetical">
+    </license>
+    <icon src="res/icon/blackberry/icon-80.png" />
+    <content src="index.html" />
+    <rim:permissions>
+        <rim:permit>use_camera</rim:permit>
+        <rim:permit>read_device_identifying_information</rim:permit>
+        <rim:permit>access_shared</rim:permit>
+        <rim:permit>read_geolocation</rim:permit>
+        <rim:permit>record_audio</rim:permit>
+        <rim:permit>access_pimdomain_contacts</rim:permit>
+    </rim:permissions>
+    <feature name="Notification" value="Notification" />
+    <feature name="org.apache.cordova.MessageBox" value="org.apache.cordova.MessageBox" />
+    <feature name="Notification">
+        <param name="blackberry-package" value="org.apache.cordova.notification.Notification" />
+    </feature>
+    <access origin="*" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="true" />
+</widget>
