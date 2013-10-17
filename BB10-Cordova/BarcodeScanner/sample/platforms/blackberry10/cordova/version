@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Prints cordova version number
+node "$(dirname "$0")/lib/version" "$@"
+
