@@ -33,7 +33,7 @@ public:
 	std::string getMCC();
 	std::string getMNC();
 	std::string isSimulator();
-
+	std::string getNetwork();
 private:
 	TemplateJS *m_pParent;
 };

@@ -68,6 +68,10 @@ JNEXT.Template = function () {
         return JNEXT.invoke(self.m_id, "isSimulator");
     };
     
+    self.getNetwork = function () {
+        return JSON.parse(JNEXT.invoke(self.m_id, "getNetwork"));
+    };
+    
 	// ************************
 	// End of methods to edit
 	// ************************
