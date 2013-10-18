@@ -88,3 +88,7 @@ Notes
 * The `chmod` option may be needed if you wish to pass the screenshot to other parts of the system, such as a Window Cover. It should be specified as an octal value, e.g. `parseInt(644,8)`.
 * Refer to the [Template Extension](https://github.com/blackberry/WebWorks-Community-APIs/blob/master/BB10/Template) for info on how to build extensions from source
 * Toggle the `TRACE` flag in `screenshot_js.hpp` to enable or disable tracing. The trace output can be viewed in the Web Inspector console of the Bootstrap webkit instance.
+
+Disclaimer
+----------
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
