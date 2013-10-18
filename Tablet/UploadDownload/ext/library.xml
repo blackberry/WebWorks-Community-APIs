@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library>
+	<extension id="webworks.io.filetransfer">
+		<entryClass>webworks.io.filetransfer.FileTransferExtension</entryClass>
+	</extension>
+  
+	<platforms>
+		<platform value="AIR">
+			<target version="default" config="AIR_XHR" />
+		</platform>
+	</platforms>
+
+	<configurations>
+		<configuration name="AIR_XHR" version="1.0" comment="XHR architecture/Air implementation">			
+			<src type="text/javascript" path="js/common/filetransfer_dispatcher.js" comment="File Transfer JS XHR dispatcher" />
+			<src type="text/javascript" path="js/common/filetransfer_ns.js" comment="File Transfer JS interface" />			
+			<src type="text/actionscript" path="src/Air/FileTransfer/src" comment="ActionScript implementation" />
+		</configuration>
+	</configurations>
+  
+	<features>
+		<feature id="webworks.io.fileTransfer" version="1.0.0" />
+	</features>
+</library>

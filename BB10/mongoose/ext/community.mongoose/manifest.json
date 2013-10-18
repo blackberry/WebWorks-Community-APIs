@@ -1,0 +1,5 @@
+{
+    "global": false,
+    "namespace": "community.mongoose",
+    "dependencies": ["utils"]
+}

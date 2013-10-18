@@ -1,0 +1,118 @@
+<!- 
+/*
+* Copyright 2011 Research In Motion Limited.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+-->
+
+<html>
+  <head>
+    <meta name="viewport" id="viewport" content="height=device-height,width=device-width,user-scalable=no" />
+	<script type="text/javascript" >
+      
+		function init() {
+			// Initialize the listeners
+			webworks.message.list.onItemOpened = onItemOpened;
+			webworks.message.list.onItemMarkedRead = onItemMarkedRead;
+			webworks.message.list.onItemMarkedUnread = onItemMarkedUnread;
+			webworks.message.list.onItemDeleted = onItemDeleted;
+			
+			var options = { 'guid' : '123456789',
+					'folderName' : 'My Cool App',
+					'defaultNewImage' : 'new.png',
+					'defaultReadImage' : 'opened.png'
+					}
+
+			webworks.message.list.init(options);
+			addStatusMessage('Initialized');
+		}
+		
+		function onItemOpened(item) {
+			blackberry.app.requestForeground();
+			addStatusMessage('Item Opened: ' + item.id);
+		}
+
+		function onItemMarkedRead(item) {
+			addStatusMessage('Item Marked Read: ' + item.id);
+		}
+		
+		function onItemMarkedUnread(item) {
+			addStatusMessage('Item Marked Unread: ' + item.id);
+		}
+
+		function onItemDeleted(item) {
+			addStatusMessage('Item Deleted: ' + item.id);
+		}
+		
+		function addItem() {
+			var id = blackberry.utils.generateUniqueId().toString();
+			var item = { 'id' : id,
+					'title' : 'my title',
+					'description' : 'my description'
+					}
+			webworks.message.list.addItem(item);			
+			addStatusMessage('Item: ' + id + ' added');	
+		}
+		
+		function addCustomIconItem() {
+            var id = blackberry.utils.generateUniqueId().toString();
+            var item = { 'id' : id,
+                    'title' : 'my title',
+                    'description' : 'my description',
+                    'imageNew' : 'new2.png',
+                    'imageRead' : 'opened2.png'
+                    }
+            webworks.message.list.addItem(item);            
+            addStatusMessage('Item: ' + id + ' added'); 
+        }
+		
+		function removeItem() {
+			var id = document.getElementById('removeitem').value;
+			webworks.message.list.removeItem(id);
+		}
+		
+		function markItemRead() {
+			var id = document.getElementById('readitem').value;
+			webworks.message.list.markItemRead(id);
+		}
+		
+		function getItem() {
+			var id = document.getElementById('getitem').value;
+			var item = webworks.message.list.getItem(id);
+			if (item == null) {
+				alert('item is null');
+				return;
+			}
+			alert(item.title);
+		}
+		
+		function addStatusMessage(message) {
+			var list = document.getElementById('messageList');
+			var item = document.createElement('div');
+			item.innerHTML = message;
+			list.appendChild(item);
+			item = document.createElement('br');
+			list.appendChild(item);
+		}
+    </script>
+  </head>
+  <body onload="init()">
+	<button onclick="addItem()">Add Item</button><br/>
+	<button onclick="addCustomIconItem()">Add Custom Icon Item</button><br/>
+	<button onclick="removeItem()">Remove Item</button><input id="removeitem" type="text" /><br/>
+	<button onclick="getItem()">Get Item</button><input id="getitem" type="text" /><br/>
+	<button onclick="markItemRead()">Mark Read</button><input id="readitem" type="text" /><br/>
+	<div id="messageList"></div>
+  </body>
+</html>

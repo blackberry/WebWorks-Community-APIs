@@ -1,0 +1,51 @@
+<html>
+<head>
+<script type="text/javascript">
+	
+	/* When app moves to background allowSleep?? 
+	  When you exit the app allowSleep??
+	*/
+/*
+	function showStatus()
+	{
+		document.getElementById("currentStatus").innerHTML = "Allow Sleep = " + webworks.system.display.allowSleep;
+	}
+	
+	function preventSleep() 
+	{
+		try
+		{
+			webworks.system.display.allowSleep = false;
+			showStatus();
+		} 
+		catch(e) {
+			alert(e);
+		}
+	}
+	
+	function allowSleep() 
+	{
+		try
+		{
+			webworks.system.display.allowSleep = true;
+			showStatus();
+		} 
+		catch(e) {
+			alert(e);
+		}
+	}
+*/	
+</script>
+</head>
+<!--
+<body onload="showStatus()">
+-->
+<body>
+	<h1>Prevent Sleep Demo App</h1>
+	
+	<div id="currentStatus"></div>
+	
+	<button onclick="preventSleep()">Prevent Sleep</button>
+	<button onclick="allowSleep()">Allow Sleep</button>
+</body>
+</html>

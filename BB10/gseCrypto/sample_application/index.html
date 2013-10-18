@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!--
+ * Copyright 2013 Research In Motion Limited.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="css/styles.css" rel="stylesheet" type="text/css" />
+<title>GSECrypto</title>
+<script type="text/javascript" src="local:///chrome/webworks.js"></script>
+<script type="text/javascript" src="js/blackberrynfc.ndef.js"></script>
+<script type="text/javascript" src="js/katSHA.js"></script>
+<script type="text/javascript" src="js/katAES.js"></script>
+<script type="text/javascript" src="js/pkcs5.js"></script>
+<script type="text/javascript" src="index.js"></script>
+</head>
+<body>
+	<div>
+		<h1>SHA</h1>
+		<table>
+			<tr>
+				<td>Input:</td>
+				<td><input id='toHash' type="text" value="r" /></td>
+			</tr>
+			<tr>
+				<td>Algorithm:</td>
+				<td><select id='hashAlg'>
+						<option value="sha1">SHA1</option>
+						<option value="sha224">SHA224</option>
+						<option selected="true" value="sha256">SHA256</option>
+						<option value="sha384">SHA384</option>
+						<option value="sha512">SHA512</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type='button' value='Hash' onclick="hash()" /></td>
+			</tr>
+			<tr>
+				<td>Result:</td>
+				<td><input type='text' id='hashOutput' readonly='true' /></td>
+			</tr>
+		</table>
+
+		<h1>AES</h1>
+		<table>
+			<tr>
+				<td>AES Key:</td>
+				<td><input type='text' value='00112233445566778899aabbccddeeff'
+					id='aesKey' /></td>
+			</tr>
+			<tr>
+				<td>Key Size:</td>
+				<td><select id="aesKeySize" onchange="generateAESKey()">
+						<option selected="true" value="128">128 bits</option>
+						<option value="192">192 bits</option>
+						<option value="256">256 bits</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type='button' value='Generate'
+					onclick="generateAESKey()" /></td>
+			</tr>
+			<tr>
+				<td>AES IV</td>
+				<td><input type='text' value='ffeeddccbbaa99887766554433221100'
+					id='aesIV' /></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type='button' value='Generate'
+					onclick="generateAESIV()" /></td>
+			</tr>
+			<tr>
+				<td>Input:</td>
+				<td><input id='aesText' type='text' value='Montr&#233;al' /></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type='button' value='Encrypt' onclick="encryptAES();decryptAES();" /></td>
+			</tr>
+			<tr>
+				<td>Encrypted:</td>
+				<td><input id='aesCipherText' type='text' value=''
+					readonly='true' /></td>
+			</tr>
+			<tr>
+				<td>Decrypted:</td>
+				<td><input id='aesPlainText' type='text' value=''
+					readonly='true' /></td>
+			</tr>
+		</table>
+	</div>
+
+
+	<div>
+		<h1>Known Answer Tests</h1>
+		<input type='button' value='Run SHA KAT' onclick='katSHA()' /> <input
+			type='button' value='Run AES KAT' onclick='katAES()' />
+		<div id="log"></div>
+	</div>
+
+
+</body>
+</html>

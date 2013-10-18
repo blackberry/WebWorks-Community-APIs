@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+        <title>Prevent Sleep</title>
+        <link href="favicon.ico" rel="icon" type="image/x-icon">
+        <style type="text/css">
+
+        </style>
+    </head>
+    <body>
+
+        <h1>Prevent Sleep</h1>
+
+        <p>To prevent the screen from turning off, click either button to toggle the state.</p>
+
+        <video id="movie" width="480" height="360" controls="controls" loop="loop" preload="metadata" poster="fish_frenzy_clip.jpg">
+            <source src="fish_frenzy_clip.m4v" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+        </video><br>
+        <span>Oceans: Fish Frenzy</span>
+
+        <div id="test">N/A</div>
+
+        <button onclick="preventSleep();">Prevent Sleep</button>
+        <button onclick="allowSleep();">Allow Sleep</button>
+        <button onclick="showStatus();">Show Status</button>
+
+        <script type="text/javascript">
+        function onResponse() {
+            if (xhReq.readyState != 4)  { return; }
+            if (xhReq.status != 200)  {
+                // Handle error, e.g. Display error message on page
+                console.log('error : ' + xhReq.status);
+                return;
+            }
+
+            var serverResponse = xhReq.responseText;
+            var response = JSON.parse(serverResponse);
+            //alert(response.data.allowSleep);
+            document.getElementById("test").innerHTML = "Allow Sleep = " + response.data.allowSleep + " (" + new Date() + ")";
+            console.log(serverResponse)
+        }
+
+        function preventSleep() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log(xhr.responseText);
+                    showStatus();
+                }
+            }
+//            xhr.open("GET", "webworks://webworks/system/display/set?sleep=false", true);
+ //           xhr.send();
+		blackberry.system.display.allowSleep = false;
+		showStatus();
+        }
+
+        function allowSleep() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log(xhr.responseText);
+                    showStatus();
+                }
+            }
+ //           xhr.open("GET", "webworks://webworks/system/display/set?sleep=true", true);
+   //         xhr.send();
+		blackberry.system.display.allowSleep = true;
+		showStatus();
+        }
+
+        function showStatus() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log(xhr.responseText);
+
+                    var response = JSON.parse(xhr.responseText);
+                    document.getElementById("test").innerHTML = "Allow Sleep = " + response.data.allowSleep + " (" + new Date() + ") ";
+                }
+            }
+            //xhr.open("GET", "webworks://webworks/system/display/allowSleep", true);
+            //xhr.send();
+	    document.getElementById("test").innerHTML = "Allow Sleep = " + blackberry.system.display.allowSleep + " (" + new Date() + ") ";
+        }
+
+//        var xhReq = new XMLHttpRequest();
+ //       xhReq.open("GET", "webworks://webworks/system/display/allowSleep", true);
+  //      xhReq.onreadystatechange = onResponse
+   //     xhReq.send(null);
+	document.getElementById("test").innerHTML = "Allow Sleep = " + blackberry.system.display.allowSleep + " (" + new Date() + ") ";
+	</script>
+
+    </body>
+</html>
