@@ -12,6 +12,14 @@ BlackBerry Q5 10.2.0.1157
 [Tim Windsor](https://github.com/timwindsor)
 
 
+## Structure of the Plugin and Sample
+
+There are two parts to this project - the plugin and a sample:
+
+The plugin is contained in the _plugin_ folder. This plugin can be imported into a PhoneGap or Cordova application using the command line tools.
+The sample code is included in the _sample_ folder. The code here is meant to be dropped into a PhoneGap or Cordova default template project and it shows the API in use.
+
+
 ## Building and Testing the Sample
 
 The included sample app is the _www_ directory of the default Cordova Hello World application created by the __cordova create__ command. Create a new Cordova project using the create command, and copy the _www_ folder into it, overwriting the existing one. Make sure you've either added the BlackBerry 10 SDK to your PATH, or run bbndk-env.bat (Win) or bbndk-env.sh (Mac/Linux), then add the BlackBerry10 platform to your project using __cordova platform add blackberry10__. Then add the plugin to your project with the command __cordova plugin add <path to the PreventSleep folder>/plugin__. Your project is ready to run on your simulator simply by calling __cordova run__ in the project directory. The sample code in www has been altered to include a div in _index.html_ for displaying the test data, and a set of test functions in _js/index.js_ to excercise the Prevent Sleep API and display some results.
