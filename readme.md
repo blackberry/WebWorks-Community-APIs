@@ -16,6 +16,7 @@ Tested on:
 * Z10, Dev Alpha C
 
 Author: [Jon Webb] (http://www.jonwebb.net)
+
 Support forums thread: TBA
 
 Installing the extension
@@ -37,12 +38,17 @@ Taking a screenshot
 
 To take a screenshot and put it in an `<img>` tag using JQuery:
 
+HTML:
 ```html
 	<img id="myimage" />
 ```
+JS:
 ```javascript
+	// configure options
 	var options = {dest:'data:', mime:'image/png'};
+	// perform screenshot
 	var screenshot = net.jonwebb.screenshot.execute(options);
+	// check result
 	if(screenshot.substr(0,5)=="data:")
 		$('#myimage').attr('src', screenshot)
 	else
@@ -58,8 +64,8 @@ The `execute` function takes an `options` object which allows you to customize h
 
 <dl>
 	<dt>dest: string</dt>
-	<dd>either `data:`, which returns the image as a data-URL (default)
-	**or** a complete file path with extension, which saves the image to the file.</dd>
+	<dd>either "data:", which returns the image as a data-URL (default)
+	or a complete file path with extension, which saves the image to the file.</dd>
  
 	<dt>rect: {x: int, y:int, w: int, h: int}</dt>
 	<dd>the rectangle to capture (optional, defaults to full screen).</dd>
@@ -68,10 +74,10 @@ The `execute` function takes an `options` object which allows you to customize h
 	<dd>jpeg/png quality factor (1-100, default 90).</dd>
  
 	<dt>mime: string</dt>
-	<dd>for a **data-URL** destination: defines the mime type to encode (defaults to `image/jpeg`).</dd>
+	<dd>for a data-URL destination: defines the mime type to encode (defaults to "image/jpeg").</dd>
 
 	<dt>chmod: int</dt>
-	<dd>for a **file path** destination: which `chmod` should be performed.</dd>
+	<dd>for a file path destination: which chmod should be performed.</dd>
 </dl>
 
 Result
