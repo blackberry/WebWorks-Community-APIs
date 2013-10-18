@@ -17,7 +17,7 @@ Tested on:
 
 Author: [Jon Webb] (http://www.jonwebb.net)
 
-Support forums thread: TBA
+Support forums thread: http://supportforums.blackberry.com/t5/Web-and-WebWorks-Development/WebWorks-BB10-screenshot-extension/td-p/2631541
 
 Installing the extension
 ------------------------
