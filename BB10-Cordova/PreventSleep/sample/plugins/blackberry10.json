@@ -1,1 +1,0 @@
-{"prepare_queue":{"installed":[],"uninstalled":[]},"config_munge":{"www/config.xml":{"/widget":{"<feature name=\"community.preventsleep\" value=\"community.preventsleep\" />":1}}},"installed_plugins":{"community.preventsleep":{"PACKAGE_NAME":"com.example.test"}},"dependent_plugins":{}}
