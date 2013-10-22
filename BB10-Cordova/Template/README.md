@@ -15,7 +15,14 @@ This template includes examples for communicating in several ways:
 
 ## Building and Testing the Sample
 
-The included sample is the default Cordova Hello World application created by the __cordova create__ command. It is ready to run on your simulator simply by calling __cordova run__ in the sample directory. It has been altered to include a div in _index.html_ for displaying the test data, and a set of test functions in _js/index.js_ to excercise the template API and display some results.
+The included sample is a modified version of the default Cordova Hello World application created by the __cordova create__ command. It has been altered to include a div in _index.html_ for displaying the test data, and a set of test functions in _js/index.js_ to excercise the template API and display some results. To add these changes and the plugin to a test project follow these steps:
+
+1. Create a new project using __cordova create__ and, 
+2. Copy the _www_ folder in the _sample_ directory over the default one created by that command. 
+3. Run the __bbndk-env.bat__ or __bbndk-env.sh__ script if the NDK is not on your PATH. 
+4. Add the _blackberry10_ platform to your project by running __cordova platform add blackberry10__
+5. Then add the plugin to this new project with __cordova plugin add <path to this Template folder>/plugin__ 
+6. Finally, run __cordova run__ 
 
 To use the plugin in another project, that's been created with Cordova, run __cordova plugin add <path to this Template folder>/plugin__
 
@@ -108,7 +115,7 @@ When making changes, rebuild regularly so you don't make a really hard to find t
 
 Follow the steps above to:
 1. [Build the native portion](#how-to-build-your-native-plugin), and
-3. [Use the plugin in your test app](#using-the-plugin-in-an-application).
+2. [Use the plugin in your test app](#using-the-plugin-in-an-application).
 
 ## Architecture of a Plugin
 
@@ -392,6 +399,49 @@ templateProperty: function (success, fail, args, env) {
 Debugging plugins is difficult, but there are some ways that can be effective. If you open WebInspector to the __first__ WebView, instead of the second, you will be able to see and interact with the index.js code and the inner parts of the extension. Opening a tab on the __second__ WebView, where you normally would, at the same time will allow you to inspect the whole flow of calls within JavaScript.
 
 Simple JavaScript alerts also work in the plugin files and this can be invaluable to check the value of some data being passed around. Since plugins deal with strings, it's easy to check.
+
+### Logging at the Native level with slogger2
+
+You will notice there is a __Logger__ class in the project which has an instance created in __template_js.cpp__ and is used in many of the methods of __template_ndk.cpp__. This class wraps the slogger2 logging capabilities of BlackBerry 10 for easy logging integration in your Plugins. From your template_ndk.cpp file, you can call these convenience methods to write out a simple string to the log buffer. Appropriate log levels and buffers are created by the Logger class so you don't need to do anything else.
+
+```cpp
+m_pParent->getLog()->debug(const char* message);
+
+m_pParent->getLog()->info(const char* message);
+
+m_pParent->getLog()->notice(const char* message);
+	
+m_pParent->getLog()->warn(const char* message);
+
+m_pParent->getLog()->error(const char* message);
+
+m_pParent->getLog()->critical(const char* message);
+```
+
+These methods wrap the __[slog2c()](https://developer.blackberry.com/native/reference/core/com.qnx.doc.neutrino.lib_ref/topic/s/slog2c.html)__ method which is the fastest logging method, but accepts only character arrays. The Logger creates two different sized buffers: One larger for high frequency, but lower priority messages, and one smaller for low frequency but higher priority messages. The methods above choose the appropriate buffer to use. If you need to send more complicated log messages use the __[slog2fa()](https://developer.blackberry.com/native/reference/core/com.qnx.doc.neutrino.lib_ref/topic/s/slog2fa.html)__ method, and you can access the buffers through these methods:
+
+```cpp
+slog2_buffer_t hiPriorityBuffer();
+slog2_buffer_t lowPriorityBuffer();
+```
+
+So, for example, you could do the following:
+
+```cpp
+
+	#include <slog2.h>
+	
+	int some_number = 1;
+
+	slog2fa(m_pParent->getLog()->lowPriorityBuffer(), 0, SLOG2_INFO, "string:%s, some_number:%d", 
+		SLOG2_FA_STRING( "Hello world" ), 
+		SLOG2_FA_SIGNED( some_number ), 
+		SLOG2_FA_END );
+
+```
+
+Slogger2 data can be seen either over an SSH connection to the device, and running slog2info (pass in -w to have the command wait and print out messages as they arrive), or even better in Momentics by right clicking on a Target in the Target Navigator view, and choosing __Open Device Log__.
+
 
 ### Common Issues
 If you are getting a message saying the application can not load your .so file, it's nearly always a linking problem. Your code may build in the IDE, but not actually link on the device. Make sure you've included all your dependencies and includes properly, _on the build that you have loaded_. Also, make sure that you've loaded the device build on a device, and the simulator on a simulator.
