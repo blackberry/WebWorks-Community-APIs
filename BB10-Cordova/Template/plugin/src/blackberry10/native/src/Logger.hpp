@@ -34,6 +34,10 @@ public:
 	int warn(const char* message);
 	int error(const char* message);
 	int critical(const char* message);
+	int setVerbosity(_Uint8t verbosity);
+	_Uint8t getVerbosity();
+	slog2_buffer_t hiPriorityBuffer();
+	slog2_buffer_t lowPriorityBuffer();
 private:
 	TemplateJS *m_pParent;
 	slog2_buffer_set_config_t buffer_config;

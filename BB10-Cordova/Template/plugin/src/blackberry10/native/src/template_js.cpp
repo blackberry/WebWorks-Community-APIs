@@ -26,8 +26,8 @@ using namespace std;
  */
 TemplateJS::TemplateJS(const std::string& id) :
 		m_id(id) {
-	m_pTemplateController = new webworks::TemplateNDK(this);
 	m_pLogger = new webworks::Logger("TemplateJS", this);
+	m_pTemplateController = new webworks::TemplateNDK(this);
 }
 
 /**

@@ -31,7 +31,7 @@ Logger::Logger(const char* name, TemplateJS *parent): m_pParent(parent) {
 	   long every 150 milliseconds.
 	*/
 
-	buffer_config.buffer_config[0].buffer_name = "hi_rate_logging";
+	buffer_config.buffer_config[0].buffer_name = "low_priority";
 	buffer_config.buffer_config[0].num_pages = 7;
 
 	/* Configure the second buffer, which we will use for high level info logging that is very
@@ -39,19 +39,22 @@ Logger::Logger(const char* name, TemplateJS *parent): m_pParent(parent) {
 	   buffer uses 1 x 4KB.
 	*/
 
-	buffer_config.buffer_config[1].buffer_name = "lo_rate_logging";
+	buffer_config.buffer_config[1].buffer_name = "high_priority";
 	buffer_config.buffer_config[1].num_pages = 1;
 
 	/* Register the buffer set. */
 
 	if( -1 == slog2_register( &buffer_config, buffer_handle, 0 ) ) {
 		fprintf( stderr, "Error registering slogger2 buffer!\n" );
+	} else {
+		info("Created slogger2 buffers");
 	}
 
 }
 
 Logger::~Logger() {
-	// TODO Auto-generated destructor stub
+	critical("slogger2 buffers reset");
+	slog2_reset();
 }
 
 int Logger::log(slog2_buffer_t buffer, _Uint8t severity, const char* message) {
@@ -59,27 +62,43 @@ int Logger::log(slog2_buffer_t buffer, _Uint8t severity, const char* message) {
 }
 
 int Logger::debug(const char* message) {
-	return log(buffer_handle[0], SLOG2_DEBUG1, message);
+	return log(lowPriorityBuffer(), SLOG2_DEBUG1, message);
 }
 
 int Logger::info(const char* message) {
-	return log(buffer_handle[0], SLOG2_INFO, message);
+	return log(lowPriorityBuffer(), SLOG2_INFO, message);
 }
 
 int Logger::notice(const char* message) {
-	return log(buffer_handle[0], SLOG2_NOTICE, message);
+	return log(lowPriorityBuffer(), SLOG2_NOTICE, message);
 }
 
 int Logger::warn(const char* message) {
-	return log(buffer_handle[0], SLOG2_WARNING, message);
+	return log(lowPriorityBuffer(), SLOG2_WARNING, message);
 }
 
 int Logger::error(const char* message) {
-	return log(buffer_handle[1], SLOG2_ERROR, message);
+	return log(hiPriorityBuffer(), SLOG2_ERROR, message);
 }
 
 int Logger::critical(const char* message) {
-	return log(buffer_handle[1], SLOG2_CRITICAL, message);
+	return log(hiPriorityBuffer(), SLOG2_CRITICAL, message);
+}
+
+int Logger::setVerbosity(_Uint8t verbosity) {
+	return slog2_set_verbosity(buffer_handle[0], verbosity);
+}
+
+_Uint8t Logger::getVerbosity() {
+	return slog2_get_verbosity(buffer_handle[0]);
+}
+
+slog2_buffer_t Logger::hiPriorityBuffer() {
+	return buffer_handle[1];
+}
+
+slog2_buffer_t Logger::lowPriorityBuffer() {
+	return buffer_handle[0];
 }
 
 } /* namespace webworks */

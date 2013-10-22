@@ -121,7 +121,7 @@ std::string TemplateNDK::templateStartThread(const std::string& callbackId) {
 		m_pParent->getLog()->info("Thread Started");
 		return "Thread Started";
 	} else {
-		m_pParent->getLog()->notice("Thread Started but already running");
+		m_pParent->getLog()->warn("Thread Started but already running");
 		return "Thread Running";
 	}
 }
@@ -145,7 +145,7 @@ std::string TemplateNDK::templateStopThread() {
 
 	m_thread = 0;
 	threadHalt = true;
-	m_pParent->getLog()->debug("Thread Stopped");
+	m_pParent->getLog()->info("Thread Stopped");
 	return "Thread stopped";
 }
 
