@@ -24,6 +24,7 @@
 
 // minizip
 #include "unzip.h"
+#include "state2json.h"
 
 #include "extractzipfile_ndk.hpp"
 #include "extractzipfile_js.hpp"
@@ -57,6 +58,8 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 	Json::Reader reader;
 	Json::Value root;
 	Json::Value retval;
+	s2jInit(retval);
+
 	bool parse = reader.parse(inputString, root);
 	if (!parse) {
 		extractReturn(-1, "Cannot parse internal JSON object");
@@ -81,6 +84,7 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 
 	int filesExtracted = 0;
 	for (int i = 0; i < zipInfo.number_entry; i++) {
+		s2jIncre("entries");
 
 		// single file metadata
 		unz_file_info fileInfo;
@@ -97,6 +101,7 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 			extractReturn(-1, "Failed to parse a file's metadata.");
 		}
 		filename[MAX_FILENAME] = '\0'; // ensure string termination
+		s2jInsert("files", filename);
 
 		// TODO: Support removing created dirs and files upon any failure
 		//       keep vector of filenames
@@ -107,6 +112,7 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 			// so we do not care if a dir already
 			// exists
 			mkdir(filename, 0x777);
+			s2jIncre("directories");
 			// Note: The zip format does store permissions
 			// except these are all in platform specific
 			// formats. I talked with the guy responsible
@@ -165,6 +171,7 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 
 			fclose(destFile);
 			filesExtracted++;
+			s2jIncre("files");
 		}
 
 		unzCloseCurrentFile(zipFile);
