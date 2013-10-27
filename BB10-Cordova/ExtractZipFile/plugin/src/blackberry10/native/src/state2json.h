@@ -32,15 +32,20 @@
 // native sdk provides this dependency.
 
 
+// Internal implementation details ------------------------
 // This abuses the compiler into warning of our
 // api requirements. The user must call s2jInit()
 // else we will not know where the state should be
 // saved into.
 #define s2jVALUE _s2jPlease_call_s2jInit_in_scope
+#ifndef S2J_ENABLED
+#define S2J_ENABLED 0
+#endif
+#define s2jBEGIN do { if (S2J_ENABLED) {
+#define s2jEND } } while(0)
+#define s2jF(FIELDTOACCESS) (*s2jVALUE)[FIELDTOACCESS]
 
-#define s2jBEGIN while(0) { if (S2J_ENABLED) {
-#define s2jEND } }
-#define s2jF(FILEDTOACCESS) (*s2jVALUE)[FIELDTOACCESS]
+// APIs ---------------------------------------------------
 
 // Must call this before saving any state
 #define s2jInit(REALVAL) \
@@ -55,21 +60,21 @@
 // Increments a numberic state field
 #define s2jIncre(FIELD) \
 	s2jBEGIN \
-		auto x = s2F(FIELD); \
-		x = x++; \
+		int x = (*s2jVALUE).get(FIELD, (int) 0).asInt(); \
+		x++; \
 		s2jF(FIELD) = x; \
 	s2jEND
 
 // Decrements a numberic state field
 #define s2jDecre(FIELD) \
 	s2jBEGIN \
-		auto x = s2F(FIELD); \
-		x = x--; \
+		int x = (*s2jVALUE).get(FIELD, (int) 0).asInt(); \
+		x--; \
 		s2jF(FIELD) = x; \
 	s2jEND
 
 // Insert value into list field
 #define s2jInsert(FIELD, VAL) \
 	s2jBEGIN \
-		s2jF(FIELD).append(json::Value(VAL)); \
+		s2jF(FIELD).append(Json::Value(VAL)); \
 	s2jEND
