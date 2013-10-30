@@ -17,6 +17,7 @@
  * under the License.
  */
 var app = {
+	barcodeScanner: null,
 	// Application Constructor
 	initialize: function() {
 		this.bindEvents();
@@ -33,60 +34,64 @@ var app = {
 	// The scope of 'this' is the event. In order to call the 'receivedEvent'
 	// function, we must explicity call 'app.receivedEvent(...);'
 	onDeviceReady: function() {
-		app.receivedEvent('deviceready');
+		console.log(window.plugins);
+		app.barcodeScanner = window.plugins.barcodeScanner;
+		app.startBarcodeRead();
 	},
-	// Update DOM on a Received Event
-	receivedEvent: function(id) {
-		var parentElement = document.getElementById(id);
-		var listeningElement = parentElement.querySelector('.listening');
-		var receivedElement = parentElement.querySelector('.received');
 
-		listeningElement.setAttribute('style', 'display:none;');
-		receivedElement.setAttribute('style', 'display:block;');
-
-		console.log('Received Event: ' + id);
-		app.testPluginCalls();
+	errorFound: function(data){
+		console.log("Error : "+data.error + " description : "+ data.description);
 	},
-	testPluginCalls: function() {
-		if (community && community.templateplugin) {
-			app.writeOut(community.templateplugin.test());
-			app.writeOut(community.templateplugin.testInput('My Test Data'));
-			app.writeOut('Template Property was: ' + community.templateplugin.templateProperty);
-			community.templateplugin.templateProperty = 99;
-			app.writeOut('Now: ' + community.templateplugin.templateProperty);
-			app.writeOut('Sent Async Request');
-			var jsonData = {"value1":10,"value2":14};
-			community.templateplugin.testAsync(jsonData, app.aSyncCallback);
-			community.templateplugin.startThread(app.threadCallback);
-		} else {
-			app.writeOut("Plugin was not found");
+
+	codeFound: function(data) {
+		console.log(data);
+		if (gotCode === false) {
+			gotCode = true;
+			stopBarcodeRead();
+			// blackberry.ui.toast.show("Detected : "+data.value);
 		}
 	},
-	writeOut: function(message) {
-		var output = document.getElementById('results');
-		output.innerText = output.innerText + message;
-		output.appendChild(document.createElement('br'));
-		console.log(message);
+
+	onStartRead: function(data){
+		console.log("Started : "+data.successful);
 	},
-	aSyncCallback: function(data) {
-		if (data) {
-			console.log(data);
-			app.writeOut(data.value1 + " + " + data.value2 + " = " + data.result);
+
+	onStopRead: function(data){
+		console.log("Stopped : " +data.successful);
+	},
+
+	startBarcodeRead: function(){
+		gotCode = false;
+		// blackberry.app.lockOrientation("portrait-primary", false);
+		app.barcodeScanner.startRead(app.codeFound, app.errorFound, "myCanvas", app.onStartRead);
+		scanTimeout = setTimeout(scanTimeoutHalt, 60000);
+	},
+
+	stopBarcodeRead: function(){
+		community.barcodescanner.stopRead(onStopRead, errorFound);
+		clearTimeout(scanTimeout);
+		scanTimeout = null;
+		// blackberry.app.unlockOrientation();
+	},
+
+	scanTimeoutHalt: function() {
+		console.log("No Code found in 60s. Stopping Scanner");
+		// blackberry.ui.toast.show("No Code found in 60s. Stopping Scanner");
+		stopBarcodeRead();
+	},
+
+	onPause: function() {
+		if (scanTimeout !== null) {
+			showResumeToast = true;
+			stopBarcodeRead();
 		}
 	},
-	threadCallback: function(data) {
-		if (app.threadStarted) {
-			console.log(data);
-			var json = JSON.parse(data);
-			app.writeOut("Thread Callback: " + json.threadCount);
-			if (json.threadCount >= 10) {
-				var end = community.templateplugin.stopThread();
-				app.writeOut(end);
-				app.threadStarted = false;
-			}
-		} else {
-			app.threadStarted = true;
-			app.writeOut(data);
+
+	onResume: function() {
+		if (showResumeToast === true) {
+			console.log("Application Minimized. Scanner Stopped");
+			// blackberry.ui.toast.show("Application Minimized. Scanner Stopped");
+			showResumeToast = false;
 		}
 	}
 };

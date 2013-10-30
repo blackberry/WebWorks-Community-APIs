@@ -1,0 +1,3 @@
+cordova plugins remove org.apache.cordova.BarcodeScanner
+cordova plugins add ../plugin
+cordova run Sim
