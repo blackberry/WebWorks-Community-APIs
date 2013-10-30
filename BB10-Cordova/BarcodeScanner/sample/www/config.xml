@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget xmlns:rim="http://www.blackberry.com/ns/widgets" id="org.apache.cordova.BarcodeScanner" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>BarcodeScanner</name>
+<widget id="community.BarcodeScanner" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Barcode Scanner</name>
     <description>
         Barcode scanner cordova plugin for BB10.
     </description>
@@ -11,8 +11,10 @@
     <preference name="fullscreen" value="true" />
     <preference name="webviewbounce" value="true" />
     <content src="index.html" />
-    
+
+    <feature id="blackberry.io" />
+    <feature id="blackberry.media.camera" />
     <rim:permissions>
-         <rim:permit>use_camera</rim:permit>
+        <rim:permit>use_camera</rim:permit>
     </rim:permissions>
 </widget>

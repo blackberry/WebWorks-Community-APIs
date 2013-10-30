@@ -232,13 +232,15 @@ static uint32_t rotation = 0;
      * Constructor for Barcode Scanner NDK class
      */
     BarcodeScannerNDK::BarcodeScannerNDK(BarcodeScannerJS *parent) {
+    	m_pParent->getLog()->debug("Constructor");
         m_pParent     = parent;
         eventDispatcher = parent;
         mCameraHandle = CAMERA_HANDLE_INVALID;
+    	m_pParent->getLog()->debug("Constructor end");
+
     }
 
     BarcodeScannerNDK::~BarcodeScannerNDK() {}
-
 
     /*
      * BarcodeScannerNDK::startRead
@@ -247,7 +249,7 @@ static uint32_t rotation = 0;
      * and the photo viewfinder is started.
      */
     int BarcodeScannerNDK::startRead() {
-
+    	m_pParent->getLog()->debug("Start Read");
         std::string errorEvent = "community.barcodescanner.errorfound.native";
         Json::FastWriter writer;
         Json::Value root;

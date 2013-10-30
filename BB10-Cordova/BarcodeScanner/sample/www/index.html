@@ -26,13 +26,15 @@
         <title>Hello World</title>
     </head>
     <body>
-        <div id="myCanvas" class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
+        <div class="app">
+            <h1>Barcode Scanner <br />Sample App</h1>
+            <button id="barcodeScanner_start">Start Read</button>
+
+            <br />
+            <br />
+            
             <div id="results"></div>
+            <canvas id="myCanvas"></canvas>
         </div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>

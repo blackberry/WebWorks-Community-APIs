@@ -27,70 +27,48 @@ var app = {
 	// Bind any events that are required on startup. Common events are:
 	// 'load', 'deviceready', 'offline', and 'online'.
 	bindEvents: function() {
-		document.addEventListener('deviceready', this.onDeviceReady, false);
+		document.addEventListener('deviceready', app.onDeviceReady, false);
 	},
 	// deviceready Event Handler
 	//
 	// The scope of 'this' is the event. In order to call the 'receivedEvent'
 	// function, we must explicity call 'app.receivedEvent(...);'
 	onDeviceReady: function() {
+		var canvas = document.getElementById('myCanvas');
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		
 		app.barcodeScanner = window.plugins.barcodeScanner;
-		app.startBarcodeRead();
+		document.getElementById('barcodeScanner_start').addEventListener('click', app.startRead, false);
+	},
+
+	startRead: function() {
+		app.barcodeScanner.startRead(app.codeFound, app.errorFound, "myCanvas", app.onStartRead);
 	},
 
 	errorFound: function(data){
-		console.log("Error : "+data.error + " description : "+ data.description);
+		// console.log("Error : "+data.error + " description : "+ data.description);
+		console.log("Error : ");
+		console.log(data);
 	},
 
 	codeFound: function(data) {
 		console.log(data);
-		if (gotCode === false) {
-			gotCode = true;
-			stopBarcodeRead();
-			// blackberry.ui.toast.show("Detected : "+data.value);
-		}
+		// if (gotCode === false) {
+		//	gotCode = true;
+		//	stopBarcodeRead();
+		//	// blackberry.ui.toast.show("Detected : "+data.value);
+		// }
 	},
 
 	onStartRead: function(data){
-		console.log("Started : "+data.successful);
+		// console.log("Started : "+data.successful);
+		console.log("Started : ");
+		console.log(data);
 	},
 
 	onStopRead: function(data){
-		console.log("Stopped : " +data.successful);
-	},
-
-	startBarcodeRead: function(){
-		gotCode = false;
-		// blackberry.app.lockOrientation("portrait-primary", false);
-		app.barcodeScanner.startRead(app.codeFound, app.errorFound, "myCanvas", app.onStartRead);
-		scanTimeout = setTimeout(scanTimeoutHalt, 60000);
-	},
-
-	stopBarcodeRead: function(){
-		community.barcodescanner.stopRead(onStopRead, errorFound);
-		clearTimeout(scanTimeout);
-		scanTimeout = null;
-		// blackberry.app.unlockOrientation();
-	},
-
-	scanTimeoutHalt: function() {
-		console.log("No Code found in 60s. Stopping Scanner");
-		// blackberry.ui.toast.show("No Code found in 60s. Stopping Scanner");
-		stopBarcodeRead();
-	},
-
-	onPause: function() {
-		if (scanTimeout !== null) {
-			showResumeToast = true;
-			stopBarcodeRead();
-		}
-	},
-
-	onResume: function() {
-		if (showResumeToast === true) {
-			console.log("Application Minimized. Scanner Stopped");
-			// blackberry.ui.toast.show("Application Minimized. Scanner Stopped");
-			showResumeToast = false;
-		}
+		console.log("Stopped : ");
+		console.log(data);
 	}
 };

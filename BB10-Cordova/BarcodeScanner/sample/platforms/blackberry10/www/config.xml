@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.apache.cordova.BarcodeScanner" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:rim="http://www.blackberry.com/ns/widgets">
-    <name>BarcodeScanner</name>
+<widget id="community.BarcodeScanner" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:rim="http://www.blackberry.com/ns/widgets">
+    <name>Barcode Scanner</name>
     <author>Your Name Here</author>
     <description>
        A sample Apache Cordova application that responds to the deviceready event.
@@ -17,7 +17,7 @@
         <rim:permit>record_audio</rim:permit>
         <rim:permit>access_pimdomain_contacts</rim:permit>
     </rim:permissions>
-    <feature name="org.apache.cordova.BarcodeScanner" value="org.apache.cordova.BarcodeScanner" />
+    <feature name="community.BarcodeScanner" value="community.BarcodeScanner" />
     <access origin="*" />
     <preference name="fullscreen" value="true" />
     <preference name="webviewbounce" value="true" />
