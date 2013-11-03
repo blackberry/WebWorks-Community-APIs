@@ -66,7 +66,12 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 		extractReturn(-1, "Cannot parse internal JSON object");
 	}
 
-	extractReturn(-1, "Got here!.");
+	std::string dest_root = root["destination"].asString();
+	if (dest_root == "")
+		dest_root == "./";
+	if (dest_root[dest_root.size() - 1] != '/')
+		dest_root += "/";
+
 
 	// Perform the zip unpacking 
 	unzFile zipFile = unzOpen(root["zip"].asString().c_str());
@@ -112,7 +117,7 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 			// Directory creation cannot lose data
 			// so we do not care if a dir already
 			// exists
-			mkdir(filename, 0x777);
+			mkdir((dest_root + filename).c_str(), 0x777);
 			s2jIncre("directories");
 			// Note: The zip format does store permissions
 			// except these are all in platform specific
@@ -135,7 +140,8 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 			}
 
 			// Open destination file in file system
-			FILE *destFile = fopen(filename, "wb");
+			const char *destFilePath = (dest_root + filename).c_str();
+			FILE *destFile = fopen(destFilePath, "wb");
 			if (destFile == NULL) {
 				unzCloseCurrentFile(zipFile);
 				unzClose(zipFile);

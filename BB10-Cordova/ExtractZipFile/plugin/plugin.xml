@@ -1,8 +1,8 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="community.extractzipfile"
+    id="community.extractZipFile"
     version="1.0.0">
     <js-module src="www/client.js">
-        <clobbers target="community.extractzipfile" />
+        <clobbers target="community.extractZipFile" />
     </js-module>
 
     <platform name="blackberry10">
@@ -10,7 +10,7 @@
         <lib-file src="src/blackberry10/native/device/libExtractZipFile.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libExtractZipFile.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="community.extractzipfile" value="community.extractzipfile" />
+            <feature name="community.extractZipFile" value="community.extractZipFile" />
         </config-file>
     </platform>
 </plugin>

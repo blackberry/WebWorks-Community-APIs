@@ -14,16 +14,16 @@
 * limitations under the License.
 */
 
-var extractzipfile,
+var extractZipFile,
 	resultObjs = {},
 	threadCallback = null,
    _utils = require("../../lib/utils");
 
 module.exports = {
-	extractFile: function (success, fail, args, env) {
+	extract: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
-		extractzipfile.getInstance().extractFile(result.callbackId, args);
+		extractZipFile.getInstance().extractFile(result.callbackId, args);
 		result.noResult(true);
 	}
 };
@@ -72,11 +72,10 @@ JNEXT.ExtractZipFile = function () {
 
 		if (result) {
 			if (callbackId != threadCallback) {
-				if (data == "0") {
-					result.callbackOk(data, false);
-				} else {
-					result.callbackError(data, false);
-				}
+				// We do not use the default
+				// sucess vs fail callbacks
+				// instead the RAW api merges it
+				result.callbackOk(data, false);
 				delete resultObjs[callbackId];
 			} else {
 				result.callbackOk(data, true);
@@ -98,4 +97,4 @@ JNEXT.ExtractZipFile = function () {
 
 };
 
-extractzipfile = new JNEXT.ExtractZipFile();
+extractZipFile = new JNEXT.ExtractZipFile();

@@ -50,23 +50,23 @@ var app = {
 	testPluginCalls: function() {
 		app.writeOut("Running tests");
 
-		if (community && community.extractzipfile) {
+		if (community && community.extractZipFile) {
 
 			// -----------------
 			// EXAMPLE USAGE ---
 			// The ExtractZIPFile specific code follows
-			var onSuccess = function(status) {
-				app.writeOut("Extract succeded status: [" + status + "]");
+			var onReturn = function(status) {
+				app.writeOut("Extraction result: " + JSON.stringify(status));
 			}
-			var onFail = function(status) {
-				app.writeOut("Extract failed status: [" + status + "]");
-			}
-			community.extractzipfile.extractFile(
-				"res/zip/test_single-file-no-folder.zip",
-				onSuccess,
-				onFail,
-				"res/scratch"
+			app.writeOut("Calling tests");
+			community.extractZipFile.extract(
+				{
+					zip: "res/zip/test_single-file-no-folder.zip",
+					destination: "res/scratch",
+				},
+				onReturn
 				);
+			app.writeOut("Tests called");
 			// END EXAMPLE USAGE
 			// -----------------
 		} else {

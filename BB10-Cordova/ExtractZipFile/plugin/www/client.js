@@ -14,22 +14,18 @@
 * limitations under the License.
 */
 
+// Raw API
 var _self = {},
-	_ID = "community.extractzipfile",
+	_ID = "community.extractZipFile",
 	exec = cordova.require("cordova/exec");
 
 
-_self.extractFile = function (zipFile, successCallback,
-					failureCallback,
-					filename) {
+_self.extract = function (options, callback) {
 
-	var success = function (data, response) {
-			successCallback(JSON.parse(data)["result"]);
-		},
-		fail = function (data, response) {
-			failureCallback(JSON.parse(data)["result"]);
+	var wrapped_callback = function (data, response) {
+			callback(JSON.parse(data));
 		};
-	exec(success, fail, _ID, "extractFile", { zip: zipFile, file: filename });
+	exec(wrapped_callback, wrapped_callback, _ID, "extract", options);
 };
 
 module.exports = _self;
