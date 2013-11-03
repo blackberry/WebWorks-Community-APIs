@@ -44,9 +44,10 @@ ExtractZipFileNDK::~ExtractZipFileNDK() {
 // and "result_message" a description of the error or success
 void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::string& inputString) {
 	#define extractReturn(x,y) \
-		while (0) {retval["result"] = x; \
+		do {retval["result"] = x; \
 		retval["result_message"] = y; \
-		m_pParent->NotifyEvent(callbackId + " " + writer.write(retval));}
+		m_pParent->NotifyEvent(callbackId + " " + writer.write(retval)); \
+		return;} while (0)
 
 	// Tune this and reduce mem usage
 	#define EZIPBUFSIZE 1024
@@ -63,9 +64,9 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 	bool parse = reader.parse(inputString, root);
 	if (!parse) {
 		extractReturn(-1, "Cannot parse internal JSON object");
-		m_pParent->NotifyEvent(callbackId + " " + writer.write(retval));
-		return;
 	}
+
+	extractReturn(-1, "Got here!.");
 
 	// Perform the zip unpacking 
 	unzFile zipFile = unzOpen(root["zip"].asString().c_str());

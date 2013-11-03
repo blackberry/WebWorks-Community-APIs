@@ -48,7 +48,7 @@ var app = {
 		app.testPluginCalls();
 	},
 	testPluginCalls: function() {
-		app.writeOut("Note: Expect extraction failure.");
+		app.writeOut("Running tests");
 
 		if (community && community.extractzipfile) {
 
@@ -56,16 +56,16 @@ var app = {
 			// EXAMPLE USAGE ---
 			// The ExtractZIPFile specific code follows
 			var onSuccess = function(status) {
-				app.writeOut("Extract succeded, should not occur! [" + status + "]");
+				app.writeOut("Extract succeded status: [" + status + "]");
 			}
 			var onFail = function(status) {
-				app.writeOut("Extract failed, status [" + status + "]");
+				app.writeOut("Extract failed status: [" + status + "]");
 			}
 			community.extractzipfile.extractFile(
-				"blah.zip",
+				"res/zip/test_single-file-no-folder.zip",
 				onSuccess,
 				onFail,
-				"subfile.txt"
+				"res/scratch"
 				);
 			// END EXAMPLE USAGE
 			// -----------------
