@@ -61,7 +61,7 @@ Notice the different argument ordering.
 	
 ### Example of Raw API
 	function extractFile(fileName) {
-		PATH.TO.PLUGIN.extractZipFile(
+		community.extractZipFile.extract(
 			{
 				zip: 'folder1/' + zipFilename,
 				destination: 'folder2/destination',
