@@ -14,25 +14,25 @@
 * limitations under the License.
 */
 
-// try {
-// 	console.log(require("barcodescannerJNEXT"));
-// }
-// catch(err) {
-// 	console.log(err);
-// }
-var barcodescanner,
-	_event = require("../../lib/event"),
-    _utils = require("../../lib/utils");
+var barcodescanner;
+	// _event = require("../../lib/event"),
+    // _utils = require("../../lib/utils");
 
 module.exports = {
 
 	// methods to start and stop scanning
-	startRead: function (success, fail) {
-		barcodescanner.getInstance().startRead();
-		success();
+	startRead: function (success, fail, args, env) {
+		
+		console.log("startRead_before");
+		var result = new PluginResult(args, env);
+		result.ok(barcodescanner.getInstance().startRead(), false);
+		console.log("startRead_after");
+		// barcodescanner.getInstance().startRead();
+		// success();
 	},
 	stopRead: function (success, fail) {
-		barcodescanner.getInstance().stopRead();
+		console.log("stopRead");
+		// barcodescanner.getInstance().stopRead();
 		success();
 	},
 	add: function (success, fail) {
@@ -42,6 +42,7 @@ module.exports = {
 		console.log('End listening to frames');
 	}
 };
+
 
 JNEXT.BarcodeScanner = function () {
 	var self = this,
@@ -70,34 +71,34 @@ JNEXT.BarcodeScanner = function () {
 	// ************************
 
 	// Fired by the Event framework (used by asynchronous callbacks)
-	self.onEvent = function (strData) {
-		var arData = strData.split(" "),
-			strEventDesc = arData[0],
-			jsonData;
-		// Event names are set in native code when fired,
-		// and must be checked here.
-		if (strEventDesc === "community.barcodescanner.codefound.native") {
-			// Slice off the event name and the rest of the data is our JSON
-			jsonData = arData.slice(1, arData.length).join(" ");
-			_event.trigger("community.barcodescanner.codefound", JSON.parse(jsonData));
-		}
-		else if ( strEventDesc === "community.barcodescanner.errorfound.native") {
-			jsonData = arData.slice(1, arData.length).join(" ");
-			_event.trigger("community.barcodescanner.errorfound", JSON.parse(jsonData));
-		}
-		else if ( strEventDesc === "community.barcodescanner.frameavailable.native") {
-			jsonData = arData.slice(1, arData.length).join(" ");
-			_event.trigger("community.barcodescanner.frameavailable", JSON.parse(jsonData));
-		}
-		else if ( strEventDesc === "community.barcodescanner.started.native"){
-			jsonData = arData.slice(1, arData.length).join(" ");
-			_event.trigger("community.barcodescanner.started", JSON.parse(jsonData));
-		}
-		else if ( strEventDesc === "community.barcodescanner.ended.native") {
-			jsonData = arData.slice(1, arData.length).join(" ");
-			_event.trigger("community.barcodescanner.ended", JSON.parse(jsonData));
-		}
-	};
+	// self.onEvent = function (strData) {
+	// 	var arData = strData.split(" "),
+	// 		strEventDesc = arData[0],
+	// 		jsonData;
+	// 	// Event names are set in native code when fired,
+	// 	// and must be checked here.
+	// 	if (strEventDesc === "org.apache.cordova.BarcodeScanner.codefound.native") {
+	// 		// Slice off the event name and the rest of the data is our JSON
+	// 		jsonData = arData.slice(1, arData.length).join(" ");
+	// 		_event.trigger("org.apache.cordova.BarcodeScanner.codefound", JSON.parse(jsonData));
+	// 	}
+	// 	else if ( strEventDesc === "org.apache.cordova.BarcodeScanner.errorfound.native") {
+	// 		jsonData = arData.slice(1, arData.length).join(" ");
+	// 		_event.trigger("org.apache.cordova.BarcodeScanner.errorfound", JSON.parse(jsonData));
+	// 	}
+	// 	else if ( strEventDesc === "org.apache.cordova.BarcodeScanner.frameavailable.native") {
+	// 		jsonData = arData.slice(1, arData.length).join(" ");
+	// 		_event.trigger("org.apache.cordova.BarcodeScanner.frameavailable", JSON.parse(jsonData));
+	// 	}
+	// 	else if ( strEventDesc === "org.apache.cordova.BarcodeScanner.started.native"){
+	// 		jsonData = arData.slice(1, arData.length).join(" ");
+	// 		_event.trigger("org.apache.cordova.BarcodeScanner.started", JSON.parse(jsonData));
+	// 	}
+	// 	else if ( strEventDesc === "org.apache.cordova.BarcodeScanner.ended.native") {
+	// 		jsonData = arData.slice(1, arData.length).join(" ");
+	// 		_event.trigger("org.apache.cordova.BarcodeScanner.ended", JSON.parse(jsonData));
+	// 	}
+	// };
 
 	// Thread methods
 	self.startRead = function () {

@@ -7,6 +7,8 @@
 
     <platform name="blackberry10">
         <source-file src="src/blackberry10/index.js" />
+        <lib-file src="src/blackberry10/native/Device-Debug/libBarcodeScanner.so" arch="device" />
+        <lib-file src="src/blackberry10/native/Device-Debug/libBarcodeScanner.so" arch="simulator" />
         <config-file target="www/config.xml" parent="/widget">
             <feature name="org.apache.cordova.BarcodeScanner" value="org.apache.cordova.BarcodeScanner" />
         </config-file>

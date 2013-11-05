@@ -13,59 +13,78 @@ cordova.define("org.apache.cordova.BarcodeScanner.client", function(require, exp
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+
 (function(cordova) {
 	var _ID = "org.apache.cordova.BarcodeScanner";
 	var exec = cordova.require("cordova/exec");
 
+	var reading, canvas, timeout, fs, latestFrame = null;
+	var fsSize = 1024 * 1024;
+	var codefoundCallback, errorfoundCallback;
+	var sleepPrevented = false;
+
 	function BarcodeScanner() {}
 
 	BarcodeScanner.prototype.startRead = function (codeFound, errorFound, canvasID, successStart) {
-		if (reading === true) {
-			return "Stop Scanning before scanning again";
-		}
+		if (reading) return "Stop Scanning before scanning again";
+
 		if ( typeof(successStart) == "function" ) {
-			window.webworks.event.once(_ID, "org.apache.cordova.BarcodeScanner.started", successStart);
+			console.log("1111")
+			var success = function (data, response) {
+				console.log(data)
+				console.log(response)
+			},
+			fail = function (data, response) {
+				console.log(data)
+				console.log(response)
+			};
+			exec(success, fail, _ID, "startRead", null);
+			// window.webworks.event.once(_ID, "org.apache.cordova.BarcodeScanner.started", successStart);
 		}
 		if ( canvasID !== null ) {
+			console.log("2222")
 			canvas = document.getElementById(canvasID);
-			window.webworks.event.add(_ID, "org.apache.cordova.BarcodeScanner.frameavailable", frameAvailable);
+			// window.webworks.event.add(_ID, "org.apache.cordova.BarcodeScanner.frameavailable", frameAvailable);
 		}
 		if ( typeof(errorFound) == "function" ) {
+			console.log("3333")
 			errorfoundCallback = errorFound;
-			window.webworks.event.once(_ID, "org.apache.cordova.BarcodeScanner.errorfound", errorfoundCallback);
+			// window.webworks.event.once(_ID, "org.apache.cordova.BarcodeScanner.errorfound", errorfoundCallback);
 		}
 		if ( typeof(codeFound) == "function" ) {
+			console.log("4444")
 			codefoundCallback = codeFound;
-			window.webworks.event.once(_ID, "org.apache.cordova.BarcodeScanner.codefound", codefoundCallback);
+			// window.webworks.event.once(_ID, "org.apache.cordova.BarcodeScanner.codefound", codefoundCallback);
 		}
 		blackberry.io.sandbox = false;
 		reading = true;
 		// Turn on prevent sleep, if it's in the app
 		if (community.preventsleep) {
+			console.log("5555")
 			if (!community.preventsleep.isSleepPrevented) {
 				community.preventsleep.setPreventSleep(true);
 				sleepPrevented = true;
 			}
 		}
-		return window.webworks.execAsync(_ID, "startRead", null);
+		// return window.webworks.execAsync(_ID, "startRead", null);
 	};
 
 	BarcodeScanner.prototype.stopRead = function (successfulEnd, errorFound) {
 		if ( typeof(errorfoundCallback) == "function" ) {
-			window.webworks.event.remove(_ID, "org.apache.cordova.BarcodeScanner.errorfound", errorfoundCallback);
+			// window.webworks.event.remove(_ID, "org.apache.cordova.BarcodeScanner.errorfound", errorfoundCallback);
 		}
 		if ( typeof(errorFound) == "function" ) {
 			errorfoundCallback = errorFound;
-			window.webworks.event.once(_ID, "org.apache.cordova.BarcodeScanner.errorfound", errorfoundCallback);
+			// window.webworks.event.once(_ID, "org.apache.cordova.BarcodeScanner.errorfound", errorfoundCallback);
 		}
 		if ( typeof(successfulEnd) == "function" ) {
-			window.webworks.event.once(_ID, "org.apache.cordova.BarcodeScanner.ended", successfulEnd);
+			// window.webworks.event.once(_ID, "org.apache.cordova.BarcodeScanner.ended", successfulEnd);
 		}
 		if ( canvas !== null ) {
-			window.webworks.event.remove(_ID, "org.apache.cordova.BarcodeScanner.frameavailable", frameAvailable);
+			// window.webworks.event.remove(_ID, "org.apache.cordova.BarcodeScanner.frameavailable", frameAvailable);
 		}
 		if ( typeof(codefoundCallback) == "function" ) {
-			window.webworks.event.remove(_ID, "org.apache.cordova.BarcodeScanner.codefound", codefoundCallback);
+			// window.webworks.event.remove(_ID, "org.apache.cordova.BarcodeScanner.codefound", codefoundCallback);
 		}
 		reading = false;
 		// Return sleep setting to original if changed.
@@ -77,11 +96,6 @@ cordova.define("org.apache.cordova.BarcodeScanner.client", function(require, exp
 		}
 		return window.webworks.execAsync(_ID, "stopRead", null);
 	};
-
-	var reading, canvas, timeout, fs, latestFrame = null;
-	var fsSize = 1024 * 1024;
-	var codefoundCallback, errorfoundCallback;
-	var sleepPrevented = false;
 
 	function readFile(filename) {
 		window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
@@ -142,10 +156,8 @@ cordova.define("org.apache.cordova.BarcodeScanner.client", function(require, exp
 	}
 
 	cordova.addConstructor(function() {
-		console.log("ADD CONSTRUCTOR");
 		if(!window.plugins) window.plugins = {};
 		window.plugins.barcodeScanner = new BarcodeScanner();
-		console.log(window.plugins);
 	});
 
 })(window.cordova || window.Cordova);

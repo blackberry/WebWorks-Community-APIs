@@ -45,10 +45,10 @@ char* onGetObjList() {
     return name;
 }
 
-*
+/**
  * This method is used by JNext to instantiate the BarcodeScannerJS object when
  * an object is created on the JavaScript server side.
- 
+ */
 JSExt* onCreateObject(const string& className, const string& id) {
     if (className == "BarcodeScannerJS") {
         return new BarcodeScannerJS(id);
