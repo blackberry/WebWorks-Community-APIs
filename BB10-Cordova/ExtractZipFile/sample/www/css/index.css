@@ -38,25 +38,29 @@ body {
     background-attachment:fixed;
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
     font-size:12px;
-    height:100%;
     margin:0px;
     padding:0px;
-    text-transform:uppercase;
+}
+html, body {
+    height:100%;
     width:100%;
 }
 
 /* Portrait layout (default) */
 .app {
-    background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
-    position:absolute;             /* position in the center of the screen */
-    left:50%;
-    top:50%;
-    height:50px;                   /* text area height */
-    width:225px;                   /* text area width */
+    background:url(../img/logo.png) no-repeat left top;
+	background-size: 50px;
     text-align:center;
-    padding:180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
-    margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
+    margin:10px 25px;  /* offset vertical: half of image height and text area height */
                                    /* offset horizontal: half of text area width */
+}
+
+#results {
+	margin-top: 10px;
+}
+
+#deviceready {
+	padding-left: 50px;
 }
 
 /* Landscape layout (with min-width) */
@@ -74,7 +78,7 @@ h1 {
     font-weight:normal;
     margin:0px;
     overflow:visible;
-    padding:0px;
+    padding:0px 0 0 50px;
     text-align:center;
 }
 
