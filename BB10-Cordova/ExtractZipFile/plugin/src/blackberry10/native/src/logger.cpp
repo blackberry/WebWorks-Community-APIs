@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-#include "Logger.hpp"
-#include "template_js.hpp"
+#include "logger.hpp"
 #include <slog2.h>
 
-Logger *SHARED_LOGGER = NULL;
+webworks::Logger *SHARED_LOGGER = NULL;
 
 namespace webworks {
 
-Logger::Logger(const char* name, TemplateJS *parent): m_pParent(parent) {
+Logger::Logger(const char* name) {
 	buffer_config.buffer_set_name = name;
 	buffer_config.num_buffers = 2;
 	buffer_config.verbosity_level = SLOG2_DEBUG1;
