@@ -26,6 +26,7 @@ using namespace std;
  */
 ExtractZipFileJS::ExtractZipFileJS(const std::string& id) :
 		m_id(id) {
+	m_pLogger = new webworks::Logger("ExtractZipFileJS");
 	m_pTemplateController = new webworks::ExtractZipFileNDK(this);
 }
 
@@ -35,6 +36,12 @@ ExtractZipFileJS::ExtractZipFileJS(const std::string& id) :
 ExtractZipFileJS::~ExtractZipFileJS() {
 	if (m_pTemplateController)
 		delete m_pTemplateController;
+	if (m_pLogger)
+        delete m_pLogger;
+}
+
+webworks::Logger* ExtractZipFileJS::getLog() {
+        return m_pLogger;
 }
 
 /**

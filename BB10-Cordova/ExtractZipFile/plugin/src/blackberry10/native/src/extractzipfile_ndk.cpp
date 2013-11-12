@@ -61,6 +61,9 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 	Json::Value retval;
 	s2jInit(retval);
 
+	std::string cwd = std::string(getcwd(NULL, 0));
+	retval["cwd"] = cwd;
+
 	bool parse = reader.parse(inputString, root);
 	if (!parse) {
 		extractReturn(-1, "Cannot parse internal JSON object");
@@ -74,7 +77,14 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 
 
 	// Perform the zip unpacking 
-	unzFile zipFile = unzOpen(root["zip"].asString().c_str());
+	const char *zip_path = root["zip"].asString().c_str();
+	if (access(zip_path, F_OK) != -1)
+		extractReturn(-1, "Zip file does not exist");
+	if (access(zip_path, R_OK) != -1)
+		extractReturn(-1, "Cannot open Zip file for reading");
+
+	unzFile zipFile = unzOpen(zip_path);
+	extractReturn((int)zipFile, "zip file open result");
 	if (zipFile == NULL)
 		extractReturn(-1, "Failed to open zip file.");
 
