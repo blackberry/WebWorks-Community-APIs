@@ -50,6 +50,7 @@ Logger::Logger(const char* name) {
 	} else {
 		info("Created slogger2 buffers");
 	}
+	slog2_set_default_buffer(*buffer_handle);
 
 	SHARED_LOGGER = this;
 }

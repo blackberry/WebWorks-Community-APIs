@@ -67,6 +67,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <slog2.h>
 
 #ifndef NOUNCRYPT
         #define NOUNCRYPT
@@ -85,7 +86,6 @@
 #else
 #   include <errno.h>
 #endif
-extern void ezipLog(const char *message);
 
 #ifndef local
 #  define local static
@@ -618,6 +618,7 @@ local unzFile unzOpenInternal (const void *path,
                                                  path,
                                                  ZLIB_FILEFUNC_MODE_READ |
                                                  ZLIB_FILEFUNC_MODE_EXISTING);
+    slog2c(NULL, 0, SLOG2_INFO, "ZOPEN64 called");
     if (us.filestream==NULL)
         return NULL;
 
