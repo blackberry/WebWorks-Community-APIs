@@ -104,3 +104,7 @@ slog2_buffer_t Logger::lowPriorityBuffer() {
 }
 
 } /* namespace webworks */
+
+void ezipLog(const char *message) {
+	SHARED_LOGGER->notice(message);
+}

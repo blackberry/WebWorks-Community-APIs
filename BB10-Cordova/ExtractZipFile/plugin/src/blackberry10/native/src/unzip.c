@@ -85,7 +85,7 @@
 #else
 #   include <errno.h>
 #endif
-
+extern void ezipLog(const char *message);
 
 #ifndef local
 #  define local static
