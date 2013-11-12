@@ -51,7 +51,7 @@ Logger::Logger(const char* name) {
 		info("Created slogger2 buffers");
 	}
 
-	webworks::SHARED_LOGGER = this;
+	SHARED_LOGGER = this;
 }
 
 Logger::~Logger() {
