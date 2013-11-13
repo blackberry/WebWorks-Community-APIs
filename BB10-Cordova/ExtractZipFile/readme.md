@@ -1,65 +1,11 @@
 ExtractZIPFile 
 ==============
 Provides extraction (unzipping) of zip archives for html5 under Blackbery 10.
-The functionality is exposed through three apis: Android, iOS, and Raw.
-
-
-APIs Overview
---------------
-All APIs are available at all times. Call the one you prefer.
-### Android & iOS
-These two compatibility APIs implement the calling conventions of ther respective
-platform's ExtractZipFile plugins. Thus they serve as drop-in replacements.
-Both APIs are functional equivilents.
-If these APIs meet your needs then you should need no special code to support BB10.
-
-### Raw
-The Raw api exposes features not present in the compatibility APIs. It allows
-concurrent extraction of multiple zip files. It also provides more detailed
-errors included error descriptions. Warning: the Raw API is BB10 only.
 
 
 API Examples
 --------------
-### Example of Android API
-	function extractFile(fileName) {
-		var ZipClient = new ExtractZipFilePlugin();
-		ZipClient.extractFile(
-			'folder1/' + fileName,
-			onExtractSuccess,
-			onExtractFailure,
-			'folder2/destination');
-	}
-
-	function onExtractSuccess(status) {	 
-   		console.log('Success:' + status);
-  	}	 
-    												  
-   	function onExtractFailure(error) { 
-   		console.log('Failure:' + error);
-   	}
-	
-### Example of iOS API
-Notice the different argument ordering.
-
-	function extractFile(fileName) {
-		window.plugins.extractZipFile.extractFile(
-			'folder1/' + zipFilename,
-			'folder2/destination',
-			onExtractSuccess,
-			onExtractFailure);
-	}
-
-	function onExtractSuccess(status) {	 
-   		console.log('Success:' + status);
-  	}	 
-    												  
-   	function onExtractFailure(error) { 
-   		console.log('Failure:' + error);
-   	}
-	
-	
-### Example of Raw API
+### Example of API usage
 	function extractFile(fileName) {
 		community.extractZipFile.extract(
 			{
@@ -84,9 +30,9 @@ Notice the different argument ordering.
 		console.log("Extraction returned with token: " + callbackToken);
   	}	 
     									
-Raw API Details
+API Details
 ===============
-Raw API takes an option object and a callback function.
+The API takes an option object and a callback function.
 The following options are supported.
 
 ### zip
