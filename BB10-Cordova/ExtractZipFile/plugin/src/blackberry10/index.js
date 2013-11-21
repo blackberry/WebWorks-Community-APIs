@@ -60,8 +60,8 @@ JNEXT.ExtractZipFile = function () {
 
 	// calls into InvokeMethod(string command) in template_js.cpp
 	self.extractFile = function (callbackId, input) {
-		console.log(input);
-		return JNEXT.invoke(self.m_id, "extractFile " + callbackId + " " + JSON.stringify(input));
+		var args = decodeURIComponent(input[0]);
+		return JNEXT.invoke(self.m_id, "extractFile " + callbackId + ' ' + args);
 	};
 	
 	self.onEvent = function (strData) {

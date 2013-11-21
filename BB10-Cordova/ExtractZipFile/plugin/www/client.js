@@ -25,7 +25,7 @@ _self.extract = function (options, callback) {
 	var wrapped_callback = function (data, response) {
 			callback(JSON.parse(data));
 		};
-	exec(wrapped_callback, wrapped_callback, _ID, "extract", options);
+	exec(wrapped_callback, wrapped_callback, _ID, "extract", [options]);
 };
 
 module.exports = _self;
