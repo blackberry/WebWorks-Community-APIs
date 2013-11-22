@@ -61,7 +61,7 @@ var app = {
 			app.writeOut("Calling tests");
 			community.extractZipFile.extract(
 				{
-					zip: "app/res/zip/test_single-file-no-folder.zip",
+					zip: "app/native/res/zip/test_single-file-no-folder.zip",
 					destination: "tmp",
 				},
 				onReturn
