@@ -45,7 +45,7 @@ Default: none! This argument is required!
 ### destination
 The folder into which the zip will be extracted.
 
-Default: '.', Current working directory.
+Default: './', Current working directory.
 
 
 ### overwriteFiles

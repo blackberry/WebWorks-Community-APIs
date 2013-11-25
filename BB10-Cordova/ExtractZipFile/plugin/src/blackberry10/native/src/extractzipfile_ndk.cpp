@@ -76,6 +76,8 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 
 	// destination
 	std::string dest_root = root["destination"].asString();
+	if (dest_root == "")
+		dest_root = "./";
 	if (dest_root[dest_root.size() - 1] != '/')
 		dest_root += "/";
 
