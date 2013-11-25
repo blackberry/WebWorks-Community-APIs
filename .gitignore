@@ -6,4 +6,5 @@ add
 *.[o]
 webworks-1.0.2.9.js
 .externalToolBuilders
-.project
+*.so
+*.swp
