@@ -74,7 +74,7 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 		requestedToken = root["zip"];
 	retval["callbackToken"] = requestedToken;
 
-	// Destination
+	// destination
 	std::string dest_root = root["destination"].asString();
 	if (dest_root[dest_root.size() - 1] != '/')
 		dest_root += "/";
@@ -94,9 +94,12 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 		dest_root += filename + "/";
 	}
 
-	// Perform the zip unpacking 
-	const char *zip_path = src_zip.c_str();
+	// overwriteFiles
+	bool overwrite_files = root["overwriteFiles"].asString() == "true";
 
+	
+	// -- Extract Zip
+	const char *zip_path = src_zip.c_str();
 	unzFile zipFile = unzOpen(zip_path);
 	if (zipFile == NULL)
 		extractReturn(-1, "Failed to open zip file.");
@@ -112,6 +115,7 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 	char fileBuffer[EZIPBUFSIZE];
 
 	int filesExtracted = 0;
+	int files_skipped = 0;
 	for (int i = 0; i < zipInfo.number_entry; i++) {
 		s2jIncre("entries");
 
@@ -132,9 +136,6 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 		filename[MAX_FILENAME] = '\0'; // ensure string termination
 		s2jInsert("files", filename);
 
-		// TODO: Support removing created dirs and files upon any failure
-		//       keep vector of filenames
-
 		// Handle Directories
 		if (filename[strlen(filename) - 1] == '/') {
 			// Directory creation cannot lose data
@@ -153,7 +154,6 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 
 		// Handle Files
 		} else {
-			// TODO: check file existance and respect passed in options
 
 			// Note: This opens zipFile's "current" file
 			//       "current" acts as an interator
@@ -164,43 +164,51 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 
 			// Open destination file in file system
 			std::string dest_file_path = dest_root + filename;
-			FILE *destFile = fopen(dest_file_path.c_str(), "wb");
-			if (destFile == NULL) {
-				unzCloseCurrentFile(zipFile);
-				unzClose(zipFile);
-				extractReturn(-1, "Failed to open destination file");
-			}
 
-			// Ferry data into destination
-			int readResult = UNZ_OK; // is 0
-			do {
-				// Read
-				readResult = unzReadCurrentFile(zipFile, fileBuffer, EZIPBUFSIZE);
-				if (readResult < 0) {
+			// Check for overwriting
+			if (!overwrite_files && access(dest_file_path.c_str(), F_OK) != -1) {
+				// file exists and we are not allowed to overwrite
+				s2jIncre("files_skipped");
+
+			} else {
+				FILE *destFile = fopen(dest_file_path.c_str(), "wb");
+				if (destFile == NULL) {
 					unzCloseCurrentFile(zipFile);
 					unzClose(zipFile);
-					fclose(destFile);
-					extractReturn(-1, "Failed to read compressed file");
+					extractReturn(-1, "Failed to open destination file");
 				}
 
-				// Write
-				if (readResult > 0) {
-					int writeResult = fwrite(fileBuffer, readResult, 1, destFile);
-					if (writeResult != 1) {
-						// Note: we asked for the full buffer
-						// to be written at once, so the 1
-						// return value is not "true" but
-						// the number blocks writen
+				// Ferry data into destination
+				int readResult = UNZ_OK; // is 0
+				do {
+					// Read
+					readResult = unzReadCurrentFile(zipFile, fileBuffer, EZIPBUFSIZE);
+					if (readResult < 0) {
 						unzCloseCurrentFile(zipFile);
 						unzClose(zipFile);
 						fclose(destFile);
-						extractReturn(-1, "Failed to write to destination file");
+						extractReturn(-1, "Failed to read compressed file");
 					}
-				}
-			} while (readResult > 0);
 
-			fclose(destFile);
-			filesExtracted++;
+					// Write
+					if (readResult > 0) {
+						int writeResult = fwrite(fileBuffer, readResult, 1, destFile);
+						if (writeResult != 1) {
+							// Note: we asked for the full buffer
+							// to be written at once, so the 1
+							// return value is not "true" but
+							// the number blocks writen
+							unzCloseCurrentFile(zipFile);
+							unzClose(zipFile);
+							fclose(destFile);
+							extractReturn(-1, "Failed to write to destination file");
+						}
+					}
+				} while (readResult > 0);
+
+				fclose(destFile);
+				filesExtracted++;
+			}
 			s2jIncre("files");
 		}
 

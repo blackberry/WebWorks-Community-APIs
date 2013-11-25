@@ -11,7 +11,7 @@ API Examples
 			{
 				zip: 'folder1/' + zipFilename,
 				destination: 'folder2/destination',
-				overwriteFiles: false,
+				overwriteFiles: true,
 				tarBombProtection: false,
 				callbackToken: '',
 			},
@@ -51,7 +51,7 @@ Default: '.', Current working directory.
 ### overwriteFiles
 If already existing files should be overwritten by those within the zip.
 
-Default: false, No files will be overwritten.
+Default: true, Files will be overwritten.
 
 
 ### tarBombProtection
