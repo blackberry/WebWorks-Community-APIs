@@ -61,11 +61,20 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 	Json::Value retval;
 	s2jInit(retval);
 
+
 	bool parse = reader.parse(inputString, root);
 	if (!parse) {
 		extractReturn(-1, "Cannot parse internal JSON object");
 	}
 
+	// -- Parse Input
+	// callbackToken
+	std::string requestedToken = root["callbackToken"].asString();
+	if (requestedToken == "")
+		requestedToken = root["zip"];
+	retval["callbackToken"] = requestedToken;
+
+	// Destination
 	std::string dest_root = root["destination"].asString();
 	if (dest_root[dest_root.size() - 1] != '/')
 		dest_root += "/";
