@@ -29,6 +29,30 @@
 #include "extractzipfile_ndk.hpp"
 #include "extractzipfile_js.hpp"
 
+
+static void ExtractZipFileNDK_mkpath(char *path) {
+	size_t len = strlen(path);
+
+	// ensure path is a string
+	char last_char = path[len - 1];
+	path[len - 1] = '\0';
+
+	// mkdir() foreach except last folder
+	for (char *upto = path + 1; *upto; upto++) {
+		if (*upto == '/') {
+			*upto = '\0';
+			mkdir(path, 0x777);
+			*upto = '/';
+		}
+	}
+
+	// mkdir() last folder
+	mkdir(path, 0x777);
+
+	// restore input path
+	path[len - 1] = last_char;
+}
+
 namespace webworks {
 
 ExtractZipFileNDK::ExtractZipFileNDK(ExtractZipFileJS *parent) {
@@ -116,6 +140,9 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 	// fixed size buf on stack, WATCH USAGE!
 	char fileBuffer[EZIPBUFSIZE];
 
+	// Ensure destination exists
+	ExtractZipFileNDK_mkpath(dest_root);
+
 	int filesExtracted = 0;
 	int files_skipped = 0;
 	for (int i = 0; i < zipInfo.number_entry; i++) {
@@ -143,7 +170,7 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 			// Directory creation cannot lose data
 			// so we do not care if a dir already
 			// exists
-			mkdir((dest_root + filename).c_str(), 0x777);
+			ExtractZipFileNDK_mkpath((dest_root + filename).c_str(), 0x777);
 			s2jIncre("directories");
 			// Note: The zip format does store permissions
 			// except these are all in platform specific
