@@ -95,7 +95,7 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 	}
 
 	// overwriteFiles
-	bool overwrite_files = root["overwriteFiles"].asString() == "true";
+	bool overwrite_files = !(root["overwriteFiles"].asString() == "false");
 
 	
 	// -- Extract Zip
