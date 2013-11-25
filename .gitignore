@@ -8,3 +8,6 @@ webworks-1.0.2.9.js
 .externalToolBuilders
 *.so
 *.swp
+*/*/sample/platforms/
+*/*/sample/plugins/
+*~
