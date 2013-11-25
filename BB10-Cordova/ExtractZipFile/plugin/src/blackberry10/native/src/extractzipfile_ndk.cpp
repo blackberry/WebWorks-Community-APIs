@@ -79,9 +79,23 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 	if (dest_root[dest_root.size() - 1] != '/')
 		dest_root += "/";
 
+	// zip
+	std::string src_zip = root["zip"].asString();
+	if (src_zip == "")
+		extractReturn(-1, "zip argument must not be empty");
+
+	// tarBombProtection
+	// ensures everything is extracted into a single folder
+	bool prevent_tar_bomb = root["tarBombProtection"].asString() == "true";
+	if (prevent_tar_bomb) {
+		unsigned filename_start = 1 + src_zip.find_last_of("/");
+		unsigned filename_end = src_zip.find_last_of(".");
+		std::string filename = src_zip.substr(filename_start, filename_end);
+		dest_root += filename + "/";
+	}
 
 	// Perform the zip unpacking 
-	const char *zip_path = (root["zip"].asString()).c_str();
+	const char *zip_path = src_zip.c_str();
 
 	unzFile zipFile = unzOpen(zip_path);
 	if (zipFile == NULL)
