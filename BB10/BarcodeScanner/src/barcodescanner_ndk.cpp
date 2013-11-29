@@ -219,10 +219,6 @@ static uint32_t rotation = 0;
 			}
 			int writeResult = img_write_file( ilib, tempFilePath.c_str(), NULL, &dst );
 
-			stringstream writeResultSS;
-			writeResultSS << "WRITE RESULT " << writeResult << " " << IMG_ERR_OK;
-			eventDispatcher->getLog()->debug(writeResultSS.str().c_str());
-
 			img_lib_detach(ilib);
 
 			// Send the file path for loading in the front end since JNEXT only handles strings

@@ -13,7 +13,6 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-
 var barcodescanner,
 	resultObjs = {},
 	readCallback,
@@ -71,6 +70,7 @@ JNEXT.BarcodeScanner = function () {
 	// ************************
 
 	// Fired by the Event framework (used by asynchronous callbacks)
+
 	self.onEvent = function (strData) {
 		var arData = strData.split(" "),
 			callbackId = arData[0],

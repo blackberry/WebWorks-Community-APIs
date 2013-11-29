@@ -12,6 +12,7 @@
     <preference name="webviewbounce" value="true" />
     <content src="index.html" />
 
+    <feature id="blackberry.app" />
     <feature id="blackberry.io" />
     <feature id="blackberry.media.camera" />
     <rim:permissions>

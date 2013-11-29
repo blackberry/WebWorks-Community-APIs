@@ -51,7 +51,7 @@ cordova.define("community.BarcodeScanner.client", function(require, exports, mod
 		};
 		exec(success, failure, _ID, "startRead", null);
 
-			// window.webworks.event.once(_ID, "community.BarcodeScanner.started", successStart);
+		// window.webworks.event.once(_ID, "community.BarcodeScanner.started", successStart);
 		// }
 		// if ( canvasID !== null ) {
 		// 	console.log("2222")

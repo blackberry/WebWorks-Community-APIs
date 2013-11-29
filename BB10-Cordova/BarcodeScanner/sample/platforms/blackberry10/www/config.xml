@@ -17,6 +17,7 @@
         <rim:permit>record_audio</rim:permit>
         <rim:permit>access_pimdomain_contacts</rim:permit>
     </rim:permissions>
+    <feature name="com.blackberry.io" value="com.blackberry.io" />
     <feature name="community.BarcodeScanner" value="community.BarcodeScanner" />
     <access origin="*" />
     <preference name="fullscreen" value="true" />
