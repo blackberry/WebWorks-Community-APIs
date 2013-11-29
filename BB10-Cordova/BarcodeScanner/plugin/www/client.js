@@ -22,6 +22,7 @@
 	var fsSize = 1024 * 1024;
 	var codefoundCallback, errorfoundCallback;
 	var sleepPrevented = false;
+	var canvas = null;
 
 	function BarcodeScanner() {}
 
@@ -29,7 +30,7 @@
 	BarcodeScanner.prototype.startRead = function (succ, fail, args, env) {
 		if (reading) return "Stop Scanning before scanning again";
 		
-		var canvas = args;
+		var canvasID  = args;
 
 		var frameAvailableFn = frameAvailable;
 		var success = function (data, response) {
@@ -43,6 +44,10 @@
 				console.log(frameData)
 				frameAvailableFn(frameData)
 			}
+			else if(receivedEvent == "community.barcodescanner.started.native") {
+				document.getElementById("appContainer").style.display = "none"
+				canvas = document.getElementById(canvasID);
+			}
 		},
 		failure = function (data, response) {
 			console.log("CLIENT STARTREAD FAIL")
@@ -55,7 +60,6 @@
 		// }
 		// if ( canvasID !== null ) {
 		// 	console.log("2222")
-		// 	canvas = document.getElementById(canvasID);
 		// 	// window.webworks.event.add(_ID, "community.BarcodeScanner.frameavailable", frameAvailable);
 		// }
 		// if ( typeof(errorFound) == "function" ) {
@@ -69,7 +73,7 @@
 		// 	// window.webworks.event.once(_ID, "community.BarcodeScanner.codefound", codefoundCallback);
 		// }
 		blackberry.io.sandbox = false;
-		// reading = true;
+		reading = true;
 		// Turn on prevent sleep, if it's in the app
 		if (typeof community !== "undefined" && typeof community.preventsleep !== "undefined") {
 			if (!community.preventsleep.isSleepPrevented) {
@@ -99,7 +103,7 @@
 		}
 		reading = false;
 		// Return sleep setting to original if changed.
-		if (community.preventsleep) {
+		if (community && community.preventsleep) {
 			if (sleepPrevented === true) {
 				community.preventsleep.setPreventSleep(false);
 				sleepPrevented = false;
@@ -116,9 +120,6 @@
 			window.TEMPORARY, 
 			fsSize, 
 			function (fs) {
-				console.log(fs)
-				console.log(fs.root)
-				console.log(fs.root.getFile)
 				console.log("filename:: " + filename)
 				fs.root.getFile(
 					filename, 
@@ -131,6 +132,8 @@
 								var reader = new FileReader();
 								reader.onloadend = function (e) {
 									var ctx = canvas.getContext("2d");
+									console.log(canvas)
+									console.log(ctx)
 									var img = new Image();
 									img.onload = function() {
 										ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
