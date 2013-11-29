@@ -26,12 +26,12 @@ module.exports = {
 		resultObjs[result.callbackId] = result;
 		readCallback = result.callbackId;
 		result.ok(barcodescanner.getInstance().startRead(result.callbackId), true);
-		// barcodescanner.getInstance().startRead();
-		// success();
+		success()
 	},
-	stopRead: function (success, fail) {
-		// barcodescanner.getInstance().stopRead();
-		delete resultObjs[readCallback];
+	stopRead: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		resultObjs[result.callbackId] = result;
+		result.ok(barcodescanner.getInstance().stopRead(result.callbackId), true);
 		success();
 	},
 	add: function (success, fail) {
@@ -86,6 +86,11 @@ JNEXT.BarcodeScanner = function () {
 		if (events.indexOf(receivedEvent) != -1) {
 			result.callbackOk(data, true)
 		}
+		if(receivedEvent == "community.barcodescanner.ended.native") {
+			delete resultObjs[readCallback];
+			readCallback = null
+		}
+
 	};
 
 	// Thread methods

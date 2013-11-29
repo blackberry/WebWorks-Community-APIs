@@ -22,58 +22,44 @@
 	var fsSize = 1024 * 1024;
 	var codefoundCallback, errorfoundCallback;
 	var sleepPrevented = false;
-	var canvas = null;
 
-	function BarcodeScanner() {}
+	function BarcodeScanner() {
+		blackberry.io.sandbox = false;
+	}
 
 	// BarcodeScanner.prototype.startRead = function (codeFound, errorFound, canvasID, successStart) {
-	BarcodeScanner.prototype.startRead = function (succ, fail, args, env) {
+	BarcodeScanner.prototype.startRead = function (succ, fail, args) {
 		if (reading) return "Stop Scanning before scanning again";
-		
 		var canvasID  = args;
-
 		var frameAvailableFn = frameAvailable;
+
+		reading = true;
+
 		var success = function (data, response) {
 			var arData = data.split(" "),
 				receivedEvent = arData[0]
 
-			console.log("CLIENT STARTREAD SUCCESS")
-			console.log(receivedEvent)
 			if(receivedEvent == "community.barcodescanner.frameavailable.native") {
 				var frameData = JSON.parse(arData[1])
-				console.log(frameData)
 				frameAvailableFn(frameData)
 			}
 			else if(receivedEvent == "community.barcodescanner.started.native") {
-				document.getElementById("appContainer").style.display = "none"
 				canvas = document.getElementById(canvasID);
+				canvas.style.display = "block"
+			}
+			else if(receivedEvent == "community.barcodescanner.codefound.native") {
+				var codeFoundData = JSON.parse(arData[1])
+				succ(codeFoundData)
+			}
+			else if(receivedEvent == "community.BarcodeScanner.errorfound") {
+				var errorData = JSON.parse(arData[1])
+				fail(errorData)
 			}
 		},
 		failure = function (data, response) {
-			console.log("CLIENT STARTREAD FAIL")
-			console.log(data)
-			console.log(response)
+			fail(data)
 		};
-		exec(success, failure, _ID, "startRead", null);
 
-		// window.webworks.event.once(_ID, "community.BarcodeScanner.started", successStart);
-		// }
-		// if ( canvasID !== null ) {
-		// 	console.log("2222")
-		// 	// window.webworks.event.add(_ID, "community.BarcodeScanner.frameavailable", frameAvailable);
-		// }
-		// if ( typeof(errorFound) == "function" ) {
-		// 	console.log("3333")
-		// 	errorfoundCallback = errorFound;
-		// 	// window.webworks.event.once(_ID, "community.BarcodeScanner.errorfound", errorfoundCallback);
-		// }
-		// if ( typeof(codeFound) == "function" ) {
-		// 	console.log("4444")
-		// 	codefoundCallback = codeFound;
-		// 	// window.webworks.event.once(_ID, "community.BarcodeScanner.codefound", codefoundCallback);
-		// }
-		blackberry.io.sandbox = false;
-		reading = true;
 		// Turn on prevent sleep, if it's in the app
 		if (typeof community !== "undefined" && typeof community.preventsleep !== "undefined") {
 			if (!community.preventsleep.isSleepPrevented) {
@@ -81,59 +67,51 @@
 				sleepPrevented = true;
 			}
 		}
-		// return window.webworks.execAsync(_ID, "startRead", null);
+		exec(success, failure, _ID, "startRead", null);
 	};
 
-	BarcodeScanner.prototype.stopRead = function (successfulEnd, errorFound) {
-		if ( typeof(errorfoundCallback) == "function" ) {
-			// window.webworks.event.remove(_ID, "community.BarcodeScanner.errorfound", errorfoundCallback);
-		}
-		if ( typeof(errorFound) == "function" ) {
-			errorfoundCallback = errorFound;
-			// window.webworks.event.once(_ID, "community.BarcodeScanner.errorfound", errorfoundCallback);
-		}
-		if ( typeof(successfulEnd) == "function" ) {
-			// window.webworks.event.once(_ID, "community.BarcodeScanner.ended", successfulEnd);
-		}
-		if ( canvas !== null ) {
-			// window.webworks.event.remove(_ID, "community.BarcodeScanner.frameavailable", frameAvailable);
-		}
-		if ( typeof(codefoundCallback) == "function" ) {
-			// window.webworks.event.remove(_ID, "community.BarcodeScanner.codefound", codefoundCallback);
-		}
+	BarcodeScanner.prototype.stopRead = function (succ, fail) {
+		canvas.style.display = "none"
 		reading = false;
+
+		var success = function (data, response) {
+			var arData = data.split(" "),
+				receivedEvent = arData[0]
+
+			if(receivedEvent == "community.barcodescanner.ended.native") {
+				var successData = JSON.parse(arData[1])
+				succ(successData)
+			}
+		},
+		failure = function (data, response) {
+			fail(data)
+		};
 		// Return sleep setting to original if changed.
-		if (community && community.preventsleep) {
+		if (typeof community !== "undefined" && typeof community.preventsleep !== "undefined") {
 			if (sleepPrevented === true) {
 				community.preventsleep.setPreventSleep(false);
 				sleepPrevented = false;
 			}
 		}
-		return window.webworks.execAsync(_ID, "stopRead", null);
+		exec(success, failure, _ID, "stopRead", null)
 	};
 
 	function readFile(filename) {
-		console.log("READ FILE")
 		window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 
 		window.requestFileSystem(
 			window.TEMPORARY, 
 			fsSize, 
 			function (fs) {
-				console.log("filename:: " + filename)
 				fs.root.getFile(
 					filename, 
 					{create: false}, 
 					function (fileEntry) {
-						console.log("fileEntry:: " + fileEntry)
 						fileEntry.file(
 							function (file) {
-								console.log("file:: " + file)
 								var reader = new FileReader();
 								reader.onloadend = function (e) {
 									var ctx = canvas.getContext("2d");
-									console.log(canvas)
-									console.log(ctx)
 									var img = new Image();
 									img.onload = function() {
 										ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
@@ -178,13 +156,9 @@
 			break;
 		}
 
-		console.log(e)
-		console.log(msg)
 	}
 
 	function frameAvailable(data){
-		console.log("FRAME AVAILABLE")
-		console.log(data)
 		latestFrame = data.frame;
 		timeout = setTimeout(readFile, 4, latestFrame);
 	}

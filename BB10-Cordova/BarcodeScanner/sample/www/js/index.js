@@ -18,6 +18,10 @@
  */
 var app = {
 	barcodeScanner: null,
+	results: null,
+	gotCode: false,
+	appContainer: null,
+
 	// Application Constructor
 	initialize: function() {
 		this.bindEvents();
@@ -34,41 +38,45 @@ var app = {
 	// The scope of 'this' is the event. In order to call the 'receivedEvent'
 	// function, we must explicity call 'app.receivedEvent(...);'
 	onDeviceReady: function() {
-		var canvas = document.getElementById('myCanvas');
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
+		results = document.getElementById("results")
+		var canvas = document.getElementById('myCanvas')
+		canvas.width = window.innerWidth
+		canvas.height = window.innerHeight
 		
-		app.barcodeScanner = window.plugins.barcodeScanner;
-		document.getElementById('barcodeScanner_start').addEventListener('click', app.startRead, false);
+		app.barcodeScanner = window.plugins.barcodeScanner
+		appContainer = document.getElementById("appContainer")
+		document.getElementById('barcodeScanner_start').addEventListener('click', app.startRead, false)
 	},
 
 	startRead: function() {
-		app.barcodeScanner.startRead(app.codeFound, app.errorFound, "myCanvas", app.onStartRead);
+		gotCode = false
+		appContainer.style.display = "none"
+
+		app.barcodeScanner.startRead(app.codeFound, app.errorFound, "myCanvas")
+	},
+
+	stopRead: function() {
+		app.barcodeScanner.stopRead(app.onStopRead, app.errorFound, "myCanvas")
+	},
+
+	onStopRead: function(data) {
+		appContainer.style.display = "block"
 	},
 
 	errorFound: function(data){
-		// console.log("Error : "+data.error + " description : "+ data.description);
-		console.log("Error : ");
-		console.log(data);
+		console.log("Error : "+data.error + " description : "+ data.description);
+	},
+
+	writeOut: function(message) {
+		results.innerText = results.innerText + message;
+		results.appendChild(document.createElement('br'));
 	},
 
 	codeFound: function(data) {
-		console.log(data);
-		// if (gotCode === false) {
-		//	gotCode = true;
-		//	stopBarcodeRead();
-		//	// blackberry.ui.toast.show("Detected : "+data.value);
-		// }
-	},
-
-	onStartRead: function(data){
-		// console.log("Started : "+data.successful);
-		console.log("Started : ");
-		console.log(data);
-	},
-
-	onStopRead: function(data){
-		console.log("Stopped : ");
-		console.log(data);
+		if(gotCode === false) {
+			gotCode = true;
+			app.writeOut(data.value)
+			app.stopRead();
+		}
 	}
 };

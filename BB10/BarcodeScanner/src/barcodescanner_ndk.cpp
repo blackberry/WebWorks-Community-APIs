@@ -268,7 +268,6 @@ static uint32_t rotation = 0;
         err = camera_open(CAMERA_UNIT_REAR,CAMERA_MODE_RW | CAMERA_MODE_ROLL,&mCameraHandle);
 
         if ( err != CAMERA_EOK){
-        	m_pParent->getLog()->debug("CAMERA OPEN ERROR");
 #ifdef DEBUG
             fprintf(stderr, " Ran into an issue when initializing the camera = %d\n ", err);
 #endif
@@ -298,7 +297,6 @@ static uint32_t rotation = 0;
 			CAMERA_IMGPROP_BURSTMODE, 1,
 			CAMERA_IMGPROP_FRAMERATE, camFramerates[0]);
 		if ( err != CAMERA_EOK){
-	        m_pParent->getLog()->debug("camera_set_photovf_property");
 #ifdef DEBUG
 			fprintf(stderr, " Ran into an issue when configuring the camera viewfinder = %d\n ", err);
 #endif
@@ -313,7 +311,6 @@ static uint32_t rotation = 0;
 		err = camera_set_photo_property(mCameraHandle,
 			CAMERA_IMGPROP_BURSTDIVISOR, (double) 3.0);
 		if ( err != CAMERA_EOK){
-	        m_pParent->getLog()->debug("camera_set_photo_property");
 #ifdef DEBUG
 			fprintf(stderr, " Ran into an issue when configuring the camera properties = %d\n ", err);
 #endif
@@ -327,7 +324,6 @@ static uint32_t rotation = 0;
 		// Starting viewfinder up which will call the viewfinder callback - this gets the NV12 images for scanning
         err = camera_start_photo_viewfinder( mCameraHandle, &viewfinder_callback, NULL, this->cbId);
         if ( err != CAMERA_EOK) {
-            m_pParent->getLog()->debug("camera_start_photo_viewfinder");
 #ifdef DEBUG
             fprintf(stderr, "Ran into a strange issue when starting up the camera viewfinder\n");
 #endif
@@ -341,7 +337,6 @@ static uint32_t rotation = 0;
         // Focus mode can't be set until the viewfinder is started. We need Continuous Macro for barcodes
         err = camera_set_focus_mode(mCameraHandle, CAMERA_FOCUSMODE_CONTINUOUS_MACRO);
 		if ( err != CAMERA_EOK){
-	        m_pParent->getLog()->debug("camera_set_focus_mode");
 #ifdef DEBUG
 			fprintf(stderr, " Ran into an issue when setting focus mode = %d\n ", err);
 #endif
@@ -355,7 +350,6 @@ static uint32_t rotation = 0;
 		// Now start capturing burst frames in JPEG format for sending to the front end.
 		err = camera_start_burst(mCameraHandle, NULL, NULL, NULL, &image_callback, this->cbId);
 		if ( err != CAMERA_EOK) {
-	        m_pParent->getLog()->debug("camera_start_burst");
 #ifdef DEBUG
 			fprintf(stderr, "Ran into an issue when starting up the camera in burst mode\n");
 #endif
@@ -380,7 +374,6 @@ static uint32_t rotation = 0;
      * Calling this method will stop the viewfinder and close an open connection to the device camera.
      */
     int BarcodeScannerNDK::stopRead(const string &callbackId) {
-    	return 0;
     	std::string errorEvent = "community.barcodescanner.errorfound.native";
 		Json::FastWriter writer;
 		Json::Value root;
