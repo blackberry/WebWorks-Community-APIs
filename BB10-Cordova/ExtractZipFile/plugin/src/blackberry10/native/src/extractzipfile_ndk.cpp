@@ -24,21 +24,26 @@
 
 // minizip
 #include "unzip.h"
+#define S2J_ENABLED 1
 #include "state2json.h"
 
 #include "extractzipfile_ndk.hpp"
 #include "extractzipfile_js.hpp"
 
 
-static void ExtractZipFileNDK_mkpath(char *path) {
-	size_t len = strlen(path);
+static void ExtractZipFileNDK_mkpath(const char *path_raw) {
+	size_t len = strlen(path_raw);
 
-	// ensure path is a string
+	// copy path so we can mangle it
+	char *path = (char *)malloc(len + 1);
+	snprintf(path, len + 1, "%s", path_raw);
+
 	char last_char = path[len - 1];
-	path[len - 1] = '\0';
+	if (last_char == '/')
+		path[len - 1] = '\0';
 
 	// mkdir() foreach except last folder
-	for (char *upto = path + 1; *upto; upto++) {
+	for (char *upto = path + 1; *upto != '\0'; upto++) {
 		if (*upto == '/') {
 			*upto = '\0';
 			mkdir(path, 0x777);
@@ -48,9 +53,7 @@ static void ExtractZipFileNDK_mkpath(char *path) {
 
 	// mkdir() last folder
 	mkdir(path, 0x777);
-
-	// restore input path
-	path[len - 1] = last_char;
+	free(path);
 }
 
 namespace webworks {
@@ -95,7 +98,7 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 	// callbackToken
 	std::string requestedToken = root["callbackToken"].asString();
 	if (requestedToken == "")
-		requestedToken = root["zip"];
+		requestedToken = root["zip"].asString();
 	retval["callbackToken"] = requestedToken;
 
 	// destination
@@ -141,7 +144,7 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 	char fileBuffer[EZIPBUFSIZE];
 
 	// Ensure destination exists
-	ExtractZipFileNDK_mkpath(dest_root);
+	ExtractZipFileNDK_mkpath(dest_root.c_str());
 
 	int filesExtracted = 0;
 	int files_skipped = 0;
@@ -163,14 +166,13 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 			extractReturn(-1, "Failed to parse a file's metadata.");
 		}
 		filename[MAX_FILENAME] = '\0'; // ensure string termination
-		s2jInsert("files", filename);
 
 		// Handle Directories
 		if (filename[strlen(filename) - 1] == '/') {
 			// Directory creation cannot lose data
 			// so we do not care if a dir already
 			// exists
-			ExtractZipFileNDK_mkpath((dest_root + filename).c_str(), 0x777);
+			ExtractZipFileNDK_mkpath((dest_root + filename).c_str());
 			s2jIncre("directories");
 			// Note: The zip format does store permissions
 			// except these are all in platform specific
