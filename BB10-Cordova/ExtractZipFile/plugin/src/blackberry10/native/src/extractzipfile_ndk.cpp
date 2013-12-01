@@ -46,13 +46,13 @@ static void ExtractZipFileNDK_mkpath(const char *path_raw) {
 	for (char *upto = path + 1; *upto != '\0'; upto++) {
 		if (*upto == '/') {
 			*upto = '\0';
-			mkdir(path, 0x777);
+			mkdir(path, 0777);
 			*upto = '/';
 		}
 	}
 
 	// mkdir() last folder
-	mkdir(path, 0x777);
+	mkdir(path, 0777);
 	free(path);
 }
 
@@ -206,7 +206,7 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 				if (destFile == NULL) {
 					unzCloseCurrentFile(zipFile);
 					unzClose(zipFile);
-					extractReturn(-1, "Failed to open destination file");
+					extractReturn(-1, "Failed to open destination file = " + dest_file_path);
 				}
 
 				// Ferry data into destination

@@ -48,7 +48,6 @@ var app = {
 		app.testPluginCalls();
 	},
 	testPluginCalls: function() {
-		app.writeOut("Running tests");
 
 		if (community && community.extractZipFile) {
 
@@ -56,17 +55,40 @@ var app = {
 			// EXAMPLE USAGE ---
 			// The ExtractZIPFile specific code follows
 			var onReturn = function(status) {
-				app.writeOut("Extraction result: " + JSON.stringify(status));
+				var pass = false;
+				switch (status.callbackToken) {
+					case "1":
+						pass = status.entries == 1 && status.files == 1;
+						break;
+					case "2":
+						pass = status.entries == 12 && status.files == 7
+							&& status.directories == 5;
+						break;
+				}
+
+				var pass_msg = "failed";
+				if (pass == true)
+					pass_msg = "passed";
+
+				app.writeOut("\nTest " + status.callbackToken + " " + pass_msg);
+				app.writeOut("Full Status: " + JSON.stringify(status, null, " "));
 			}
-			app.writeOut("Calling tests");
 			community.extractZipFile.extract(
 				{
 					zip: "./app/native/res/zip/test_single-file-no-folder.zip",
-					destination: "./tmp",
+					destination: "./tmp/test1test1/",
+					callbackToken: "1"
 				},
 				onReturn
 				);
-			app.writeOut("Tests called");
+			community.extractZipFile.extract(
+				{
+					zip: "./app/native/res/zip/test_multi-file-multi-folder.zip",
+					destination: "./tmp/test2test2",
+					callbackToken: "2"
+				},
+				onReturn
+				);
 			// END EXAMPLE USAGE
 			// -----------------
 		} else {
