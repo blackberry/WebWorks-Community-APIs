@@ -16,32 +16,32 @@
 
 #include <string>
 #include "../public/tokenizer.h"
-#include "ExtractZIPFile_js.hpp"
-#include "ExtractZIPFile_ndk.hpp"
+#include "extractzipfile_js.hpp"
+#include "extractzipfile_ndk.hpp"
 
 using namespace std;
 
 /**
  * Default constructor.
  */
-TemplateJS::TemplateJS(const std::string& id) :
+ExtractZipFileJS::ExtractZipFileJS(const std::string& id) :
 		m_id(id) {
-	m_pLogger = new webworks::Logger("TemplateJS", this);
-	m_pTemplateController = new webworks::TemplateNDK(this);
+	m_pLogger = new webworks::Logger("ExtractZipFileJS");
+	m_pTemplateController = new webworks::ExtractZipFileNDK(this);
 }
 
 /**
  * TemplateJS destructor.
  */
-TemplateJS::~TemplateJS() {
+ExtractZipFileJS::~ExtractZipFileJS() {
 	if (m_pTemplateController)
 		delete m_pTemplateController;
 	if (m_pLogger)
-		delete m_pLogger;
+        delete m_pLogger;
 }
 
-webworks::Logger* TemplateJS::getLog() {
-	return m_pLogger;
+webworks::Logger* ExtractZipFileJS::getLog() {
+        return m_pLogger;
 }
 
 /**
@@ -49,7 +49,7 @@ webworks::Logger* TemplateJS::getLog() {
  * extension.
  */
 char* onGetObjList() {
-	static char name[] = "TemplateJS";
+	static char name[] = "ExtractZipFileJS";
 	return name;
 }
 
@@ -58,8 +58,8 @@ char* onGetObjList() {
  * an object is created on the JavaScript server side.
  */
 JSExt* onCreateObject(const string& className, const string& id) {
-	if (className == "TemplateJS") {
-		return new TemplateJS(id);
+	if (className == "ExtractZipFileJS") {
+		return new ExtractZipFileJS(id);
 	}
 
 	return NULL;
@@ -68,7 +68,7 @@ JSExt* onCreateObject(const string& className, const string& id) {
 /**
  * Method used by JNext to determine if the object can be deleted.
  */
-bool TemplateJS::CanDelete() {
+bool ExtractZipFileJS::CanDelete() {
 	return true;
 }
 
@@ -78,7 +78,7 @@ bool TemplateJS::CanDelete() {
  * for invoking native code. This method is triggered when JNext.invoke is
  * called on the JavaScript side with this native objects id.
  */
-string TemplateJS::InvokeMethod(const string& command) {
+string ExtractZipFileJS::InvokeMethod(const string& command) {
 	// format must be: "command callbackId params"
 	size_t commandIndex = command.find_first_of(" ");
 	std::string strCommand = command.substr(0, commandIndex);
@@ -86,24 +86,9 @@ string TemplateJS::InvokeMethod(const string& command) {
 	std::string callbackId = command.substr(commandIndex + 1, callbackIndex - commandIndex - 1);
 	std::string arg = command.substr(callbackIndex + 1, command.length());
 
-	// based on the command given, run the appropriate method in template_ndk.cpp
-	if (strCommand == "testString") {
-		return m_pTemplateController->templateTestString();
-	} else if (strCommand == "testStringInput") {
-		return m_pTemplateController->templateTestString(arg);
-	} else if (strCommand == "templateProperty") {
-		// if arg exists we are setting property
-		if (arg != strCommand) {
-			m_pTemplateController->setTemplateProperty(arg);
-		} else {
-			return m_pTemplateController->getTemplateProperty();
-		}
-	} else if (strCommand == "testAsync") {
-		m_pTemplateController->templateTestAsync(callbackId, arg);
-	} else if (strCommand == "templateStartThread") {
-		return m_pTemplateController->templateStartThread(callbackId);
-	} else if (strCommand == "templateStopThread") {
-		return m_pTemplateController->templateStopThread();
+	// based on the command given, run the method in extractzipfile_ndk.cpp
+	if (strCommand == "extractFile") {
+		m_pTemplateController->extractFile(callbackId, arg);
 	}
 
 	strCommand.append(";");
@@ -112,7 +97,7 @@ string TemplateJS::InvokeMethod(const string& command) {
 }
 
 // Notifies JavaScript of an event
-void TemplateJS::NotifyEvent(const std::string& event) {
+void ExtractZipFileJS::NotifyEvent(const std::string& event) {
 	std::string eventString = m_id + " ";
 	eventString.append(event);
 	SendPluginEvent(eventString.c_str(), m_pContext);
