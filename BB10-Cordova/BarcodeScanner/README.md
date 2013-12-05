@@ -17,6 +17,8 @@ ported to Cordova.
 6. Then add the BarcodeScanner plugin to the project using ```cordova plugin add /path/to/project/plugin```
 7. Finally, execute ```cordova run```
 
+Please take note that this plugin _does not_ work on a simulator.
+
 ## Javascript API
 
 
