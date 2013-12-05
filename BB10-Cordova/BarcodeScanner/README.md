@@ -8,18 +8,14 @@ ported to Cordova.
 
 ## How to setup the plugin and run the sample
 
-1. Install Apache Cordova and Webworks. 
-2. Clone the contents of the Webworks-Community-APIs repo into a directory of your choice.
-3. Navigate to BB10-Cordova/BarcodeScanner/sample.
-4. Add the com.blackberry.io plugin found in B10-Cordova/BarcodeScanner/ext:
-```
-cordova plugin add ../ext/blackberry.io 
-```
-Notice that this is only necessary to run the sample, not the actual plugin. 
-5. Set Cordova's target device to ``` phone ```. 
-6. Execute the ```run``` script: 
-``` ./run ``` 
-7. Wait for a few seconds. You now have the example running on your phone/simulator. 
+
+1. Create a new project using ```cordova create```.
+2. Copy the _www_ folder in the _sample_ directory over the default one created by that command. 
+3. Run ```__bbndk-env.bat``` or ```bbndk-env.sh``` script if the NDK is not on your PATH. 
+4. Add the _blackberry10_ platform to your project by running ```cordova platform add blackberry10```.
+5. Add the _blackberry.io_ plugin that you will find in the ext folder to the project by using ```cordova plugin add /path/to/plugin_folder```. 
+6. Then add the BarcodeScanner plugin to the project using ```cordova plugin add /path/to/project/plugin```
+7. Finally, execute ```cordova run```
 
 ## Javascript API
 
