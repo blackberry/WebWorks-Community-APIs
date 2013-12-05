@@ -1,0 +1,16 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="org.apache.cordova.BarcodeScanner"
+    version="1.0.0">
+    <js-module src="www/client.js">
+        <clobbers target="org.apache.cordova.BarcodeScanner" />
+    </js-module>
+
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" />
+        <lib-file src="src/blackberry10/native/Device-Debug/libBarcodeScanner.so" arch="device" />
+        <lib-file src="src/blackberry10/native/Device-Debug/libBarcodeScanner.so" arch="simulator" />
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="org.apache.cordova.BarcodeScanner" value="org.apache.cordova.BarcodeScanner" />
+        </config-file>
+    </platform>
+</plugin>

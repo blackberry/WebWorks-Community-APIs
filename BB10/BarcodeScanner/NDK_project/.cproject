@@ -9,7 +9,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/BarcodeScanner/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/BarcodeScanner/Device-Debug"/>
-						<entry flags="" kind="libraryFile" name="BarcodeScanner"/>
+						<entry flags="" kind="libraryFile" name="BarcodeScanner" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -82,8 +82,8 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/BarcodeScanner/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/BarcodeScanner"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/BarcodeScanner/Device-Release"/>
-						<entry flags="" kind="libraryFile" name="BarcodeScanner"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="BarcodeScanner"/>
+						<entry flags="" kind="libraryFile" name="BarcodeScanner" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="RESOLVED" kind="libraryFile" name="BarcodeScanner" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -155,7 +155,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/BarcodeScanner/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/BarcodeScanner/Device-Profile"/>
-						<entry flags="" kind="libraryFile" name="BarcodeScanner"/>
+						<entry flags="" kind="libraryFile" name="BarcodeScanner" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -229,7 +229,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/BarcodeScanner/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/BarcodeScanner/Device-Coverage"/>
-						<entry flags="" kind="libraryFile" name="BarcodeScanner"/>
+						<entry flags="" kind="libraryFile" name="BarcodeScanner" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -303,7 +303,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/BarcodeScanner/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/BarcodeScanner/Simulator-Debug"/>
-						<entry flags="" kind="libraryFile" name="BarcodeScanner"/>
+						<entry flags="" kind="libraryFile" name="BarcodeScanner" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -374,7 +374,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/BarcodeScanner/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/BarcodeScanner/Simulator-Profile"/>
-						<entry flags="" kind="libraryFile" name="BarcodeScanner"/>
+						<entry flags="" kind="libraryFile" name="BarcodeScanner" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -447,7 +447,7 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/BarcodeScanner/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/BarcodeScanner/Simulator-Coverage"/>
-						<entry flags="" kind="libraryFile" name="BarcodeScanner"/>
+						<entry flags="" kind="libraryFile" name="BarcodeScanner" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -563,7 +563,28 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="refreshScope" versionNumber="1">
-		<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Simulator-Profile">
+			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
+		</configuration>
+		<configuration configurationName="Simulator-Coverage">
+			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
+		</configuration>
+		<configuration configurationName="Device-Profile">
+			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
+		</configuration>
+		<configuration configurationName="Device-Debug">
+			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
+		</configuration>
+		<configuration configurationName="Simulator-Debug">
+			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
+		</configuration>
+		<configuration configurationName="Device-Release">
+			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
+		</configuration>
+		<configuration configurationName="Device-Coverage">
+			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
+		</configuration>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 </cproject>

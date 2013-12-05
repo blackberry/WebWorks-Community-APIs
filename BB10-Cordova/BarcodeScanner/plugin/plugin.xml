@@ -1,0 +1,16 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="community.BarcodeScanner"
+    version="1.0.0">
+    <js-module src="www/client.js">
+        <clobbers target="community.BarcodeScanner" />
+    </js-module>
+
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" />
+        <lib-file src="src/blackberry10/native/device/libBarcodeScanner.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/device/libBarcodeScanner.so" arch="simulator"/>
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="community.BarcodeScanner" value="community.BarcodeScanner" />
+        </config-file>
+    </platform>
+</plugin>
