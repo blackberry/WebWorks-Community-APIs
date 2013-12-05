@@ -1,3 +1,0 @@
-cordova plugins remove community.BarcodeScanner
-cordova plugins add ../plugin
-cordova run phone
