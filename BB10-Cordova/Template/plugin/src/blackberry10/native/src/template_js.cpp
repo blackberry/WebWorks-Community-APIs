@@ -16,8 +16,8 @@
 
 #include <string>
 #include "../public/tokenizer.h"
-#include "template_js.hpp"
-#include "template_ndk.hpp"
+#include "ExtractZIPFile_js.hpp"
+#include "ExtractZIPFile_ndk.hpp"
 
 using namespace std;
 
@@ -26,6 +26,7 @@ using namespace std;
  */
 TemplateJS::TemplateJS(const std::string& id) :
 		m_id(id) {
+	m_pLogger = new webworks::Logger("TemplateJS", this);
 	m_pTemplateController = new webworks::TemplateNDK(this);
 }
 
@@ -35,6 +36,12 @@ TemplateJS::TemplateJS(const std::string& id) :
 TemplateJS::~TemplateJS() {
 	if (m_pTemplateController)
 		delete m_pTemplateController;
+	if (m_pLogger)
+		delete m_pLogger;
+}
+
+webworks::Logger* TemplateJS::getLog() {
+	return m_pLogger;
 }
 
 /**

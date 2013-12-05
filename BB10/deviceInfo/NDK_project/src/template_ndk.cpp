@@ -16,10 +16,12 @@
 
 #include <string>
 #include <sstream>
+#include <bps/bps.h>
+#include <bps/deviceinfo.h>
+#include <bps/netstatus.h>
 #include <bb/device/SimCardInfo>
 #include <bb/device/HardwareInfo>
 #include <bb/device/CellularNetworkInfo>
-#include <json/reader.h>
 #include <json/writer.h>
 #include <pthread.h>
 #include "template_ndk.hpp"
@@ -29,6 +31,7 @@ namespace webworks {
 
 DeviceInfo::DeviceInfo(TemplateJS *parent) {
 	m_pParent = parent;
+	bps_initialize();
 }
 
 std::string DeviceInfo::getModelNumber() {
@@ -52,7 +55,56 @@ std::string DeviceInfo::getMNC() {
 	return simInfo.mobileNetworkCode().toLocal8Bit().data();
 }
 
+std::string DeviceInfo::isSimulator() {
+    deviceinfo_details_t *details;
+
+    if (BPS_SUCCESS == deviceinfo_get_details(&details)) {
+        if(deviceinfo_details_is_simulator(details)) {
+        	return "true";
+        } else {
+        	return "false";
+        }
+        deviceinfo_free_details(&details);
+    }
+	return "null";
+}
+
+std::string DeviceInfo::getNetwork() {
+	Json::FastWriter writer;
+	Json::Value res;
+	netstatus_interface_details_t *details;
+
+	if(BPS_SUCCESS == netstatus_get_interface_details(NULL, &details)) {
+		netstatus_ip_status_t nstatus = netstatus_interface_get_ip_status(details);
+		netstatus_interface_type_t ntype = netstatus_interface_get_type(details);
+		bool nisconnected = netstatus_interface_is_connected(details);
+		bool nisup = netstatus_interface_is_up(details);
+
+		int nipcnt = netstatus_interface_get_num_ip_addresses(details);
+
+		res["status"] = true;
+		res["ifname"] = std::string(netstatus_interface_get_name(details));
+		res["ifup"] = nisup;
+		res["ifconnected"] = nisconnected;
+		res["iftype"] = ntype;
+		res["ifstatus"] = nstatus;
+		res["ifipcount"] = nipcnt;
+
+		for(int i=0; i<nipcnt; i++) {
+			res["iplist"][i]["ifaddress"] = std::string(netstatus_interface_get_ip_address(details, i));
+			res["iplist"][i]["ifnetmask"] = std::string(netstatus_interface_get_ip_address_netmask(details, i));
+		}
+
+		netstatus_free_interface_details(&details);
+	} else {
+		res["status"] = false;
+	}
+
+	return writer.write(res);
+}
+
 DeviceInfo::~DeviceInfo() {
+	bps_shutdown();
 }
 
 

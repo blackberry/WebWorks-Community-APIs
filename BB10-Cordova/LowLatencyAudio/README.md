@@ -2,6 +2,8 @@
 
 Plays audio .wav files using openAL, ALUT, Qdir, and QtCore libraries.
 
+For a sample application demonstrating the use of this API, please see the [LowLatencySequencer](https://github.com/blackberry/Cordova-Samples/tree/master/LowLatencySequencer)
+
 The plugin is currently under the name of PGLowLatencyAudio, and can be installed using the following command in your Cordova project location:
 
     cordova/plugin add path-to-plugin/PGLowLatencyAudio
@@ -110,12 +112,6 @@ Example:
 ----------------------------------------------------------------------------------
 
 The Native portion of the plugin is called using JNEXT.invoke, and inputting either of the following strings, 'load', 'unload', 'play', 'stop', 'loop'.
-
-For a test application, go to the branch testApp, and combine the www folder in that repository with the www folder of your cordova application.
-
-	http://github.rim.net/khuynh/PGLowLatencyAudio/tree/testApp
-
-Currently, at the top of application screen are the preloads, all sounds need to be preloaded before they can be played. Every sound is preloaded with only one voice, you can change this in the html file. Once preloaded the next set of buttons are the play/loop buttons which play each sounds with each button press. The next button is the stop buttons, which can be used to stop the loopings for the background sound. The final buttons are the unload buttons which unloads the sounds from their buffers and sources, and cannot be played unless preloaded again.
 
 
 For more information about how to run and build Cordova applications, refer to:

@@ -85,5 +85,10 @@ string TemplateJS::InvokeMethod(const string& command) {
 		return m_pTemplateController->getRoamingStatus();
 	else if (strCommand == "getMNC")
 			return m_pTemplateController->getMNC();
+	else if (strCommand == "isSimulator")
+			return m_pTemplateController->isSimulator();
+	else if (strCommand == "getNetwork")
+		return m_pTemplateController->getNetwork();
+
 	return "Unknown C++ method";
 }
