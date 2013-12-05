@@ -55,14 +55,14 @@ ported to Cordova.
 This feature depends on the blackberry.io feature as well, so both must be included in your applications config.xml file. Also, permission for the camera is required.
 ```xml
 <feature id="blackberry.io" />
-<feature id="community.barcodescanner" />
+<feature id="community.BarcodeScanner" />
 
 <rim:permissions>
 	<rim:permit>use_camera</rim:permit>
 </rim:permissions>
 ```
 
-It's also recommended that you stop scanning if the app goes into the background. To respond to app state, include the following feature:
+It's also recommended that you stop scanning if the app goes into the background. To respond to app state,  include the following feature:
 ```xml
 <feature id="blackberry.app" />
 ```
