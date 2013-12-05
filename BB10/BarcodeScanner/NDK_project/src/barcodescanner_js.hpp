@@ -19,7 +19,6 @@
 
 #include "../public/plugin.h"
 #include "barcodescanner_ndk.hpp"
-#include "Logger.hpp"
 
 class BarcodeScannerJS: public JSExt {
 
@@ -29,12 +28,11 @@ public:
     virtual bool CanDelete();
     virtual std::string InvokeMethod(const std::string& command);
     void NotifyEvent(const std::string& event);
-    webworks::Logger* getLog();
+
 private:
     std::string m_id;
     // Definition of a pointer to the actual native extension code
     webworks::BarcodeScannerNDK *m_pBarcodeScannerController;
-    webworks::Logger *m_pLogger;
 };
 
 #endif /* BarcodeScannerJS_HPP_ */
