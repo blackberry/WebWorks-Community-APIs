@@ -113,3 +113,9 @@ h1 {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }
+
+#stop_text_container {
+    position:absolute;
+    top:0;
+    left:0;
+}

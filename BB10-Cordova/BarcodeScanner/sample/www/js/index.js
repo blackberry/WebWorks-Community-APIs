@@ -21,6 +21,7 @@ var app = {
 	results: null,
 	gotCode: false,
 	appContainer: null,
+	canvasContainer: null,
 
 	// Application Constructor
 	initialize: function() {
@@ -39,6 +40,9 @@ var app = {
 	// function, we must explicity call 'app.receivedEvent(...);'
 	onDeviceReady: function() {
 		results = document.getElementById("results")
+		canvasContainer = document.getElementById('barcodeScanner_stop')
+		canvasContainer.style.display = "none"
+
 		var canvas = document.getElementById('myCanvas')
 		canvas.width = window.innerWidth
 		canvas.height = window.innerHeight
@@ -46,9 +50,11 @@ var app = {
 		app.barcodeScanner = window.plugins.barcodeScanner
 		appContainer = document.getElementById("appContainer")
 		document.getElementById('barcodeScanner_start').addEventListener('click', app.startRead, false)
+		canvasContainer.addEventListener('click', app.stopRead, false)
 	},
 
 	startRead: function() {
+		canvasContainer.style.display = "block"
 		gotCode = false
 		appContainer.style.display = "none"
 
@@ -56,6 +62,7 @@ var app = {
 	},
 
 	stopRead: function() {
+		canvasContainer.style.display = "none"
 		app.barcodeScanner.stopRead(app.onStopRead, app.errorFound, "myCanvas")
 	},
 
