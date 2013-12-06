@@ -13,7 +13,7 @@ ported to Cordova.
 2. Copy the _www_ folder in the _sample_ directory over the default one created by that command. 
 3. Run ```__bbndk-env.bat``` or ```bbndk-env.sh``` script if the NDK is not on your PATH. 
 4. Add the _blackberry10_ platform to your project by running ```cordova platform add blackberry10```.
-5. Add the _blackberry.io_ plugin that you will find in the ext folder to the project by using ```cordova plugin add /path/to/plugin_folder```. 
+5. Add the _blackberry.io_ plugin to your platform using ```cordova plugin add com.blackberry.io```. 
 6. Then add the BarcodeScanner plugin to the project using ```cordova plugin add /path/to/project/plugin```
 7. Finally, execute ```cordova run```
 
