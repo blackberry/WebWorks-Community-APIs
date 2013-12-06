@@ -12,5 +12,6 @@
         <config-file target="www/config.xml" parent="/widget">
             <feature name="community.BarcodeScanner" value="community.BarcodeScanner" />
         </config-file>
+        <dependency id="com.blackberry.utils" />
     </platform>
 </plugin>
