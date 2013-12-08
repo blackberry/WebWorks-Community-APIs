@@ -3,11 +3,11 @@ Clipboard Extension
 
 This BlackBerry 10 Cordova Plugin provide simple clipboard access functions like getText and setText. 
 
-** Tested On **
+**Tested On**
 
 BlackBerry Dev Alpha C / 10.2.0.429
 
-** Author **
+**Author**
 
 [Merrick Zhang](https://github.com/anphorea)
 
