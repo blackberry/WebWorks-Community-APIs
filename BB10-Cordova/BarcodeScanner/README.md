@@ -8,6 +8,7 @@ ported to Cordova.
 
 ## How to setup the plugin and run the sample
 
+For Cordova Projects:
 
 1. Create a new project using ```cordova create```.
 2. Copy the _www_ folder in the _sample_ directory over the default one created by that command. 
@@ -15,6 +16,13 @@ ported to Cordova.
 4. Add the _blackberry10_ platform to your project by running ```cordova platform add blackberry10```.
 5. Then add the BarcodeScanner plugin to the project using ```cordova plugin add /path/to/project/plugin```
 6. Finally, execute ```cordova run```
+
+For WebWorks 2.0 projects:
+
+1. Create a new project using ```webworks create```.
+2. Copy the _www_ folder in the _sample_ directory over the default one created by that command. 
+5. Then add the BarcodeScanner plugin to the project using ```webworks plugin add /path/to/project/plugin```
+6. Finally, execute ```webworks run```
 
 Please take note that this plugin _does not_ work on a simulator.
 
@@ -53,45 +61,26 @@ Please take note that this plugin _does not_ work on a simulator.
 ```
 
 ## Including the feature in your application
-This feature depends on the blackberry.io feature as well, so both must be included in your applications config.xml file. Also, permission for the camera is required.
+This feature depends on the blackberry.io which is installed with it. Permission for the camera is required, so add the following to your config.xml file.
 ```xml
-<feature id="blackberry.io" />
-<feature id="community.BarcodeScanner" />
-
 <rim:permissions>
 	<rim:permit>use_camera</rim:permit>
 </rim:permissions>
 ```
 
-It's also recommended that you stop scanning if the app goes into the background. To respond to app state,  include the following feature:
-```xml
-<feature id="blackberry.app" />
-```
+It's also recommended that you stop scanning if the app goes into the background. To respond to app state,  include the blackberry.app feauture
 
-When you start scanning, you can make the experience better for your users with the [Prevent Sleep Extension](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/PreventSleep). If you include Prevent Sleep in your app, the BarcodeScanner will automatically use it as needed to keep the screen on. Instructions for installing are in the Prevent Sleep [README](https://github.com/blackberry/WebWorks-Community-APIs/blob/master/BB10/PreventSleep/README.md)
-
-```xml
-<feature id="community.preventsleep" />
-```
+When you start scanning, you can make the experience better for your users with the [Prevent Sleep Extension](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/PreventSleep). If you include Prevent Sleep in your app, the BarcodeScanner will automatically use it as needed to keep the screen on. Instructions for installing are in the Prevent Sleep [README](https://github.com/blackberry/WebWorks-Community-APIs/blob/master/BB10-Cordova/PreventSleep/README.md)
 
 
 ## License
 
-Copyright 2013 Jasmin Auger and Alex Tough
+This plugin is Open Source licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0)
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+## Authors
+[Jasmin Auger](https://github.com/FreakenK) and [Alex Tough](https://github.com/alextoughg)
 
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-"Including the feature in your application" of this README is copyright Tim Windsor, Alex Kwan and Mike Delong. 
+Based on code written by [Alex Kwan](https://github.com/greentea0), [Mike Delong](https://github.com/mdelong) and [Tim Windsor](https://github.com/timwindsor)
 
 ## Disclaimer
 
