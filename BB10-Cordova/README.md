@@ -88,3 +88,10 @@ callback is a function that gets called as soon as the native code has done its 
  
 
 	
+## [Clipboard](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/Clipboard)
+	
+This plugin allows you access the text data in your clipboard.
+
+	1.  setText(string) - Set <string> to clipboard,string length returned, or "-1" if error.
+	2.  getText() - get the clipboard text.
+
