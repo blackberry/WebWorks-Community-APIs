@@ -42,6 +42,10 @@ module.exports = {
 
 	getNetwork: function (success, fail) {
         success(template.getInstance().getNetwork());
+    },
+
+	hasPhysicalKeyboard	: function (success, fail) {
+        success(template.getInstance().hasPhysicalKeyboard	());
     }
-	
+
 };

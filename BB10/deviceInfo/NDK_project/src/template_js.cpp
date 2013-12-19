@@ -89,6 +89,8 @@ string TemplateJS::InvokeMethod(const string& command) {
 			return m_pTemplateController->isSimulator();
 	else if (strCommand == "getNetwork")
 		return m_pTemplateController->getNetwork();
+	else if (strCommand == "hasPhysicalKeyboard")
+		return m_pTemplateController->hasPhysicalKeyboard();
 
 	return "Unknown C++ method";
 }

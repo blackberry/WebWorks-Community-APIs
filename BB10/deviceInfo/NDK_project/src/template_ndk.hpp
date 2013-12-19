@@ -34,6 +34,7 @@ public:
 	std::string getMNC();
 	std::string isSimulator();
 	std::string getNetwork();
+	std::string hasPhysicalKeyboard();
 private:
 	TemplateJS *m_pParent;
 };

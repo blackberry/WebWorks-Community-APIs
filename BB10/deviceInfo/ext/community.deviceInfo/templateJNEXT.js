@@ -72,6 +72,10 @@ JNEXT.Template = function () {
         return JSON.parse(JNEXT.invoke(self.m_id, "getNetwork"));
     };
     
+    self.hasPhysicalKeyboard = function () {
+        return JSON.parse(JNEXT.invoke(self.m_id, "hasPhysicalKeyboard"));
+    };
+    
 	// ************************
 	// End of methods to edit
 	// ************************

@@ -107,5 +107,10 @@ DeviceInfo::~DeviceInfo() {
 	bps_shutdown();
 }
 
+std::string DeviceInfo::hasPhysicalKeyboard() {
+	bb::device::HardwareInfo hwInfo;
+
+	return hwInfo.isPhysicalKeyboardDevice() ? "1" : "0";
+}
 
 } /* namespace webworks */
