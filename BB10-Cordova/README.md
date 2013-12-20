@@ -95,3 +95,24 @@ This plugin allows you access the text data in your clipboard.
 	1.  setText(string) - Set <string> to clipboard,string length returned, or "-1" if error.
 	2.  getText() - get the clipboard text.
 
+## [Curl](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/Curl)
+
+This plugin provides simple HTTP-GET function using libcurl.
+
+	1. get(url) - Returns the contents of the given URL
+
+## [ExtractZipFile](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/ExtractZipFile)
+
+This plugin unzips Zip files.
+
+	1. extract(options, callback)
+
+Options uses the following format:
+
+	zip: 'folder1/zipFilename',
+	destination: 'folder2/destination',
+	overwriteFiles: true,
+	tarBombProtection: false,
+	callbackToken: ''
+
+

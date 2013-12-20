@@ -1,7 +1,7 @@
 Curl Extension
 =============
 
-This BlackBerry 10 Cordova Plugin provide simple HTTP-GET function using libcurl.
+This BlackBerry 10 Cordova Plugin providea simple HTTP-GET function using libcurl.
 
 ** Tested On **
 
