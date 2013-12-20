@@ -10,8 +10,8 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/mongoose/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/mongoose"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/mongoose/Device-Release"/>
-						<entry flags="" kind="libraryFile" name="mongoose"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="mongoose"/>
+						<entry flags="" kind="libraryFile" name="mongoose" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="RESOLVED" kind="libraryFile" name="mongoose" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -39,6 +39,7 @@
 								<option id="com.qnx.qcc.option.compiler.security.1630662975" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.398979847" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+									<listOptionValue builtIn="false" value="_FILE_OFFSET_BITS=64"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.qccoptions.123231234" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-frecord-gcc-switches"/>
@@ -78,8 +79,8 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/mongoose/public"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/mongoose"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/mongoose/Simulator-Debug"/>
-						<entry flags="" kind="libraryFile" name="mongoose"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="mongoose"/>
+						<entry flags="" kind="libraryFile" name="mongoose" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="RESOLVED" kind="libraryFile" name="mongoose" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -107,6 +108,7 @@
 								<option id="com.qnx.qcc.option.compiler.security.1068690852" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.323879001" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+									<listOptionValue builtIn="false" value="_FILE_OFFSET_BITS=64"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1895153119" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
@@ -167,4 +169,5 @@
 		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 </cproject>

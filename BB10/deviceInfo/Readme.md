@@ -31,6 +31,11 @@ community.deviceInfo.isSimulator()
 community.deviceInfo.getRoamingStatus()
 </pre> 
 
+<pre>
+//returns whether device has physical keyboard as 0 or 1
+community.deviceInfo.hasPhysicalKeyboard()
+</pre> 
+
 The following APIs require the following permission:
 <b>read_cellular_data</b>
 

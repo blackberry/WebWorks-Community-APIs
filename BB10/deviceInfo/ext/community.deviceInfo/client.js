@@ -51,4 +51,9 @@ var _self = {},
         return window.webworks.execSync(_ID, "getNetwork", null);
     };
 
+    //Do we have a physical keyboard?
+    _self.hasPhysicalKeyboard = function () {
+        return window.webworks.execSync(_ID, "hasPhysicalKeyboard", null);
+    };
+
 module.exports = _self;
