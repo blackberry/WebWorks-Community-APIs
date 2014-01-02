@@ -116,3 +116,4 @@ Options uses the following format:
 	callbackToken: ''
 
 
+[![Analytics](https://ga-beacon.appspot.com/UA-46817652-1/WebWorks-Community-APIs/BB10-Cordova?pixel)](https://github.com/igrigorik/ga-beacon)

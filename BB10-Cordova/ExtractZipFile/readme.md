@@ -68,3 +68,4 @@ concurrent zip extraction to differentiate between callbacks.
 
 Default: duplicate of zip argument.
 
+[![Analytics](https://ga-beacon.appspot.com/UA-46817652-1/WebWorks-Community-APIs/BB10-Cordova/ExtractZipFile?pixel)](https://github.com/igrigorik/ga-beacon)
