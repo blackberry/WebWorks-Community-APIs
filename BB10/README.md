@@ -69,3 +69,4 @@ Start with the [Template](https://github.com/blackberry/WebWorks-Community-APIs/
 
 
 
+[![Analytics](https://ga-beacon.appspot.com/UA-46817652-1/WebWorks-Community-APIs/BB10?pixel)](https://github.com/igrigorik/ga-beacon)
