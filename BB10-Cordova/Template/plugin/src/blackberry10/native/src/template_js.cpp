@@ -16,8 +16,8 @@
 
 #include <string>
 #include "../public/tokenizer.h"
-#include "ExtractZIPFile_js.hpp"
-#include "ExtractZIPFile_ndk.hpp"
+#include "template_js.hpp"
+#include "template_ndk.hpp"
 
 using namespace std;
 
