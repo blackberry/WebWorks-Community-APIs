@@ -442,6 +442,51 @@ So, for example, you could do the following:
 
 Slogger2 data can be seen either over an SSH connection to the device, and running slog2info (pass in -w to have the command wait and print out messages as they arrive), or even better in Momentics by right clicking on a Target in the Target Navigator view, and choosing __Open Device Log__.
 
+### Including Libraries
+
+Libraries are added through the Add Library Wizard. Here's how to find it:
+
+1. Right click on the project, and select properties, then go to C/C++ Build -> Settings.
+1. Choose Tool Settings, and under QCC Linker, select Libraries
+1. Click on Open Add Library Wizard
+
+![Add Library](addLibrary.png)
+
+1. Click Okay to the build settings change.
+1. When prompted choose where the library is that you want to add. For any platform library, you will want the first option.
+1. Find the library in the list. In this example we've searched for and found the QtCore library
+
+![QtCore](QtCore.png)
+
+1. Click Next, then Finish.
+
+Now the necessary library paths and include directories should be added. For some Qt based libraries, there are some additional steps.
+
+#### Special steps for including QtCore and other Qt libraries
+
+If you follow the instructions above and use the Add Library Wizard to add QtCore, there are some additional steps. When you build you'll see the following message:
+
+```
+C:\bbndk10.2\host_10_2_0_15\win32\x86\usr\bin\ntox86-ld: cannot find -lQtCore
+```
+
+Two additional library paths need to be added for the Linker:
+
+```
+${QNX_TARGET}/${CPUVARDIR}/usr/lib
+${QNX_TARGET}/${CPUVARDIR}/usr/lib/qt4/lib
+```
+
+![Library Paths](librarypaths.png)
+
+Additionally, you should add this include directory for the Compiler Preprocessor:
+
+```
+${QNX_TARGET}/usr/include/qt4${QNX_TARGET}/usr/include/qt4
+```
+
+![Preprocessor](preprocessor.png)
+
 
 ### Common Issues
 If you are getting a message saying the application can not load your .so file, it's nearly always a linking problem. Your code may build in the IDE, but not actually link on the device. Make sure you've included all your dependencies and includes properly, _on the build that you have loaded_. Also, make sure that you've loaded the device build on a device, and the simulator on a simulator.
