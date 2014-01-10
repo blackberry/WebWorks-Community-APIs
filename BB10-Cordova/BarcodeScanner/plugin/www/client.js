@@ -15,7 +15,7 @@
 */
 
 (function(cordova) {
-	var _ID = "community.BarcodeScanner";
+	var _ID = "com.blackberry.community.barcodescanner";
 	var exec = cordova.require("cordova/exec");
 
 	var reading, canvas, timeout, fs, latestFrame = null;

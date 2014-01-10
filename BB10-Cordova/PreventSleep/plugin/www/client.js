@@ -15,7 +15,7 @@
 */
 
 var _self = {},
-	_ID = "community.preventsleep",
+	_ID = "com.blackberry.community.preventsleep",
 	exec = cordova.require("cordova/exec");
 
 	// These methods are called by your App's JavaScript

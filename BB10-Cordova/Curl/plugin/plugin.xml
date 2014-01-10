@@ -1,6 +1,12 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="community.curl"
+    id="com.blackberry.community.curl"
     version="1.0.0">
+
+    <name>Curl</name>
+    <description>BlackBerry 10 Community Contributed API to make network calls with CURL</description>
+    <license>Apache 2.0</license>
+    <author>Merrick Zhang</author>
+
     <js-module src="www/client.js">
         <clobbers target="community.curl" />
     </js-module>
@@ -10,7 +16,7 @@
         <lib-file src="src/blackberry10/native/device/libcurl.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libcurl.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="community.curl" value="community.curl" />
+            <feature name="com.blackberry.community.curl" value="com.blackberry.community.curl" />
         </config-file>
     </platform>
 </plugin>

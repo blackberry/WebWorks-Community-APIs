@@ -16,7 +16,7 @@
 
 // Raw API
 var _self = {},
-	_ID = "community.extractZipFile",
+	_ID = "com.blackberry.community.extractZipFile",
 	exec = cordova.require("cordova/exec");
 
 

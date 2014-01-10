@@ -1,6 +1,12 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="community.extractZipFile"
+    id="com.blackberry.community.extractZipFile"
     version="1.0.0">
+
+    <name>ExtractZipFile</name>
+    <description>BlackBerry 10 Community Contributed API to unzip files</description>
+    <license>Apache 2.0</license>
+    <author>Daniel Dressler</author>
+
     <js-module src="www/client.js">
         <clobbers target="community.extractZipFile" />
     </js-module>
@@ -10,7 +16,7 @@
         <lib-file src="src/blackberry10/native/device/libExtractZipFile.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libExtractZipFile.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="community.extractZipFile" value="community.extractZipFile" />
+            <feature name="com.blackberry.community.extractZipFile" value="com.blackberry.community.extractZipFile" />
         </config-file>
     </platform>
 </plugin>

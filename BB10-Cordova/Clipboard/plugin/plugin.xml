@@ -1,6 +1,12 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="community.clipboard"
+    id="com.blackberry.community.clipboard"
     version="1.0.0">
+
+    <name>Clipboard</name>
+    <description>BlackBerry 10 Community Contributed API to access the system clipboard</description>
+    <license>Apache 2.0</license>
+    <author>Merrick Zhang</author>
+
     <js-module src="www/client.js">
         <clobbers target="community.clipboard" />
     </js-module>
@@ -10,7 +16,7 @@
         <lib-file src="src/blackberry10/native/device/libclipboard3.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libclipboard3.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="community.clipboard" value="community.clipboard" />
+            <feature name="com.blackberry.community.clipboard" value="com.blackberry.community.clipboard" />
         </config-file>
     </platform>
 </plugin>
