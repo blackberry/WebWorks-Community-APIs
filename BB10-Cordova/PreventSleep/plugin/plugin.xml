@@ -1,6 +1,12 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="community.preventsleep"
+    id="com.blackberry.community.preventsleep"
     version="1.0.0">
+
+    <name>Prevent Sleep</name>
+    <description>BlackBerry 10 Community Contributed API to keep the screen on</description>
+    <license>Apache 2.0</license>
+    <author>Tim Windsor</author>
+
     <js-module src="www/client.js">
         <clobbers target="community.preventsleep" />
     </js-module>
@@ -10,7 +16,7 @@
         <lib-file src="src/blackberry10/native/device/libPreventSleep.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libPreventSleep.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="community.preventsleep" value="community.preventsleep" />
+            <feature name="com.blackberry.community.preventsleep" value="com.blackberry.community.preventsleep" />
         </config-file>
     </platform>
 </plugin>
