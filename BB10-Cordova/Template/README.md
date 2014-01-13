@@ -477,7 +477,7 @@ ${QNX_TARGET}/${CPUVARDIR}/usr/lib
 ${QNX_TARGET}/${CPUVARDIR}/usr/lib/qt4/lib
 ```
 
-If you copy and paste the string, you'll need to go back and edit out the quotes that get added automatically.
+__Repeat these steps so the same settings exist on both the device and simulator build configurations__
 
 ![Library Paths](librarypaths.png)
 
@@ -487,7 +487,7 @@ Additionally, you should add this include directory for the Compiler Preprocesso
 ${QNX_TARGET}/usr/include/qt4
 ```
 
-Same as before, if you copy and paste this string, you'll need to edit the quotes out.
+__Repeat these steps so the same settings exist on both the device and simulator build configurations__
 
 ![Preprocessor](preprocessor.png)
 
