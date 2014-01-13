@@ -477,13 +477,17 @@ ${QNX_TARGET}/${CPUVARDIR}/usr/lib
 ${QNX_TARGET}/${CPUVARDIR}/usr/lib/qt4/lib
 ```
 
+If you copy and paste the string, you'll need to go back and edit out the quotes that get added automatically.
+
 ![Library Paths](librarypaths.png)
 
 Additionally, you should add this include directory for the Compiler Preprocessor:
 
 ```
-${QNX_TARGET}/usr/include/qt4${QNX_TARGET}/usr/include/qt4
+${QNX_TARGET}/usr/include/qt4
 ```
+
+Same as before, if you copy and paste this string, you'll need to edit the quotes out.
 
 ![Preprocessor](preprocessor.png)
 
