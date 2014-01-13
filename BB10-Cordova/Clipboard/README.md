@@ -13,6 +13,18 @@ BlackBerry Dev Alpha C / 10.2.0.429
 
 [About Me](http://about.me/anpho)
 
+## Including the feature in your application
+
+This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+
+	cordova plugin add com.blackberry.community.clipboard
+
+or,
+	
+	webworks plugin add com.blackberry.community.clipboard
+
+Installation from source is the same but instead of the id ("com.blackberry.community.clipboard"), use the file system path to the source plugin folder.
+
 ## Structure of the Plugin and Sample
 
 There are two parts to this project - the plugin and a sample:

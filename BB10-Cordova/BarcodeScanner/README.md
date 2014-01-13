@@ -6,25 +6,28 @@ The Rear Camera is used and it paints a viewfinder onto a Canvas for the user to
 It is a version of the [BarcodeScanner BB10 Webworks extension](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/BarcodeScanner) 
 ported to Cordova. 
 
-## How to setup the plugin and run the sample
+## Including the feature in your application
 
-For Cordova Projects:
+This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
 
-1. Create a new project using ```cordova create```.
-2. Copy the _www_ folder in the _sample_ directory over the default one created by that command. 
-3. Run ```__bbndk-env.bat``` or ```bbndk-env.sh``` script if the NDK is not on your PATH. 
-4. Add the _blackberry10_ platform to your project by running ```cordova platform add blackberry10```.
-5. Then add the BarcodeScanner plugin to the project using ```cordova plugin add /path/to/project/plugin```
-6. Finally, execute ```cordova run```
+	cordova plugin add com.blackberry.community.barcodescanner
 
-For WebWorks 2.0 projects:
+or,
+	
+	webworks plugin add com.blackberry.community.barcodescanner
 
-1. Create a new project using ```webworks create```.
-2. Copy the _www_ folder in the _sample_ directory over the default one created by that command. 
-5. Then add the BarcodeScanner plugin to the project using ```webworks plugin add /path/to/project/plugin```
-6. Finally, execute ```webworks run```
+Installation from source is the same but instead of the id ("com.blackberry.community.barcodescanner"), use the file system path to the source plugin folder.
 
-Please take note that this plugin _does not_ work on a simulator.
+This feature depends on the blackberry.io which is installed with it. Permission for the camera is required, so add the following to your config.xml file.
+```xml
+<rim:permissions>
+	<rim:permit>use_camera</rim:permit>
+</rim:permissions>
+```
+
+It's also recommended that you stop scanning if the app goes into the background. To respond to app state,  include the blackberry.app feauture
+
+When you start scanning, you can make the experience better for your users with the [Prevent Sleep Extension](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/PreventSleep). If you include Prevent Sleep in your app, the BarcodeScanner will automatically use it as needed to keep the screen on. Instructions for installing are in the Prevent Sleep [README](https://github.com/blackberry/WebWorks-Community-APIs/blob/master/BB10-Cordova/PreventSleep/README.md)
 
 ## Javascript API
 
@@ -60,17 +63,25 @@ Please take note that this plugin _does not_ work on a simulator.
 
 ```
 
-## Including the feature in your application
-This feature depends on the blackberry.io which is installed with it. Permission for the camera is required, so add the following to your config.xml file.
-```xml
-<rim:permissions>
-	<rim:permit>use_camera</rim:permit>
-</rim:permissions>
-```
+## How to setup and run the sample
 
-It's also recommended that you stop scanning if the app goes into the background. To respond to app state,  include the blackberry.app feauture
+For Cordova Projects:
 
-When you start scanning, you can make the experience better for your users with the [Prevent Sleep Extension](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/PreventSleep). If you include Prevent Sleep in your app, the BarcodeScanner will automatically use it as needed to keep the screen on. Instructions for installing are in the Prevent Sleep [README](https://github.com/blackberry/WebWorks-Community-APIs/blob/master/BB10-Cordova/PreventSleep/README.md)
+1. Create a new project using ```cordova create```.
+2. Copy the _www_ folder in the _sample_ directory over the default one created by that command. 
+3. Run ```__bbndk-env.bat``` or ```bbndk-env.sh``` script if the NDK is not on your PATH. 
+4. Add the _blackberry10_ platform to your project by running ```cordova platform add blackberry10```.
+5. Then add the BarcodeScanner plugin to the project using ```cordova plugin add /path/to/project/plugin```
+6. Finally, execute ```cordova run```
+
+For WebWorks 2.0 projects:
+
+1. Create a new project using ```webworks create```.
+2. Copy the _www_ folder in the _sample_ directory over the default one created by that command. 
+5. Then add the BarcodeScanner plugin to the project using ```webworks plugin add /path/to/project/plugin```
+6. Finally, execute ```webworks run```
+
+Please take note that this plugin _does not_ work on a simulator.
 
 
 ## License

@@ -21,6 +21,18 @@ The server doesn't refuse client side http request mostly.
 
 I'm really not good at C++, therefore I hope someone can make this plugin better.
 
+## Including the feature in your application
+
+This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+
+	cordova plugin add com.blackberry.community.curl
+
+or,
+	
+	webworks plugin add com.blackberry.community.curl
+
+Installation from source is the same but instead of the id ("com.blackberry.community.curl"), use the file system path to the source plugin folder.
+
 
 ## Structure of the Plugin and Sample
 
