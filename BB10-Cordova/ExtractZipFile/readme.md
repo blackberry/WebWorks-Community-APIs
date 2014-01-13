@@ -3,6 +3,19 @@ ExtractZIPFile
 Provides extraction (unzipping) of zip archives for html5 under Blackbery 10.
 
 
+## Including the feature in your application
+
+This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+
+	cordova plugin add com.blackberry.community.extractzipfile
+
+or,
+	
+	webworks plugin add com.blackberry.community.extractzipfile
+
+Installation from source is the same but instead of the id ("com.blackberry.community.extractzipfile"), use the file system path to the source plugin folder.
+
+
 API Examples
 --------------
 ### Example of API usage
