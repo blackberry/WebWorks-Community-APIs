@@ -89,7 +89,7 @@ Get the duration of a file. Takes one parameter, file name.
 
 Example: 
 
-	PGLowLatencyAudio.stop("bounce.wav", function(duration) {
+	PGLowLatencyAudio.getDuration("bounce.wav", function(duration) {
 		if (duration > 6.0) {
 			alert(“Greater than 6”);
 		} else {

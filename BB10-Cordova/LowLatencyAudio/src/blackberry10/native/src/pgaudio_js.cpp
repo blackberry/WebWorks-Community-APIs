@@ -43,32 +43,17 @@ PGaudio::~PGaudio()
 {
     ALuint bufferID = 0;
     ALuint sources = 0;
+    QString name;
 
-    // Clear the buffers and sources while iterating through the hash table.
-    QHashIterator<QString, ALuint> bufferIterator(m_soundBuffersHash);
-
-    while (bufferIterator.hasNext()) {
-        bufferIterator.next();
-
-        // Get the buffer id and delete it.
-        bufferID = m_soundBuffersHash[bufferIterator.key()];
-        if (bufferID)
-            alDeleteBuffers(1, &bufferID);
+    // Stop and unload all files before deleting the sources and buffers
+    for (int bufferIndex = 0; bufferIndex < m_soundBuffersHash.size(); bufferIndex++) {
+        name = m_soundBuffersHash.key(bufferIndex);
+        unload(name);
     }
 
-    QHashIterator<QString, ALuint> sourceIterator(m_sourceIndexHash);
-    while (sourceIterator.hasNext()) {
-        sourceIterator.next();
-
-        // Get the buffer id and delete it.
-        sources = m_sourceIndexHash[sourceIterator.key()];
-        if (sources)
-            alDeleteSources(1, &sources);
-    }
-
-    // Clear the QHash for sound buffer IDs.
-    m_soundBuffersHash.clear();
+    // Clear the QHash for sound buffer ID
     m_sourceIndexHash.clear();
+    m_soundBuffersHash.clear();
 
     // Exit the ALUT.
     alutExit();
@@ -132,6 +117,9 @@ string PGaudio::preload(QString path, QString fileName, int voices)
     // Set a filter for file listing, only files should be listed.
     dir.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
 
+    if (!dir.exists(fileName))
+        return "Could not find " + fileName.toStdString() + " in given path.";
+
     // Create the Unique Buffer ID from the path
     bufferID = alutCreateBufferFromFile(applicationDirectory.append(fileName).toStdString().c_str());
 
@@ -150,6 +138,9 @@ string PGaudio::preload(QString path, QString fileName, int voices)
 
 string PGaudio::unload(QString fileName)
 {
+    // Stop all sources before unloading.
+    stop(fileName);
+
     // Get corresponding buffers, voices and sources from the unique file name.
     ALuint bufferID = m_soundBuffersHash[fileName];
 
@@ -182,8 +173,11 @@ string PGaudio::stop(QString fileName)
 // Function to get Duration. Takes in sound file name.
 float PGaudio::getDuration(QString fileName)
 {
-
     ALuint bufferID = m_soundBuffersHash[fileName];
+
+    if (!bufferID)
+            return 0;
+
     QList<ALuint> sources = m_sourceIndexHash.values(fileName);
     ALuint source = sources.at(sources.size() - 1);
 
@@ -321,6 +315,8 @@ string PGaudio::InvokeMethod(const string& command)
     // Get duration
     if (strCommand == "getDuration"){
         float result = getDuration(fileName);
+        if (!result)
+            return "Could not find the file " + fileName.toStdString() + " . Maybe it hasn't been loaded.";
         ostringstream buffer;
         buffer << result;
         string str = buffer.str();
