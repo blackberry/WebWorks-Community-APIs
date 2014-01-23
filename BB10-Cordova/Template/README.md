@@ -83,6 +83,8 @@ Depending on the plugin, these methods can also have return values, take argumen
 
 To remove the plugin, run __cordova plugin rm community.templateplugin__
 
+__Note:__ You will need to remove and re-add the plugin on each build cycle where you make changes. You can edit the individual files, but they get scattered across various folders. It's safer to edit them in the plugin directory and then do a quick (maybe script it?) cycle of removing and adding the plugin, so the installation process is followed.
+
 ### Modifying the Template Plugin
 
 #### Namespace
@@ -116,6 +118,7 @@ When making changes, rebuild regularly so you don't make a really hard to find t
 Follow the steps above to:
 1. [Build the native portion](#how-to-build-your-native-plugin), and
 2. [Use the plugin in your test app](#using-the-plugin-in-an-application).
+3. Remember to remove and add the plugin again with the cordova or webworks commands.
 
 ## Architecture of a Plugin
 
