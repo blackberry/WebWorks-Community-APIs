@@ -1,10 +1,6 @@
 Extension-Vibration
 ==================
 
-BlackBerry 10 WebWorks Extensions create a bridge between JavaScript code in an HTML5 application and C/C++ and/or Qt code in the extension, allowing access to native libraries, which are not part of the HTML5 specification. The BlackBerry WebWorks APIs included with the WebWorks SDK are also Extensions and follow the same format as shown in this template.
-
-Extensions and WebWorks APIs offer a JavaScript API which communicates through an interface to native methods. This interface can send and receive data through strings, or data that can be represented as a string such as JSON and Base64.
-
 This vibration extension allows for more comprehensive control over device vibrations
 
 1. A function to change both length and intensity of the vibration
