@@ -19,21 +19,10 @@ community.vibration folder should appear under the plugins folder of your projec
 
 ### Using the Extension in an Application</a>
 
-With the extension copied into your WebWorks SDK as explained above, you can use it in your applications by referencing it as a feature in your config.xml file. 
-
-```xml
-<feature id="community.vibration" required="true" version="1.0.0.0" />
-```
-
 ```javascript
 var data = { "duration" : [int: duration], "intensity" : [int: intensity]}
 community.vibration.vibration_request(data, [function: callback])
 ```
-
-## Summary
-var data = { "duration" : [int: duration], "intensity" : [int: intensity]}
-community.vibration.vibration_request(data, [function: callback])
-
 Parameters:  
 duration : length of vibration ( 0 - 5000)
 intensity : level of vibration ( 1 , 10 , 100 )
