@@ -61,9 +61,23 @@ std::string GSECryptoNDK::hash(const std::string& inputString) {
 	size_t dataLen;
 
 	if ( root["input"].isMember("hex") ) {
+
 		//parse hex data
+		try {
+			gsecrypto::util::fromHex( root["input"]["hex"].asString(), data, dataLen);
+		} catch( char const* e ) {
+			return error(e);
+		}
+
 	} else if( root["input"].isMember("b64") ) {
+
 		//parse base64 data
+		try {
+			gsecrypto::util::fromB64( root["input"]["b64"].asString(), data, dataLen);
+		} catch( char const* e ) {
+			return error(e);
+		}
+
 	} else {
 		return error("no hex or b64 input");
 	}

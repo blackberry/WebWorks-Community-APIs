@@ -47,6 +47,8 @@ void fromHex(std::string en, unsigned char * & data, size_t & dataLen) {
 		char c = std::tolower(en[i]);
 		if ((c >= 'a' && c <= 'f') || (c >= '0' && c <= '9')) {
 			encoded += c;
+		} else {
+			throw "hex data invalid";
 		}
 	}
 
@@ -57,7 +59,7 @@ void fromHex(std::string en, unsigned char * & data, size_t & dataLen) {
 	}
 
 	if (encoded.length() % 2 != 0) {
-		throw "Data length must be multiple of 2";
+		throw "hex data length not multiple of 2";
 	}
 
 	dataLen = encoded.length() / 2;
@@ -99,6 +101,8 @@ void fromB64(std::string encoded, unsigned char * & data, size_t & dataLen) {
 		if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
 				|| (c >= '0' && c <= '9') || c == '+' || c == '/' || c == '=') {
 			encoded2 += c;
+		} else {
+			throw "Base64 data invalid";
 		}
 	}
 

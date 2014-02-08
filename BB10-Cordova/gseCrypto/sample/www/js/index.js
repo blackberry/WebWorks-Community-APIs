@@ -80,6 +80,84 @@ var app = {
 			var expectedOutput;
 			var actualOutput;
 
+
+		//test missing alg
+			testInput = {"input":{"hex":"d1ab011ca1c1cada"}};
+			expectedOutput = {"error":"missing alg field"};
+			actualOutput = community.gsecrypto.hash(testInput);
+
+			if ( Utility.areEqual(expectedOutput, actualOutput) ) {
+				app.writeOut("hash missing alg: PASS");
+			} else {
+				app.writeOut("hash missing alg: FAIL: " + JSON.stringify(actualOutput) );
+			}
+
+		//test missing input
+			testInput = {"alg":"md5"};
+			expectedOutput = {"error":"missing input field"};
+			actualOutput = community.gsecrypto.hash(testInput);
+
+			if ( Utility.areEqual(expectedOutput, actualOutput) ) {
+				app.writeOut("hash missing input: PASS");
+			} else {
+				app.writeOut("hash missing input: FAIL: " + JSON.stringify(actualOutput) );
+			}
+
+		//test no hex or b64 data
+			testInput = {"alg":"md5","input":{"none":""}};
+			expectedOutput = {"error":"no hex or b64 input"};
+			actualOutput = community.gsecrypto.hash(testInput);
+
+			if ( Utility.areEqual(expectedOutput, actualOutput) ) {
+				app.writeOut("hash no data: PASS");
+			} else {
+				app.writeOut("hash no data: FAIL: " + JSON.stringify(actualOutput) );
+			}
+
+		//test invalid hex data
+			testInput = {"alg":"md5","input":{"hex":"gggggggggggggggg"}};
+			expectedOutput = {"error":"hex data invalid"};
+			actualOutput = community.gsecrypto.hash(testInput);
+
+			if ( Utility.areEqual(expectedOutput, actualOutput) ) {
+				app.writeOut("hash invalid hex: PASS");
+			} else {
+				app.writeOut("hash invalid hex: " + JSON.stringify(actualOutput) );
+			}
+
+		//test hex not mult of 2
+			testInput = {"alg":"md5","input":{"hex":"d1ab011ca1c1cad"}};
+			expectedOutput = {"error":"hex data length not multiple of 2"};
+			actualOutput = community.gsecrypto.hash(testInput);
+
+			if ( Utility.areEqual(expectedOutput, actualOutput) ) {
+				app.writeOut("hash invalid hex length: PASS");
+			} else {
+				app.writeOut("hash invalid hex length: FAIL: " + JSON.stringify(actualOutput) );
+			}
+
+		//test invalid b64 data
+			testInput = {"alg":"md5","input":{"b64":"^asBHKHByto="}};
+			expectedOutput = {"error":"Base64 data invalid"};
+			actualOutput = community.gsecrypto.hash(testInput);
+
+			if ( Utility.areEqual(expectedOutput, actualOutput) ) {
+				app.writeOut("hash invalid b64: PASS");
+			} else {
+				app.writeOut("hash invalid b64: " + JSON.stringify(actualOutput) );
+			}
+
+		//test b64 not mult of 4
+			testInput = {"alg":"md5","input":{"b64":"0asBHKHByto"}};
+			expectedOutput = {"error":"Base64 encoded length should by multiple of 4"};
+			actualOutput = community.gsecrypto.hash(testInput);
+
+			if ( Utility.areEqual(expectedOutput, actualOutput) ) {
+				app.writeOut("hash invalid b64 length: PASS");
+			} else {
+				app.writeOut("hash invalid b64 length: FAIL: " + JSON.stringify(actualOutput) );
+			}
+
 		//test unsupported hash algorithm
 			testInput = {"alg":"unsupported","input":{"hex":"d1ab011ca1c1cada"}};
 			expectedOutput = {"error":"unsupported hash algorithm"};
