@@ -1,1 +1,0 @@
-{"prepare_queue":{"installed":[],"uninstalled":[]},"config_munge":{"www/config.xml":{"/widget":{"<feature name=\"community.deviceinfoplugin\" value=\"community.deviceinfoplugin\" />":1}}},"installed_plugins":{"community.deviceinfoplugin":{"PACKAGE_NAME":"com.example.test"}},"dependent_plugins":{}}
