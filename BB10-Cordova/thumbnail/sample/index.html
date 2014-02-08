@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title>Hello ThumbNail</title>
+   <script src="local:///chrome/webworks.js"></script>
+
+<style>
+#take_picture{
+    width:100%;
+    height:40px;
+}
+</style>
+</head>
+<body>
+    <button id ="take_picture">Take Picture</button>
+    <div id="image"></div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+</body>
+<script>
+document.getElementById("take_picture").onclick = function(){
+    app.invokeCameraCard();
+};
+</script>
+
+</html>

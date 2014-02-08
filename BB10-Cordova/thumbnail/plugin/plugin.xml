@@ -1,0 +1,16 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="community.thumbnail"
+    version="1.0.0">
+    <js-module src="www/client.js">
+        <clobbers target="community.thumbnail" />
+    </js-module>
+
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" />
+        <lib-file src="src/blackberry10/native/device/libThumbnail.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libThumbnail.so" arch="simulator"/>
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="community.thumbnail" value="community.thumbnail" />
+        </config-file>
+    </platform>
+</plugin>
