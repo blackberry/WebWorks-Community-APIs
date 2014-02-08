@@ -34,7 +34,7 @@ public:
 private:
     std::string m_id;
     // Definition of a pointer to the actual native extension code
-    webworks::GSECryptoNDK *m_pGSECryptoController;
+    gseCrypto::GSECryptoNDK *m_pGSECryptoController;
     webworks::Logger *m_pLogger;
 };
 

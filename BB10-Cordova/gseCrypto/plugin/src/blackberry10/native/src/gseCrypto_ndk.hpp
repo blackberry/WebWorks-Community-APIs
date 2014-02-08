@@ -18,11 +18,10 @@
 #define GSECRYPTONDK_HPP_
 
 #include <string>
-#include <pthread.h>
 
 class GSECryptoJS;
 
-namespace webworks {
+namespace gseCrypto {
 
 class GSECryptoNDK {
 public:
@@ -30,35 +29,15 @@ public:
 	virtual ~GSECryptoNDK();
 
 	// The extension methods are defined here
-	std::string templateTestString();
-
-	std::string templateTestString(const std::string& inputString);
-
-	std::string getTemplateProperty();
-
-	void setTemplateProperty(const std::string& inputString);
-
-	void templateTestAsync(const std::string& callbackId, const std::string& inputString);
-
-	std::string templateStartThread(const std::string& callbackId);
-
-	std::string templateStopThread();
-
-	bool isThreadHalt();
-
-	void templateThreadCallback();
+	std::string hash(const std::string& inputString);
 
 private:
 	GSECryptoJS *m_pParent;
-	int templateProperty;
-	int templateThreadCount;
-	bool threadHalt;
-	std::string threadCallbackId;
-	pthread_t m_thread;
-	pthread_cond_t cond;
-	pthread_mutex_t mutex;
+
+	std::string error(const std::string& errorMsg);
+
 };
 
-} // namespace webworks
+} // namespace gseCrypto
 
 #endif /* GSECRYPTONDK_H_ */

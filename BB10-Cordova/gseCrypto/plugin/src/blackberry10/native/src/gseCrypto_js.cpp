@@ -27,7 +27,7 @@ using namespace std;
 GSECryptoJS::GSECryptoJS(const std::string& id) :
 		m_id(id) {
 	m_pLogger = new webworks::Logger("GSECryptoJS", this);
-	m_pGSECryptoController = new webworks::GSECryptoNDK(this);
+	m_pGSECryptoController = new gseCrypto::GSECryptoNDK(this);
 }
 
 /**
@@ -86,24 +86,10 @@ string GSECryptoJS::InvokeMethod(const string& command) {
 	std::string callbackId = command.substr(commandIndex + 1, callbackIndex - commandIndex - 1);
 	std::string arg = command.substr(callbackIndex + 1, command.length());
 
-	// based on the command given, run the appropriate method in template_ndk.cpp
-	if (strCommand == "testString") {
-		return m_pGSECryptoController->templateTestString();
-	} else if (strCommand == "testStringInput") {
-		return m_pGSECryptoController->templateTestString(arg);
-	} else if (strCommand == "templateProperty") {
-		// if arg exists we are setting property
-		if (arg != strCommand) {
-			m_pGSECryptoController->setTemplateProperty(arg);
-		} else {
-			return m_pGSECryptoController->getTemplateProperty();
-		}
-	} else if (strCommand == "testAsync") {
-		m_pGSECryptoController->templateTestAsync(callbackId, arg);
-	} else if (strCommand == "templateStartThread") {
-		return m_pGSECryptoController->templateStartThread(callbackId);
-	} else if (strCommand == "templateStopThread") {
-		return m_pGSECryptoController->templateStopThread();
+	// based on the command given, run the appropriate method in gseCrypto_ndk.cpp
+
+	if (strCommand == "hash") {
+		return m_pGSECryptoController->hash(arg);
 	}
 
 	strCommand.append(";");

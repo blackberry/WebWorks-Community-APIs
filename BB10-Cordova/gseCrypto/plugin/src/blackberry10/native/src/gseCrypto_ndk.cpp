@@ -15,156 +15,86 @@
  */
 
 #include <string>
-#include <sstream>
 #include <json/reader.h>
 #include <json/writer.h>
-#include <pthread.h>
+#include "util/util.hpp"
 #include "gseCrypto_ndk.hpp"
 #include "gseCrypto_js.hpp"
 
-namespace webworks {
 
-GSECryptoNDK::GSECryptoNDK(GSECryptoJS *parent):
-	m_pParent(parent),
-	templateProperty(50),
-	templateThreadCount(1),
-	threadHalt(true),
-	m_thread(0) {
-		pthread_cond_t cond  = PTHREAD_COND_INITIALIZER;
-		pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-		m_pParent->getLog()->info("Template Created");
+namespace gseCrypto {
+
+GSECryptoNDK::GSECryptoNDK(GSECryptoJS *parent) :
+	m_pParent(parent) {
 }
 
 GSECryptoNDK::~GSECryptoNDK() {
 }
 
-// These methods are the true native code we intend to reach from WebWorks
-std::string GSECryptoNDK::templateTestString() {
-	m_pParent->getLog()->debug("testString");
-	return "Template Test Function";
-}
+// Cryptographic Hash Functions
+std::string GSECryptoNDK::hash(const std::string& inputString) {
+	m_pParent->getLog()->debug("hash function called");
 
-// Take in input and return a value
-std::string GSECryptoNDK::templateTestString(const std::string& inputString) {
-	m_pParent->getLog()->debug("testStringInput");
-	return "Template Test Function, got: " + inputString;
-}
+	std::string result;
 
-// Get an integer property
-std::string GSECryptoNDK::getTemplateProperty() {
-	m_pParent->getLog()->debug("get templateProperty");
-	stringstream ss;
-	ss << templateProperty;
-	return ss.str();
-}
-
-// set an integer property
-void GSECryptoNDK::setTemplateProperty(const std::string& inputString) {
-	m_pParent->getLog()->debug("set templateProperty");
-	templateProperty = (int) strtoul(inputString.c_str(), NULL, 10);
-}
-
-// Asynchronous callback with JSON data input and output
-void GSECryptoNDK::templateTestAsync(const std::string& callbackId, const std::string& inputString) {
-	m_pParent->getLog()->debug("Async Test");
 	// Parse the arg string as JSON
 	Json::FastWriter writer;
 	Json::Reader reader;
 	Json::Value root;
+
 	bool parse = reader.parse(inputString, root);
-
 	if (!parse) {
-		m_pParent->getLog()->error("Parse Error");
-		Json::Value error;
-		error["result"] = "Cannot parse JSON object";
-		m_pParent->NotifyEvent(callbackId + " " + writer.write(error));
+		m_pParent->getLog()->error("JSON Parse Error");
+		return error("Cannot parse JSON object");
+	}
+
+	//JSON arguments format check
+	if (!root.isMember("alg")) {
+		return error("missing alg field");
+	}
+	if (!root.isMember("input")) {
+		return error("missing input field");
+	}
+
+	//extract binary data from JSON
+	unsigned char* data;
+	size_t dataLen;
+
+	if ( root["input"].isMember("hex") ) {
+		//parse hex data
+	} else if( root["input"].isMember("b64") ) {
+		//parse base64 data
 	} else {
-		root["result"] = root["value1"].asInt() + root["value2"].asInt();
-		m_pParent->NotifyEvent(callbackId + " " + writer.write(root));
-	}
-}
-
-// Thread functions
-// The following functions are for controlling a Thread in the extension
-
-// The actual thread (must appear before the startThread method)
-// Loops and runs the callback method
-void* TemplateThread(void* parent) {
-	GSECryptoNDK *pParent = static_cast<GSECryptoNDK *>(parent);
-
-	// Loop calls the callback function and continues until stop is set
-	while (!pParent->isThreadHalt()) {
-		sleep(1);
-		pParent->templateThreadCallback();
+		return error("no hex or b64 input");
 	}
 
-	return NULL;
-}
-
-// Starts the thread and returns a message on status
-std::string GSECryptoNDK::templateStartThread(const std::string& callbackId) {
-	if (!m_thread) {
-		int rc;
-	    rc = pthread_mutex_lock(&mutex);
-	    threadHalt = false;
-	    rc = pthread_cond_signal(&cond);
-	    rc = pthread_mutex_unlock(&mutex);
-
-		pthread_attr_t thread_attr;
-		pthread_attr_init(&thread_attr);
-		pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_JOINABLE);
-
-		pthread_create(&m_thread, &thread_attr, TemplateThread,
-				static_cast<void *>(this));
-		pthread_attr_destroy(&thread_attr);
-		threadCallbackId = callbackId;
-		m_pParent->getLog()->info("Thread Started");
-		return "Thread Started";
+	//determine which algorithm to use
+	if ( root["alg"] == "md5" ) {
+		result = error("md5 not yet implemented");
+	} else if ( root["alg"] == "sha" || root["alg"] == "sha1") {
+		result = error("sha1 not yet implemented");
+	} else if ( root["alg"] == "sha224" ) {
+		result = error("sha224 not yet implemented");
+	} else if ( root["alg"] == "sha256" ) {
+		result = error("sha256 not yet implemented");
+	} else if ( root["alg"] == "sha384" ) {
+		result = error("sha384 not yet implemented");
+	} else if ( root["alg"] == "sha512" ) {
+		result = error("sha512 not yet implemented");
 	} else {
-		m_pParent->getLog()->warn("Thread Started but already running");
-		return "Thread Running";
+		result = error("unsupported hash algorithm");
 	}
+
+	return result;
 }
 
-// Sets the stop value
-std::string GSECryptoNDK::templateStopThread() {
-	int rc;
-	// Request thread to set prevent sleep to false and terminate
-	rc = pthread_mutex_lock(&mutex);
-	threadHalt = true;
-	rc = pthread_cond_signal(&cond);
-	rc = pthread_mutex_unlock(&mutex);
-
-    // Wait for the thread to terminate.
-    void *exit_status;
-    rc = pthread_join(m_thread, &exit_status) ;
-
-	// Clean conditional variable and mutex
-	pthread_cond_destroy(&cond);
-	pthread_mutex_destroy(&mutex);
-
-	m_thread = 0;
-	threadHalt = true;
-	m_pParent->getLog()->info("Thread Stopped");
-	return "Thread stopped";
-}
-
-// The callback method that sends an event through JNEXT
-void GSECryptoNDK::templateThreadCallback() {
+//errorMsg: helpful message to be returned to extension caller
+//returns: string version of json object { "error":errorMsg }
+std::string GSECryptoNDK::error(const std::string& errorMsg) {
 	Json::FastWriter writer;
 	Json::Value root;
-	root["threadCount"] = templateThreadCount++;
-	m_pParent->NotifyEvent(threadCallbackId + " " + writer.write(root));
+	root["error"] = errorMsg;
+	return writer.write(root);
 }
 
-// getter for the stop value
-bool GSECryptoNDK::isThreadHalt() {
-	int rc;
-	bool isThreadHalt;
-	rc = pthread_mutex_lock(&mutex);
-	isThreadHalt = threadHalt;
-	rc = pthread_mutex_unlock(&mutex);
-	return isThreadHalt;
-}
-
-} /* namespace webworks */
+} /* namespace gseCrypto */
