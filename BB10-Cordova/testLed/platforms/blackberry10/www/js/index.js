@@ -48,24 +48,10 @@ var app = {
 		app.testPluginCalls();
 	},
 	testPluginCalls: function() {
-		app.writeOut("Plugin found");
-		
 		if (community && community.led) {
-
 			app.writeOut("Plugin found");
-			/*app.writeOut(community.led.startLed("FFFFOO", "10"));
+			app.writeOut(community.led.startLed("FFFFOO", "0"));
 
-			
-			app.writeOut(community.templateplugin.test());
-			app.writeOut(community.templateplugin.testInput('My Test Data'));
-			app.writeOut('Template Property was: ' + community.templateplugin.templateProperty);
-			community.templateplugin.templateProperty = 99;
-			app.writeOut('Now: ' + community.templateplugin.templateProperty);
-			app.writeOut('Sent Async Request');
-			var jsonData = {"value1":10,"value2":14};
-			community.templateplugin.testAsync(jsonData, app.aSyncCallback);
-			community.templateplugin.startThread(app.threadCallback);
-			*/
 
 		} else {
 			app.writeOut("Plugin was not found");

@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-var led,
+var template,
 	resultObjs = {},
 	threadCallback = null,
    _utils = require("../../lib/utils");
@@ -25,21 +25,23 @@ module.exports = {
 	// but any functions to be called by client.js need to be declared
 	// here in this object.
 
-	// These methods call into JNEXT.Template which handles the
-	// communication through the JNEXT plugin to template_js.cpp
 
 	startLed: function (success, fail, args, env) {
+		console.log("more things Happening"); 
 		var result = new PluginResult(args, env); 
-		result.ok(led.getInstance().startLed(args), false); 
+		args = JSON.parse(decodeURIComponent(args["input"]));
+		result.ok(template.getInstance().startLed(args), false); 
 	},
 
 	stopLed: function (success, fail, args, env) {
 		var result = new PluginResult(args, env); 
-		result.ok(led.getInstance().stopLed(args), false); 
-	}
+		result.ok(template.getInstance().stopLed(args), false); 
+	},
 
-/*
+	// These methods call into JNEXT.Template which handles the
+	// communication through the JNEXT plugin to template_js.cpp
 	test: function (success, fail, args, env) {
+		console.log("test works"); 
 		var result = new PluginResult(args, env);
 		result.ok(template.getInstance().test(), false);
 	},
@@ -88,14 +90,13 @@ module.exports = {
 			result.ok(template.getInstance().stopThread(), false);
 		}
 	}
-	*/
 };
 
 ///////////////////////////////////////////////////////////////////
 // JavaScript wrapper for JNEXT plugin for connection
 ///////////////////////////////////////////////////////////////////
 
-JNEXT.FlashLed = function () {
+JNEXT.Template = function () {
 	var self = this,
 		hasInstance = false;
 
@@ -104,11 +105,11 @@ JNEXT.FlashLed = function () {
 	};
 
 	self.init = function () {
-		if (!JNEXT.require("libFlashLed")) {
+		if (!JNEXT.require("libTemplate")) {
 			return false;
 		}
 
-		self.m_id = JNEXT.createObject("libFlashLed.FlashLed");
+		self.m_id = JNEXT.createObject("libTemplate.FlashLed");
 
 		if (self.m_id === "") {
 			return false;
@@ -122,15 +123,21 @@ JNEXT.FlashLed = function () {
 	// ************************
 
 	self.startLed = function (input) {
+				console.log("finally things Happening");
 		var color = input.color; 
 		var blinkCount = input.blinkCount; 
-		return JNEXT.invoke(self.m_id, "flashLedStartNative " + color + " " + blinkcount);
+		console.log(color);
+		console.log(blinkCount);
+
+		console.log("flashLedStartNative " + color + " " + blinkCount); 
+		console.log("fsdfsdfinally things Happening");
+		return JNEXT.invoke(self.m_id, "flashLedStartNative"); 
 	};
 
 	self.stopLed = function (input) {
 		return JNEXT.invoke(self.m_id, "flashLedStopNative" + input);
 	};
-/*
+
 	// calls into InvokeMethod(string command) in template_js.cpp
 	self.test = function () {
 		return JNEXT.invoke(self.m_id, "testString");
@@ -172,8 +179,6 @@ JNEXT.FlashLed = function () {
 	self.stopThread = function () {
 		return JNEXT.invoke(self.m_id, "templateStopThread");
 	};
-
-	*/
 
 	// ************************
 	// End of methods to edit

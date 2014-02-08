@@ -58,7 +58,6 @@ bool FlashLed::CanDelete() {
 string FlashLed::InvokeMethod(const string& command) {
 
 	bps_initialize();
-
 	// Determine which function should be executed
 	size_t index = command.find_first_of(" ");
 	string strCommand = command.substr(0, index);

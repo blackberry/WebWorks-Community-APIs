@@ -22,7 +22,11 @@ var _self = {},
 	// They make WebWorks function calls to the methods
 	// in the index.js of the Extension
 
+	
 	_self.startLed = function (color, blinkCount) {
+		console.log("Things Happening");
+		console.log(color); 
+		console.log(blinkCount);  
 		var result, 
 			success = function(data, response) {
 				result = data; 
@@ -30,8 +34,8 @@ var _self = {},
 			fail = function(data, response) {
 				console.log("Error: " + data); 
 			}; 
-		var inputObject = { "color": color, "blinkCount": blinkCount};
-		exec(success, fail, _ID, "invokeMethod", inputObject);
+		var input = { "color": color, "blinkCount": blinkCount};
+		exec(success, fail, _ID, "startLed", {input : input});
 		return result; 
 	};
 
@@ -43,15 +47,9 @@ var _self = {},
 			fail = function(data, response) {
 				console.log("Error: " + data); 
 			}; 
-		exec(success, fail, _ID, "invokeMethod", {input : input});
+		exec(success, fail, _ID, "stopLed", {input : input});
 		return result; 
 	};
-
-	/*
-
-	// These methods are called by your App's JavaScript
-	// They make WebWorks function calls to the methods
-	// in the index.js of the Extension
 
 	// Simple Synchronous test function to get a string
 	_self.test = function () {
@@ -137,7 +135,5 @@ var _self = {},
 		exec(success, fail, _ID, "stopThread", null);
 		return result;
 	};
-
-	*/
 
 module.exports = _self;});

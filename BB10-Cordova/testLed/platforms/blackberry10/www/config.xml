@@ -12,4 +12,7 @@
     <preference name="fullscreen" value="true" />
     <preference name="webviewbounce" value="true" />
     <content src="index.html" />
+    <rim:permissions>
+        <rim:permit>access_led_control</rim:permit>
+    </rim:permissions>
 </widget>
