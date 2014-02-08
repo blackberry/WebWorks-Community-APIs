@@ -9,6 +9,7 @@ This extension provides additional APIs to identify the device.
 **Author(s)** 
 
 * Anzor Bashkhaz (http://www.twitter.com/anzor_b)
+* Simon Booth (http://github.com/peardox)
 * Alexandre Huot
 
 ## Set up
