@@ -12,11 +12,18 @@ This extension provides additional APIs to identify the device.
 * Simon Booth (http://github.com/peardox)
 * Alexandre Huot
 
-## Set up
 
-Copy the plugin folder to the destination of your choice.
-Browse to you webworks project folder.
-Use the command: webworks plugin add pathToThePluginFolder
+## How To Install The Plugin
+
+This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+
+    cordova plugin add com.blackberry.community.deviceinfo
+
+or,
+    
+    webworks plugin add com.blackberry.community.deviceinfo
+
+Installation from source is the same but instead of the id ("com.blackberry.community.deviceinfo"), use the file system path to the source plugin folder.
 
 ## Use
 
