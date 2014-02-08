@@ -17,11 +17,12 @@ The Thumbnail API allows you to create thumbnail of images residing on the local
 
 1. Clone the repo to your local machine
 2. While having the directory of the project you wish to install the plugin to as your current working directory, run:
-	cordova plugin add <directory of cloned plugin>\plugin
+	
+	cordova plugin add "directory of cloned plugin"\plugin
 	
 	or
 	
-	webworks plugin add <directory of cloned plugin>\plugin
+	webworks plugin add <"directory of cloned plugin"\plugin
 
 	
 ## Summary
