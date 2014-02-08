@@ -1,6 +1,12 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="community.thumbnail"
+    id="com.blackberry.community.thumbnail"
     version="1.0.0">
+
+    <name>Thumbnail</name>
+    <description>BlackBerry 10 Community Contributed API to resize images</description>
+    <license>Apache 2.0</license>
+    <author>Andy Wu, Morgram Parlee</author>
+
     <js-module src="www/client.js">
         <clobbers target="community.thumbnail" />
     </js-module>
@@ -10,7 +16,7 @@
         <lib-file src="src/blackberry10/native/device/libThumbnail.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libThumbnail.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="community.thumbnail" value="community.thumbnail" />
+            <feature name="com.blackberry.community.thumbnail" value="com.blackberry.community.thumbnail" />
         </config-file>
     </platform>
 </plugin>
