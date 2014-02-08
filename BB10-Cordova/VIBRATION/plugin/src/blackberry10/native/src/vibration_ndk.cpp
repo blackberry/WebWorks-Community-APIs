@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Research In Motion Limited.
+ * Copyright 2013-2014  Blackberry Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,7 @@ VibrationNDK::~VibrationNDK() {
 }
 
 // Asynchronous callback with JSON data input and output
-void VibrationNDK::vibrationRequest(const std::string& inputString) {
-	std::string event = "vibration_requestCallbackResult";
+void VibrationNDK::vibrationRequest(const std::string& callbackId, const std::string& inputString) {
 
 	// Parse the arg string as JSON
 	Json::FastWriter writer;
@@ -46,13 +45,13 @@ void VibrationNDK::vibrationRequest(const std::string& inputString) {
 	if (!parse) {
 		Json::Value error;
 		error["result"] = "Cannot parse JSON object";
-		m_pParent->NotifyEvent(event + " " + writer.write(error));
+		m_pParent->NotifyEvent(callbackId + " " + writer.write(error));
 	} else {
 		root["id"] =  vibration_request(
 				                     (int) root["intensity"].asInt()
 				                    ,(int) root["duration"].asInt()
 		);
-		m_pParent->NotifyEvent(event + " " + writer.write(root));
+		m_pParent->NotifyEvent(callbackId + " " + writer.write(root));
 	}
 
 

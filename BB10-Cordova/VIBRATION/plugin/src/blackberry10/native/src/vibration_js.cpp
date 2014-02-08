@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Research In Motion Limited.
+ * Copyright 2013-2014  Blackberry Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,13 +72,17 @@ bool VibrationJS::CanDelete() {
  * called on the JavaScript side with this native objects id.
  */
 string VibrationJS::InvokeMethod(const string& command) {
+
+	size_t commandIndex = command.find_first_of(" ");
+		std::string strCommand = command.substr(0, commandIndex);
+		size_t callbackIndex = command.find_first_of(" ", commandIndex + 1);
+		std::string callbackId = command.substr(commandIndex + 1, callbackIndex - commandIndex - 1);
+		std::string arg = command.substr(callbackIndex + 1, command.length());
 	// command appears with parameters following after a space
-	int index = command.find_first_of(" ");
-	std::string strCommand = command.substr(0, index);
-	std::string arg = command.substr(index + 1, command.length());
+
 
 	if (strCommand == "vibration_request") {
-		m_pVibrationController->vibrationRequest(arg);
+		m_pVibrationController->vibrationRequest(callbackId, arg);
 	}
 
 	strCommand.append(";");

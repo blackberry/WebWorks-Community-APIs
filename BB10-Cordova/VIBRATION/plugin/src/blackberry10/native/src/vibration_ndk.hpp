@@ -1,5 +1,5 @@
 /*
-* Copyright 2013 Research In Motion Limited.
+* Copyright 2013-2014  Blackberry Limited.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ public:
 
 	virtual ~VibrationNDK();
 
-	void vibrationRequest(const std::string& inputString);
+	void vibrationRequest(const std::string& callbackId, const std::string& inputString);
 
 private:
 	VibrationJS *m_pParent;
