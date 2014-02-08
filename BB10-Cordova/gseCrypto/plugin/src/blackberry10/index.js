@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2013 BlackBerry Limited
+* Copyright (c) 2013-2014 BlackBerry Limited
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-var template,
+var gseCrypto,
 	resultObjs = {},
 	threadCallback = null,
    _utils = require("../../lib/utils");
@@ -25,34 +25,34 @@ module.exports = {
 	// but any functions to be called by client.js need to be declared
 	// here in this object.
 
-	// These methods call into JNEXT.Template which handles the
-	// communication through the JNEXT plugin to template_js.cpp
+	// These methods call into JNEXT.GSECrypto which handles the
+	// communication through the JNEXT plugin to gseCrypto_js.cpp
 	test: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
-		result.ok(template.getInstance().test(), false);
+		result.ok(gseCrypto.getInstance().test(), false);
 	},
 	testInput: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		args = JSON.parse(decodeURIComponent(args["input"]));
-		result.ok(template.getInstance().testInput(result.callbackId, args), false);
+		result.ok(gseCrypto.getInstance().testInput(result.callbackId, args), false);
 	},
 	// Asynchronous function calls into the plugin and returns
 	testAsync: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
 		args = JSON.parse(decodeURIComponent(args["input"]));
-		template.getInstance().testAsync(result.callbackId, args);
+		gseCrypto.getInstance().testAsync(result.callbackId, args);
 		result.noResult(true);
 	},
-	templateProperty: function (success, fail, args, env) {
+	gseCryptoProperty: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		var value;
 		if (args && args["value"]) {
 			value = JSON.parse(decodeURIComponent(args["value"]));
-			template.getInstance().templateProperty(result.callbackId, value);
+			gseCrypto.getInstance().gseCryptoProperty(result.callbackId, value);
 			result.noResult(false);
 		} else {
-			result.ok(template.getInstance().templateProperty(), false);
+			result.ok(gseCrypto.getInstance().gseCryptoProperty(), false);
 		}
 	},
 	// Thread methods to start and stop
@@ -61,9 +61,9 @@ module.exports = {
 		if (!threadCallback) {
 			threadCallback = result.callbackId;
 			resultObjs[result.callbackId] = result;
-			result.ok(template.getInstance().startThread(result.callbackId), true);
+			result.ok(gseCrypto.getInstance().startThread(result.callbackId), true);
 		} else {
-			result.error(template.getInstance().startThread(result.callbackId), false);
+			result.error(gseCrypto.getInstance().startThread(result.callbackId), false);
 		}
 	},
 	stopThread: function (success, fail, args, env) {
@@ -73,7 +73,7 @@ module.exports = {
 		} else {
 			delete resultObjs[threadCallback];
 			threadCallback = null;
-			result.ok(template.getInstance().stopThread(), false);
+			result.ok(gseCrypto.getInstance().stopThread(), false);
 		}
 	}
 };
@@ -82,7 +82,7 @@ module.exports = {
 // JavaScript wrapper for JNEXT plugin for connection
 ///////////////////////////////////////////////////////////////////
 
-JNEXT.Template = function () {
+JNEXT.GSECrypto = function () {
 	var self = this,
 		hasInstance = false;
 
@@ -91,11 +91,11 @@ JNEXT.Template = function () {
 	};
 
 	self.init = function () {
-		if (!JNEXT.require("libTemplate")) {
+		if (!JNEXT.require("libGSECrypto")) {
 			return false;
 		}
 
-		self.m_id = JNEXT.createObject("libTemplate.TemplateJS");
+		self.m_id = JNEXT.createObject("libGSECrypto.GSECryptoJS");
 
 		if (self.m_id === "") {
 			return false;
@@ -108,7 +108,7 @@ JNEXT.Template = function () {
 	// Enter your methods here
 	// ************************
 
-	// calls into InvokeMethod(string command) in template_js.cpp
+	// calls into InvokeMethod(string command) in gseCrypto_js.cpp
 	self.test = function () {
 		return JNEXT.invoke(self.m_id, "testString");
 	};
@@ -118,11 +118,11 @@ JNEXT.Template = function () {
 	self.testAsync = function (callbackId, input) {
 		return JNEXT.invoke(self.m_id, "testAsync " + callbackId + " " + JSON.stringify(input));
 	};
-	self.templateProperty = function (callbackId, value) {
+	self.gseCryptoProperty = function (callbackId, value) {
 		if (value) {
-			return JNEXT.invoke(self.m_id, "templateProperty " + callbackId + " " + value);
+			return JNEXT.invoke(self.m_id, "gseCryptoProperty " + callbackId + " " + value);
 		} else {
-			return JNEXT.invoke(self.m_id, "templateProperty");
+			return JNEXT.invoke(self.m_id, "gseCryptoProperty");
 		}
 	};
 	// Fired by the Event framework (used by asynchronous callbacks)
@@ -144,10 +144,10 @@ JNEXT.Template = function () {
 
 	// Thread methods
 	self.startThread = function (callbackId) {
-		return JNEXT.invoke(self.m_id, "templateStartThread " + callbackId);
+		return JNEXT.invoke(self.m_id, "gseCryptoStartThread " + callbackId);
 	};
 	self.stopThread = function () {
-		return JNEXT.invoke(self.m_id, "templateStopThread");
+		return JNEXT.invoke(self.m_id, "gseCryptoStopThread");
 	};
 
 	// ************************
@@ -165,4 +165,4 @@ JNEXT.Template = function () {
 
 };
 
-template = new JNEXT.Template();
+gseCrypto = new JNEXT.GSECrypto();

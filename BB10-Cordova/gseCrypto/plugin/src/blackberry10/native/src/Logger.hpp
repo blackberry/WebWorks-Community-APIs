@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 BlackBerry Limited
+ * Copyright (c) 2013-2014 BlackBerry Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@
 #include <string>
 #include <slog2.h>
 
-class TemplateJS;
+class GSECryptoJS;
 
 namespace webworks {
 
 class Logger {
 public:
-	explicit Logger(const char* name, TemplateJS *parent = NULL);
+	explicit Logger(const char* name, GSECryptoJS *parent = NULL);
 	virtual ~Logger();
 	int debug(const char* message);
 	int info(const char* message);
@@ -39,7 +39,7 @@ public:
 	slog2_buffer_t hiPriorityBuffer();
 	slog2_buffer_t lowPriorityBuffer();
 private:
-	TemplateJS *m_pParent;
+	GSECryptoJS *m_pParent;
 	slog2_buffer_set_config_t buffer_config;
 	slog2_buffer_t buffer_handle[2];
 	int log(slog2_buffer_t buffer, _Uint8t severity, const char* message);

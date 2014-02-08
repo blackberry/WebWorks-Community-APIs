@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2013 BlackBerry Limited
+* Copyright (c) 2013-2014 BlackBerry Limited
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 */
 
 var _self = {},
-	_ID = "community.templateplugin",
+	_ID = "community.gsecrypto",
 	exec = cordova.require("cordova/exec");
 
 	// These methods are called by your App's JavaScript

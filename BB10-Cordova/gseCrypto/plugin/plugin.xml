@@ -1,16 +1,16 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="community.templateplugin"
+    id="community.gsecrypto"
     version="1.0.0">
     <js-module src="www/client.js">
-        <clobbers target="community.templateplugin" />
+        <clobbers target="community.gsecrypto" />
     </js-module>
 
     <platform name="blackberry10">
         <source-file src="src/blackberry10/index.js" />
-        <lib-file src="src/blackberry10/native/device/libTemplate.so" arch="device"/>
-        <lib-file src="src/blackberry10/native/simulator/libTemplate.so" arch="simulator"/>
+        <lib-file src="src/blackberry10/native/device/libGSECrypto.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libGSECrypto.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="community.templateplugin" value="community.templateplugin" />
+            <feature name="community.gsecrypto" value="community.gsecrypto" />
         </config-file>
     </platform>
 </plugin>
