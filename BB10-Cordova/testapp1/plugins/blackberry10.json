@@ -1,0 +1,1 @@
+{"prepare_queue":{"installed":[],"uninstalled":[]},"config_munge":{"www/config.xml":{"/widget":{"<feature name=\"community.led\" value=\"community.led\" />":1}}},"installed_plugins":{"community.led":{"PACKAGE_NAME":"com.example.test"}},"dependent_plugins":{}}
