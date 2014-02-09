@@ -32,9 +32,9 @@ module.exports = {
 	
 	vibration_request: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
+		resultObjs[result.callbackId] = result;
 		args = JSON.parse(decodeURIComponent(args["input"]));
-		vibration.getInstance().vibration_request(result.callbackId, args);
-		result.ok(vibration.getInstance().vibration_request(result.callbackId), false);
+		result.ok(vibration.getInstance().vibration_request(result.callbackId, args), true);
 	}
 };
 
@@ -78,22 +78,9 @@ JNEXT.Vibration = function () {
             callbackId = arData[0],
 			result = resultObjs[callbackId],
             data = arData.slice(1, arData.length).join(" ");
-        // Event names are set in native code when fired,
-        // and must be checked here.
-		if (result) {
-			if (callbackId != threadCallback) {  
-				result.callbackOk(data, false);
-				delete resultObjs[callbackId];
-			} else {
-				result.callbackOk(data, true);
-			}
-		}
-		/*
-        if (strEventDesc === "vibration_requestCallbackResult") {
-            // Slice off the event name and the rest of the data is our JSON
-            jsonData = arData.slice(1, arData.length).join(" ");
-            _event.trigger("vibration_requestCallbackResult", JSON.parse(jsonData));
-        }*/
+ 
+			result.callbackOk(data, false);
+			delete resultObjs[callbackId];
     };
 
 	// ************************

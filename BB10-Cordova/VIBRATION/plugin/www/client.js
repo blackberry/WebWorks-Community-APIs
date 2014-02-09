@@ -28,6 +28,7 @@ var _self = {},
 	_self.vibration_request = function (input, callback) {
 		var success = function (data, response) {
 				var json = JSON.parse(data);
+				if (typeof callback === 'function')
 				callback(json);
 			},
 			fail = function (data, response) {
