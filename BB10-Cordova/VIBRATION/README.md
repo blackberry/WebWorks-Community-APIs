@@ -5,17 +5,17 @@ This vibration extension allows for more comprehensive control over device vibra
 
 1. A function to change both length and intensity of the vibration
 
-## Including the feature in your application
+## How To Install The Plugin
 
-This API can be installed from the source by copying the plugin folder to your webworks project, then add the plugin with the following commands:
+This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
 
-	cordova plugin add plugin
+	cordova plugin add com.blackberry.community.vibration
 
 or,
 	
-	webworks plugin add plugin
+	webworks plugin add com.blackberry.community.vibration
 
-community.vibration folder should appear under the plugins folder of your project.
+Installation from source is the same but instead of the id ("com.blackberry.community.vibration"), use the file system path to the source plugin folder.
 
 ### Using the Extension in an Application</a>
 
