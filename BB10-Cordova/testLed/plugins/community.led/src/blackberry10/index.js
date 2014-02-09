@@ -51,11 +51,11 @@ JNEXT.Template = function () {
 	};
 
 	self.init = function () {
-		if (!JNEXT.require("libTemplate")) {
+		if (!JNEXT.require("libLed")) {
 			return false;
 		}
 
-		self.m_id = JNEXT.createObject("libTemplate.FlashLed");
+		self.m_id = JNEXT.createObject("libLed.FlashLed");
 
 		if (self.m_id === "") {
 			return false;
