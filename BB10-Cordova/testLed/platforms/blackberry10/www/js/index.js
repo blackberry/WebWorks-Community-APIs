@@ -52,7 +52,7 @@ var app = {
 
 			app.writeOut("Plugin found");
 			var id = community.led.startLed("0000FF", "0");
-			//app.writeOut(community.led.stopLed(id));
+			app.writeOut(community.led.stopLed(id));
 
 		} else {
 			app.writeOut("Plugin was not found");

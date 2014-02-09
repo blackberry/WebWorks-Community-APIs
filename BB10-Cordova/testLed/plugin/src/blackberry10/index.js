@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2013 BlackBerry Limited
+* Copyright (c) 2014 BlackBerry Limited
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-var template,
+var led,
 	resultObjs = {},
 	threadCallback = null,
    _utils = require("../../lib/utils");
@@ -28,13 +28,13 @@ module.exports = {
 	startLed: function (success, fail, args, env) {
 		var result = new PluginResult(args, env); 
 		args = JSON.parse(decodeURIComponent(args["input"]));
-		result.ok(template.getInstance().startLed(args), false); 
+		result.ok(led.getInstance().startLed(args), false); 
 	},
 
 	stopLed: function (success, fail, args, env) {
 		var result = new PluginResult(args, env); 
 		args = JSON.parse(decodeURIComponent(args["input"]));
-		result.ok(template.getInstance().stopLed(args), false); 
+		result.ok(led.getInstance().stopLed(args), false); 
 	}
 };
 
@@ -42,7 +42,7 @@ module.exports = {
 // JavaScript wrapper for JNEXT plugin for connection
 ///////////////////////////////////////////////////////////////////
 
-JNEXT.Template = function () {
+JNEXT.Led = function () {
 	var self = this,
 		hasInstance = false;
 
@@ -93,4 +93,4 @@ JNEXT.Template = function () {
 
 };
 
-template = new JNEXT.Template();
+led = new JNEXT.Led();
