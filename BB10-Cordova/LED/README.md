@@ -11,6 +11,7 @@ Date: 2/9/2014
 
 ** Author **
 
+[Andy Wu](https://github.com/andywu89)
 [Deric Cheng](https://github.com/dericc)
 
 ## Including the feature in your application
