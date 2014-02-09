@@ -24,9 +24,6 @@ var _self = {},
 
 	
 	_self.startLed = function (color, blinkCount) {
-		console.log("Things Happening");
-		console.log(color); 
-		console.log(blinkCount);  
 		var result, 
 			success = function(data, response) {
 				result = data; 

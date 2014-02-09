@@ -50,8 +50,8 @@ var app = {
 	testPluginCalls: function() {
 		if (community && community.led) {
 			app.writeOut("Plugin found");
-			app.writeOut(community.led.startLed("FFFFOO", "0"));
-
+			var id = community.led.startLed("0000FF", "0");
+			app.writeOut(community.led.stopLed(id));
 
 		} else {
 			app.writeOut("Plugin was not found");

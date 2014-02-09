@@ -27,7 +27,6 @@ module.exports = {
 
 
 	startLed: function (success, fail, args, env) {
-		console.log("more things Happening"); 
 		var result = new PluginResult(args, env); 
 		args = JSON.parse(decodeURIComponent(args["input"]));
 		result.ok(template.getInstance().startLed(args), false); 
@@ -35,13 +34,13 @@ module.exports = {
 
 	stopLed: function (success, fail, args, env) {
 		var result = new PluginResult(args, env); 
+		args = JSON.parse(decodeURIComponent(args["input"]));
 		result.ok(template.getInstance().stopLed(args), false); 
 	},
 
 	// These methods call into JNEXT.Template which handles the
 	// communication through the JNEXT plugin to template_js.cpp
 	test: function (success, fail, args, env) {
-		console.log("test works"); 
 		var result = new PluginResult(args, env);
 		result.ok(template.getInstance().test(), false);
 	},
@@ -123,19 +122,13 @@ JNEXT.Template = function () {
 	// ************************
 
 	self.startLed = function (input) {
-				console.log("finally things Happening");
 		var color = input.color; 
 		var blinkCount = input.blinkCount; 
-		console.log(color);
-		console.log(blinkCount);
-
-		console.log("flashLedStartNative " + color + " " + blinkCount); 
-		console.log("fsdfsdfinally things Happening");
-		return JNEXT.invoke(self.m_id, "flashLedStartNative"); 
+		return JNEXT.invoke(self.m_id, "flashLedStartNative " + color + " " + blinkCount); 
 	};
 
 	self.stopLed = function (input) {
-		return JNEXT.invoke(self.m_id, "flashLedStopNative" + input);
+		return JNEXT.invoke(self.m_id, "flashLedStopNative " + input);
 	};
 
 	// calls into InvokeMethod(string command) in template_js.cpp
