@@ -15,7 +15,7 @@ BlackBerry 10 Dev Alpha C 10.2.1.1927
 
 ** Author **
 
-[Peardox] (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/325249)
+[Peardox] (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/325249)<br>
 [Alexandre Huot] (https://github.com/alexhuot1)
 
 ## Building and Testing the Sample
