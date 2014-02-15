@@ -87,24 +87,7 @@ string ScreenDisplayJS::InvokeMethod(const string& command) {
 	std::string arg = command.substr(callbackIndex + 1, command.length());
 
 	// based on the command given, run the appropriate method in template_ndk.cpp
-	if (strCommand == "testString") {
-		return m_pTemplateController->templateTestString();
-	} else if (strCommand == "testStringInput") {
-		return m_pTemplateController->templateTestString(arg);
-	} else if (strCommand == "templateProperty") {
-		// if arg exists we are setting property
-		if (arg != strCommand) {
-			m_pTemplateController->setTemplateProperty(arg);
-		} else {
-			return m_pTemplateController->getTemplateProperty();
-		}
-	} else if (strCommand == "testAsync") {
-		m_pTemplateController->templateTestAsync(callbackId, arg);
-	} else if (strCommand == "templateStartThread") {
-		return m_pTemplateController->templateStartThread(callbackId);
-	} else if (strCommand == "templateStopThread") {
-		return m_pTemplateController->templateStopThread();
-	} else if (strCommand == "sdgetsize") {
+	if (strCommand == "sdgetsize") {
 		return m_pTemplateController->sdgetsize();
 	}
 

@@ -31,34 +31,10 @@ public:
 
 	std::string sdgetsize();
 
-	// The extension methods are defined here
-	std::string templateTestString();
-
-	std::string templateTestString(const std::string& inputString);
-
-	std::string getTemplateProperty();
-
-	void setTemplateProperty(const std::string& inputString);
-
-	void templateTestAsync(const std::string& callbackId, const std::string& inputString);
-
-	std::string templateStartThread(const std::string& callbackId);
-
-	std::string templateStopThread();
-
-	bool isThreadHalt();
-
-	void templateThreadCallback();
 
 private:
 	ScreenDisplayJS *m_pParent;
-	int templateProperty;
-	int templateThreadCount;
-	bool threadHalt;
-	std::string threadCallbackId;
-	pthread_t m_thread;
-	pthread_cond_t cond;
-	pthread_mutex_t mutex;
+
 };
 
 } // namespace webworks

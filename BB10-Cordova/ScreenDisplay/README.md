@@ -18,15 +18,17 @@ BlackBerry 10 Dev Alpha C 10.2.1.1927
 [Peardox] (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/325249)<br>
 [Alexandre Huot] (https://github.com/alexhuot1)
 
-## Building and Testing the Sample
+## Including the feature in your application
 
-1. Deploy the extension into your BB10 WebWorks SDK by copying the community.screendisplay folder from the ext folder to the Framework/ext folder in your WebWorks SDK, or run the Ant build script in the /ext folder to do so.
-2. Package the sample in the sdtest folder. Use the [Ant Build Script](https://github.com/blackberry/BB10-WebWorks-Community-Samples/tree/master/Ant-Build-Script), or you can do this with the WebWorks packager command:
-	__bbwp__ sdtest -g _signingpassword_
-3. Load it on your phone using the Ant Build Script, or with the _blackberry-deploy_ command found in the dependencies/tools folder of your WebWorks SDK.
-4. When the application runs, an informational page will be displayed as in the screenshots below.
+This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
 
-![Screenshot](ScreenShot.png) 
+	cordova plugin add com.blackberry.community.screendisplay
+
+or,
+	
+	webworks plugin add com.blackberry.community.screendisplay
+
+Installation from source is the same but instead of the id ("com.blackberry.community.screendisplay"), use the file system path to the source plugin folder.
 
 ## Including the feature in your application
 Whenever you use the below feature id in any of your WebWorks applications this extension will be loaded for use.
