@@ -26,8 +26,7 @@ BlackBerry 10 Dev Alpha C 10.2.1.1927
 3. Load it on your phone using the Ant Build Script, or with the _blackberry-deploy_ command found in the dependencies/tools folder of your WebWorks SDK.
 4. When the application runs, an informational page will be displayed as in the screenshots below.
 
-![Screenshot](sshotz10.png) &nbsp;
-![Screenshot](sshotdac.png)
+![Screenshot](ScreenShot.png) 
 
 ## Including the feature in your application
 Whenever you use the below feature id in any of your WebWorks applications this extension will be loaded for use.
