@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 var app = {
 	// Application Constructor
 	initialize: function() {
@@ -48,16 +49,19 @@ var app = {
 		app.testPluginCalls();
 	},
 	testPluginCalls: function() {
-		if (community && community.templateplugin) {
-			app.writeOut(community.templateplugin.test());
-			app.writeOut(community.templateplugin.testInput('My Test Data'));
-			app.writeOut('Template Property was: ' + community.templateplugin.templateProperty);
-			community.templateplugin.templateProperty = 99;
-			app.writeOut('Now: ' + community.templateplugin.templateProperty);
-			app.writeOut('Sent Async Request');
-			var jsonData = {"value1":10,"value2":14};
-			community.templateplugin.testAsync(jsonData, app.aSyncCallback);
-			community.templateplugin.startThread(app.threadCallback);
+		if (community && community.screendisplay) {
+			var sd = JSON.parse(community.screendisplay.sdgetsize());
+			sdinfo = 'Pixel Size = ' + sd.pixelWidth + ' x ' + sd.pixelHeight + '<br />' +
+				 'Physical Size (mm) = ' + sd.physicalWidth + ' x ' + sd.physicalHeight + '<br /><br />' +
+				 'Pixels Per mm = ' + Math.round(sd.ppmm * 1000) / 1000 + '<br />' +
+				 'Pixels Per mm X = ' + Math.round(sd.ppmmX * 1000) / 1000 + '<br />' +
+				 'Pixels Per mm Y = ' + Math.round(sd.ppmmY * 1000) / 1000 + '<br /><br />' +
+				 'Pixels Per Inch = ' + Math.round(sd.ppi * 1000) / 1000 + '<br />' +
+				 'Pixels Per Inch X = ' + Math.round(sd.ppiX * 1000) / 1000 + '<br />' +
+				 'Pixels Per Inch Y = ' + Math.round(sd.ppiY * 1000) / 1000 + '<br /><br />' +
+				 'Physical Shape = ' + Math.round(sd.pixelShape * 1000) / 1000;
+		var div = document.getElementById('results');
+		div.innerHTML = sdinfo;
 		} else {
 			app.writeOut("Plugin was not found");
 		}
@@ -67,26 +71,5 @@ var app = {
 		output.innerText = output.innerText + message;
 		output.appendChild(document.createElement('br'));
 		console.log(message);
-	},
-	aSyncCallback: function(data) {
-		if (data) {
-			console.log(data);
-			app.writeOut(data.value1 + " + " + data.value2 + " = " + data.result);
-		}
-	},
-	threadCallback: function(data) {
-		if (app.threadStarted) {
-			console.log(data);
-			var json = JSON.parse(data);
-			app.writeOut("Thread Callback: " + json.threadCount);
-			if (json.threadCount >= 10) {
-				var end = community.templateplugin.stopThread();
-				app.writeOut(end);
-				app.threadStarted = false;
-			}
-		} else {
-			app.threadStarted = true;
-			app.writeOut(data);
-		}
 	}
 };
