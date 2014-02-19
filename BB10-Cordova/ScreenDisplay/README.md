@@ -30,12 +30,6 @@ or,
 
 Installation from source is the same but instead of the id ("com.blackberry.community.screendisplay"), use the file system path to the source plugin folder.
 
-## Including the feature in your application
-Whenever you use the below feature id in any of your WebWorks applications this extension will be loaded for use.
-```xml
-<feature id="community.screendisplay" required="true" version="1.0.0.0" />
-```
-
 ## The Extension API
 The Screen Display Extension provides the following API:
 
@@ -83,7 +77,7 @@ You can either import the project from the Template folder, or use the New Proje
 
 1. Open the Momentics IDE. Navigate to the workbench and from the program menu
 select File -> Import and choose "Existing Projects into Workspace".
-2. Choose "Select root directory: " and browse to the _/plugin/src/blackberry10/native_ directory where you copied the plugin. Select the PreventSleep project in the Projects list and uncheck "Copy projects into workspace". Click Finish.
+2. Choose "Select root directory: " and browse to the _/plugin/src/blackberry10/native_ directory where you copied the plugin. Select the project in the Projects list and uncheck "Copy projects into workspace". Click Finish.
 3. Follow these next steps to build the plugin to be sure the setup is working.
 
 #### How to build your native Plugin
@@ -96,12 +90,7 @@ for the project. Select __device__ and __simulator__ and click ok.
 
 ### Using the Plugin in an Application
 
-To use the plugin in another project, that's been created with Cordova, run __cordova plugin add <path to the PreventSleep folder>/plugin__.
-That will copy the plugin into the project, and update the www/config.xml file to include the feature as below:
-
-```xml
-<feature name="community.screendisplay" value="community.screendisplay" />
-```
+To use the plugin in another project, that's been created with Cordova, run __cordova plugin add <path to the main folder>/plugin__.
 
 All the methods in the extension will be prefixed by that feature id, so a method called sdgetsize() supplied in the community.screendisplay extension will be called in JavaScript like so:
 
@@ -128,4 +117,4 @@ Follow the steps above to:
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-[![Analytics](https://ga-beacon.appspot.com/UA-46817652-1/WebWorks-Community-APIs/BB10/ScreenDisplay?pixel)](https://github.com/igrigorik/ga-beacon)
+[![Analytics](https://ga-beacon.appspot.com/UA-46817652-1/WebWorks-Community-APIs/BB10-Cordova/ScreenDisplay?pixel)](https://github.com/igrigorik/ga-beacon)
