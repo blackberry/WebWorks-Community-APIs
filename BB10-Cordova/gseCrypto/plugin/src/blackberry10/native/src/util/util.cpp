@@ -48,7 +48,7 @@ void fromHex(std::string en, unsigned char * & data, size_t & dataLen) {
 		if ((c >= 'a' && c <= 'f') || (c >= '0' && c <= '9')) {
 			encoded += c;
 		} else {
-			throw "hex data invalid";
+                        throw std::string("Hex data invalid");
 		}
 	}
 
@@ -59,7 +59,7 @@ void fromHex(std::string en, unsigned char * & data, size_t & dataLen) {
 	}
 
 	if (encoded.length() % 2 != 0) {
-		throw "hex data length not multiple of 2";
+		throw std::string("Data length must be multiple of 2");
 	}
 
 	dataLen = encoded.length() / 2;
@@ -102,7 +102,7 @@ void fromB64(std::string encoded, unsigned char * & data, size_t & dataLen) {
 				|| (c >= '0' && c <= '9') || c == '+' || c == '/' || c == '=') {
 			encoded2 += c;
 		} else {
-			throw "Base64 data invalid";
+		        throw std::string("Base64 data invalid");
 		}
 	}
 
@@ -113,7 +113,7 @@ void fromB64(std::string encoded, unsigned char * & data, size_t & dataLen) {
 	}
 
 	if (encoded2.length() % 4 != 0) {
-		throw "Base64 encoded length should by multiple of 4";
+		throw std::string("Base64 encoded length should by multiple of 4");
 	}
 
 	dataLen = (encoded2.length() / 4) * 3;
@@ -155,6 +155,12 @@ std::string toHex(unsigned char * data, size_t dataLen) {
 	return toReturn;
 }
 
+std::string errorMessage(const char * message, int error) {
+	std::stringstream out;
+	out << message << " " << error;
+	return out.str();
+}
+
 std::string lowerCaseRemoveDashes(const std::string & input) {
 	std::string toReturn(input);
 	std::transform(toReturn.begin(), toReturn.end(), toReturn.begin(),
@@ -164,5 +170,5 @@ std::string lowerCaseRemoveDashes(const std::string & input) {
 	return toReturn;
 }
 
-} /* namespace util */
-} /* namespace gsecrypto */
+}
+} // namespace

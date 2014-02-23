@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014 BlackBerry Limited
+ * Copyright 2013-2014 Research In Motion Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,102 +13,221 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <string>
+#include <sstream>
+#include <cctype>
+#include <algorithm>
 #include <json/reader.h>
 #include <json/writer.h>
-#include "util/util.hpp"
+#include <huctx.h>
+#include <sbreturn.h>
+#include <husha1.h>
+#include <husha2.h>
+#include <hugse56.h>
+#include <hurandom.h>
+#include <huseed.h>
+
 #include "gseCrypto_ndk.hpp"
 #include "gseCrypto_js.hpp"
+#include "aes.hpp"
+#include "util/util.hpp"
+#include "sha.hpp"
 
+class GSECryptoJS;
 
-namespace gseCrypto {
+namespace gsecrypto {
 
-GSECryptoNDK::GSECryptoNDK(GSECryptoJS *parent) :
-	m_pParent(parent) {
+GSECryptoNDK::GSECryptoNDK(GSECryptoJS *owner) {
+	parent = owner;
+
+	sbCtx = NULL;
+	rngCtx = NULL;
+
+	try {
+		int error = hu_GlobalCtxCreateDefault(&sbCtx);
+		if (error != SB_SUCCESS) {
+			throw gsecrypto::util::errorMessage(
+					"Failed to create global context", error);
+		}
+
+		error = hu_RegisterSbg56(sbCtx);
+		if (error != SB_SUCCESS) {
+			throw gsecrypto::util::errorMessage("Failed to register sbg 5.6",
+					error);
+		}
+
+		error = hu_InitSbg56(sbCtx);
+		if (error != SB_SUCCESS) {
+			throw gsecrypto::util::errorMessage("Failed to init sbg 5.6",
+					error);
+		}
+
+		size_t seedLength = 100;
+		unsigned char seed[100];
+
+		error = hu_RegisterSystemSeed(sbCtx);
+		if (error != SB_SUCCESS) {
+			throw gsecrypto::util::errorMessage(
+					"Failed to register system seed", error);
+		}
+
+		error = hu_RngDrbgCreate(HU_DRBG_CIPHER, 256, 0, 0, NULL, NULL, &rngCtx,
+				sbCtx);
+		if (error != SB_SUCCESS) {
+			throw gsecrypto::util::errorMessage("Failed to create DRBG", error);
+		}
+
+		providers.push_back(new SHA(*this));
+		providers.push_back(new AES(*this));
+
+	} catch (std::string & message) {
+		lastError = message;
+	}
 }
 
 GSECryptoNDK::~GSECryptoNDK() {
+	if (sbCtx != NULL) {
+		hu_GlobalCtxDestroy(&sbCtx);
+		sbCtx = NULL;
+	}
 }
 
-// Cryptographic Hash Functions
 std::string GSECryptoNDK::hash(const std::string& inputString) {
-	m_pParent->getLog()->debug("hash function called");
+	try {
+		Json::Value args;
+		readJson(inputString, args);
 
-	std::string result;
+		std::string alg(getAlgorithm(args, ""));
+		Provider * p = findProvider(alg);
 
-	// Parse the arg string as JSON
-	Json::FastWriter writer;
+		return toString(p->hash(alg, args));
+
+	} catch (std::string & error) {
+		return fail(error);
+	}
+}
+
+std::string GSECryptoNDK::generateKey(const std::string& input) {
+	try {
+		Json::Value args;
+		readJson(input, args);
+		std::string alg(getAlgorithm(args));
+		Provider * p = findProvider(alg);
+
+		return toString(p->generateKey(alg, args));
+	} catch (std::string & error) {
+		return fail(error);
+	}
+}
+
+std::string GSECryptoNDK::encrypt(const std::string & input) {
+	try {
+		Json::Value args;
+		readJson(input, args);
+		std::string alg(getAlgorithm(args));
+		Provider * p = findProvider(alg);
+
+		return toString(p->encrypt(alg, args));
+	} catch (std::string & error) {
+		return fail(error);
+	}
+}
+
+std::string GSECryptoNDK::decrypt(const std::string & input) {
+	try {
+		Json::Value args;
+		readJson(input, args);
+		std::string alg(getAlgorithm(args));
+		Provider * p = findProvider(alg);
+
+		return toString(p->decrypt(alg, args));
+	} catch (std::string & error) {
+		return fail(error);
+	}
+}
+
+void GSECryptoNDK::readJson(const std::string & inputStream, Json::Value & value) {
 	Json::Reader reader;
-	Json::Value root;
-
-	bool parse = reader.parse(inputString, root);
-	if (!parse) {
-		m_pParent->getLog()->error("JSON Parse Error");
-		return error("Cannot parse JSON object");
+	if (!reader.parse(inputStream, value)) {
+		throw std::string("Could not read JSON input");
 	}
-
-	//JSON arguments format check
-	if (!root.isMember("alg")) {
-		return error("missing alg field");
-	}
-	if (!root.isMember("input")) {
-		return error("missing input field");
-	}
-
-	//extract binary data from JSON
-	unsigned char* data;
-	size_t dataLen;
-
-	if ( root["input"].isMember("hex") ) {
-
-		//parse hex data
-		try {
-			gsecrypto::util::fromHex( root["input"]["hex"].asString(), data, dataLen);
-		} catch( char const* e ) {
-			return error(e);
-		}
-
-	} else if( root["input"].isMember("b64") ) {
-
-		//parse base64 data
-		try {
-			gsecrypto::util::fromB64( root["input"]["b64"].asString(), data, dataLen);
-		} catch( char const* e ) {
-			return error(e);
-		}
-
-	} else {
-		return error("no hex or b64 input");
-	}
-
-	//determine which algorithm to use
-	if ( root["alg"] == "md5" ) {
-		result = error("md5 not yet implemented");
-	} else if ( root["alg"] == "sha" || root["alg"] == "sha1") {
-		result = error("sha1 not yet implemented");
-	} else if ( root["alg"] == "sha224" ) {
-		result = error("sha224 not yet implemented");
-	} else if ( root["alg"] == "sha256" ) {
-		result = error("sha256 not yet implemented");
-	} else if ( root["alg"] == "sha384" ) {
-		result = error("sha384 not yet implemented");
-	} else if ( root["alg"] == "sha512" ) {
-		result = error("sha512 not yet implemented");
-	} else {
-		result = error("unsupported hash algorithm");
-	}
-
-	return result;
 }
 
-//errorMsg: helpful message to be returned to extension caller
-//returns: string version of json object { "error":errorMsg }
-std::string GSECryptoNDK::error(const std::string& errorMsg) {
+Provider * GSECryptoNDK::findProvider(const std::string & algorithm) {
+	int count(0);
+	for (std::list<Provider*>::iterator i = providers.begin();
+			i != providers.end(); ++i) {
+		++count;
+		if ((*i)->doesSupport(algorithm)) {
+			return (*i);
+		}
+	}
+	std::stringstream stream;
+	stream << "Algorithm '" << algorithm << "' not supported.";
+	throw stream.str();
+}
+
+std::string GSECryptoNDK::getAlgorithm(Json::Value & value,
+		const std::string & defaultAlgorithm) {
+	if (value.isMember("alg")) {
+		return gsecrypto::util::lowerCaseRemoveDashes(
+				value.get("alg", defaultAlgorithm).asString());
+	} else if (defaultAlgorithm.size() != 0) {
+		return defaultAlgorithm;
+	}
+	throw std::string("Could not determine algorithm");
+}
+
+sb_GlobalCtx GSECryptoNDK::context() {
+	return sbCtx;
+}
+
+sb_RngCtx GSECryptoNDK::randomContext() {
+	return rngCtx;
+}
+
+std::string GSECryptoNDK::toString(const Json::Value & value) {
 	Json::FastWriter writer;
-	Json::Value root;
-	root["error"] = errorMsg;
-	return writer.write(root);
+	return writer.write(value);
 }
 
-} /* namespace gseCrypto */
+std::string GSECryptoNDK::fail(const std::string & error) {
+	Json::Value value;
+	value["error"] = error
+			+ (lastError.length() != 0 ? " [" + lastError + "]" : "");
+	lastError = "";
+	return toString(value);
+}
+
+std::string GSECryptoNDK::random(const std::string & inputString) {
+	try {
+		Json::Value args;
+		readJson(inputString, args);
+		if (args.isMember("size")) {
+			Json::Value sizeValue(args["size"]);
+			if (sizeValue.isInt()) {
+				size_t size = sizeValue.asInt();
+
+				DataTracker dt(size);
+
+				int rc = hu_RngGetBytes(rngCtx, dt.dataLen, dt.data, sbCtx);
+				if (rc != SB_SUCCESS) {
+					throw gsecrypto::util::errorMessage(
+							"Could not get random bytes", rc);
+				}
+
+				Json::Value toReturn;
+				toReturn["output"] = Provider::toJson(dt);
+				return toString(toReturn);
+			} else {
+				throw std::string("size must be an integer");
+			}
+		} else {
+			throw std::string("size is missing");
+		}
+	} catch (std::string & error) {
+		return fail(error);
+	}
+}
+
+} /* namespace gsecrypto */

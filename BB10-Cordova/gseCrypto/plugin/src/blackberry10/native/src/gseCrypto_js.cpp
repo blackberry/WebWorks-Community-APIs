@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014 BlackBerry Limited
+ * Copyright 2013-2014 Research In Motion Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <string>
 #include "../public/tokenizer.h"
 #include "gseCrypto_js.hpp"
 #include "gseCrypto_ndk.hpp"
+#include "json/writer.h"
 
 using namespace std;
 
@@ -26,22 +26,15 @@ using namespace std;
  */
 GSECryptoJS::GSECryptoJS(const std::string& id) :
 		m_id(id) {
-	m_pLogger = new webworks::Logger("GSECryptoJS", this);
-	m_pGSECryptoController = new gseCrypto::GSECryptoNDK(this);
+	gseCryptoController = new gsecrypto::GSECryptoNDK(this);
 }
 
 /**
  * GSECryptoJS destructor.
  */
 GSECryptoJS::~GSECryptoJS() {
-	if (m_pGSECryptoController)
-		delete m_pGSECryptoController;
-	if (m_pLogger)
-		delete m_pLogger;
-}
-
-webworks::Logger* GSECryptoJS::getLog() {
-	return m_pLogger;
+	if (gseCryptoController)
+		delete gseCryptoController;
 }
 
 /**
@@ -79,22 +72,29 @@ bool GSECryptoJS::CanDelete() {
  * called on the JavaScript side with this native objects id.
  */
 string GSECryptoJS::InvokeMethod(const string& command) {
-	// format must be: "command callbackId params"
+	// command appears with parameters following after a space
 	size_t commandIndex = command.find_first_of(" ");
 	std::string strCommand = command.substr(0, commandIndex);
 	size_t callbackIndex = command.find_first_of(" ", commandIndex + 1);
 	std::string callbackId = command.substr(commandIndex + 1, callbackIndex - commandIndex - 1);
 	std::string arg = command.substr(callbackIndex + 1, command.length());
 
-	// based on the command given, run the appropriate method in gseCrypto_ndk.cpp
-
 	if (strCommand == "hash") {
-		return m_pGSECryptoController->hash(arg);
+		return gseCryptoController->hash(arg);
+	} else if (strCommand == "generateKey") {
+		//return gseCryptoController->generateKey(arg);
+	} else if (strCommand == "encrypt") {
+		//return gseCryptoController->encrypt(arg);
+	} else if (strCommand == "decrypt") {
+		//return gseCryptoController->decrypt(arg);
+	} else if (strCommand == "random") {
+		//return gseCryptoController->random(arg);
 	}
 
-	strCommand.append(";");
-	strCommand.append(command);
-	return strCommand;
+	Json::Value error;
+	error["error"] = "No implementation found for " + strCommand + "(" + arg + ")";
+	Json::FastWriter writer;
+	return writer.write(error);
 }
 
 // Notifies JavaScript of an event
