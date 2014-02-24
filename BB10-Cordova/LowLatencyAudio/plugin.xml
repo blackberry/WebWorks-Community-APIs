@@ -1,6 +1,6 @@
 <!--
 /*
-* Copyright 2013 Research In Motion Limited.
+* Copyright 2013-2014 BlackBerry Limited.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,8 +16,14 @@
 */
 -->
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="PGLowLatencyAudio"
+    id="com.blackberry.community.LowLatencyAudio"
     version="1.0.0">
+
+    <name>Low Latency Audio</name>
+    <description>BlackBerry 10 Community Contributed API to support Low Latency Audio for .WAV files using OpenAL</description>
+    <license>Apache 2.0</license>
+    <author>BlackBerry</author>
+
     <js-module src="www/client.js">
         <merges target="PGLowLatencyAudio" />
     </js-module>
@@ -26,7 +32,7 @@
         <lib-file src="src/blackberry10/native/device/libpgaudio.so" arch="device" />
         <lib-file src="src/blackberry10/native/simulator/libpgaudio.so" arch="simulator" />
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="PGLowLatencyAudio" value="PGLowLatencyAudio" />
+            <feature name="com.blackberry.community.LowLatencyAudio" value="com.blackberry.community.LowLatencyAudio" />
         </config-file>
     </platform>
 </plugin>

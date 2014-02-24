@@ -1,5 +1,5 @@
 /*
-* Copyright 2013 Research In Motion Limited.
+* Copyright 2013-2014 BlackBerry Limited.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-var service = "PGLowLatencyAudio",
+var service = "com.blackberry.community.LowLatencyAudio",
     exec = cordova.require("cordova/exec");
 
 module.exports = {
