@@ -16,32 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-//deep comparison of JSON objects for testing
-var Utility = {   
-	areEqual: function(x, y) {
-	    if((y===null) !== (x===null)) return false;
-		for (var p in y) {
-			if(typeof(y[p]) !== typeof(x[p])) return false;
-			if((y[p]===null) !== (x[p]===null)) return false;
-			switch (typeof(y[p])) {
-				case 'undefined':
-					if (typeof(x[p]) != 'undefined') return false;
-					break;
-				case 'object':
-					if(y[p]!==null && x[p]!==null && (y[p].constructor.toString() !== x[p].constructor.toString() || !y[p].equals(x[p]))) return false;
-					break;
-				case 'function':
-					if (p != 'equals' && y[p].toString() != x[p].toString()) return false;
-					break;
-				default:
-					if (y[p] !== x[p]) return false;
-			}
-		}
-		return true;
-	}
-};
-
+ 
 var app = {
 	// Application Constructor
 	initialize: function() {
