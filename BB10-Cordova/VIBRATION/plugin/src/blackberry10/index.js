@@ -34,7 +34,8 @@ module.exports = {
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
 		args = JSON.parse(decodeURIComponent(args["input"]));
-		result.ok(vibration.getInstance().vibration_request(result.callbackId, args), true);
+		vibration.getInstance().vibration_request(result.callbackId, args);
+		result.noResult(true);
 	}
 };
 
