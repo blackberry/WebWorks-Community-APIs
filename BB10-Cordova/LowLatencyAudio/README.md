@@ -4,9 +4,15 @@ Plays audio .wav files using openAL, ALUT, Qdir, and QtCore libraries.
 
 For a sample application demonstrating the use of this API, please see the [LowLatencySequencer](https://github.com/blackberry/Cordova-Samples/tree/master/LowLatencySequencer)
 
-The plugin is currently under the name of PGLowLatencyAudio, and can be installed using the following command in your Cordova project location:
+The plugin can be installed from source or the [Cordova Plugin Registry](http://plugins.cordova.io) using one of the following commands in your Cordova project location:
 
-    cordova/plugin add path-to-plugin/PGLowLatencyAudio
+Registry: 
+
+	cordova plugin add com.blackberry.community.LowLatencyAudio
+
+Source:
+
+    cordova plugin add path-to-plugin/PGLowLatencyAudio
 
 To start off, in the directory PGLowLatencyAudio/www contains the API. Every function is called using PGLowLatencyAudio, and we have the follow functions: 
 
