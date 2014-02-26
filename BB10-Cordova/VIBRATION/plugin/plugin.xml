@@ -1,6 +1,6 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     id="com.blackberry.community.vibration"
-    version="1.0.0">
+    version="1.0.1">
 
     <name>Vibration</name>
     <description>BlackBerry 10 Community Contributed API to use the Vibration control</description>
