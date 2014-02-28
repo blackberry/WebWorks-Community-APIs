@@ -1,0 +1,11 @@
+platforms
+plugins
+arm
+x86
+bars
+.settings
+.device
+WebWorks/*/*
+WebWorks/*.bar
+Makefile
+.externalToolBuilders

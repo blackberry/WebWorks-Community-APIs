@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<qnx xmlns="http://www.qnx.com/schemas/application/1.0">
+    <!-- None of the following is required or used in any way, but it makes momentics
+         happy about this stub of a bar-descriptor.xml -->
+    <name>QtBridge</name>
+    <versionNumber>1.0.0</versionNumber>
+    <id>com.bb.example.qtbridge</id>
+    <configuration name="Device-Debug">
+           <platformArchitecture>armle-v7</platformArchitecture>
+	</configuration>
+    <configuration name="Device-Release">
+           <platformArchitecture>armle-v7</platformArchitecture>
+	</configuration>
+    <configuration name="Simulator-Debug">
+           <platformArchitecture>x86</platformArchitecture>
+	</configuration>
+    <asset entry="true" path="Makefile"></asset>
+</qnx>

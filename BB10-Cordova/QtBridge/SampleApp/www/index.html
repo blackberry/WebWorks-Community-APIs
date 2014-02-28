@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<!--
+ * Copyright (c) 2013 BlackBerry Limited
+ * Author: Isaac Gordezky
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+
+<html>
+    <head>
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <title>Qt Bridge</title>
+		<link rel="stylesheet" type="text/css" href="index.css" />
+		<script type="text/javascript" src="js/lodash.min.js"></script>
+    </head>
+    <body>
+		<script type="text/template" id="objectTemplate">
+			<div class="title">
+				<span><%= title %></span>
+				<% if (object.constructor.name.indexOf("bb.") == 0) { %>
+				<a href="https://developer.blackberry.com/native/reference/cascades/<%= object.constructor.name.replace(/[.]/g, "__") %>.html" target="_blank">
+					<img style="padding: 0px 10px 0px 10px;" src="img/ic_doctype_generic.png" alt="DOCS" />
+				</a>
+				<% } %>
+			</div> 		
+    		<ul class="propertyList">
+	    		<%
+	    		var notifySignals = [];
+	    		for (var i in meta.properties) {
+	    			var m = meta.properties[i];
+	    			if (m.name == "objectName")
+	    				continue;
+	    			
+	    			if (m.notifySignal !== undefined && notifySignals.indexOf(m.NotifySignal) < 0)
+	    				notifySignals.push(m.notifySignal);
+	    			%>
+	    			<li class="property" data-id="<%= m.name %>">
+	    				<span class="propertyName"><%= m.name %></span>:&#9;<%= object[m.name] %>
+	    			</li>    		
+	    		<% }; %>    	
+    		</ul>
+    		
+    		<% if (meta.methods) { %>
+	    		<p class="subtitle">Methods</p>
+	    		<ul class="propertyList">
+	    		
+		    	<%
+	    		var paramStringGen = function (value) {
+	    			return (value.name);
+	    		};
+	    		var methods = meta.methods;
+	    		for (var i = 0; i < methods.length; i++) {
+	    			var method = methods[i];
+	    			var params = method.parameters ? method.parameters : [];
+	    			if (method.name == "connect" || method.name == "disconnect" || method.name == "introspect")
+	    				continue;
+    				%>
+    				
+	    			<li class="property">
+	    				<span class="propertyName"><%= method.name %></span><%= " (" + params.map(paramStringGen).join(", ") + ")" %>
+	    			</li>
+	    		<% }; %>
+		    	
+	    		</ul>
+    		<% } %>
+    		
+    		<% if (meta.signals) { 
+	    		var signals = meta.signals;
+	    		var xSignals = {};
+	    		for (var i = 0; i < signals.length; i++) {
+	    			var signal = signals[i];
+	    			var params = signal.parameters ? signal.parameters : [];
+	    			if (notifySignals.indexOf(signal.name) >= 0 && 
+	    			        xSignals[signal.name] == undefined)
+	    				continue;
+	    			xSignals[signal.name] = i;	
+    			}
+    			if (Object.keys(xSignals).length > 0) {
+	    			%>
+		    		<p class="subtitle">Signals</p>
+		    		<ul class="propertyList">
+			    	<%
+	    			for (var i in xSignals) {
+	    				var signal = signals[ xSignals[i] ];
+	    				%>
+		    			<li class="property" data-id="signal-<%= signal.name %>">
+		    				<span class="propertyName"><%= signal.name %></span><%= " (" + params.map(paramStringGen).join(", ") + ")" %>
+		    			</li>
+		    		<% }; %>    	
+		    		</ul>
+	    			<%
+    			} 
+    		}
+    		%>
+    		<div class="divider" />    		
+    	</script>
+    	<script type="text/template" id="signalTemplate">
+			<span style="color:#E6B400;"><span class="propertyName"><%= signal.name %></span><%= " (" + params.join(", ") + ")\t\t" %><b><%= args %></b></span>
+    	</script>
+    	<script type="text/template" id="propertyTemplate">
+    		<li class="property" data-id="<%= name %>"><span class="propertyName"><%= name %></span>:&#9;<%= value %></li>
+		</script>
+    	
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="index.js"></script>
+        <script type="text/javascript">
+			/*global window, app */
+
+			window.addEventListener('load', function () {
+				app.initialize();
+			}, false);
+        </script>
+    </body>
+</html>
+	
