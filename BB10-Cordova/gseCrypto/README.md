@@ -69,7 +69,7 @@ random expects an object containing only size, set to an integer (not a string),
 ```javascript
 {
     "size" : 16
-};
+}
 ```
 
 A response will have the output attribute set to the random data. Eg:
@@ -79,7 +79,7 @@ A response will have the output attribute set to the random data. Eg:
         "b64" : "Tn7tXLqtt3BNPf6QxyRZZg==",
         "hex" : "4e7eed5cbaadb7704d3dfe90c7245966"
     }
-};
+}
 ```
 
 ## hash
@@ -96,7 +96,7 @@ Input can be hex, b64 (or both but only the hex will be used). Eg:
     "input" : {
         "hex" : "0123abcd"
     }
-};
+}
 ```
 
 The (non-error) output is an object with an attribute called output. Output itself is an object containing a hex and b64 encoding of the output. Eg:
