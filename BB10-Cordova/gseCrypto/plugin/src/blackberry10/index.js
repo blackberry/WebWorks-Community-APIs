@@ -32,6 +32,24 @@ module.exports = {
 		var result = new PluginResult(args, env);
 		args = JSON.parse(decodeURIComponent(args["input"]));
 		result.ok(gseCrypto.getInstance().hash(result.callbackId, args), false);
+	},
+	
+	random: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		args = JSON.parse(decodeURIComponent(args["input"]));
+		result.ok(gseCrypto.getInstance().random(result.callbackId, args), false);
+	},
+	
+	encrypt: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		args = JSON.parse(decodeURIComponent(args["input"]));
+		result.ok(gseCrypto.getInstance().encrypt(result.callbackId, args), false);
+	},
+	
+	decrypt: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		args = JSON.parse(decodeURIComponent(args["input"]));
+		result.ok(gseCrypto.getInstance().decrypt(result.callbackId, args), false);
 	}
 
 };
@@ -72,6 +90,17 @@ JNEXT.GSECrypto = function () {
 		return JNEXT.invoke(self.m_id, "hash " + callbackId + " " + JSON.stringify(input) );
 	};
 
+	self.random = function (callbackId, input) {
+		return JNEXT.invoke(self.m_id, "random " + callbackId + " " + JSON.stringify(input) );
+	};
+	
+	self.encrypt = function (callbackId, input) {
+		return JNEXT.invoke(self.m_id, "encrypt " + callbackId + " " + JSON.stringify(input) );
+	};
+	
+	self.decrypt = function (callbackId, input) {
+		return JNEXT.invoke(self.m_id, "decrypt " + callbackId + " " + JSON.stringify(input) );
+	};
 
 	// ************************
 	// End of methods to edit

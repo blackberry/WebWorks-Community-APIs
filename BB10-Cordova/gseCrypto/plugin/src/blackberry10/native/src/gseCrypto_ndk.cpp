@@ -107,19 +107,6 @@ std::string GSECryptoNDK::hash(const std::string& inputString) {
 	}
 }
 
-std::string GSECryptoNDK::generateKey(const std::string& input) {
-	try {
-		Json::Value args;
-		readJson(input, args);
-		std::string alg(getAlgorithm(args));
-		Provider * p = findProvider(alg);
-
-		return toString(p->generateKey(alg, args));
-	} catch (std::string & error) {
-		return fail(error);
-	}
-}
-
 std::string GSECryptoNDK::encrypt(const std::string & input) {
 	try {
 		Json::Value args;

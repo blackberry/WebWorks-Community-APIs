@@ -24,8 +24,6 @@ var _self = {},
 
 	/**
 	 * Cryptographic Hash Function
-	 * input: JSON object
-	 * returns: JSON object
 	*/
 	_self.hash = function (input) {
 		var result,
@@ -36,6 +34,51 @@ var _self = {},
 				console.log("Error: " + data);
 			};
 		exec(success, fail, _ID, "hash", { input: input });
+		return result;
+	};
+	
+	/**
+	 * Pseudo Random Data Generator
+	*/
+	_self.random = function (input) {
+		var result,
+			success = function (data, response) {
+				result = JSON.parse(data);
+			},
+			fail = function (data, response) {
+				console.log("Error: " + data);
+			};
+		exec(success, fail, _ID, "random", { input: input });
+		return result;
+	};
+	
+	/**
+	 * AES-CBC Encryption
+	*/
+	_self.encrypt = function (input) {
+		var result,
+			success = function (data, response) {
+				result = JSON.parse(data);
+			},
+			fail = function (data, response) {
+				console.log("Error: " + data);
+			};
+		exec(success, fail, _ID, "encrypt", { input: input });
+		return result;
+	};
+	
+	/**
+	 * AES-CBC Decryption
+	*/
+	_self.decrypt = function (input) {
+		var result,
+			success = function (data, response) {
+				result = JSON.parse(data);
+			},
+			fail = function (data, response) {
+				console.log("Error: " + data);
+			};
+		exec(success, fail, _ID, "decrypt", { input: input });
 		return result;
 	};
 

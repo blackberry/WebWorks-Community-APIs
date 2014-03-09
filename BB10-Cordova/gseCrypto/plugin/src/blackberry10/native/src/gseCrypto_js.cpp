@@ -81,14 +81,12 @@ string GSECryptoJS::InvokeMethod(const string& command) {
 
 	if (strCommand == "hash") {
 		return gseCryptoController->hash(arg);
-	} else if (strCommand == "generateKey") {
-		//return gseCryptoController->generateKey(arg);
 	} else if (strCommand == "encrypt") {
-		//return gseCryptoController->encrypt(arg);
+		return gseCryptoController->encrypt(arg);
 	} else if (strCommand == "decrypt") {
-		//return gseCryptoController->decrypt(arg);
+		return gseCryptoController->decrypt(arg);
 	} else if (strCommand == "random") {
-		//return gseCryptoController->random(arg);
+		return gseCryptoController->random(arg);
 	}
 
 	Json::Value error;

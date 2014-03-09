@@ -29,9 +29,6 @@ public:
 	virtual ~AES();
 
 	virtual bool doesSupport(const std::string &);
-
-	virtual Json::Value generateKey(const std::string & alg,
-			Json::Value & args);
 	virtual Json::Value encrypt(const std::string & alg, Json::Value & args);
 	virtual Json::Value decrypt(const std::string & alg, Json::Value & args);
 

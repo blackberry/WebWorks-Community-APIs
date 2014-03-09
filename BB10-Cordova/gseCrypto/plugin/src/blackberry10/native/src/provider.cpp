@@ -63,11 +63,6 @@ Json::Value Provider::toJson(DataTracker & dt) {
 	return toJson(dt.data, dt.dataLen);
 }
 
-Json::Value Provider::generateKey(const std::string & algorithm,
-		Json::Value & input) {
-	throw std::string("Key generation not supported");
-}
-
 Json::Value Provider::hash(const std::string & algorithm, Json::Value & input) {
 	throw std::string("Hash not supported");
 

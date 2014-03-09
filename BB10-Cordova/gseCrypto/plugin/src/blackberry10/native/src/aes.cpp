@@ -38,52 +38,6 @@ bool AES::doesSupport(const std::string & algorithm) {
 }
 
 /**
- * Expected input:
- * {
- * 		alg: "aes",
- * 		keySize : an int - 128/192/256
- * }
- *
- * Output:
- * {
- * 		key: generated key data
- * }
- */
-Json::Value AES::generateKey(const std::string & algorithm,
-		Json::Value & args) {
-	size_t keySize = 128;
-
-	if (args.isMember("keySize")) {
-		Json::Value keySizeV = args["keySize"];
-		if (!keySizeV.isInt()) {
-			throw std::string("keySize must be an int");
-		}
-		keySize = keySizeV.asInt();
-		switch (keySize) {
-		case 128:
-		case 192:
-		case 256:
-			// awesome!
-			break;
-		default:
-			throw errorMessage("Not a valid key size: ", keySize);
-		}
-	}
-
-	AESParams params(*this, SB_AES_CBC, SB_AES_128_BLOCK_BITS, true);
-
-	DataTracker dt;
-	AESKey key(params, keySize);
-	key.get(dt);
-
-	Json::Value keyData = toJson(dt.data, dt.dataLen);
-	Json::Value toReturn;
-	toReturn["key"] = keyData;
-
-	return toReturn;
-}
-
-/**
  * See crypt for input/output
  */
 Json::Value AES::encrypt(const std::string & algorithm, Json::Value & args) {
@@ -147,8 +101,27 @@ Json::Value AES::crypt(const std::string & algorithm, Json::Value & args,
 	DataTracker keyBytes;
 	getData(args["key"], keyBytes);
 
+	switch( keyBytes.dataLen*8 ) {
+	    case 128:
+	    case 192:
+	    case 256:
+	        break;
+        default:
+            std::stringstream stream;
+	        stream << "Key Size: " << (keyBytes.dataLen*8) << " bits not supported.";
+	        throw stream.str();
+	}
+
+	if( (input.dataLen % 16) != 0 ) {
+	    throw std::string("Input not multiple of 128 bits. Use padding.");
+	}
+
 	DataTracker iv;
 	getData(args["iv"], iv);
+
+	if( iv.dataLen != 16 ) {
+	    throw std::string("IV not 128 bits.");
+	}
 
 	int mode = SB_AES_CBC;
 

@@ -38,8 +38,6 @@ public:
 
 	std::string hash(const std::string& inputString);
 
-	std::string generateKey(const std::string & inputString);
-
 	std::string encrypt(const std::string & inputString);
 	std::string decrypt(const std::string & inputString);
 

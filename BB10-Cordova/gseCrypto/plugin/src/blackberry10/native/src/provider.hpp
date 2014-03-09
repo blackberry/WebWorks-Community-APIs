@@ -37,9 +37,6 @@ public:
 
 	virtual bool doesSupport(const std::string & algorithm) = 0;
 
-	virtual Json::Value generateKey(const std::string & algorithm,
-			Json::Value & input);
-
 	virtual Json::Value hash(const std::string & algorithm,
 			Json::Value & input);
 

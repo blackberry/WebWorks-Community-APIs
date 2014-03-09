@@ -4,16 +4,17 @@ This extension allows WebWorks code to call features of the cryptographic librar
 
 Currently implemented algorithms include:
 
-* Crytographic Hash Functions
+* Pseudo-Random Number Generator
+* Cryptographic Hash Functions
     * MD5 (**not** recommended for cryptographic use)
     * SHA1 (**not** recommended for cryptographic use)
     * SHA2 (224/256/384/512 bits)
 * Block Ciphers
-    * AES-CBC 128/192/256 (coming soon)
+    * AES-CBC 128/192/256
 
 # Getting Started
 ## Warning
-Use this cryptographic library at your own risk. While native functions are FIPS validated, it's possible that this extension has _somehow_ introduced errors, unlikely as that may seem given the testing done. In addition, if you plan to use any of these functions, make sure that you know what you are doing: poorly used the security of these algorithms mean nothing.
+Use this cryptographic library at your own risk. While native functions are FIPS validated, it's _possible_ that this extension has introduced errors, unlikely as that may seem. In addition, if you plan to use any of these functions, make sure that you know what you are doing: the security of these algorithms means nothing if they are poorly used.
 
 ## Data
 
@@ -54,10 +55,22 @@ Errors will be given as a member of the result object. Eg:
 # Operations
 Current operations you can call are:
 
+* random
 * hash
-* (others coming soon)
+* encrypt
+* decrypt
 
-The native API can be found [here](http://developer.blackberry.com/native/reference/core/com.qnx.doc.crypto.lib_ref/topic/manual/intro.html). The library contains a plethora of functions, and if there is something not yet implemented here that you would like to see, please feel free to make a request.
+The native API can be found [here](http://developer.blackberry.com/native/reference/core/com.qnx.doc.crypto.lib_ref/topic/manual/intro.html). The library contains a plethora of functions, and if there is something not yet implemented here that you would like to see, please feel free to make a request by commenting on this repository.
+
+## random
+
+random expects an object containing only size, set to an integer, which is the number of bytes (not bits) of random data that is desired. Eg:
+
+```javascript
+{
+    "size" : "16"
+};
+```
 
 ## hash
 
@@ -85,6 +98,82 @@ The (non-error) output is an object with an attribute called output. Output itse
     }
 }
 ```
+
+## encrypt
+Encrypt expects an object with algorithm (alg) set. Each individual encryption implementation may expect more values to be set.
+**Currently only the AES algorithm is implemented**
+
+### encrypt – AES
+Encrypt – AES expects the following values
+* Algorithm (alg) 
+* Mode (mode)					(only CBC is currently implemented)
+* Key (key)						(128, 192, or 256 bits as hex or b64)
+* Initialization Vector (iv)	(CBC requires a 128-bit IV, hex or b64)
+* Data to encrypt (input)		(hex or b64);
+Example:
+
+```javascript
+{
+    "alg" : "aes",
+    "mode" : "cbc",
+    "key" : {
+        "b64":"AAAAAAAAAAAAAAAAAAAAAA=="
+    },
+    "input" : {
+        "b64":"EjSrzRI0q80SNKvNEjSrzQ=="
+    },
+    "iv" : {
+        "b64":"AAAAAAAAAAAAAAAAAAAAAA=="
+    }
+}
+```
+
+If there are no errors, the output will be as follows:
+
+```javascript
+{
+    "output" : {
+         "b64":"Tn7tXLqtt3BNPf6QxyRZZg==",
+         "hex":"4e7eed5cbaadb7704d3dfe90c7245966"
+    }
+}
+```
+
+## decrypt
+
+Encrypt expects an object with algorithm (alg) set. Each individual encryption implementation may expect more values to be set.
+**Currently only the AES algorithm is implemented**
+
+### decrypt – AES
+
+Decrypt – AES expects and returns the same attributes as encrypt – AES.
+
+## random
+
+Random does not expect an algorithm (alg) to be set on input. The original extension author was too lazy to allow the random implementation to be selected.
+
+Random does expect the attribute size to be set. It is an integer indicating the number of random byte that should be returned.
+
+```javascript
+{
+    size : 16
+}
+```
+
+A response will have the output attribute set to the random data. Eg:
+```javascript
+{
+    "output" : {
+        "b64" : "QGXBbFgY3FPkNwuZHtGRYA==",
+        "hex" : "4065c16c5818dc53e4370b991ed19160",
+        "raw" : "@eÁlX\u0018ÜSä7\u000b\u001eÑ`"
+    }
+}
+```
+
+# Padding
+Security Builder GSE does not implement padding algorithms for block ciphers. Algorithms thus expect input of the appropriate block size only, and an error will result if this is not the case.
+There are many ways to pad data, but keep in mind that padding itself does not increase security. See [wikipedia](http://en.wikipedia.org/wiki/Padding_%28cryptography%29) for an overview of existing padding schemes.
 
 # Usage Examples
 See gseCrypto/sample/www/js/index.js for examples of all operations in use.
