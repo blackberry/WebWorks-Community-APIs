@@ -72,6 +72,15 @@ random expects an object containing only size, set to an integer (not a string),
 };
 ```
 
+A response will have the output attribute set to the random data. Eg:
+```javascript
+{
+    "output" : {
+        "b64" : "Tn7tXLqtt3BNPf6QxyRZZg==",
+        "hex" : "4e7eed5cbaadb7704d3dfe90c7245966"
+    }
+}
+
 ## hash
 
 hash expects an object with algorithm (alg) and input data (input) set.
@@ -147,29 +156,6 @@ Encrypt expects an object with algorithm (alg) set. Each individual encryption i
 ### decrypt – AES
 
 Decrypt – AES expects and returns the same attributes as encrypt – AES.
-
-## random
-
-Random does not expect an algorithm (alg) to be set on input. The original extension author was too lazy to allow the random implementation to be selected.
-
-Random does expect the attribute size to be set. It is an integer indicating the number of random byte that should be returned.
-
-```javascript
-{
-    size : 16
-}
-```
-
-A response will have the output attribute set to the random data. Eg:
-```javascript
-{
-    "output" : {
-        "b64" : "QGXBbFgY3FPkNwuZHtGRYA==",
-        "hex" : "4065c16c5818dc53e4370b991ed19160",
-        "raw" : "@eÁlX\u0018ÜSä7\u000b\u001eÑ`"
-    }
-}
-```
 
 # Padding
 Security Builder GSE does not implement padding algorithms for block ciphers. Algorithms thus expect input of the appropriate block size only, and an error will result if this is not the case.
