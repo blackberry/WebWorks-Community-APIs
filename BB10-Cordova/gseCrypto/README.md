@@ -79,7 +79,8 @@ A response will have the output attribute set to the random data. Eg:
         "b64" : "Tn7tXLqtt3BNPf6QxyRZZg==",
         "hex" : "4e7eed5cbaadb7704d3dfe90c7245966"
     }
-}
+};
+```
 
 ## hash
 
