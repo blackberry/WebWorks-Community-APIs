@@ -64,11 +64,11 @@ The native API can be found [here](http://developer.blackberry.com/native/refere
 
 ## random
 
-random expects an object containing only size, set to an integer, which is the number of bytes (not bits) of random data that is desired. Eg:
+random expects an object containing only size, set to an integer (not a string), which is the number of bytes (not bits) of random data that is desired. Eg:
 
 ```javascript
 {
-    "size" : "16"
+    "size" : 16
 };
 ```
 
