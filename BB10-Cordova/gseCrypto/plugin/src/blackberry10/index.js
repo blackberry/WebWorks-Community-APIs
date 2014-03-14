@@ -16,7 +16,6 @@
 
 var gseCrypto,
 	resultObjs = {},
-	threadCallback = null,
    _utils = require("../../lib/utils");
 
 module.exports = {

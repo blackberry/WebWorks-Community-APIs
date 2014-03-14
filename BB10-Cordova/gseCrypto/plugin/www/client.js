@@ -15,7 +15,7 @@
 */
 
 var _self = {},
-	_ID = "community.gsecrypto",
+	_ID = "com.blackberry.community.gsecrypto",
 	exec = cordova.require("cordova/exec");
 
 	// These methods are called by your App's JavaScript
