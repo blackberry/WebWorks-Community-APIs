@@ -16,6 +16,18 @@ Currently implemented algorithms include:
 ## Warning
 Use this cryptographic library at your own risk. While native functions are FIPS validated, it's _possible_ that this extension has introduced errors, unlikely as that may seem. In addition, if you plan to use any of these functions, make sure that you know what you are doing: the security of these algorithms means nothing if they are poorly used.
 
+## How To Install The Plugin
+
+This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+
+    cordova plugin add com.blackberry.community.gsecrypto
+
+or,
+    
+    webworks plugin add com.blackberry.community.gsecrypto
+
+Installation from source is the same but instead of the id ("com.blackberry.community.gsecrypto"), use the file system path to the source plugin folder.
+
 ## Data
 
 Cryptographic data is binary. You need to be clear on which bytes you want to work with. For this reason the extension accepts data as hexadecimal (hex) or Base64 (b64) encoding of the bytes.
