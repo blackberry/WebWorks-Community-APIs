@@ -23,8 +23,7 @@
 * limitations under the License.
 */
 
-var thumbNailJNext,
-    _event = require("../../lib/event"),
+var screenshotJNEXT,
     _utils = require("../../lib/utils");
 	
 module.exports = {
@@ -38,7 +37,7 @@ module.exports = {
 		var result = new PluginResult(args, env);
 	
 		var userargs = JSON.parse(decodeURIComponent(args["userargs"]));
-		result.ok(thumbNailJNext.hello({userargs:userargs}));
+		result.ok(screenshotJNEXT.hello({userargs:userargs}));
 	},
 
 	/**
@@ -54,7 +53,7 @@ module.exports = {
 		for(var i=0;i<wv.length;i++){
 			if (wv[i].zOrder==0) {
 				// found window handle.
-				result.ok(thumbNailJNext.execute(
+				result.ok(screenshotJNEXT.execute(
 						{
 							handle:wv[i].jsScreenWindowHandle, 
 							userargs:userargs
@@ -72,7 +71,7 @@ module.exports = {
 // JavaScript wrapper for JNEXT plugin
 ///////////////////////////////////////////////////////////////////
 
-JNEXT.ThumbNailJNext = function ()
+JNEXT.ScreenshotJNEXT = function ()
 {   
     var _self = this;
 
@@ -110,4 +109,4 @@ JNEXT.ThumbNailJNext = function ()
     _self.init();
 };
 
-thumbNailJNext = new JNEXT.ThumbNailJNext();
+screenshotJNEXT = new JNEXT.ScreenshotJNEXT();
