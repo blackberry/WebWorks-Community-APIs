@@ -48,7 +48,7 @@ JS:
 	// configure options
 	var options = {dest:'data:', mime:'image/png'};
 	// perform screenshot
-	var screenshot = net.jonwebb.screenshot.execute(options);
+	var screenshot = community.screenshot.execute(options);
 	// check result
 	if(screenshot.substr(0,5)=="data:")
 		$('#myimage').attr('src', screenshot)
@@ -101,5 +101,3 @@ Notes
 Disclaimer
 ----------
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-[![Analytics](https://ga-beacon.appspot.com/UA-46817652-1/WebWorks-Community-APIs/BB10/Screenshot?pixel)](https://github.com/igrigorik/ga-beacon)

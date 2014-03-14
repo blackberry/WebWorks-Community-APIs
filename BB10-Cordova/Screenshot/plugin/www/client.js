@@ -24,7 +24,7 @@
 */
 
 var _self = {},
-	_ID = "community.screenshot",
+	_ID = "com.blackberry.community.screenshot",
 	exec = cordova.require("cordova/exec");
 
 	/**

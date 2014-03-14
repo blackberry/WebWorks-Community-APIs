@@ -1,6 +1,12 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="community.screenshot"
+    id="com.blackberry.community.screenshot"
     version="1.0.0">
+
+    <name>Screenshot</name>
+    <description>BlackBerry 10 Community Contributed API to take an in-app screenshot</description>
+    <license>Apache 2.0</license>
+    <author>Jon Webb, Morgan Parlee</author>
+
     <js-module src="www/client.js">
         <clobbers target="community.screenshot" />
     </js-module>
@@ -10,7 +16,7 @@
         <lib-file src="src/blackberry10/native/device/libScreenshot.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libScreenshot.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="community.screenshot" value="community.screenshot" />
+            <feature name="com.blackberry.community.screenshot" value="com.blackberry.community.screenshot" />
         </config-file>
     </platform>
 </plugin>
