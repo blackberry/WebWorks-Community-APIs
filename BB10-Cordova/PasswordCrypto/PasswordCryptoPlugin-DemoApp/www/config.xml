@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="community.PasswordCrypto.Demo" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>PasswordCrypto</name>
+    <description>
+        A PasswordCryto Plugin/Extension Demo.
+    </description>
+    <author email="shiksingh@blackberry.com" href="http://www.blackberry.com">
+        Shikhir Singh - code.shikhir.com
+    </author>
+    <access origin="*" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="true" />
+    <content src="index.html" />
+   	<icon src="icons/icon-150.png" />
+	<icon src="icons/icon-114.png" />
+	<icon src="icons/icon-86.png" />
+	<rim:splash src="lock-splashscreen-1280x768.png"/>
+	<rim:splash src="lock-splashscreen-720x720.png"/>	
+</widget>
