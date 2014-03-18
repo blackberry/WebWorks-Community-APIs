@@ -81,6 +81,10 @@ JNEXT.DeviceEmail = function () {
 		return JNEXT.invoke(self.m_id, "ping");
 	};	
 
+	self.version = function () {
+		return JNEXT.invoke(self.m_id, "version");
+	};	
+
 
 	// calls into InvokeMethod(string command) in deviceemails_js.cpp
 	self.getDefaultEmailAddress = function () {

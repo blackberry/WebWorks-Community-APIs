@@ -34,16 +34,9 @@ using namespace bb::pim::account;
 namespace webworks {
 
 DeviceEmailsNDK::DeviceEmailsNDK(DeviceEmailsJS *parent):
-	m_pParent(parent),
-	templateProperty(50),
-	templateThreadCount(1),
-	threadHalt(true),
-	m_thread(0) {
-		pthread_cond_t cond  = PTHREAD_COND_INITIALIZER;
-		pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+	m_pParent(parent){
 		m_pParent->getLog()->info("Template Created");
 		m_accountService = new AccountService();
-
 }
 
 DeviceEmailsNDK::~DeviceEmailsNDK() {
@@ -56,7 +49,7 @@ std::string DeviceEmailsNDK::ping(){
 
 std::string DeviceEmailsNDK::version(){
 	// simple test to ensure we have connectivity to the extension
-	return "0.0.2";
+	return "1.0.0";
 }
 
 
