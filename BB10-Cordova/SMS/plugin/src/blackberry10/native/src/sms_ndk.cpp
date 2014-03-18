@@ -60,12 +60,6 @@ SMS_NDK::SMS_NDK(SMS_JS *parent) {
 	_sms_account_id = account_list.first().id();
 
 	m_pParent = parent;
-	templateProperty = 50;
-	templateThreadCount = 1;
-	m_thread = 0;
-	pthread_cond_t cond  = PTHREAD_COND_INITIALIZER;
-	pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-	threadHalt = true;
 }
 
 SMS_NDK::~SMS_NDK() {
