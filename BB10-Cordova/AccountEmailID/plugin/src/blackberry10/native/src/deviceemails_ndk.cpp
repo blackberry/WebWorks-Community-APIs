@@ -18,7 +18,6 @@
 #include <sstream>
 #include <json/reader.h>
 #include <json/writer.h>
-#include <pthread.h>
 #include "deviceemails_ndk.hpp"
 #include "deviceemails_js.hpp"
 #include <QDir>
@@ -35,7 +34,7 @@ namespace webworks {
 
 DeviceEmailsNDK::DeviceEmailsNDK(DeviceEmailsJS *parent):
 	m_pParent(parent){
-		m_pParent->getLog()->info("Template Created");
+		m_pParent->getLog()->info("DeviceEmailsExtension Created");
 		m_accountService = new AccountService();
 }
 
@@ -90,6 +89,7 @@ std::string DeviceEmailsNDK::getEmailAddresses() {
 	}
 	catch(int e){
 		root["success"]=false;
+		m_pParent->getLog()->error("DeviceEmailsNDK.getDefaultEmailAddress Exception");
 	}
     std::string myJson = writer.write( root );
     return myJson;

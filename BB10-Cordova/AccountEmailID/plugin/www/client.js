@@ -15,7 +15,7 @@
 */
 
 var _self = {},
-	_ID = "community.deviceemails",
+	_ID = "com.blackberry.community.deviceemails",
 	exec = cordova.require("cordova/exec");
 
 	// These methods are called by your App's JavaScript

@@ -1,6 +1,12 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="community.deviceemails"
+    id="com.blackberry.community.deviceemails"
     version="1.0.0">
+
+    <name>Device Emails</name>
+    <description>BlackBerry 10 Community Contributed API to find the configured emails</description>
+    <license>Apache 2.0</license>
+    <author>Shikhir Singh</author>
+
     <js-module src="www/client.js">
         <clobbers target="community.deviceemails" />
     </js-module>
@@ -10,7 +16,7 @@
         <lib-file src="src/blackberry10/native/device/libDeviceEmailsExtension.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libDeviceEmailsExtension.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="community.deviceemails" value="community.deviceemails" />
+            <feature name="com.blackberry.community.deviceemails" value="com.blackberry.community.deviceemails" />
         </config-file>
     </platform>
 </plugin>
