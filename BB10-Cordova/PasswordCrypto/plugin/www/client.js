@@ -15,7 +15,7 @@
 */
 
 var _self = {},
-	_ID = "community.PasswordCrypto",
+	_ID = "com.blackberry.community.PasswordCrypto",
 	exec = cordova.require("cordova/exec");
 
 
