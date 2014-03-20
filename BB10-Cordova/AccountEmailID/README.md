@@ -1,4 +1,4 @@
-# Device Emails Cordova/Webworks Plugin
+# AccountEmailID Cordova/Webworks Plugin
 
 The purpose of this BlackBerry 10 Cordova/Webworks plugin is to allow a BlackBerry 10 Cordova app to retrieve 
 the email address of the emails accounts setup on the device. This can be used to identify a user automatically or to 
@@ -64,7 +64,7 @@ else if(pluginDefaultEmail.success==false){
 * community.deviceemails.getEmailAddresses(); // this returns an object which contains all email addresses in that space(Personal or work)
 
  
-**How to Build Device Emails for BB10 Webworks 2.0 Beta**
+**How to Build Device Emails for BB10 Webworks 2.0 **
 
 Note: It is not necessary to build this project if you do not intend to modify the extension. The plugin folder already has a built copy of the
 extension, simply install it. 
