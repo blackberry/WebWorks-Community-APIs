@@ -35,7 +35,7 @@ Example
 ```
 webworks plugin add ../plugin
 ```
-* In the config.xml of your project add the following permissions (see the config.xml in /DeviceEmails-WW2-AppDemo/www for an example)
+* In the config.xml of your project add the following permissions (see the config.xml in /AccountEmailID-AppDemo/www for an example)
 
 ```
 <rim:permissions>
@@ -72,7 +72,7 @@ extension, simply install it.
 Assumption: You have installed the BlackBerry Native SDK 2.0+, and BlackBerry Webworks 2.0+
 
 1. Simply import the plugin/src/blackberry10/native directory into a workspace into Momentics. Build the project. 
-2. Go to the DeviceEmails-DemoApp directory, then add the plugin using the following command: cordova plugin add ../plugin/
+2. Go to the your WebWorks/Cordova App directory, then add the plugin using the following command: cordova plugin add ../plugin/
 3. Now you can build the project using : webworks build --release  
 
 **How can I know that this plugin actually works without building it all myself!**
@@ -88,10 +88,10 @@ You can find it in the folder /build folder.
 
 **Known Issues**
 Cordova 3.4 now keeps it config.xml in a different location than the previous version(3.3).
-WebWorks 2.0 Beta still keeps it's config.xml like version 3.3 of Cordova in the /www
-folder. The sample project DeviceEmails-AppDemo has it's config.xml in the /www folder so it will
-work with WebWorks 2.0 Beta. The plugin will work with Cordova 3+ or WebWorks 2.0+ but 
-to package the sample project the config.xml will need to be moved for it to work with Cordova 3.4. 
+WebWorks 2.0 Gold now keeps it's config.xml like version 3.4 of Cordova in the /www
+folder. The sample project AccountEmailID-AppDemo has it's config.xml outside the /www folder so it will
+work with WebWorks 2.0. The plugin will work with Cordova 3+ or WebWorks 2.0+ but 
+to package the sample project the config.xml will need to be moved into the AccountEmailID-AppDemo folder for it to work with Cordova 3.3 and below. 
 This does not effect the plugin, and is only in reference to the sample project.  
 
 
