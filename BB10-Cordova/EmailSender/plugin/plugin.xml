@@ -1,6 +1,12 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="community.emailsenderplugin"
+    id="com.blackberry.community.emailsenderplugin"
     version="1.0.0">
+
+    <name>Email Sender</name>
+    <description>BlackBerry 10 Community Contributed API to send email with the default account</description>
+    <license>Apache 2.0</license>
+    <author>Alexandre Huot</author>
+
     <js-module src="www/client.js">
         <clobbers target="community.emailsenderplugin" />
     </js-module>
@@ -10,7 +16,7 @@
         <lib-file src="src/blackberry10/native/device/libEmailSender.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libEmailSender.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="community.emailsenderplugin" value="community.emailsenderplugin" />
+            <feature name="com.blackberry.community.emailsenderplugin" value="com.blackberry.community.emailsenderplugin" />
         </config-file>
     </platform>
 </plugin>
