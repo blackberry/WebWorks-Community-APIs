@@ -15,7 +15,7 @@
 */
 
 var _self = {},
-	_ID = "community.emailsenderplugin",
+	_ID = "com.blackberry.community.emailsenderplugin",
 	exec = cordova.require("cordova/exec");
 
 	// These methods are called by your App's JavaScript
