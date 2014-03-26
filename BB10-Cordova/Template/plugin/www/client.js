@@ -15,7 +15,7 @@
 */
 
 var _self = {},
-	_ID = "community.templateplugin",
+	_ID = "com.blackberry.community.templateplugin",
 	exec = cordova.require("cordova/exec");
 
 	// These methods are called by your App's JavaScript
