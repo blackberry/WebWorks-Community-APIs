@@ -430,6 +430,25 @@ var app = {
 				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
 			}
 
+		//test encrypt aes-ecb 128 two full blocks
+		    testDesc = "encrypt aes-ebc 128 two blocks";
+		    testInput = {"alg":"aes","mode":"ecb","key":{"hex":"00000000000000000000000000000000"},"input":{"hex":"1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd"}};
+			expectedOutput = {"output":{"b64":"Tn7tXLqtt3BNPf6QxyRZZk5+7Vy6rbdwTT3+kMckWWY=","hex":"4e7eed5cbaadb7704d3dfe90c72459664e7eed5cbaadb7704d3dfe90c7245966"}};
+			actualOutput = community.gsecrypto.encrypt(testInput);
+
+			if ( actualOutput.hasOwnProperty("output") 
+			  && actualOutput.output.hasOwnProperty("b64")
+			  && actualOutput.output.hasOwnProperty("hex")
+			  && actualOutput.output.b64 == expectedOutput.output.b64
+			  && actualOutput.output.hex == expectedOutput.output.hex ) {
+				app.writeOut(testDesc + ": PASS");
+		    } else {
+				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
+			}
+			
+			
+			
+			
 		} else {
 			app.writeOut("Plugin was not found");
 		}
