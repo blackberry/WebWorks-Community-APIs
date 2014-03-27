@@ -12,7 +12,9 @@ Date: 4/17/2014
 ** Author **
 
 Extension - Peardox
+
 Mongoose - Valenok
+
 Port - Deric Cheng (https://github.com/dericc)
 
 ## Including the feature in your application
@@ -50,8 +52,12 @@ The Mongoose plugin provides the following API:
 ```javascript
 community.mongoose.start(options); 
 ```
-This function creates a Mongoose embedded web server, passing along the options to create the web server with. The object "options" is a JSON object that can be generally initialized to null, as following: community.mongoose.start({});. It returns a Javascript object with information 
-such as status, error, listening_ports, and document_root. The options and Javascript return objects are documented extensively at the page (https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/mongoose).  
+This function creates a Mongoose embedded web server, passing along the options to create the web server with. The object "options" is a JSON object that can be generally initialized to null, as following: 
+
+```javascript
+community.mongoose.start({}); 
+```
+It returns a Javascript object with information such as status, error, listening_ports, and document_root. The options and Javascript return objects are documented extensively at the page (https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/mongoose).  
 
 ```javascript
 community.mongoose.stop(); 
