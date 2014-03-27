@@ -35,9 +35,6 @@ public:
 
 private:
 	MongooseJS *m_pParent;
-	int MongooseProperty;
-	int MongooseThreadCount;
-	bool threadHalt;
 	std::string threadCallbackId;
 	pthread_t m_thread;
 	pthread_cond_t cond;

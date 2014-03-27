@@ -17,14 +17,9 @@
 #define MAX_OPTIONS 53
 #define MAX_CONF_FILE_LINE_SIZE (8 * 1024)
 
-#include <string>
-#include <sstream>
-#include <stdlib.h>
-#include <unistd.h>
 #include <sys/param.h>
 #include "json/reader.h"
 #include "json/writer.h"
-#include <pthread.h>
 #include "Mongoose_ndk.hpp"
 #include "Mongoose_js.hpp"
 #include "mongooseintf.h"
@@ -38,9 +33,6 @@ int is_running = false;
 
 MongooseNDK::MongooseNDK(MongooseJS *parent):
 	m_pParent(parent),
-	MongooseProperty(50),
-	MongooseThreadCount(1),
-	threadHalt(true),
 	m_thread(0) {
 		pthread_cond_t cond  = PTHREAD_COND_INITIALIZER;
 		pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
