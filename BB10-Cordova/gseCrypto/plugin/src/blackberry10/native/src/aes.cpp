@@ -55,9 +55,9 @@ Json::Value AES::decrypt(const std::string & algorithm, Json::Value & args) {
  * Expected input:
  * {
  * 	alg: "aes",
- * 	mode: "cbc",
+ * 	mode: "cbc", [or "ecb"]
  * 	key: key data,
- * 	iv: iv data (16 bytes),
+ * 	iv: iv data (16 bytes), [if cbc mode]
  * 	input: data to encrypt or decrypt
  * }
  *

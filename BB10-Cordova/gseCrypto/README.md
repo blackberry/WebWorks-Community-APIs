@@ -11,6 +11,8 @@ Currently implemented algorithms include:
     * SHA2 (224/256/384/512 bits)
 * Block Ciphers
     * AES 128/192/256 in CBC or EBC modes
+    * DES in CBC or EBC modes
+    * 3DES in CBC or ECB modes
 
 # Getting Started
 ## Warning
@@ -112,8 +114,6 @@ The (non-error) output is an object with an attribute called output. Output itse
 ## encrypt
 Encrypt expects an object with algorithm (alg) set. Each individual encryption implementation may expect more values to be set.
 
-**Currently only the AES algorithm is implemented**
-
 ### encrypt – AES
 Encrypt – AES expects the following values:
 
@@ -121,7 +121,8 @@ Encrypt – AES expects the following values:
 * Mode (mode)    				(only CBC and ECB modes are currently implemented)
 * Key (key)						(128, 192, or 256 bits as hex or b64)
 * Initialization Vector (iv)	(required for CBC mode only: 128-bits in hex or b64)
-* Data to encrypt (input)		(hex or b64);
+* Data to encrypt (input)		(hex or b64 in a multiple of 128-bits)
+
 Example:
 
 ```javascript
@@ -150,6 +151,66 @@ If there are no errors, the output will be as follows:
     }
 }
 ```
+
+### encrypt – DES
+Encrypt – DES expects the following values:
+
+* Algorithm (alg) 
+* Mode (mode)        			(only CBC and ECB modes are currently implemented)
+* Key (key1)					(64 bits as hex or b64)
+* Initialization Vector (iv)	(required for CBC mode only: 64 bits in hex or b64)
+* Data to encrypt (input)		(hex or b64 in a multiple of 64-bits)
+
+Example:
+
+```javascript
+{
+    "alg" : "des",
+    "mode" : "ecb",
+    "key1" : {
+        "hex":"0000000000000000"
+    },
+    "input" : {
+        "hex":"1234abcd1234abcd"
+    }
+}
+```
+
+Output format is the same as for AES.
+
+### encrypt – 3DES
+Encrypt – 3DES expects the following values:
+
+* Algorithm (alg) 
+* Mode (mode)            		(only CBC and ECB modes are currently implemented)
+* Key1 (key1)					(64 bits as hex or b64)
+* Key2 (key2)    				(64 bits as hex or b64)
+* Key3 (key3)    				(64 bits as hex or b64)
+* Initialization Vector (iv)	(required for CBC mode only: 64 bits in hex or b64)
+* Data to encrypt (input)		(hex or b64 in a multiple of 64-bits)
+
+Example:
+
+```javascript
+{
+    "alg" : "des",
+    "mode" : "ecb",
+    "key1" : {
+        "hex":"0000000000000000"
+    },
+    "key2" : {
+        "hex":"ffff000000000000"
+    },
+    "key3" : {
+        "hex":"00000000000ffff"
+    },
+    "input" : {
+        "hex":"1234abcd1234abcd"
+    }
+}
+```
+
+Output format is the same as for AES.
 
 ## decrypt
 

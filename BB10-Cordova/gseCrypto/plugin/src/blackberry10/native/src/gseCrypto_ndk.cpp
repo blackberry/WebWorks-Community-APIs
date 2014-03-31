@@ -30,6 +30,7 @@
 #include "gseCrypto_ndk.hpp"
 #include "gseCrypto_js.hpp"
 #include "aes.hpp"
+#include "des.hpp"
 #include "util/util.hpp"
 #include "sha.hpp"
 
@@ -79,6 +80,7 @@ GSECryptoNDK::GSECryptoNDK(GSECryptoJS *owner) {
 
 		providers.push_back(new SHA(*this));
 		providers.push_back(new AES(*this));
+		providers.push_back(new DES(*this));
 
 	} catch (std::string & message) {
 		lastError = message;
