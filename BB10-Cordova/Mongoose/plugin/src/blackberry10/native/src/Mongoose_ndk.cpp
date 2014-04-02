@@ -17,25 +17,24 @@
 #define MAX_OPTIONS 53
 #define MAX_CONF_FILE_LINE_SIZE (8 * 1024)
 
+#include <string>
+#include <sstream>
+#include <stdlib.h>
+#include <unistd.h>
 #include <sys/param.h>
 #include "json/reader.h"
 #include "json/writer.h"
-#include "Mongoose_ndk.hpp"
-#include "Mongoose_js.hpp"
 #include "mongooseintf.h"
 #include "mongoose.h"
-#include <json/reader.h>
-#include <json/writer.h>
+#include "Mongoose_ndk.hpp"
+#include "Mongoose_js.hpp"
+
 
 namespace webworks {
 
 int is_running = false;
 
-MongooseNDK::MongooseNDK(MongooseJS *parent):
-	m_pParent(parent),
-	m_thread(0) {
-		pthread_cond_t cond  = PTHREAD_COND_INITIALIZER;
-		pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+MongooseNDK::MongooseNDK(MongooseJS *parent):m_pParent(parent) {
 		m_pParent->getLog()->info("Mongoose Created");
 }
 
@@ -61,12 +60,11 @@ std::string MongooseNDK::MGstart(const std::string& arg) {
 	getcwd(ptemp, MAXPATHLEN);
 	strcat(ptemp,"/data");
 
-	bool parse = reader.parse(arg, root);
 
+	bool parse = reader.parse(arg, root);
 	for(unsigned int i=0; i<MAX_OPTIONS; i++) {
 		options[i] = NULL;
 	}
-
 	if(is_running) {
 		rval["status"] = false;
 		rval["error"] = "Already Running";
@@ -84,18 +82,17 @@ std::string MongooseNDK::MGstart(const std::string& arg) {
   			options[xops++] = sdup("enable_directory_listing");
      		options[xops++] = sdup("no");
  		}
-
  		Json::Value::Members memberNames = root.getMemberNames();
  		int ecount = 0;
 
-
   		for(unsigned int i=0; i<memberNames.size(); i++) {
- 		  std::string memberName = memberNames[i];
- 		  options[xops++] = sdup(memberName.c_str());
- 		  options[xops++] = urldecode(root[memberName].asCString());
- 		  }
+  			std::string memberName = memberNames[i];
+			options[xops++] = sdup(memberName.c_str());
+			options[xops++] = urldecode(root[memberName].asCString());
+  		}
 
- 		ecount = start_mongoose(options);
+  		m_pParent->getLog()->info("Starting Mongoose");
+		ecount = start_mongoose(options);
 
 	    for (int idx = 0; options[idx] != NULL; idx++) {
  		  free(options[idx]);
@@ -133,10 +130,12 @@ std::string MongooseNDK::MGstop() {
 	Json::Value rval;
 
 	if(is_running) {
-	  m_pParent->getLog()->debug("Mg was stopped.");
+	  m_pParent->getLog()->info("Mg was stopped.");
 	  stop_mongoose();
 	}
-	else m_pParent->getLog()->debug("Mg was not stopped. ");
+	else {
+		m_pParent->getLog()->info("Mg was not stopped.");
+	}
 
 	is_running = false;
 	rval["status"] = true;

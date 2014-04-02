@@ -61,26 +61,5 @@ var app = {
 		output.innerText = output.innerText + message;
 		output.appendChild(document.createElement('br'));
 		console.log(message);
-	},
-	aSyncCallback: function(data) {
-		if (data) {
-			console.log(data);
-			app.writeOut(data.value1 + " + " + data.value2 + " = " + data.result);
-		}
-	},
-	threadCallback: function(data) {
-		if (app.threadStarted) {
-			console.log(data);
-			var json = JSON.parse(data);
-			app.writeOut("Thread Callback: " + json.threadCount);
-			if (json.threadCount >= 10) {
-				var end = community.mongoose.stopThread();
-				app.writeOut(end);
-				app.threadStarted = false;
-			}
-		} else {
-			app.threadStarted = true;
-			app.writeOut(data);
-		}
 	}
 };
