@@ -18,7 +18,6 @@
 #define MongooseNDK_HPP_
 
 #include <string>
-#include <pthread.h>
 
 class MongooseJS;
 
@@ -35,10 +34,6 @@ public:
 
 private:
 	MongooseJS *m_pParent;
-	std::string threadCallbackId;
-	pthread_t m_thread;
-	pthread_cond_t cond;
-	pthread_mutex_t mutex;
 };
 
 } // namespace webworks

@@ -21,13 +21,13 @@ Port - Deric Cheng (https://github.com/dericc)
 
 This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
 
-	cordova plugin add community.mongoose
+	cordova plugin add com.blackberry.community.mongoose
 
 or,
 	
-	webworks plugin add community.mongoose
+	webworks plugin add com.blackberry.community.mongoose
 
-Installation from source is the same but instead of the id ("community.mongoose"), use the file system path to the source plugin folder.
+Installation from source is the same but instead of the id ("com.blackberry.community.mongoose"), use the file system path to the source plugin folder.
 
 
 ## Structure of the Plugin and Sample
