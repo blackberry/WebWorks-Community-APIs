@@ -1,0 +1,46 @@
+/*
+* Copyright (c) 2014 BlackBerry Limited
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+#ifndef MongooseNDK_HPP_
+#define MongooseNDK_HPP_
+
+#include <string>
+#include <pthread.h>
+
+class MongooseJS;
+
+namespace webworks {
+
+class MongooseNDK {
+public:
+	explicit MongooseNDK(MongooseJS *parent = NULL);
+	virtual ~MongooseNDK();
+
+	// The extension methods are defined here
+	std::string MGstart(const std::string& arg);
+	std::string MGstop();
+
+private:
+	MongooseJS *m_pParent;
+	std::string threadCallbackId;
+	pthread_t m_thread;
+	pthread_cond_t cond;
+	pthread_mutex_t mutex;
+};
+
+} // namespace webworks
+
+#endif /* MongooseNDK_H_ */
