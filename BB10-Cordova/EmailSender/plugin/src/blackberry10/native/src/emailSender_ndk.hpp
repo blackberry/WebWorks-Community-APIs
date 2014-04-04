@@ -36,6 +36,7 @@ public:
 
 	// The extension methods are defined here
 	std::string sendEmail(const std::string& inputString);
+	std::string getEmailAccounts();
 
 private:
 	EmailSenderJS *m_pParent;
