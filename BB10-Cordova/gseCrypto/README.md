@@ -10,11 +10,13 @@ Currently implemented algorithms include:
     * SHA1 (**not** recommended for cryptographic use)
     * SHA2 (224/256/384/512 bits)
 * Block Ciphers
-    * AES-CBC 128/192/256
+    * AES 128/192/256 in CBC or EBC modes
+    * DES in CBC or EBC modes
+    * 3DES in CBC or ECB modes
 
 # Getting Started
 ## Warning
-Use this cryptographic library at your own risk. While native functions are FIPS validated, it's _possible_ that this extension has introduced errors, unlikely as that may seem. In addition, if you plan to use any of these functions, make sure that you know what you are doing: the security of these algorithms means nothing if they are poorly used.
+Use this cryptographic library at your own risk. While native functions are FIPS validated, it's _possible_ that this extension has introduced errors, unlikely as that may seem. In addition, if you plan to use any of these functions, make sure that you know what you are doing: the security of these algorithms means nothing if they are poorly used. As an example, while ECB mode is available for supported block ciphers, it should never be used in a practical application (To see why; check out this [wikipedia page](http://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_codebook_.28ECB.29)).
 
 ## How To Install The Plugin
 
@@ -123,15 +125,16 @@ The (non-error) output is an object with an attribute called output. Output itse
 
 ## encrypt
 Encrypt expects an object with algorithm (alg) set. Each individual encryption implementation may expect more values to be set.
-**Currently only the AES algorithm is implemented**
 
 ### encrypt – AES
-Encrypt – AES expects the following values
+Encrypt – AES expects the following values:
+
 * Algorithm (alg) 
-* Mode (mode)					(only CBC is currently implemented)
+* Mode (mode)    				(only CBC and ECB modes are currently implemented)
 * Key (key)						(128, 192, or 256 bits as hex or b64)
-* Initialization Vector (iv)	(CBC requires a 128-bit IV, hex or b64)
-* Data to encrypt (input)		(hex or b64);
+* Initialization Vector (iv)	(required for CBC mode only: 128-bits in hex or b64)
+* Data to encrypt (input)		(hex or b64 in a multiple of 128-bits)
+
 Example:
 
 ```javascript
@@ -161,14 +164,70 @@ If there are no errors, the output will be as follows:
 }
 ```
 
+### encrypt – DES
+Encrypt – DES expects the following values:
+
+* Algorithm (alg) 
+* Mode (mode)        			(only CBC and ECB modes are currently implemented)
+* Key (key1)					(64 bits as hex or b64)
+* Initialization Vector (iv)	(required for CBC mode only: 64 bits in hex or b64)
+* Data to encrypt (input)		(hex or b64 in a multiple of 64-bits)
+
+Example:
+
+```javascript
+{
+    "alg" : "des",
+    "mode" : "ecb",
+    "key1" : {
+        "hex":"0000000000000000"
+    },
+    "input" : {
+        "hex":"1234abcd1234abcd"
+    }
+}
+```
+
+Output format is the same as for AES.
+
+### encrypt – 3DES
+Encrypt – 3DES expects the following values:
+
+* Algorithm (alg) 
+* Mode (mode)            		(only CBC and ECB modes are currently implemented)
+* Key1 (key1)					(64 bits as hex or b64)
+* Key2 (key2)    				(64 bits as hex or b64)
+* Key3 (key3)    				(64 bits as hex or b64)
+* Initialization Vector (iv)	(required for CBC mode only: 64 bits in hex or b64)
+* Data to encrypt (input)		(hex or b64 in a multiple of 64-bits)
+
+Example:
+
+```javascript
+{
+    "alg" : "des",
+    "mode" : "ecb",
+    "key1" : {
+        "hex":"0000000000000000"
+    },
+    "key2" : {
+        "hex":"ffff000000000000"
+    },
+    "key3" : {
+        "hex":"00000000000ffff"
+    },
+    "input" : {
+        "hex":"1234abcd1234abcd"
+    }
+}
+```
+
+Output format is the same as for AES.
+
 ## decrypt
 
-Encrypt expects an object with algorithm (alg) set. Each individual encryption implementation may expect more values to be set.
-**Currently only the AES algorithm is implemented**
+Decrypt expects an object with algorithm (alg) set. Unless otherwise specified below, decrypt expects and returns objects with the same requirements as the corresponding encrypt operation detailed above.
 
-### decrypt – AES
-
-Decrypt – AES expects and returns the same attributes as encrypt – AES.
 
 # Padding
 Security Builder GSE does not implement padding algorithms for block ciphers. Algorithms thus expect input of the appropriate block size only, and an error will result if this is not the case.

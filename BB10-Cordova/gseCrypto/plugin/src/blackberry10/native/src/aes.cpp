@@ -55,9 +55,9 @@ Json::Value AES::decrypt(const std::string & algorithm, Json::Value & args) {
  * Expected input:
  * {
  * 	alg: "aes",
- * 	mode: "cbc",
+ * 	mode: "cbc", [or "ecb"]
  * 	key: key data,
- * 	iv: iv data (16 bytes),
+ * 	iv: iv data (16 bytes), [if cbc mode]
  * 	input: data to encrypt or decrypt
  * }
  *
@@ -68,14 +68,14 @@ Json::Value AES::decrypt(const std::string & algorithm, Json::Value & args) {
  */
 Json::Value AES::crypt(const std::string & algorithm, Json::Value & args,
 		bool isEncrypt) {
+
+    int mode;
+
 	if (!args.isMember("key")) {
 		throw std::string("key missing");
 	}
 	if (!args.isMember("input")) {
 		throw std::string("input missing");
-	}
-	if (!args.isMember("iv")) {
-		throw std::string("iv missing");
 	}
 	if (!args.isMember("mode")) {
 		throw std::string("mode missing");
@@ -83,8 +83,15 @@ Json::Value AES::crypt(const std::string & algorithm, Json::Value & args,
 
 	std::string modeString(
 			gsecrypto::util::lowerCaseRemoveDashes(args["mode"].asString()));
-	if ("cbc" != modeString) {
-		throw std::string("Only CBC currently supported");
+	if ("cbc" == modeString) {
+	    mode = SB_AES_CBC;
+	    if (!args.isMember("iv")) {
+		    throw std::string("iv required for CBC mode");
+	    }
+	} else if("ecb" == modeString) {
+	    mode = SB_AES_ECB;
+	} else {
+	    throw std::string("Only CBC and ECB currently supported");
 	}
 
 	DataTracker input;
@@ -116,18 +123,18 @@ Json::Value AES::crypt(const std::string & algorithm, Json::Value & args,
 	    throw std::string("Input not multiple of 128 bits. Use padding.");
 	}
 
-	DataTracker iv;
-	getData(args["iv"], iv);
+    AESParams params(*this, mode, SB_AES_128_BLOCK_BITS, false);
+    AESKey key(params, keyBytes);
+    DataTracker iv(SB_AES_128_BLOCK_BYTES);
 
-	if( iv.dataLen != 16 ) {
-	    throw std::string("IV not 128 bits.");
-	}
+    if( mode == SB_AES_CBC ) {
+        getData(args["iv"], iv);
+        if( iv.dataLen != SB_AES_128_BLOCK_BYTES ) {
+            throw std::string("IV not 128 bits.");
+        }
+    }
 
-	int mode = SB_AES_CBC;
-
-	AESParams params(*this, SB_AES_CBC, SB_AES_128_BLOCK_BITS, false);
-	AESKey key(params, keyBytes);
-	AESContext context(params, key, mode, iv);
+    AESContext context(params, key, mode, iv);
 	context.crypt(input, result, isEncrypt);
 
 	Json::Value toReturn;

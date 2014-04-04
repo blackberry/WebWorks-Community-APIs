@@ -51,7 +51,7 @@ var app = {
 	testPluginCalls: function() {
 		if (community && community.gsecrypto) {
 
-		//Test Cryptographic Hash Functions (md5, sha, sha224, sha256, sha384, sha512)
+		//HASH FUNCTIONS (md5, sha, sha224, sha256, sha384, sha512)
 		    var testDesc;
 			var testInput;
 			var expectedOutput;
@@ -146,7 +146,7 @@ var app = {
 				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
 			}
 			
-//test md5 algorithm b64
+		//test md5 algorithm b64
 		    testDesc = "hash md5 b64";
 			testInput = {"alg":"md5","input":{"b64":"0asBHKHByto="}};
 			expectedOutput = {"output":{"b64":"jm7GNGH3w/PlnxOBpF+urw==","hex":"8e6ec63461f7c3f3e59f1381a45faeaf"}};
@@ -238,7 +238,8 @@ var app = {
 		    } else {
 				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
 			}
-			
+		
+		//PRNG
 		//test random data generator 4 bytes
 		    testDesc = "random 4 bytes";	
 		    testInput = {"size":4};
@@ -253,6 +254,7 @@ var app = {
 				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
 			}
 		
+		//AES
 		//test encrypt aes-cbc bad key size
 		    testDesc = "encrypt aes-cbc bad key size";	
 		    testInput = {"alg":"aes","mode":"cbc","key":{"hex":"0000000000000000000000000000"},"input":{"hex":"1234abcd1234abcd1234abcd1234abcd"},"iv":{"hex":"00000000000000000000000000000000"}};
@@ -430,6 +432,196 @@ var app = {
 				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
 			}
 
+		//test encrypt aes-ecb 128 two full blocks
+		    testDesc = "encrypt aes-ecb 128 two blocks";
+		    testInput = {"alg":"aes","mode":"ecb","key":{"hex":"00000000000000000000000000000000"},"input":{"hex":"1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd"}};
+			expectedOutput = {"output":{"b64":"Tn7tXLqtt3BNPf6QxyRZZk5+7Vy6rbdwTT3+kMckWWY=","hex":"4e7eed5cbaadb7704d3dfe90c72459664e7eed5cbaadb7704d3dfe90c7245966"}};
+			actualOutput = community.gsecrypto.encrypt(testInput);
+
+			if ( actualOutput.hasOwnProperty("output") 
+			  && actualOutput.output.hasOwnProperty("b64")
+			  && actualOutput.output.hasOwnProperty("hex")
+			  && actualOutput.output.b64 == expectedOutput.output.b64
+			  && actualOutput.output.hex == expectedOutput.output.hex ) {
+				app.writeOut(testDesc + ": PASS");
+		    } else {
+				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
+			}
+		
+		//DES and 3DES
+		//test encrypt des-ecb bad key size
+		    testDesc = "encrypt des-ecb bad key size";	
+		    testInput = {"alg":"des","mode":"ebc","key1":{"hex":""},"input":{"hex":""}};
+			actualOutput = community.gsecrypto.encrypt(testInput);
+
+			if ( actualOutput.hasOwnProperty("error") ) {
+				app.writeOut(testDesc + ": PASS");
+			} else {
+				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
+			}
+		
+		//test encrypt des-ecb bad input size
+		    testDesc = "encrypt des-ecb bad input size";	
+		    testInput = {"alg":"des","mode":"ecb","key1":{"hex":"0000000000000000"},"input":{"hex":"1234abcd1234ab"}};
+			actualOutput = community.gsecrypto.encrypt(testInput);
+
+			if ( actualOutput.hasOwnProperty("error") ) {
+				app.writeOut(testDesc + ": PASS");
+			} else {
+				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
+			}
+			
+		//test encrypt des-cbc bad IV size
+		    testDesc = "encrypt des-cbc bad IV size";	
+		    testInput = {"alg":"des","mode":"cbc","key1":{"hex":"0000000000000000"},"input":{"hex":"1234abcd1234abcd"},"iv":{"hex":"000000000000"}};
+			actualOutput = community.gsecrypto.encrypt(testInput);
+
+			if ( actualOutput.hasOwnProperty("error") ) {
+				app.writeOut(testDesc + ": PASS");
+			} else {
+				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
+			}
+			
+		//test encrypt des-ecb
+		    testDesc = "encrypt des-ecb";	
+		    testInput = {"alg":"des","mode":"ecb","key1":{"hex":"0000000000000000"},"input":{"hex":"1234abcd1234abcd"}};
+			expectedOutput = {"output":{"b64":"co5CBNNvgF4=","hex":"728e4204d36f805e"}};
+			actualOutput = community.gsecrypto.encrypt(testInput);
+
+			if ( actualOutput.hasOwnProperty("output") 
+			  && actualOutput.output.hasOwnProperty("b64")
+			  && actualOutput.output.hasOwnProperty("hex")
+			  && actualOutput.output.b64 == expectedOutput.output.b64
+			  && actualOutput.output.hex == expectedOutput.output.hex ) {
+				app.writeOut(testDesc + ": PASS");
+		    } else {
+				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
+			}
+			
+		//test decrypt des-ecb
+		    testDesc = "decrypt des-ecb";	
+		    testInput = {"alg":"des","mode":"ecb","key1":{"hex":"0000000000000000"},"input":{"hex":"728e4204d36f805e"}};
+			expectedOutput = {"output":{"b64":"EjSrzRI0q80=","hex":"1234abcd1234abcd"}};
+			actualOutput = community.gsecrypto.decrypt(testInput);
+
+			if ( actualOutput.hasOwnProperty("output") 
+			  && actualOutput.output.hasOwnProperty("b64")
+			  && actualOutput.output.hasOwnProperty("hex")
+			  && actualOutput.output.b64 == expectedOutput.output.b64
+			  && actualOutput.output.hex == expectedOutput.output.hex ) {
+				app.writeOut(testDesc + ": PASS");
+		    } else {
+				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
+			}
+			
+		//test encrypt des-cbc 2 blocks
+		    testDesc = "encrypt des-cbc 2 blocks";	
+		    testInput = {"alg":"des","mode":"cbc","key1":{"hex":"0000000000000000"},"input":{"hex":"1234abcd1234abcd1234abcd1234abcd"},"iv":{"hex":"0000000000000000"}};
+			expectedOutput = {"output":{"b64":"co5CBNNvgF6Jvf3T2WHD6Q==","hex":"728e4204d36f805e89bdfdd3d961c3e9"}};
+			actualOutput = community.gsecrypto.encrypt(testInput);
+
+			if ( actualOutput.hasOwnProperty("output") 
+			  && actualOutput.output.hasOwnProperty("b64")
+			  && actualOutput.output.hasOwnProperty("hex")
+			  && actualOutput.output.b64 == expectedOutput.output.b64
+			  && actualOutput.output.hex == expectedOutput.output.hex ) {
+				app.writeOut(testDesc + ": PASS");
+		    } else {
+				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
+			}
+			
+		//test decrypt des-cbc 2 blocks
+		    testDesc = "decrypt des-cbc 2 blocks";	
+		    testInput = {"alg":"des","mode":"cbc","key1":{"hex":"0000000000000000"},"input":{"hex":"728e4204d36f805e89bdfdd3d961c3e9"},"iv":{"hex":"0000000000000000"}};
+			expectedOutput = {"output":{"b64":"EjSrzRI0q80SNKvNEjSrzQ==","hex":"1234abcd1234abcd1234abcd1234abcd"}};
+			actualOutput = community.gsecrypto.decrypt(testInput);
+
+			if ( actualOutput.hasOwnProperty("output") 
+			  && actualOutput.output.hasOwnProperty("b64")
+			  && actualOutput.output.hasOwnProperty("hex")
+			  && actualOutput.output.b64 == expectedOutput.output.b64
+			  && actualOutput.output.hex == expectedOutput.output.hex ) {
+				app.writeOut(testDesc + ": PASS");
+		    } else {
+				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
+			}
+		
+		///test encrypt 3des-ecb 1key
+		    testDesc = "encrypt 3des 1 key";	
+		    testInput = {"alg":"3des","mode":"ebc","key1":{"hex":"0000000000000000"},"input":{"hex":"1234abcd1234abcd"}};
+			actualOutput = community.gsecrypto.encrypt(testInput);
+
+			if ( actualOutput.hasOwnProperty("error") ) {
+				app.writeOut(testDesc + ": PASS");
+			} else {
+				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
+			}
+			
+		//test encrypt 3des-ecb
+		    testDesc = "encrypt 3des-ecb";	
+		    testInput = {"alg":"3des","mode":"ecb","key1":{"hex":"0000000000000000"},"key2":{"hex":"ffff000000000000"},"key3":{"hex":"000000000000ffff"},"input":{"hex":"1234abcd1234abcd"}};
+			expectedOutput = {"output":{"b64":"Eowuao33uHA=","hex":"128c2e6a8df7b870"}};
+			actualOutput = community.gsecrypto.encrypt(testInput);
+
+			if ( actualOutput.hasOwnProperty("output") 
+			  && actualOutput.output.hasOwnProperty("b64")
+			  && actualOutput.output.hasOwnProperty("hex")
+			  && actualOutput.output.b64 == expectedOutput.output.b64
+			  && actualOutput.output.hex == expectedOutput.output.hex ) {
+				app.writeOut(testDesc + ": PASS");
+		    } else {
+				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
+			}
+			
+		//test decrypt 3des-ecb
+		    testDesc = "decrypt 3des-ecb";	
+		    testInput = {"alg":"3des","mode":"ecb","key1":{"hex":"0000000000000000"},"key2":{"hex":"ffff000000000000"},"key3":{"hex":"000000000000ffff"},"input":{"hex":"128c2e6a8df7b870"}};
+			expectedOutput = {"output":{"b64":"EjSrzRI0q80=","hex":"1234abcd1234abcd"}};
+			actualOutput = community.gsecrypto.decrypt(testInput);
+
+			if ( actualOutput.hasOwnProperty("output") 
+			  && actualOutput.output.hasOwnProperty("b64")
+			  && actualOutput.output.hasOwnProperty("hex")
+			  && actualOutput.output.b64 == expectedOutput.output.b64
+			  && actualOutput.output.hex == expectedOutput.output.hex ) {
+				app.writeOut(testDesc + ": PASS");
+		    } else {
+				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
+			}
+			
+		//test encrypt 3des-cbc 2 blocks
+		    testDesc = "encrypt 3des-cbc 2 blocks";	
+		    testInput = {"alg":"3des","mode":"cbc","key1":{"hex":"0000000000000000"},"key2":{"hex":"ffff000000000000"},"key3":{"hex":"000000000000ffff"},"input":{"hex":"1234abcd1234abcd1234abcd1234abcd"},"iv":{"hex":"0000000000000000"}};
+			expectedOutput = {"output":{"b64":"Eowuao33uHDk+m6bf3E/fA==","hex":"128c2e6a8df7b870e4fa6e9b7f713f7c"}};
+			actualOutput = community.gsecrypto.encrypt(testInput);
+
+			if ( actualOutput.hasOwnProperty("output") 
+			  && actualOutput.output.hasOwnProperty("b64")
+			  && actualOutput.output.hasOwnProperty("hex")
+			  && actualOutput.output.b64 == expectedOutput.output.b64
+			  && actualOutput.output.hex == expectedOutput.output.hex ) {
+				app.writeOut(testDesc + ": PASS");
+		    } else {
+				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
+			}
+			
+		//test decrypt 3des-cbc 2 blocks
+		    testDesc = "decrypt 3des-cbc 2 blocks";	
+		    testInput = {"alg":"3des","mode":"cbc","key1":{"hex":"0000000000000000"},"key2":{"hex":"ffff000000000000"},"key3":{"hex":"000000000000ffff"},"input":{"hex":"128c2e6a8df7b870e4fa6e9b7f713f7c"},"iv":{"hex":"0000000000000000"}};
+			expectedOutput = {"output":{"b64":"EjSrzRI0q80SNKvNEjSrzQ==","hex":"1234abcd1234abcd1234abcd1234abcd"}};
+			actualOutput = community.gsecrypto.decrypt(testInput);
+
+			if ( actualOutput.hasOwnProperty("output") 
+			  && actualOutput.output.hasOwnProperty("b64")
+			  && actualOutput.output.hasOwnProperty("hex")
+			  && actualOutput.output.b64 == expectedOutput.output.b64
+			  && actualOutput.output.hex == expectedOutput.output.hex ) {
+				app.writeOut(testDesc + ": PASS");
+		    } else {
+				app.writeOut(testDesc + ": FAIL: " + JSON.stringify(actualOutput) );
+			}
+			
+			
 		} else {
 			app.writeOut("Plugin was not found");
 		}

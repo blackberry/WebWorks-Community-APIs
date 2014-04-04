@@ -28,6 +28,9 @@ DataTracker::DataTracker(size_t size) {
 	} else {
 		data = new unsigned char[size];
 		dataLen = size;
+		for(unsigned int i = 0; i < size; i++) {
+		    data[i] = '\0';
+		}
 	}
 }
 
