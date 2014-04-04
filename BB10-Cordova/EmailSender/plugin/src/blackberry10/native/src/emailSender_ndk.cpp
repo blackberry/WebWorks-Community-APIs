@@ -41,14 +41,24 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
 	Json::Value input;
 	bool parse = reader.parse(inputString, input);
 	if(parse){
+		Json::Value From = input["From"];
 		Json::Value To = input["To"];
 		Json::Value Cc = input["Cc"];
 		Json::Value Bcc = input["Bcc"];
 		Json::Value subject = input["subject"];
 		Json::Value body = input["body"];
 
-		Account dAccount = accountService.defaultAccount(Service::Messages);
-		MessageBuilder *builder = MessageBuilder::create(dAccount.id());
+		long id = atol(From.asString().c_str());
+		Account account;
+
+		if(id == -1){
+			account = accountService.defaultAccount(Service::Messages);
+		}
+		else{
+			account = accountService.account(id);
+		}
+		if(!account.isValid()) return "The account is not valid.";
+		MessageBuilder *builder = MessageBuilder::create(account.id());
 
 		if(To.isArray()){
 			foreach(Json::Value v, To){
@@ -96,13 +106,35 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
 		builder->body(MessageBody::PlainText,bodyData);
 		Message m = *builder;
 		MessageKey mk = messageService.send (m.accountId(), m );
-		return "Sent";
+
+		if(mk == 0){
+			return "The email has not been sent.";
+		}
+		else{
+			return "Sent.";
+		}
 	}
 	else{
-		return "JSON can't be parse.";
+		return "The JSON can't be parse.";
 	}
 
 	return "An error as occurred.";
+}
+
+std::string EmailSenderNDK::getEmailAccounts(){
+	QList<Account> accounts = accountService.accounts(Service::Messages);
+	std::string accountsArray = "{" ;
+	foreach(Account account, accounts){
+		//To only select the email address.
+		if(account.settingsProperty("email_address").value<QString>().toStdString().find("@") == std::string::npos) continue;
+		//To convert the AccounKey to string
+		stringstream idString;
+		idString << account.id();
+		accountsArray += "\"" + idString.str() + "\":\""+ account.settingsProperty("email_address").value<QString>().toStdString() + "\",";
+
+	}
+	accountsArray.resize(accountsArray.size()-1);
+	return accountsArray + "}";
 }
 
 } /* namespace webworks */

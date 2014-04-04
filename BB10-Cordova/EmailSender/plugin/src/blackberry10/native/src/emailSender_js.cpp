@@ -87,8 +87,11 @@ string EmailSenderJS::InvokeMethod(const string& command) {
 	std::string arg = command.substr(callbackIndex + 1, command.length());
 
 	// based on the command given, run the appropriate method in template_ndk.cpp
+
 	if (strCommand == "sendEmail") {
 		return m_pTemplateController->sendEmail(arg);
+	}else if (strCommand == "getEmailAccounts") {
+		return m_pTemplateController->getEmailAccounts();
 	}
 
 	strCommand.append(";");

@@ -31,6 +31,10 @@ module.exports = {
 		var result = new PluginResult(args, env);
 		args = JSON.parse(decodeURIComponent(args["input"]));
 		result.ok(emailSender.getInstance().sendEmail(result.callbackId, args), false);
+	},
+	getEmailAccounts: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		result.ok(emailSender.getInstance().getEmailAccounts(), false);
 	}
 	
 };
@@ -68,6 +72,10 @@ JNEXT.EmailSender = function () {
 	// calls into InvokeMethod(string command) in template_js.cpp
 	self.sendEmail = function (callbackId, input) {
 		return JNEXT.invoke(self.m_id, "sendEmail " + callbackId + " " + JSON.stringify(input));
+	};
+
+	self.getEmailAccounts = function (callbackId, input) {
+		return JNEXT.invoke(self.m_id, "getEmailAccounts");
 	};
 
 	// ************************
