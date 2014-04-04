@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="community.SMSPlugin.demo" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>SMSPlugin</name>
+    <description>
+        A sample Apache Cordova application that sends an SMS for BlackBerry 10.
+    </description>
+    <author email="shiksingh@blackberry.com" href="http://www.blackberry.com">
+        Shikhir Singh - code.shikhir.com
+    </author>
+    <access origin="*" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="true" />
+    <content src="index.html" />
+	<icon src="icons/icon-150.png" />
+	<icon src="icons/icon-114.png" />
+	<icon src="icons/icon-86.png" />
+	<rim:permissions>
+	    <rim:permit>access_pimdomain_messages</rim:permit>
+	    <rim:permit>access_sms_mms</rim:permit>
+	    <rim:permit>access_phone</rim:permit>
+	</rim:permissions>
+	<rim:splash src="sms-splashscreen-1280x768.png"/>
+	<rim:splash src="sms-splashscreen-720x720.png"/>		
+</widget>

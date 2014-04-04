@@ -1,0 +1,63 @@
+/*
+ * Copyright 2011-2012 Research In Motion Limited.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+#smartPosterBlanket {
+    z-index: 100;
+    background-color: black;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+    display: none;
+}
+
+#smartPosterDisplay {
+    z-index: 105;
+    background-color: #7f7fff;
+    position: fixed;
+    padding: 2px;
+    display: none;
+}
+
+#smartPosterDisplayInner {
+    padding: 5px;
+    background-color: #ffffff;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+#content {
+    padding: 5px;
+}
+
+#smartPosterDisplay div {
+    text-align: center;
+    font-family: arial;
+}
+
+h3 {
+    width: 100%;
+    border-bottom: 1px solid #00007f;
+}
+
+ul {
+    list-style: none;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+

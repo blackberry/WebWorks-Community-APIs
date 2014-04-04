@@ -16,9 +16,10 @@
 -->
 <library isWhitelist="true">
 
-  <extension id="webworks.system.log">
-    <entryClass>webworks.system.log.SystemLogExtension</entryClass>
+  <extension id="blackberry.ext.system.log">
+    <entryClass>blackberry.system.log.SystemLogExtension</entryClass>
   </extension>
+
 
   <platforms>
     <platform value="JAVA">
@@ -33,7 +34,7 @@
   </configurations>  
 
   <features>
-    <feature id="webworks.system.log" version="1.0.0"/>
+    <feature id="blackberry.system.log" version="1.0.0"/>
   </features>
 
 </library>

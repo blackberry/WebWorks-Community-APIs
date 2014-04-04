@@ -1,0 +1,22 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="com.blackberry.community.deviceinfoplugin"
+    version="1.0.0">
+
+    <name>DeviceInfo</name>
+    <description>BlackBerry 10 Community Contributed API to get hardware and network information from the device</description>
+    <license>Apache 2.0</license>
+    <author>Anzor Bashkhaz, Simon Booth, Alexandre Huot</author>
+
+    <js-module src="www/client.js">
+        <clobbers target="community.deviceInfo" />
+    </js-module>
+
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" />
+        <lib-file src="src/blackberry10/native/device/libDeviceinfo.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libDeviceinfo.so" arch="simulator"/>
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="com.blackberry.community.deviceinfoplugin" value="com.blackberry.community.deviceinfoplugin" />
+        </config-file>
+    </platform>
+</plugin>

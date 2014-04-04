@@ -1,0 +1,17 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="org.apache.cordova.MessageBox"
+    version="1.0.0">
+    <js-module src="www/client.js">
+        <clobbers target="org.apache.cordova.MessageBox" />
+    </js-module>
+
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" />
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="org.apache.cordova.MessageBox" value="org.apache.cordova.MessageBox" />
+            <feature name="Notification">
+                <param name="blackberry-package" value="org.apache.cordova.notification.Notification" />
+            </feature>
+        </config-file>
+    </platform>
+</plugin>

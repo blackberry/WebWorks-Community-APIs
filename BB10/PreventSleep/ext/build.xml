@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!--
+ *
+ * Copyright 2013 Research In Motion Limited.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ -->
+ 
+<!-- Set name to the Extension name as in manifest.json -->
+<project default="build" basedir="." name="community.preventsleep">
+
+	<!-- Your WebWorks SDK directory -->
+	<property name="bbwp.native.dir" value="C:\Program Files\Research In Motion\BlackBerry 10 WebWorks SDK 1.0.4.11"/>
+	<!-- Destination directory for built extension -->
+	<property name="ext.dest.dir" value="${bbwp.native.dir}/Framework/ext/${ant.project.name}" />
+
+	<!-- Builds for .so files from the NDK -->
+	<property name="ndk.device.build" value="Device-Release"/>
+	<property name="ndk.sim.build" value="Simulator-Debug"/>
+	<!-- Directories for built .so files from the NDK -->
+	<property name="ndk.device.dir" value="../NDK_project/${ndk.device.build}"/>
+	<property name="ndk.sim.dir" value="../NDK_project/${ndk.sim.build}"/>
+	<!-- Destination directories for .so files -->
+	<property name="device.so.dir" value="${ant.project.name}/device"/>
+	<property name="sim.so.dir" value="${ant.project.name}/simulator"/>
+
+	<!-- Delete the existing extension in the SDK -->
+	<target name="clean.ext.dir">
+		<delete dir="${ext.dest.dir}"/>
+	</target>
+
+	<!-- Delete current .so files -->
+	<target name="clean.ext.so">
+		<delete dir="${device.so.dir}"/>
+		<delete dir="${sim.so.dir}"/>
+	</target>
+
+	<!-- Make the directories for the .so files -->
+	<target name="mk.so.dir" depends="clean.ext.so">
+		<mkdir dir="${device.so.dir}"/>
+		<mkdir dir="${sim.so.dir}"/>
+	</target>
+
+	<!-- Make the directory for the extension in the SDK -->
+	<target name="mk.ext.dir" depends="clean.ext.dir">
+		<mkdir dir="${ext.dest.dir}"/>
+	</target>
+
+	<!-- Copy .so files to Extension file structure -->
+	<target name="copy.so" depends="mk.so.dir">
+		<copy todir="${device.so.dir}">
+			<fileset dir="${ndk.device.dir}" includes="**/*.so"/>
+		</copy>
+		<copy todir="${sim.so.dir}">
+			<fileset dir="${ndk.sim.dir}" includes="**/*.so"/>
+		</copy>
+	</target>
+
+	<!-- Copy extension to SDK -->
+	<target name="copy.ext" depends="copy.so,mk.ext.dir">
+		<copy todir="${ext.dest.dir}">
+			<fileset dir="${ant.project.name}"/>
+		</copy>
+	</target>
+	
+	<target name="build" depends="copy.ext">
+		<echo message="${ant.project.name} Deployed to ${ext.dest.dir}"/>
+		<echo message="Include in your application with &lt;feature id=&quot;${ant.project.name}&quot;/&gt;" />
+	</target>
+	
+</project>

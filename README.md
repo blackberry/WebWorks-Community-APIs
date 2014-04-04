@@ -1,5 +1,5 @@
 # Community API Repository
-The _**WebWorks-Community-APIs**_ repository is an area where members of the community can post up their JavaScript Extensions to share with the rest of the world.  
+The _**WebWorks-Community-APIs**_ repository is an area where members of the community can post up their JavaScript Extensions to share with the rest of the world.
 
 This area is a collection of APIs that are not part of the official BlackBerry WebWorks SDK but may prove as a testing ground for new APIs before they are officially added to the WebWorks SDK
 
@@ -34,18 +34,20 @@ the pull request and indicate that it is ready to be merged before the pull requ
 If the Author of the pull request is the actual owner of the API, then the Author should send a message to a committer via github messages to have their changes merged.
 
 **Ownership Transfer:**
-An Author can transfer ownership to another Author by opening up an Issue where both the original Author requests ownership to be transfered to the new Author, and the new Author agrees to take ownership of the code.  
+An Author can transfer ownership to another Author by opening up an Issue where both the original Author requests ownership to be transfered to the new Author, and the new Author agrees to take ownership of the code.
 The README for the API should be updated to indicate the new Author.
 
-**Repository Committers** 
+**Repository Committers**
 
 * [Jeffrey Heifetz](https://github.com/jeffheifetz)
 * [Alex Babut](https://github.com/ababut)
 * [Adam Stanley](https://github.com/adamstanley)
+* [Anzor Bashkhaz](https://github.com/anzorb)
 * [Ken Wallis](https://github.com/kwallis)
 * [Chris DelCol](https://github.com/cdelcol)
 * [Tim Neil](https://github.com/tneil)
 * [Tim Windsor](https://github.com/timwindsor)
+* [Nukul Bhasin](https://github.com/nukulb)
 
 ## Bug Reporting and Feature Requests
 
@@ -55,3 +57,4 @@ If you find a bug in a Community API, or have an enhancement request, simply fil
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+[![Analytics](https://ga-beacon.appspot.com/UA-46817652-1/WebWorks-Community-APIs/home?pixel)](https://github.com/igrigorik/ga-beacon)

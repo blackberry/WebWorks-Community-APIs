@@ -1,0 +1,5 @@
+{
+    "global": false,
+    "namespace": "net.jonwebb.screenshot",
+    "dependencies": ["utils"]
+}

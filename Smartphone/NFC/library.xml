@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-* Copyright 2010-2011 Research In Motion Limited.
+ Copyright 2010-2012 Research In Motion Limited.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,9 +13,9 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
--->
+--->
 <library isWhitelist="true">
-  <extension id="blackberry.nfc.ndef">
+  <extension id="blackberry.nfc">
     <entryClass>widgetpackage.NfcExtension</entryClass>
   </extension>
   
@@ -30,6 +30,6 @@
     </configuration>
   </configurations>    
   <features>
-    <feature id="blackberry.nfc.ndef" version="1.0.0" >Ndef scanner for NFC</feature>
+    <feature id="blackberry.nfc" version="1.0.1" >NFC Functionality</feature>
   </features>
 </library>

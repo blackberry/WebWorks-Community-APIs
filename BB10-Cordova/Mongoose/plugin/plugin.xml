@@ -1,0 +1,22 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="com.blackberry.community.mongoose"
+    version="1.0.0">
+    
+    <name>Mongoose</name>
+    <description>BlackBerry 10 Community Contributed API to run a Mongoose embedded Web Server</description>
+    <license>Apache 2.0</license>
+    <author>Simon Booth, Deric Cheng</author>
+
+    <js-module src="www/client.js">
+        <clobbers target="community.mongoose" />
+    </js-module>
+
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" />
+        <lib-file src="src/blackberry10/native/device/libMongoose.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libMongoose.so" arch="simulator"/>
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="com.blackberry.community.mongoose" value="com.blackberry.community.mongoose" />
+        </config-file>
+    </platform>
+</plugin>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>PBDKF2 Plugin</title>
+
+    <!-- Sets initial viewport load and disables zooming  -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <!-- Include the compiled Ratchet CSS -->
+    <link rel="stylesheet" href="css/ratchet.css">
+	<script type="text/javascript" src="cordova.js"></script>  
+    <!-- Include the compiled Ratchet JS -->
+    <script src="js/sha1.js"></script>    
+    <script src="js/pbkdf2.js"></script>
+    <script src="js/ratchet.js"></script>
+	<script src="js/app.js"></script>
+	
+    <!-- Intro paragraph styles. Delete once you start using this page -->
+    <style type="text/css">
+        .welcome {
+          line-height: 1.5;
+          color: #555;
+        }
+        
+        .slink{
+	        color: #0c1ff2
+        }
+    </style>
+	<script type="text/javascript">
+            app.initialize(); // All Logic to call the PBKDF2 Plugin is index.js
+	</script>
+
+  </head>
+  <body>
+  <div class="content">
+  <header class="bar-title">
+    <a class="button" onclick="app.hashWithJS();" href="#resultsModal">
+	      JS
+    </a>	    
+    <h1 class="title">PasswordCrypto Plugin</h1>
+    <a class="button" onclick="app.hashWithCPP();" href="#resultsModal">
+	      C++
+    </a>	  
+  </header>
+  
+    <div class="content-padded">
+    <br><br><br>
+      <p class="welcome">This Cordova Plugin is a <span class="slink" onclick='window.open("http://en.wikipedia.org/wiki/PBKDF2");'>PBKDF2</span> implementation for <span class="slink" onclick='window.open("https://crackstation.net/hashing-security.htm");'>Password Hashing</span>. This implementation runs much faster than known PBKDF2 <span class="slink" onclick='window.open("http://anandam.name/pbkdf2/");'>JavaScript implementations</span> since it is a native C++ implementation. Please fill out the form below and run it to view the result and fast runtime:</p>
+    </div>
+
+	<form>
+	  <div class="input-group">
+	    <div class="input-row">
+	      <label>Password</label>
+	      <input id="password" name="password" type="text" placeholder="password">
+	    </div>
+	    <div class="input-row">
+	      <label>Salt</label>
+	      <input id="salt" name="salt" type="text" placeholder="salt">
+	    </div>
+	    <div class="input-row">
+	      <label>Rounds</label>
+	      <input id="iterations" name="iterations" type="number" placeholder="1000">
+	    </div>
+	    <div class="input-row">
+	      <label>Key Length in Bytes</label>
+	      <input id="keylength" name="keylength" type="number" min="1" max="33" placeholder="4">
+	    </div>
+	    <br><br>
+	    <div style="font-size:0.7em">Version: 1.0.0</div>
+	  </div>
+	</form>
+	<div id="resultsModal" class="modal">
+	  <header class="bar-title">
+	    <a class="button" href="#resultsModal" onclick="app.removeResults();">
+	      Close
+	    </a>	  
+	    <h1 class="title">Results</h1>
+	  </header>
+	  <div id="results" class="content content-padded" style="word-wrap: break-word">
+		  <!-- This is where the results of the computation end up! -->
+	  </div>
+	</div>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="community.deviceemails.demo" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>DeviceEmails</name>
+    <description>
+        An app that lists all the email accounts that are paired to the BlackBerry device in it's current space(Personal or work)
+    </description>
+    <author email="shiksingh@blackberry.com" href="http://www.blackberry.com">
+        Shikhir Singh - code.shikhir.com
+    </author>
+    <access origin="*" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="true" />
+	<rim:permissions>
+	    <rim:permit>access_pimdomain_messages</rim:permit>
+	</rim:permissions>
+	<icon src="res/icon/icon-150.png" />	
+    <content src="index.html" />
+</widget>

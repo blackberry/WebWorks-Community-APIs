@@ -1,0 +1,22 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="com.blackberry.community.gsecrypto"
+    version="1.0.0">
+
+    <name>gseCrypto</name>
+    <description>BlackBerry 10 Community Contributed API for cryptographic functions (hash, PRNG, AES block cipher)</description>
+    <license>Apache 2.0</license>
+    <author>Rob Williams, Jim Wood</author>
+
+    <js-module src="www/client.js">
+        <clobbers target="community.gsecrypto" />
+    </js-module>
+
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" />
+        <lib-file src="src/blackberry10/native/device/libGSECrypto.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libGSECrypto.so" arch="simulator"/>
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="com.blackberry.community.gsecrypto" value="com.blackberry.community.gsecrypto" />
+        </config-file>
+    </platform>
+</plugin>

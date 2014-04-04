@@ -1,0 +1,22 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="com.blackberry.community.screendisplay"
+    version="1.0.0">
+
+    <name>Screen Display</name>
+    <description>BlackBerry 10 Community Contributed API to get Screen Hardware information</description>
+    <license>Apache 2.0</license>
+    <author>Simon Booth, Alexandre Huot</author>
+
+    <js-module src="www/client.js">
+        <clobbers target="community.screendisplay" />
+    </js-module>
+
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" />
+        <lib-file src="src/blackberry10/native/device/libScreenDisplay.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libScreenDisplay.so" arch="simulator"/>
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="com.blackberry.community.screendisplay" value="com.blackberry.community.screendisplay" />
+        </config-file>
+    </platform>
+</plugin>
