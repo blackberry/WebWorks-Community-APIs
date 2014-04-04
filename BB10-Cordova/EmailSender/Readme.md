@@ -93,7 +93,7 @@ The plugin require the following permissions:
 </pre>
 
 ## Known Issues
-As i'm writing those lines, the plugin can't send email from a microsoft account(hotmail, live, outlook, etc) and Yahoo! account.
+As i'm writing those lines, the plugin can't send email from a microsoft account(hotmail, live, outlook, etc) and an Yahoo! account.
 
 ## Contributing Changes
 
