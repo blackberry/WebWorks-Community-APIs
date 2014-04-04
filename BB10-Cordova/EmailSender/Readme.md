@@ -29,9 +29,11 @@ Use the command:
     webworks plugin add pathToPluginFolder
 
 ## Use
+**Here's the usage for the sendEmail() method:**
 ```javascript
 // Build email JSON
 var emailJSON = {
+	"From": "12345678", //id of an email account on the device
 	"To": "email@domain.com",
 	"Cc": "email_CC@domain.com",
 	"Bcc": "email_BCC@domain.com",
@@ -41,11 +43,12 @@ var emailJSON = {
 var status = community.emailsenderplugin.sendEmail(emailJSON);
 ```
 
-The fields "To", "Cc" and "Bcc" can be filled with a json array. Here's an exemple with the field "To".
+The fields "To", "Cc" and "Bcc" can be filled with a json array. Here's an exemple with the "To" field.
 
 ```javascript
 // Build email JSON
 var emailJSON = {
+	"From": "12345678", //id of an email account on the device
 	"To": ["email_1@domain.com", "email_2@domain.com", "email_3@domain.com"],
 	"Cc": "email_CC@domain.com",
 	"Bcc": "email_BCC@domain.com",
@@ -54,7 +57,33 @@ var emailJSON = {
 };
 var status = community.emailsenderplugin.sendEmail(emailJSON);
 ```
+To use the default account use "-1" as the account id:
+```javascript
+// Build email JSON
+var emailJSON = {
+	"From": "-1", //use the default email
+	"To": ["email_1@domain.com", "email_2@domain.com", "email_3@domain.com"],
+	"Cc": "email_CC@domain.com",
+	"Bcc": "email_BCC@domain.com",
+	"subject" : "Email Subject",
+	"body": "Email body"
+};
+```
+**Here's the usage for the getEmailAccounts() method:**
+```javascript
+// Build email JSON, dont' forget to parse it!
+var emailAccounts = JSON.parse(community.emailsenderplugin.getEmailAccounts());
+```
 
+**Here's the return format:**
+```javascript
+{
+	"account1Id":"email_1@domain.com",
+	"account2Id":"email_2@domain.com",
+	"account3Id":"email_3@domain.com",
+	"account4Id":"email_4@domain.com"
+}
+```
 ## Permissions
 
 The plugin require the following permissions:
@@ -63,6 +92,8 @@ The plugin require the following permissions:
 <b>access_pimdomain_messages</b>
 </pre>
 
+## Known Issues
+As i'm writing those lines, the plugin can't send email from a microsoft account(hotmail, live, outlook, etc) and Yahoo! account.
 
 ## Contributing Changes
 
