@@ -83,15 +83,16 @@ concurrent zip extraction to differentiate between callbacks.
 Default: duplicate of zip argument.
 
 
+
 Compression API Examples
 --------------
 	### Example of API usage
-	function extractFile(filePath) {
+	function compressFile(filePath) {
 		community.extractZipFile.compress(
 			{
 				filePath: filePath, // filePath = "./app/native/res/zip/fileToCompress.txt"
 				destination: "./app/native/res/zip/zipFileDestination.zip",
-				callbackToken: '',
+				callbackToken: ''
 			},
 			onCompressionCompletion);
 	}
