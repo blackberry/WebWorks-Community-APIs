@@ -25,6 +25,13 @@ module.exports = {
 		resultObjs[result.callbackId] = result;
 		extractZipFile.getInstance().extractFile(result.callbackId, args);
 		result.noResult(true);
+	},
+	
+	compress: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		resultObjs[result.callbackId] = result;
+		extractZipFile.getInstance().compressFile(result.callbackId, args);
+		result.noResult(true);
 	}
 };
 
@@ -62,6 +69,11 @@ JNEXT.ExtractZipFile = function () {
 	self.extractFile = function (callbackId, input) {
 		var args = decodeURIComponent(input[0]);
 		return JNEXT.invoke(self.m_id, "extractFile " + callbackId + ' ' + args);
+	};
+	
+	self.compressFile = function (callbackId, input) {
+		var args = decodeURIComponent(input[0]);
+		return JNEXT.invoke(self.m_id, "compressFile " + callbackId + ' ' + args);
 	};
 	
 	self.onEvent = function (strData) {
