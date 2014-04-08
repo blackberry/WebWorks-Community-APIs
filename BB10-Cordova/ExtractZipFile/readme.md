@@ -1,5 +1,15 @@
 ExtractZIPFile 
 ==============
+
+**Tested On**
+
+* BlackBerry 10.2.1.1927
+
+**Author(s)** 
+
+* Unknown
+* [Morgan Parlee](https://github.com/mkparlee) 
+
 Provides:
 * extraction (unzipping) of zip archives for html5 under Blackberry 10.
 * compression (zipping) of a single file for html5 under Blackberry 10.
