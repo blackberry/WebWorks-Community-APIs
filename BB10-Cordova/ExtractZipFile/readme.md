@@ -13,7 +13,7 @@ ExtractZIPFile
 
 **Author(s)** 
 
-* Unknown
+* Anonymous
 * [Morgan Parlee](https://github.com/mkparlee) 
 
 
