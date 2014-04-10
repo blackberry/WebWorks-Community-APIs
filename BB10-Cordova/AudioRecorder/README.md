@@ -24,12 +24,12 @@ setOuput(String filename) - Takes a file path for the recording to be saved. Mus
 
 mediaState() - Returns the state of the recorder
 
-	- 0 - Unprepared - All media resources have not been acquired.
-	- 1 - Prepared - All media resources have been acquired. 
-	- 2 - Started - Media is actively progressing. 
-	- 3 - Paused - Media progress is interrupted and will resume from its current position. 
-	- 4 - Stopped - Media progress is stopped. 
-	- Values are returned as a string.
+	0 - Unprepared - All media resources have not been acquired.
+	1 - Prepared - All media resources have been acquired. 
+	2 - Started - Media is actively progressing. 
+	3 - Paused - Media progress is interrupted and will resume from its current position. 
+	4 - Stopped - Media progress is stopped. 
+	Values are returned as a string.
 	
 duration() - The current duration of the recording (returns 0 if in an unprepared or stopped state). values are returned as a string
 
