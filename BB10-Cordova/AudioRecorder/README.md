@@ -68,7 +68,7 @@ These two permissions are important so the program can access the microphone and
 
 After the above has been completed the functions for the plugin are pretty basic.
 
-Before attempting to record a file path for the recording must be set, this is easy:
+Before attempting to record, a file path for the recording must be set, this is easy:
 ```javascript
 var file = "file:///accounts/1000/shared/voice/recording.m4a";
 ommunity.audiorecorder.setOutput(file);
@@ -96,7 +96,7 @@ if (community.audiorecorder.mediaState() == "2")
 	community.audiorecorder.pause();//pause only if currently recording
 ```
 
-duration can be called while the recording is being made so keep track of how long the recording is in milliseconds.
+duration can be called while the recording is being made to keep track of how long the recording is in milliseconds.
 ```javascript
 document.write(community.audiorecorder.duration());//returns as a string
 ```
