@@ -23,12 +23,12 @@ reset() - Stops the recording
 setOuput(String filename) - Takes a file path for the recording to be saved. Must be called before calling record the first time.
 
 mediaState() - Returns the state of the recorder
-	-0 - Unprepared - All media resources have not been acquired.
-	-1 - Prepared - All media resources have been acquired. 
-	-2 - Started - Media is actively progressing. 
-	-3 - Paused - Media progress is interrupted and will resume from its current position. 
-	-4 - Stopped - Media progress is stopped. 
-	-Values are returned as a string.
+	- 0 - Unprepared - All media resources have not been acquired.
+	- 1 - Prepared - All media resources have been acquired. 
+	- 2 - Started - Media is actively progressing. 
+	- 3 - Paused - Media progress is interrupted and will resume from its current position. 
+	- 4 - Stopped - Media progress is stopped. 
+	- Values are returned as a string.
 	
 duration() - The current duration of the recording (returns 0 if in an unprepared or stopped state). values are returned as a string
 
@@ -41,17 +41,18 @@ are required to be added to the audiorec_ndk.hpp
 
 	#include <QtCore> could cause some errors, to fix this follow the steps below:
 
--Right click on your project in project explorer/choose properties
--Expand C/C++ General, then click on Paths and Symbols
--Change Configuration to All configurations
--Then click Includes, select GNU C in languages
--Click Add, and add the following two lines:
--${QNX_TARGET}/usr/include/qt4
--${QNX_TARGET}/usr/include/qt4/QtCore
--Click OK and that should fix the errors.
+- Right click on your project in project explorer/choose properties
+- Expand C/C++ General, then click on Paths and Symbols
+- Change Configuration to All configurations
+- Then click Includes, select GNU C in languages
+- Click Add, and add the following two lines:
+- ${QNX_TARGET}/usr/include/qt4
+- ${QNX_TARGET}/usr/include/qt4/QtCore
+- Click OK and that should fix the errors.
 
 
 When attempting to add the AudioRecorder plugin to your webworks project two things need to be added to your config.xml file.
+	
 	<rim:permissions>
 		<rim:permit>record_audio</rim:permit>
 		<rim:permit>access_shared</rim:permit>
