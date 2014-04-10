@@ -35,8 +35,10 @@ duration() - The current duration of the recording (returns 0 if in an unprepare
 ## Notes on Compiling Native Source and Adding to a Webworks Project
 
 When compiling the source, to use the audiorecorder api
+
 	#include <bb/multimedia/AudioRecorder>
 	#include <QtCore>
+	
 are required to be added to the audiorec_ndk.hpp
 
 	#include <QtCore> could cause some errors, to fix this follow the steps below:
@@ -89,7 +91,7 @@ community.audiorecorder.reset();
 
 mediaState returns the state of the recording, for example so you know when it is recording or paused.
 ```javascript
-if (community.audiorecorder.mediaState() == "2"){
+if (community.audiorecorder.mediaState() == "2")
 	community.audiorecorder.pause();//pause only if currently recording
 ```
 
