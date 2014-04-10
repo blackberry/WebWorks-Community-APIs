@@ -23,6 +23,7 @@ reset() - Stops the recording
 setOuput(String filename) - Takes a file path for the recording to be saved. Must be called before calling record the first time.
 
 mediaState() - Returns the state of the recorder
+
 	- 0 - Unprepared - All media resources have not been acquired.
 	- 1 - Prepared - All media resources have been acquired. 
 	- 2 - Started - Media is actively progressing. 
