@@ -1,6 +1,12 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="community.audiorecorder"
+    id="com.blackberry.community.audiorecorder"
     version="1.0.0">
+
+    <name>AudioRecorder</name>
+    <description>BlackBerry 10 Community Contributed API to record audio to the filesystem</description>
+    <license>Apache 2.0</license>
+    <author>James Grisdale</author>
+
     <js-module src="www/client.js">
         <clobbers target="community.audiorecorder" />
     </js-module>
@@ -10,7 +16,7 @@
         <lib-file src="src/blackberry10/native/device/libAudio.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libAudio.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="community.audiorecorder" value="community.audiorecorder" />
+            <feature name="com.blackberry.community.audiorecorder" value="com.blackberry.community.audiorecorder" />
         </config-file>
     </platform>
 </plugin>

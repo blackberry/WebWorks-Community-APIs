@@ -6,11 +6,17 @@ Author: James Grisdale
 This plugin allows use of the native audio recorder features
 It includes all of the features necessary to make an audio recording, although there is further work that can be done to this plugin to add more functionality.
 
-## How To Install The Plugin
+## Including the feature in your application
 
-This API can be installed for the webworks 2.0 platform through the following method:
+This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+
+	cordova plugin add com.blackberry.community.audiorecorder
+
+or,
 	
-	webworks plugin add plugin
+	webworks plugin add com.blackberry.community.audiorecorder
+
+Installation from source is the same but instead of the id ("com.blackberry.community.audiorecorder"), use the file system path to the source plugin folder.
 
 ## Functions Involved in This Plugin (currently)
 
