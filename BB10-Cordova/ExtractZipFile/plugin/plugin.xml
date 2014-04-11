@@ -5,7 +5,7 @@
     <name>ExtractZipFile</name>
     <description>BlackBerry 10 Community Contributed API to unzip files</description>
     <license>Apache 2.0</license>
-    <author>Daniel Dressler</author>
+    <author>Daniel Dressler, Morgan Parlee</author>
 
     <js-module src="www/client.js">
         <clobbers target="community.extractZipFile" />
