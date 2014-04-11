@@ -79,7 +79,8 @@ bool ExtractZipFileJS::CanDelete() {
  * called on the JavaScript side with this native objects id.
  */
 string ExtractZipFileJS::InvokeMethod(const string& command) {
-	// format must be: "command callbackId params"
+	// format for extractFile must be: "command callbackId params"
+	// format for compressFile must be: "command callbackId params"
 	size_t commandIndex = command.find_first_of(" ");
 	std::string strCommand = command.substr(0, commandIndex);
 	size_t callbackIndex = command.find_first_of(" ", commandIndex + 1);
@@ -89,6 +90,8 @@ string ExtractZipFileJS::InvokeMethod(const string& command) {
 	// based on the command given, run the method in extractzipfile_ndk.cpp
 	if (strCommand == "extractFile") {
 		m_pTemplateController->extractFile(callbackId, arg);
+	} else if (strCommand == "compressFile") {
+		m_pTemplateController->compressFile(callbackId, arg);
 	}
 
 	strCommand.append(";");
