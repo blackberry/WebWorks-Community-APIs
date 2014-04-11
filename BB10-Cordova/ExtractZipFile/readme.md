@@ -13,7 +13,7 @@ ExtractZIPFile
 
 **Author(s)** 
 
-* Anonymous
+* [Daniel Dressler](https://github.com/daniel-dressler)
 * [Morgan Parlee](https://github.com/mkparlee) 
 
 
