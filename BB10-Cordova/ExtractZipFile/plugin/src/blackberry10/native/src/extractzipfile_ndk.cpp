@@ -24,6 +24,7 @@
 
 // minizip
 #include "unzip.h"
+#include "zip.h"
 #define S2J_ENABLED 1
 #include "state2json.h"
 
@@ -126,7 +127,6 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 	// overwriteFiles
 	bool overwrite_files = !(root["overwriteFiles"].asString() == "false");
 
-	
 	// -- Extract Zip
 	const char *zip_path = src_zip.c_str();
 	unzFile zipFile = unzOpen(zip_path);
@@ -253,6 +253,152 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 
 	// Success!
 	extractReturn(filesExtracted, "Extraction successful.");
+}
+
+void ExtractZipFileNDK::compressFile(const std::string& callbackId, const std::string& inputString) {
+	#define compressReturn(x,y) \
+		do {retval["result"] = x; \
+		retval["result_message"] = y; \
+		m_pParent->NotifyEvent(callbackId + " " + writer.write(retval)); \
+		return;} while (0)
+
+	// Parse the arg string as JSON
+	Json::FastWriter writer;
+	Json::Reader reader;
+	Json::Value root;
+	Json::Value retval;
+	s2jInit(retval);
+
+
+	bool parse = reader.parse(inputString, root);
+	if (!parse) {
+		compressReturn(-1, "Compression Failed: Cannot parse internal JSON object");
+	}
+
+	// -- Parse Input
+	// callbackToken
+	std::string requestedToken = root["callbackToken"].asString();
+	if (requestedToken == "")
+			requestedToken = root["zipDestinationPath"].asString();
+	retval["callbackToken"] = requestedToken;
+
+
+	// file to compress
+	std::string filePath = root["filePath"].asString();
+	if (filePath == "")
+		compressReturn(-1, "Compression Failed: filePath argument must not be empty");
+	std::string fileName = getFileNameFromPath(filePath);
+
+	// zip destination
+	std::string zipDestinationPath = root["zipDestinationPath"].asString();
+	if (zipDestinationPath == "")
+		compressReturn(-1, "Compression Failed: zipDestinationPath argument must not be empty");
+
+	// Ensure destination exists
+	std::string zipDestinationDirectory = getDirectoryFromPath(zipDestinationPath);
+	ExtractZipFileNDK_mkpath(zipDestinationDirectory.c_str());
+
+	// create zip file
+	zipFile zipFileCreate = zipOpen(zipDestinationPath.c_str(), APPEND_STATUS_CREATE);
+	if(zipFileCreate == NULL) {
+		compressReturn(-1, "Compression Failed: Failed to create zip file");
+	} else {
+		zip_fileinfo zi;
+        zi.tmz_date.tm_sec = zi.tmz_date.tm_min = zi.tmz_date.tm_hour =
+        zi.tmz_date.tm_mday = zi.tmz_date.tm_mon = zi.tmz_date.tm_year = 0;
+        zi.dosDate = 0;
+        zi.internal_fa = 0;
+        zi.external_fa = 0;
+		int errorCode = zipOpenNewFileInZip(zipFileCreate,
+												fileName.c_str(),
+												&zi,
+												NULL, 0,
+												NULL, 0,
+												NULL,
+												Z_DEFLATED,
+												Z_DEFAULT_COMPRESSION
+				);
+
+		if(errorCode != ZIP_OK) {
+			zipClose(zipFileCreate, "");
+			compressReturn(-1, "Compression Failed: Failed to make file in zip");
+		}
+
+		// open file we are going to zip
+		FILE* fileToZip = fopen(filePath.c_str(), "r");
+		if(fileToZip == NULL) {
+			zipCloseFileInZip(zipFileCreate);
+			zipClose(zipFileCreate, "");
+			compressReturn(-1,"Compression Failed: Failed to open file to zip");
+		}
+
+		if(fileToZip != NULL) {
+			long fileSize = getFileSize(fileToZip);
+			if(fileSize > 0) {
+				unsigned int charactorSizeInBytes = 1;
+				unsigned int bufferLength = (fileSize <= 4096) ? fileSize : 4096;
+				void* buffer = malloc(charactorSizeInBytes * bufferLength);
+
+				bool finishedFileCopy = false;
+				do
+				{
+					int numCharactorsRead = fread(buffer, charactorSizeInBytes, bufferLength, fileToZip);
+
+					if(ferror(fileToZip)){
+						break;
+					}
+
+					if(feof(fileToZip)) {
+						finishedFileCopy = true;
+					}
+					zipWriteInFileInZip(zipFileCreate, buffer, numCharactorsRead);
+				}while(!finishedFileCopy);
+
+				fclose(fileToZip);
+				free(buffer);
+			}
+		}
+		zipCloseFileInZip(zipFileCreate);
+	}
+	zipClose(zipFileCreate, "");
+	compressReturn(1, "Compression Successful");
+}
+
+std::string ExtractZipFileNDK::getFileNameFromPath(std::string filePath) {
+	if(filePath.length() == 0)
+		return "";
+
+	int indexOfLastForwardSlash = 0;
+	for(int i = filePath.length() - 1; i >= 0; i--) {
+		if(filePath[i] == '/') {
+			indexOfLastForwardSlash = i;
+			break;
+		}
+	}
+
+	return filePath.substr(indexOfLastForwardSlash + 1, string::npos);
+}
+
+std::string ExtractZipFileNDK::getDirectoryFromPath(std::string path) {
+	if(path.length() == 0)
+		return "";
+
+	int indexOfLastForwardSlash = 0;
+	for(int i = path.length() - 1; i >= 0; i--) {
+		if(path[i] == '/') {
+			indexOfLastForwardSlash = i;
+			break;
+		}
+	}
+
+	return path.substr(0, indexOfLastForwardSlash + 1);
+}
+
+long ExtractZipFileNDK::getFileSize(FILE* file) {
+	  fseek (file , 0, SEEK_END);
+	  long sizeOfFile = ftell (file);
+	  rewind (file);
+	  return sizeOfFile;
 }
 
 } /* namespace webworks */

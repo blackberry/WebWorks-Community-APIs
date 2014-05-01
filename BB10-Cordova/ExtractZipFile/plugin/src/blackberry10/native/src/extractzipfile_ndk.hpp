@@ -29,10 +29,14 @@ public:
 
 	// The extension methods are defined here
 	void extractFile(const std::string& callbackId, const std::string& inputString);
+	void compressFile(const std::string& callbackId, const std::string& inputString);
 
 private:
 	ExtractZipFileJS *m_pParent;
 	std::string threadCallbackId;
+	std::string getFileNameFromPath(std::string filePath);
+	std::string getDirectoryFromPath(std::string path);
+	long getFileSize(FILE* file);
 };
 
 }

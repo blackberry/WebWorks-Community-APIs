@@ -8,7 +8,7 @@ The plugin can be installed from source or the [Cordova Plugin Registry](http://
 
 Registry: 
 
-	cordova plugin add com.blackberry.community.LowLatencyAudio
+	cordova plugin add com.blackberry.community.lowlatencyaudio
 
 Source:
 

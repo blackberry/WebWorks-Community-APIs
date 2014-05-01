@@ -49,19 +49,28 @@ var app = {
 	},
 	testPluginCalls: function() {
 		if (community && community.emailsenderplugin) {
+			var statusSpan = document.getElementById('status');
+			var emailSelect = document.getElementById('emailSelect');
+			
+			var accounts = JSON.parse(community.emailsenderplugin.getEmailAccounts());
+			var accountsOptions = "";
+			for(id in accounts){
+				accountsOptions += "<option value=\"" + id + "\">" + accounts[id] + "</option>";
+			}
+			emailSelect.innerHTML = accountsOptions;
 			document.getElementById('send').onclick=function(){
-				var statusSpan = document.getElementById('status');
+				
 				statusSpan.innerHTML = "Sending...";
 				var jsonEmail = 
 				{
+					"From": document.getElementById('emailSelect').value, 
 					"To": document.getElementById('To').value,
 					"Cc": document.getElementById('Cc').value,
 					"Bcc": document.getElementById('Bcc').value,
 					"subject" : document.getElementById('Subject').value,
 					"body": document.getElementById('Body').value
 				};
-				var result = community.emailsenderplugin.sendEmail(jsonEmail);
-				statusSpan.innerHTML = result;
+				statusSpan.innerHTML = community.emailsenderplugin.sendEmail(jsonEmail);
 			};
 		} else {
 			app.writeOut("Plugin was not found");
