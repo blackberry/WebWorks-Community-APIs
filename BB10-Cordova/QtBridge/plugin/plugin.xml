@@ -27,7 +27,7 @@
 
     <platform name="blackberry10">
         <source-file src="src/blackberry10/index.js" />
-        <lib-file src="src/blackberry10/native/arm/so.le-v7-g/libQtBridge.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/arm/so.le-v7/libQtBridge.so" arch="device"/>
         <lib-file src="src/blackberry10/native/x86/so-g/libQtBridge.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
             <feature name="com.blackberry.qt" value="com.blackberry.qt" />
