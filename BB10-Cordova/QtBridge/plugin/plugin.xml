@@ -17,8 +17,13 @@
  under the License.
 -->
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.qt"
+    id="com.blackberry.community.qt"
     version="1.0.0">
+
+    <name>QtBridge</name>
+    <description>BlackBerry 10 Community Contributed API to access QML objects directly through JavaScript</description>
+    <license>Apache 2.0</license>
+    <author>Isaac Gordezky</author>
 
     <js-module src="www/client.js">
         <clobbers target="blackberry.qt" />
@@ -30,7 +35,7 @@
         <lib-file src="src/blackberry10/native/arm/so.le-v7/libQtBridge.so" arch="device"/>
         <lib-file src="src/blackberry10/native/x86/so-g/libQtBridge.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.qt" value="com.blackberry.qt" />
+            <feature name="com.blackberry.community.qt" value="com.blackberry.community.qt" />
         </config-file>
     </platform>
 </plugin>
