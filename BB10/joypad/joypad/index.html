@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<!--
+ * Copyright 2013 Research In Motion Limited.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="css/styles.css" rel="stylesheet" type="text/css">
+<title>Joypad Extension Test</title>
+<script type="text/javascript">
+	var rippleLoaded = false;
+	var dpr = false;
+	var dfs = 10;
+	var using_ripple = (window.location.port == "9910");
+	var win_height = 0;
+	var win_width = 0;
+	var tilesize = 96;
+	var padsize = 12;
+	var sticksize = 256;
+	var vpad = 24;
+	var vsize = (tilesize * 4) + (padsize * 2);
+	var stickpad = 0;
+	var eventstack = Array();
+	
+	var btntitle = ['BUTTON A',
+					'BUTTON B',
+					'BUTTON C',
+					'BUTTON X',
+					'BUTTON Y',
+					'BUTTON Z',
+					'BUTTON MENU1',
+					'BUTTON MENU2',
+					'BUTTON MENU3',
+					'BUTTON MENU4',
+					'BUTTON L1',
+					'BUTTON L2',
+					'BUTTON L3',
+					'BUTTON R1',
+					'BUTTON R2',
+					'BUTTON R3',
+					'DPAD UP',
+					'DPAD DOWN',
+					'DPAD LEFT',
+					'DPAD RIGHT'];
+
+	if(typeof window.devicePixelRatio != 'undefined') // Does device support devicePixelRatio?
+		{
+		dpr = window.devicePixelRatio;
+		}
+
+	var meta = document.createElement("meta");
+	meta.setAttribute('name','viewport');
+
+	if(dpr) // Set up the right meta
+		{
+		meta.setAttribute('content','initial-scale='+ (1/window.devicePixelRatio) + ',user-scalable=no');
+		}
+	else
+		{
+		dpr = 1;
+		meta.setAttribute('content','user-scalable=no,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,height=device-height,width=device-width');
+		}
+	
+	if(!using_ripple) {
+		var bbww = document.createElement("script");
+		bbww.src = 'local:///chrome/webworks.js';
+		bbww.type = 'text/javascript';
+		document.getElementsByTagName('head')[0].appendChild(bbww); // Inject webworks on BB10
+	}
+	
+	if(typeof window.devicePixelRatio != 'undefined') {
+		dpr = window.devicePixelRatio;
+	}
+	
+	function showpad(which) {
+		document.getElementById('elist').style.display = 'none';
+		if(which == 0) {
+			document.getElementById('screen_1').style.display = 'none';
+			document.getElementById('screen_0').style.display = 'block';
+			}
+		else {
+			document.getElementById('screen_0').style.display = 'none';
+			document.getElementById('screen_1').style.display = 'block';
+			}
+	}
+	
+	function showmenu() {
+		document.getElementById('elist').style.display = 'block';
+		document.getElementById('screen_0').style.display = 'none';
+		document.getElementById('screen_1').style.display = 'none';
+	}
+	
+	window.addEventListener('load',function() {
+		document.addEventListener('webworksready', function(e) {
+			// This is a hack for Ripple calling webworksready multiple times
+			if (rippleLoaded) return;
+			rippleLoaded = true;
+			win_height = window.innerHeight;
+			win_width = window.innerWidth;
+
+			dfs = Math.round(dfs * dpr);
+			var buf = document.getElementById('content');
+			buf.style.width = win_width + 'px';		
+			buf.style.height = win_height + 'px';		
+			buf.style.fontSize = dfs + 'px';
+
+			var buf = document.getElementById('elist');
+			buf.style.width = win_width + 'px';		
+			buf.style.height = win_height + 'px';		
+			buf.style.fontSize = (dfs * 2) + 'px';
+
+			if(typeof community != 'undefined') {
+				var res = JSON.parse(community.joypad.start(eventHandler));
+				if(res.controllers > 0) {
+					for(var i=0; i<res.controllers; i++) {
+						buf.innerHTML = buf.innerHTML + "<a href='#' onclick='showpad(" + i + "); return false;'>" + res.connected[i] + "</a><br /><br />";
+						}
+					}
+				else {
+					buf.innerHTML = "No Joypads Detected<br />";
+					}
+				}
+			draw_screen();
+			}, false);
+		});
+		
+	function eventHandler(e) {
+		switch(e.type) {
+			case community.joypad.type.BUTTON:
+				var elm = document.getElementById('c_' + e.ctrl + '_b_' + e.id);
+				switch(e.value) {
+					case 0:
+						elm.style.backgroundColor = '#FF8080';
+						break;
+					case 1:
+						elm.style.backgroundColor = '#80FF80';
+						break;
+					}
+				break;
+			case community.joypad.type.ANALOG0:
+			case community.joypad.type.ANALOG1:
+				var elm = document.getElementById('c_' + e.ctrl + '_s_' + e.type);
+				var xoff = 0;
+				if(e.type == community.joypad.type.ANALOG1) {
+					xoff = 1;
+					}
+				switch(e.id) {
+					case community.joypad.analog.X:
+						elm.style.left = (((xoff * (sticksize + vpad)) + stickpad) + 112 + e.value) + 'px';
+						break;
+					case community.joypad.analog.Y:
+						elm.style.top = (((2 * vpad) + vsize) + 112 + e.value) + 'px';
+						break;
+					case community.joypad.analog.Z:
+						var elm = document.getElementById('c_' + e.ctrl + '_z_' + e.type);
+						elm.style.height = e.value + 'px';
+						break;
+					}
+				break;
+			}
+		}
+	
+	function draw_screen() {
+		var x, y;
+		var screen;
+		var hpad = Math.round((win_width - ((tilesize * 5) + (padsize * 4))) / 2);
+		stickpad = Math.round((win_width - ((sticksize * 2) + vpad)) / 2);
+		
+		for(c=0; c<2; c++) {
+		
+			screen = document.getElementById('screen_' + c);
+			
+			screen.innerHTML = "<a href='#' style='font-size: " + (dfs * 2) + "px' onclick='showmenu(); return false;'>&LT;&LT;&LT;</a>";
+
+			for(y=0; y<4; y++) {
+				for(x=0; x<5; x++) {
+					var item = document.createElement('div');
+					item.id = 'c_' + c + '_b_' + (x + (y*5));
+					item.className = 'buttontile';
+					item.innerHTML = btntitle[x + (y*5)];
+					item.style.position = 'absolute';
+					item.style.top = ((y * (tilesize + padsize)) + vpad) + 'px';
+					item.style.left = ((x * (tilesize + padsize)) + hpad) + 'px';
+					
+					screen.appendChild(item);
+					}
+				}
+				
+			for(x=0; x<2; x++) {
+				var item = document.createElement('div');
+				item.id = 'c_' + c + '_k_' + x;
+				item.innerHTML = '<img src="img/stickback.png" width="256" height="256" />';
+				item.style.position = 'absolute';
+				item.style.top = ((2 * vpad) + vsize) + 'px';
+				item.style.left = ((x * (sticksize + vpad)) + stickpad) + 'px';
+				
+				screen.appendChild(item);
+				}
+
+			for(x=0; x<2; x++) {
+				var item = document.createElement('div');
+				item.id = 'c_' + c + '_s_' + (x + 1);
+				item.className = 'stickback';
+				item.innerHTML = '<img src="img/sticktop.png" width="32" height="32" />';
+				item.style.position = 'absolute';
+				item.style.top = (((2 * vpad) + vsize) + 112) + 'px';
+				item.style.left = (((x * (sticksize + vpad)) + stickpad) + 112) + 'px';
+				
+				screen.appendChild(item);
+				}
+				
+			for(x=0; x<2; x++) {
+				var item = document.createElement('div');
+				item.id = 'c_' + c + '_t_' + (x + 1);
+				item.innerHTML = '<img id="c_' + c + '_z_' + (x + 1) + '" src="img/bar.png" style="width: 16px; height: 0px" />';
+				item.style.position = 'absolute';
+				item.style.top = ((2 * vpad) + vsize) + 'px';
+				item.style.left = 32 + (x * (win_width - 80)) + 'px';
+				item.style.width = '16px';
+				item.style.height = '256px';
+				item.style.backgroundColor = '#8080FF';
+				
+				screen.appendChild(item);
+				}
+			}
+		}
+</script>
+</head>
+<body>
+<div id='content'>
+	<div id='elist' style='background-color: #000000'></div>
+	<div id='screen_0' style='color: #000000; display: none'></div>
+	<div id='screen_1' style='color: #000000; display: none'></div>
+</div>
+</body>
+</html>
