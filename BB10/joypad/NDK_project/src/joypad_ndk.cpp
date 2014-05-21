@@ -47,9 +47,13 @@ static pthread_t m_thread = 0;
 
 const char *gcid[] = { 	"20D6-0DAD",
 						"1038-1412",
+						"25B6-0001",
+						"045E-028E",
 						NULL };
 const char *gcfriendly[] = { "Moga Pro HID",
 							 "Zeemote: SteelSeries FREE",
+							 "Gametel Bluetooth Controller",
+							 "XBox 360 Wired Controller",
 							 NULL };
 
 static void pollDevices();
