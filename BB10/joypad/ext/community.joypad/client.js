@@ -56,7 +56,7 @@ _self.analog = {
 };
 
 _self.type = {
-	BUTTON:	 0,
+	BUTTON:  0,
 	ANALOG0: 1,
 	ANALOG1: 2
 };

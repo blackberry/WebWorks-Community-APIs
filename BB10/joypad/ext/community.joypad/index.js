@@ -31,5 +31,11 @@ module.exports = {
 	},
 	stop: function (success, fail, args) {
 		success(joypad.getInstance().stop());
+	},
+	add: function (success, fail) {
+		console.log('Listening for Joypad events');
+	},
+	remove: function (success, fail) {
+		console.log('Finished listening to Joypad events');
 	}
 };
