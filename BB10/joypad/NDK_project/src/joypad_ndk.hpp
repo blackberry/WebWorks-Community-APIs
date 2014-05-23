@@ -69,11 +69,12 @@ public:
     // Joypad Stuff
     std::string discoverControllers();
     webworks::Logger* getLog();
+    bool isThreadHalt();
 
 private:
 	joypadJS *m_pParent;
 	int controllerIndex;
-
+	bool threadHalt;
 };
 
 } // namespace webworks

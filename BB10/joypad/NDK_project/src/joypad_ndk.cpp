@@ -140,7 +140,7 @@ static void pollDevices()
 namespace webworks {
 
 
-joypadNDK::joypadNDK(joypadJS *parent) {
+joypadNDK::joypadNDK(joypadJS *parent) : threadHalt(false) {
 	int i;
 
 	m_pParent = parent;
@@ -154,12 +154,12 @@ joypadNDK::joypadNDK(joypadJS *parent) {
 
 joypadNDK::~joypadNDK() {
     m_pParent->getLog()->info("JoypadNDK Shutting down");
+    StopEvents();
 	bps_shutdown();
 }
 
 std::string joypadNDK::start() {
 	std::string rval;
-
 	m_pParent->getLog()->info("JoypadNDK Start");
 	rval = discoverControllers();
 	StartEvents();
@@ -233,6 +233,16 @@ std::string joypadNDK::discoverControllers() {
 webworks::Logger* joypadNDK::getLog() {
     return m_pParent->getLog();
 }
+
+// getter for the stop value
+bool joypadNDK::isThreadHalt() {
+    bool isThreadHalt;
+    MUTEX_LOCK();
+    isThreadHalt = threadHalt;
+    MUTEX_UNLOCK();
+    return isThreadHalt;
+}
+
 // BPS Event handler functions
 
 
@@ -246,7 +256,7 @@ void *HandleEvents(void *args)
     if(_screen_ctx) {
         m_eventsEnabled = true;
 
-		while(1) {
+		while(!parent->isThreadHalt()) {
 			MUTEX_LOCK();
 			for(i=0; i<MAX_CONTROLLERS; i++) {
 				oldState[i].buttons = _controllers[i].buttons;
@@ -265,6 +275,7 @@ void *HandleEvents(void *args)
 					for(j=0; j<MAX_BUTTONS; j++) {
 						// If the button has changed
 						if(changed & mask) {
+
 							// Signal JS the button has been pressed / released
 							if(changed & _controllers[i].buttons) {
 								parent->joypadEventCallback(0, i, j, 1);
@@ -297,8 +308,12 @@ bool joypadNDK::StartEvents()
 {
 	if(!m_eventsEnabled) {
 		if (!m_thread) {
-			int error = pthread_create(&m_thread, NULL, HandleEvents, static_cast<void *>(this));
-
+		    threadHalt = false;
+		    pthread_attr_t thread_attr;
+		    pthread_attr_init(&thread_attr);
+		    pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_JOINABLE);
+			int error = pthread_create(&m_thread, &thread_attr, HandleEvents, static_cast<void *>(this));
+			pthread_attr_destroy(&thread_attr);
 			if (error) {
 			    m_pParent->getLog()->error("Thread Failed to start");
 				m_thread = 0;
@@ -318,6 +333,9 @@ void joypadNDK::StopEvents()
 {
 	if(m_eventsEnabled) {
 		if (m_thread) {
+		    MUTEX_LOCK();
+		    threadHalt = true;
+		    MUTEX_UNLOCK();
 		    m_pParent->getLog()->debug("JoypadNDK joining event thread");
 			pthread_join(m_thread, NULL);
 			m_thread = 0;
