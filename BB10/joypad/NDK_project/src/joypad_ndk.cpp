@@ -32,6 +32,7 @@
 #include "joypad_js.hpp"
 #include <pthread.h>
 #include <unistd.h>
+#include "Logger.hpp"
 
 static screen_context_t _screen_ctx = 0;
 static int MAX_CONTROLLERS = 2;
@@ -148,15 +149,18 @@ joypadNDK::joypadNDK(joypadJS *parent) {
 		initController(&_controllers[i], i);
 	}
     bps_initialize();
+    m_pParent->getLog()->info("JoypadNDK Created");
 }
 
 joypadNDK::~joypadNDK() {
+    m_pParent->getLog()->info("JoypadNDK Shutting down");
 	bps_shutdown();
 }
 
 std::string joypadNDK::start() {
 	std::string rval;
 
+	m_pParent->getLog()->info("JoypadNDK Start");
 	rval = discoverControllers();
 	StartEvents();
 
@@ -164,6 +168,7 @@ std::string joypadNDK::start() {
 }
 
 std::string joypadNDK::stop() {
+    m_pParent->getLog()->info("JoypadNDK Stop");
 	StopEvents();
 	return "";
 }
@@ -225,12 +230,16 @@ std::string joypadNDK::discoverControllers() {
 	return writer.write(rval);
 }
 
+webworks::Logger* joypadNDK::getLog() {
+    return m_pParent->getLog();
+}
 // BPS Event handler functions
 
 
 void *HandleEvents(void *args)
 {
 	joypadNDK *parent = static_cast<joypadNDK *>(args);
+	parent->getLog()->debug("JoypadNDK EventHandler");
 	int i, j, mask, changed;
 	OldControllerState oldState[MAX_CONTROLLERS];
 
@@ -291,9 +300,11 @@ bool joypadNDK::StartEvents()
 			int error = pthread_create(&m_thread, NULL, HandleEvents, static_cast<void *>(this));
 
 			if (error) {
+			    m_pParent->getLog()->error("Thread Failed to start");
 				m_thread = 0;
 				return false;
 			} else {
+			    m_pParent->getLog()->info("Thread Started");
 				MUTEX_LOCK();
 				return true;
 			}
@@ -307,9 +318,11 @@ void joypadNDK::StopEvents()
 {
 	if(m_eventsEnabled) {
 		if (m_thread) {
+		    m_pParent->getLog()->debug("JoypadNDK joining event thread");
 			pthread_join(m_thread, NULL);
 			m_thread = 0;
 			m_eventsEnabled = false;
+			m_pParent->getLog()->debug("JoypadNDK event thread stopped");
 		}
 	}
 }

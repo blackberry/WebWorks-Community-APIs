@@ -19,6 +19,7 @@
 
 #include <string>
 #include <screen/screen.h>
+#include "Logger.hpp"
 
 class joypadJS;
 
@@ -67,6 +68,7 @@ public:
 
     // Joypad Stuff
     std::string discoverControllers();
+    webworks::Logger* getLog();
 
 private:
 	joypadJS *m_pParent;

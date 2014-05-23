@@ -26,6 +26,7 @@ using namespace std;
  */
 joypadJS::joypadJS(const std::string& id) :
 		m_id(id) {
+    m_pLogger = new webworks::Logger("Joypad", this);
 	m_pjoypadController = new webworks::joypadNDK(this);
 }
 
@@ -35,6 +36,12 @@ joypadJS::joypadJS(const std::string& id) :
 joypadJS::~joypadJS() {
 	if (m_pjoypadController)
 		delete m_pjoypadController;
+	if (m_pLogger)
+	    delete m_pLogger;
+}
+
+webworks::Logger* joypadJS::getLog() {
+    return m_pLogger;
 }
 
 /**
