@@ -180,16 +180,19 @@ std::string joypadNDK::discoverControllers() {
 	int deviceCount = 0;
 
 	if(screen_create_context(&_screen_ctx, SCREEN_APPLICATION_CONTEXT) == -1) {
+	    m_pParent->getLog()->error("screen_create_context() failed");
 		return "{'status': false, 'error': 'screen_create_context() failed' }";
 	}
 
 	if(screen_get_context_property_iv(_screen_ctx, SCREEN_PROPERTY_DEVICE_COUNT, &deviceCount) == -1) {
+	    m_pParent->getLog()->error("SCREEN_PROPERTY_DEVICE_COUNT failed");
 		return "{'status': false, 'error': 'SCREEN_PROPERTY_DEVICE_COUNT failed' }";
 	}
 
 	screen_device_t* devices = (screen_device_t*)calloc(deviceCount, sizeof(screen_device_t));
 
 	if(screen_get_context_property_pv(_screen_ctx, SCREEN_PROPERTY_DEVICES, (void**)devices) == -1) {
+	    m_pParent->getLog()->error("SCREEN_PROPERTY_DEVICES failed");
 		return "{'status': false, 'error': 'SCREEN_PROPERTY_DEVICES failed' }";
 	}
 
@@ -199,6 +202,7 @@ std::string joypadNDK::discoverControllers() {
 
 	    if((rc = screen_get_device_property_iv(devices[i], SCREEN_PROPERTY_TYPE, &type)) == -1) {
 	    	free(devices);
+	    	m_pParent->getLog()->error("SCREEN_PROPERTY_TYPE failed");
 	    	return "{'status': false, 'error': 'SCREEN_PROPERTY_TYPE failed' }";
 	    }
 
