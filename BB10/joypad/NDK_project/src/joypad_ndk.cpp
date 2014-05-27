@@ -362,8 +362,8 @@ void joypadNDK::joypadEventCallback(int ctrl) {
             mask = mask << 1;
         }
         for(int j=0; j<3; j++) {
-            root["axes"][j] = _controllers[ctrl].analog0[j];
-            root["axes"][j+3] = _controllers[ctrl].analog1[j];
+            root["axes"][j] = _controllers[ctrl].analog0[j]/256.0f;
+            root["axes"][j+3] = _controllers[ctrl].analog1[j]/256.0f;
         }
         m_pParent->NotifyEvent(event + " " + writer.write(root));
 }

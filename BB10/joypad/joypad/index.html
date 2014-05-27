@@ -157,21 +157,21 @@
 		// Analog Stick 0: X and Y
 		var elm = document.getElementById('c_' + gamepad.index + '_s_' + 1);
 		var xoff = 0;
-		elm.style.left = (((xoff * (sticksize + vpad)) + stickpad) + 112 + gamepad.axes[0]) + 'px';
-		elm.style.top = (((2 * vpad) + vsize) + 112 + gamepad.axes[1]) + 'px';
+		elm.style.left = (((xoff * (sticksize + vpad)) + stickpad) + 112 + gamepad.axes[0] * 256) + 'px';
+		elm.style.top = (((2 * vpad) + vsize) + 112 + gamepad.axes[1] * 256) + 'px';
 		
 		// Analog Stick 1: X and Y
 		elm = document.getElementById('c_' + gamepad.index + '_s_' + 2);
 		xoff = 1;
-		elm.style.left = (((xoff * (sticksize + vpad)) + stickpad) + 112 + gamepad.axes[3]) + 'px';
-		elm.style.top = (((2 * vpad) + vsize) + 112 + gamepad.axes[4]) + 'px';
+		elm.style.left = (((xoff * (sticksize + vpad)) + stickpad) + 112 + gamepad.axes[3] * 256) + 'px';
+		elm.style.top = (((2 * vpad) + vsize) + 112 + gamepad.axes[4] * 256) + 'px';
 
 		// Analog Z axes
 		elm = document.getElementById('c_' + gamepad.index + '_z_' + 1);
-		elm.style.height = gamepad.axes[2] + 'px';
+		elm.style.height = gamepad.axes[2] * 256 + 'px';
 
 		elm = document.getElementById('c_' + gamepad.index + '_z_' + 2);
-		elm.style.height = gamepad.axes[5] + 'px';
+		elm.style.height = gamepad.axes[5] * 256 + 'px';
 	}
 	
 	function draw_screen() {
