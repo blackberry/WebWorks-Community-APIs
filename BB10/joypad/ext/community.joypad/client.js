@@ -17,8 +17,7 @@
 var _self = {},
 _ID = require("./manifest.json").namespace;
 
-_self.start = function (callback) {
-	_self.callback = callback;
+_self.start = function () {
 	window.webworks.event.add(_ID, "community.joypad.eventCallback", _self.eventHandler);
 	return window.webworks.execSync(_ID, "start", null);
 };
@@ -81,7 +80,6 @@ _self.eventHandler = function(event) {
 	gamepad.index = event.ctrl;
 	gamepad.buttons = event.buttons;
 	gamepad.axes = event.axes;
-	_self.callback();
 }
 
 module.exports = _self;
