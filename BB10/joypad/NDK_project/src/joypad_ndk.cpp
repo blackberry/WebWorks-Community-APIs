@@ -274,44 +274,17 @@ void *HandleEvents(void *args)
 			for(i=0; i<MAX_CONTROLLERS; i++) {
 				if(_controllers[i].handle) {
 				    bool doUpdate = false;
-				    stringstream logMessage;
 					// XOR old and new state to get a bitmap of changed buttons
 					changed = oldState[i].buttons ^ _controllers[i].buttons;
 					if (changed) {
 					    doUpdate = true;
-                        logMessage << "Changed: ";
-                        logMessage << changed;
-                        parent->getLog()->debug(logMessage.str().c_str());
-                        logMessage.str("");
-                        logMessage.clear();
 					}
-					// Use mask as a bitwise counter
-//					for(j=0; j<MAX_BUTTONS; j++) {
-//						// If the button has changed
-//						if(changed & mask) {
-//						    logMessage << "Button ";
-//						    logMessage << j;
-//						    logMessage << " was ";
-//							// Signal JS the button has been pressed / released
-//							if(changed & _controllers[i].buttons) {
-//							    logMessage << "pressed";
-//								parent->joypadEventCallback(0, i, j, 1);
-//							} else {
-//							    logMessage << "depressed";
-//								parent->joypadEventCallback(0, i, j, 0);
-//							}
-//							parent->getLog()->debug(logMessage.str().c_str());
-//						}
-//						mask = mask << 1;
-//					}
 					for(j=0; j<3; j++) {
 						if(oldState[i].analog0[j] != _controllers[i].analog0[j]) {
 						    doUpdate = true;
-//							parent->joypadEventCallback(1, i, j, _controllers[i].analog0[j]);
 						}
 						if(oldState[i].analog1[j] != _controllers[i].analog1[j]) {
 						    doUpdate = true;
-//							parent->joypadEventCallback(2, i, j, _controllers[i].analog1[j]);
 						}
 					}
 					if (doUpdate) {
@@ -321,8 +294,8 @@ void *HandleEvents(void *args)
 			}
 			MUTEX_UNLOCK();
 
-			// Fast poll
-//			usleep(1000);
+			// Poll at 10hz
+			usleep(100000);
 		}
     }
     return NULL;
@@ -370,23 +343,13 @@ void joypadNDK::StopEvents()
 }
 
 // The callback method that sends an event through JNEXT
-void joypadNDK::joypadEventCallback(int type, int ctrl, int id, int val) {
-        std::string event = "community.joypad.eventCallback";
-        Json::FastWriter writer;
-        Json::Value root;
-        root["type"] = type;
-        root["ctrl"] = ctrl;
-        root["id"] = id;
-        root["value"] = val;
-        m_pParent->NotifyEvent(event + " " + writer.write(root));
-}
-
-
 void joypadNDK::joypadEventCallback(int ctrl) {
         std::string event = "community.joypad.eventCallback";
         Json::FastWriter writer;
         Json::Value root;
         root["ctrl"] = ctrl;
+        root["id"] = _controllers[ctrl].deviceString;
+        root["mapping"] = "";
         int mask = 1;
         for(int j=0; j<MAX_BUTTONS; j++) {
             if(mask & _controllers[ctrl].buttons) {

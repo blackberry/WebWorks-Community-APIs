@@ -64,7 +64,6 @@ public:
 	// BPS Stuff
     bool StartEvents();
     void StopEvents();
-    void joypadEventCallback(int, int, int, int);
     void joypadEventCallback(int);
 
     // Joypad Stuff
