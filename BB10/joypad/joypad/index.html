@@ -136,41 +136,46 @@
 			}, false);
 		});
 		
-	function eventHandler(e) {
-		switch(e.type) {
-			case community.joypad.type.BUTTON:
-				var elm = document.getElementById('c_' + e.ctrl + '_b_' + e.id);
-				switch(e.value) {
-					case 0:
-						elm.style.backgroundColor = '#FF8080';
-						break;
-					case 1:
-						elm.style.backgroundColor = '#80FF80';
-						break;
-					}
-				break;
-			case community.joypad.type.ANALOG0:
-			case community.joypad.type.ANALOG1:
-				var elm = document.getElementById('c_' + e.ctrl + '_s_' + e.type);
-				var xoff = 0;
-				if(e.type == community.joypad.type.ANALOG1) {
-					xoff = 1;
-					}
-				switch(e.id) {
-					case community.joypad.analog.X:
-						elm.style.left = (((xoff * (sticksize + vpad)) + stickpad) + 112 + e.value) + 'px';
-						break;
-					case community.joypad.analog.Y:
-						elm.style.top = (((2 * vpad) + vsize) + 112 + e.value) + 'px';
-						break;
-					case community.joypad.analog.Z:
-						var elm = document.getElementById('c_' + e.ctrl + '_z_' + e.type);
-						elm.style.height = e.value + 'px';
-						break;
-					}
-				break;
+	function eventHandler() {
+		readGamepads();
+	}
+
+	function readGamepads() {
+		var gamepads = community.joypad.getGamepads();
+		for (var i = 0; i<gamepads.length; i++) {
+			readGamepad(gamepads[i]);
+		}
+	}
+
+	function readGamepad(gamepad) {
+		// Controller buttons
+		for (var i = 0; i<gamepad.buttons.length; i++) {
+			var elm = document.getElementById('c_' + gamepad.index + '_b_' + i);
+			if(gamepad.buttons[i].pressed) {
+				elm.style.backgroundColor = '#80FF80';
+			} else {
+				elm.style.backgroundColor = '#FF8080';
 			}
 		}
+		// Analog Stick 0: X and Y
+		var elm = document.getElementById('c_' + gamepad.index + '_s_' + 1);
+		var xoff = 0;
+		elm.style.left = (((xoff * (sticksize + vpad)) + stickpad) + 112 + gamepad.axes[0]) + 'px';
+		elm.style.top = (((2 * vpad) + vsize) + 112 + gamepad.axes[1]) + 'px';
+		
+		// Analog Stick 1: X and Y
+		elm = document.getElementById('c_' + gamepad.index + '_s_' + 2);
+		xoff = 1;
+		elm.style.left = (((xoff * (sticksize + vpad)) + stickpad) + 112 + gamepad.axes[3]) + 'px';
+		elm.style.top = (((2 * vpad) + vsize) + 112 + gamepad.axes[4]) + 'px';
+
+		// Analog Z axes
+		elm = document.getElementById('c_' + gamepad.index + '_z_' + 1);
+		elm.style.height = gamepad.axes[2] + 'px';
+
+		elm = document.getElementById('c_' + gamepad.index + '_z_' + 2);
+		elm.style.height = gamepad.axes[5] + 'px';
+	}
 	
 	function draw_screen() {
 		var x, y;

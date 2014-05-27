@@ -18,7 +18,8 @@ var _self = {},
 _ID = require("./manifest.json").namespace;
 
 _self.start = function (callback) {
-	window.webworks.event.add(_ID, "community.joypad.eventCallback", callback);
+	_self.callback = callback;
+	window.webworks.event.add(_ID, "community.joypad.eventCallback", _self.eventHandler);
 	return window.webworks.execSync(_ID, "start", null);
 };
 
@@ -61,5 +62,26 @@ _self.type = {
 	ANALOG1: 2
 };
 
+
+// HTML5 spec http://www.w3.org/TR/2014/WD-gamepad-20140225/#widl-Navigator-getGamepads-Gamepad
+_self.getGamepads = function() {
+	return gamepads;
+};
+
+var gamepads = [];
+
+_self.eventHandler = function(event) {
+
+	var gamepad = gamepads[event.ctrl];
+	if (!gamepad) {
+		gamepad = {};
+		gamepads.push(gamepad);
+	}
+	gamepad.connected = true;
+	gamepad.index = event.ctrl;
+	gamepad.buttons = event.buttons;
+	gamepad.axes = event.axes;
+	_self.callback();
+}
 
 module.exports = _self;
