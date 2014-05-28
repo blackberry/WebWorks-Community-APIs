@@ -82,4 +82,7 @@ _self.eventHandler = function(event) {
 	gamepad.axes = event.axes;
 }
 
+
+// setup as a shim for the HTML5 spec
+navigator.getGamepads = navigator.getGamepads || _self.getGamepads;
 module.exports = _self;
