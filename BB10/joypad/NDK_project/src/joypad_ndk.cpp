@@ -161,6 +161,12 @@ joypadNDK::~joypadNDK() {
 std::string joypadNDK::start() {
 	std::string rval;
 	m_pParent->getLog()->info("JoypadNDK Start");
+
+	if(screen_create_context(&_screen_ctx, SCREEN_APPLICATION_CONTEXT) == -1) {
+        m_pParent->getLog()->error("screen_create_context() failed");
+        return "{'status': false, 'error': 'screen_create_context() failed' }";
+    }
+
 	rval = discoverControllers();
 	StartEvents();
 
@@ -179,10 +185,10 @@ std::string joypadNDK::discoverControllers() {
 	int rc;
 	int deviceCount = 0;
 
-	if(screen_create_context(&_screen_ctx, SCREEN_APPLICATION_CONTEXT) == -1) {
-	    m_pParent->getLog()->error("screen_create_context() failed");
-		return "{'status': false, 'error': 'screen_create_context() failed' }";
-	}
+//	if(screen_create_context(&_screen_ctx, SCREEN_APPLICATION_CONTEXT) == -1) {
+//	    m_pParent->getLog()->error("screen_create_context() failed");
+//		return "{'status': false, 'error': 'screen_create_context() failed' }";
+//	}
 
 	if(screen_get_context_property_iv(_screen_ctx, SCREEN_PROPERTY_DEVICE_COUNT, &deviceCount) == -1) {
 	    m_pParent->getLog()->error("SCREEN_PROPERTY_DEVICE_COUNT failed");
@@ -258,10 +264,18 @@ void *HandleEvents(void *args)
 	OldControllerState oldState[MAX_CONTROLLERS];
 
     if(_screen_ctx) {
+
+        // Signal BPS library that screen events will be requested.
+        if (BPS_SUCCESS != screen_request_events(_screen_ctx)) {
+            parent->getLog()->error("screen_request_events failed");
+            screen_destroy_context(_screen_ctx);
+        }
+
         m_eventsEnabled = true;
 
 		while(!parent->isThreadHalt()) {
 			MUTEX_LOCK();
+			parent->bpsEvents(parent->getLog());
 			for(i=0; i<MAX_CONTROLLERS; i++) {
 				oldState[i].buttons = _controllers[i].buttons;
 				for(j=0; j<3; j++) {
@@ -297,6 +311,10 @@ void *HandleEvents(void *args)
 			// Poll at 10hz
 			usleep(100000);
 		}
+		// stop screen events on this thread
+		if(screen_stop_events(_screen_ctx) == -1) {
+            parent->getLog()->error("screen_stop_events failed");
+        }
     }
     return NULL;
 }
@@ -368,5 +386,97 @@ void joypadNDK::joypadEventCallback(int ctrl) {
         m_pParent->NotifyEvent(event + " " + writer.write(root));
 }
 
+void joypadNDK::bpsEvents(Logger* log) {
+    int domain;
+
+    // Get the first event in the queue.
+    bps_event_t *event = NULL;
+    if (BPS_SUCCESS != bps_get_event(&event, 0)) {
+        log->error("bps_get_event() failed");
+        return;
+    }
+
+    // Handle all events in the queue.
+    // If we don't do this in a loop, we'll only handle one event per frame.
+    // If many events are triggered quickly, e.g. by spinning the analog sticks,
+    // the queue will grow and the user will see the analog sticks lag.
+    while (event) {
+        if (event) {
+            domain = bps_event_get_domain(event);
+            log->debug("BPS Event");
+            if (domain == screen_get_domain()) {
+                log->debug("BPS Screen Event");
+                handleScreenEvent(event, log);
+            }
+        }
+
+        if (BPS_SUCCESS != bps_get_event(&event, 0)) {
+            log->error("bps_get_event() failed");
+            return;
+        }
+    }
+}
+
+void joypadNDK::handleScreenEvent(bps_event_t *event, Logger* log)
+{
+    int eventType;
+
+    screen_event_t screen_event = screen_event_get_event(event);
+    screen_get_event_property_iv(screen_event, SCREEN_PROPERTY_TYPE, &eventType);
+
+    switch (eventType) {
+        case SCREEN_EVENT_DEVICE:
+        {
+            // A device was attached or removed.
+            screen_device_t device;
+            int attached;
+            int type;
+
+            log->debug("SCREEN_EVENT_DEVICE");
+
+            if (screen_get_event_property_pv(screen_event, SCREEN_PROPERTY_DEVICE, (void**)&device) == -1) {
+                log->error("SCREEN_PROPERTY_DEVICE failed");
+                break;
+            }
+            if (screen_get_event_property_iv(screen_event, SCREEN_PROPERTY_ATTACHED, &attached) == -1) {
+                log->error("SCREEN_PROPERTY_ATTACHED failed");
+                break;
+            }
+
+            if (attached) {
+                if (screen_get_device_property_iv(device, SCREEN_PROPERTY_TYPE, &type) == -1) {
+                    log->error("SCREEN_PROPERTY_TYPE failed");
+                    break;
+                }
+            }
+
+            int i;
+            if (attached && (type == SCREEN_EVENT_GAMEPAD || type == SCREEN_EVENT_JOYSTICK)) {
+                log->info("Gamepad Attached");
+                for (i = 0; i < MAX_CONTROLLERS; ++i) {
+                    if (!_controllers[i].handle) {
+                        _controllers[i].handle = device;
+                        loadController(&_controllers[i]);
+                        break;
+                    }
+                }
+                // i holds the newly attached controller
+                // Send an event for the attachment
+            } else {
+                log->info("Gamepad Detached");
+                for (i = 0; i < MAX_CONTROLLERS; ++i) {
+                    if (device == _controllers[i].handle) {
+                        initController(&_controllers[i], i);
+                        break;
+                    }
+                }
+                // i holds the newly detached controller
+                // Send an event for the detachment
+            }
+
+            break;
+        }
+    }
+}
 
 } /* namespace webworks */

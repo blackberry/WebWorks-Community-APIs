@@ -19,6 +19,7 @@
 
 #include <string>
 #include <screen/screen.h>
+#include <bps/event.h>
 #include "Logger.hpp"
 
 class joypadJS;
@@ -65,6 +66,8 @@ public:
     bool StartEvents();
     void StopEvents();
     void joypadEventCallback(int);
+    void bpsEvents(Logger* log);
+    void handleScreenEvent(bps_event_t *event, Logger* log);
 
     // Joypad Stuff
     std::string discoverControllers();
