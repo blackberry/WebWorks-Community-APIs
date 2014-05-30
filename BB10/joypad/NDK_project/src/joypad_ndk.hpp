@@ -65,7 +65,7 @@ public:
 	// BPS Stuff
     bool StartEvents();
     void StopEvents();
-    void joypadEventCallback(int);
+    void joypadEventCallback(int, int);
     void bpsEvents(Logger* log);
     void handleScreenEvent(bps_event_t *event, Logger* log);
 

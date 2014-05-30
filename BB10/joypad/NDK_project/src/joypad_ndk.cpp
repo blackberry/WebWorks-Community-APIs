@@ -302,7 +302,7 @@ void *HandleEvents(void *args)
 						}
 					}
 					if (doUpdate) {
-					    parent->joypadEventCallback(i);
+					    parent->joypadEventCallback(i, 0);
 					}
 				}
 			}
@@ -361,11 +361,13 @@ void joypadNDK::StopEvents()
 }
 
 // The callback method that sends an event through JNEXT
-void joypadNDK::joypadEventCallback(int ctrl) {
+void joypadNDK::joypadEventCallback(int ctrl, int type) {
         std::string event = "community.joypad.eventCallback";
         Json::FastWriter writer;
         Json::Value root;
         root["ctrl"] = ctrl;
+        // Type is 0 for normal update, 1 for attach, 2 for detach
+        root["type"] = type;
         root["id"] = _controllers[ctrl].deviceString;
         root["mapping"] = "";
         int mask = 1;
@@ -462,6 +464,7 @@ void joypadNDK::handleScreenEvent(bps_event_t *event, Logger* log)
                 }
                 // i holds the newly attached controller
                 // Send an event for the attachment
+                joypadEventCallback(i, 1);
             } else {
                 log->info("Gamepad Detached");
                 for (i = 0; i < MAX_CONTROLLERS; ++i) {
@@ -472,6 +475,7 @@ void joypadNDK::handleScreenEvent(bps_event_t *event, Logger* log)
                 }
                 // i holds the newly detached controller
                 // Send an event for the detachment
+                joypadEventCallback(i, 2);
             }
 
             break;
