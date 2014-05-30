@@ -70,28 +70,44 @@ _self.getGamepads = function() {
 var gamepads = [];
 
 _self.eventHandler = function(event) {
-
 	var gamepad = gamepads[event.ctrl];
 	if (!gamepad) {
 		gamepad = {};
 		gamepads.push(gamepad);
 	}
-	gamepad.connected = true;
 	gamepad.index = event.ctrl;
 	gamepad.buttons = event.buttons;
 	gamepad.axes = event.axes;
+	gamepad.mapping = event.mapping;
+	gamepad.id = event.id;
+	gamepad.connected = true;
+	switch (event.type) {
+		case 0:
+			break;
+		case 1:
+			// fire gamepadconnected event
+			var gamepadconnected = new CustomEvent("gamepadconnected", {"gamepad" : gamepad});
+			window.dispatchEvent(gamepadconnected);
+			break;
+		case 2:
+			// fire gamepaddisconnected event
+			gamepad.connected = false;
+			var gamepaddisconnected = new CustomEvent("gamepaddisconnected", {"gamepad" : gamepad});
+			window.dispatchEvent(gamepaddisconnected);
+			break;
+	}
 };
 
+if (!navigator.getGamepads) {
+	// only start if the HTML5 API is not present
+	var startup_messages = JSON.parse(_self.start());
+	if (startup_messages.error) {
+		console.log(startup_messages);
+	}
+}
 
 // setup as a shim for the HTML5 spec
 navigator.getGamepads = navigator.getGamepads || _self.getGamepads;
 
-var startup_messages = JSON.parse(_self.start());
-console.log(startup_messages);
-if(startup_messages.controllers > 0) {
-	for(var i=0; i<startup_messages.controllers; i++) {
-		 console.log(startup_messages.connected[i]);
-	}
-}
 
 module.exports = _self;

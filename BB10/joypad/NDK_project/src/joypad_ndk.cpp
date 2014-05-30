@@ -235,6 +235,8 @@ std::string joypadNDK::discoverControllers() {
 
 	for(i=0; i<controllerIndex; i++) {
 		rval["connected"][i] = _controllers[i].deviceString;
+		// send the attached event
+		joypadEventCallback(i, 1);
 	}
 
 	return writer.write(rval);

@@ -120,24 +120,40 @@
 			buf.style.width = win_width + 'px';		
 			buf.style.height = win_height + 'px';		
 			buf.style.fontSize = (dfs * 2) + 'px';
+			
+			updateGamepadList();
 
-			if(typeof community != 'undefined') {
-				var res = JSON.parse(community.joypad.start());
-				if(res.controllers > 0) {
-					for(var i=0; i<res.controllers; i++) {
-						buf.innerHTML = buf.innerHTML + "<a href='#' onclick='showpad(" + i + "); return false;'>" + res.connected[i] + "</a><br /><br />";
-						}
-					}
-				else {
-					buf.innerHTML = "No Joypads Detected<br />";
-					}
-				}
+			window.addEventListener('gamepadconnected',function(gamepad) {
+				console.log("Gamepad was connected");
+				updateGamepadList();
+			});
+			window.addEventListener('gamepaddisconnected',function(gamepad) {
+				console.log("Gamepad was disconnected");
+				updateGamepadList();
+			});
 			draw_screen();
 			}, false);
 		});
 		
+	function updateGamepadList() {
+		var gamepads = navigator.getGamepads();
+		if (gamepads) {
+			var buf = document.getElementById('elist');
+			if (gamepads.length == 0) {
+				buf.innerHTML = "No Joypads Detected<br />";
+				return;
+			}
+			buf.innerHTML = "";
+			for (var i = 0; i<gamepads.length; i++) {
+				buf.innerHTML = buf.innerHTML + "<a href='#' onclick='showpad(" + i + "); return false;'>" + gamepads[i].id + "</a><br /><br />";
+			}
+		}
+	}
 	function readGamepads() {
 		window.requestAnimationFrame(readGamepads);
+		if (!navigator.getGamepads) {
+			return;
+		}
 		var gamepads = navigator.getGamepads();
 		if (gamepads) {
 			for (var i = 0; i<gamepads.length; i++) {
