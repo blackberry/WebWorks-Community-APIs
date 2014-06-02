@@ -1,0 +1,22 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="com.blackberry.community.joypad"
+    version="1.0.0">
+
+    <name>BlackBerry 10 Gamepad API</name>
+    <description>BlackBerry 10 Community Contributed API shim for the HTML5 Gamepad API</description>
+    <license>Apache 2.0</license>
+    <author>Tim Windsor</author>
+
+    <js-module src="www/client.js">
+        <clobbers target="community.joypad" />
+    </js-module>
+
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" />
+        <lib-file src="src/blackberry10/native/device/libGamepad.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libGamepad.so" arch="simulator"/>
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="com.blackberry.community.joypad" value="com.blackberry.community.joypad" />
+        </config-file>
+    </platform>
+</plugin>
