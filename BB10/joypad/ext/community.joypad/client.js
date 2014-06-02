@@ -18,7 +18,7 @@ var _self = {},
 _ID = require("./manifest.json").namespace;
 
 _self.start = function () {
-	window.webworks.event.add(_ID, "community.joypad.eventCallback", _self.eventHandler);
+	window.webworks.event.add(_ID, "community.joypad.eventCallback", eventHandler);
 	return window.webworks.execSync(_ID, "start", null);
 };
 
@@ -34,7 +34,7 @@ _self.getGamepads = function() {
 
 var gamepads = [];
 
-_self.eventHandler = function(event) {
+eventHandler = function(event) {
 	var gamepad = gamepads[event.ctrl];
 	if (!gamepad) {
 		gamepad = {};
