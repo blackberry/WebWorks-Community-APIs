@@ -122,15 +122,6 @@ If you have Ant installed and would like to use the build script provided, edit 
 
 The build script will clean any old extension from your SDK, copy the .so files build by the NDK into the correct locations, and finally copy the whole extension into the SDK.
 
-### Using the Extension in an Application</a>
-
-With the extension copied into your WebWorks SDK as explained above, you can use it in your applications by referencing it as a feature in your config.xml file. 
-
-```xml
-<feature id="community.joypad" />
-```
-
-This extension starts itself automatically in order to implement the HTML5 spec.
 
 **To contribute code to this repository you must be [signed up as an official contributor](http://blackberry.github.com/howToContribute.html).**
 
