@@ -46,6 +46,11 @@ eventHandler = function(event) {
 	gamepad.mapping = event.mapping;
 	gamepad.id = event.id;
 	gamepad.connected = true;
+	if (gamepad.timestamp >= 0) {
+		gamepad.timestamp += 1;
+	} else {
+		gamepad.timestamp = 0;
+	}
 	switch (event.type) {
 		case 0:
 			break;
