@@ -185,11 +185,6 @@ std::string joypadNDK::discoverControllers() {
 	int rc;
 	int deviceCount = 0;
 
-//	if(screen_create_context(&_screen_ctx, SCREEN_APPLICATION_CONTEXT) == -1) {
-//	    m_pParent->getLog()->error("screen_create_context() failed");
-//		return "{'status': false, 'error': 'screen_create_context() failed' }";
-//	}
-
 	if(screen_get_context_property_iv(_screen_ctx, SCREEN_PROPERTY_DEVICE_COUNT, &deviceCount) == -1) {
 	    m_pParent->getLog()->error("SCREEN_PROPERTY_DEVICE_COUNT failed");
 		return "{'status': false, 'error': 'SCREEN_PROPERTY_DEVICE_COUNT failed' }";
