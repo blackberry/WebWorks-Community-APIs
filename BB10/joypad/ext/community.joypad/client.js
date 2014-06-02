@@ -86,16 +86,20 @@ _self.eventHandler = function(event) {
 			break;
 		case 1:
 			// fire gamepadconnected event
-			var gamepadconnected = new CustomEvent("gamepadconnected", {"gamepad" : gamepad});
-			window.dispatchEvent(gamepadconnected);
+			dispatchGamepadEvent("gamepadconnected", gamepad);
 			break;
 		case 2:
 			// fire gamepaddisconnected event
 			gamepad.connected = false;
-			var gamepaddisconnected = new CustomEvent("gamepaddisconnected", {"gamepad" : gamepad});
-			window.dispatchEvent(gamepaddisconnected);
+			dispatchGamepadEvent("gamepaddisconnected", gamepad);
 			break;
 	}
+};
+
+dispatchGamepadEvent = function(type, gamepad) {
+	var event = new CustomEvent(type);
+	event.gamepad = gamepad;
+	window.dispatchEvent(event);
 };
 
 if (!navigator.getGamepads) {

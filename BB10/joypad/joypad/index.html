@@ -123,12 +123,12 @@
 			
 			updateGamepadList();
 
-			window.addEventListener('gamepadconnected',function(gamepad) {
-				console.log("Gamepad was connected");
+			window.addEventListener('gamepadconnected',function(event) {
+				console.log("Gamepad was connected: " + event.gamepad);
 				updateGamepadList();
 			});
-			window.addEventListener('gamepaddisconnected',function(gamepad) {
-				console.log("Gamepad was disconnected");
+			window.addEventListener('gamepaddisconnected',function(event) {
+				console.log("Gamepad was disconnected: " + event.gamepad);
 				updateGamepadList();
 			});
 			draw_screen();
