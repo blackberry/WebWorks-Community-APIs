@@ -3,13 +3,17 @@ Joypad Extension
 
 This BlackBerry 10 WebWorks extension adds support for joypads
 
-** Tested On **
+### Tested On
 
 BlackBerry 10 Dev Alpha C 10.1.0.4211
 
-** Author **
+BlackBerry Z10 10.2.1.2943
+
+### Authors
 
 [Peardox](http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/325249)
+
+[Tim Windsor](https://github.com/timwindsor)
 
 ## Building and Testing the Sample
 
@@ -19,7 +23,7 @@ BlackBerry 10 Dev Alpha C 10.1.0.4211
 3. Load it on your phone using the Ant Build Script, or with the _blackberry-deploy_ command found in the dependencies/tools folder of your WebWorks SDK.
 4. When the application runs the screen pictured below will appear. Joypad button presses and movements will be reflected in the demo.
 
-* The Joypad must be connected before the demo starts
+* If a controller is connected or disconnected, the list will update.
 
 ![Screenshot](joypad.png)
 
@@ -34,72 +38,52 @@ Whenever you use the below feature id in any of your WebWorks applications this 
 ```
 
 ## The Extension API
-The Joypad Extension provides the following API:
+The Joypad Extension works as a shim for the [HTML5 Gamepad API](http://www.w3.org/TR/2014/WD-gamepad-20140225/).
 
-```javascript
-var result = community.joypad.start(callback);
-/* Result is a JSON object
-{	"connected": [<Array of device names>], 
-	"controllers": <controller count>, 
-	"error": <string / false>,
-	"status": <true / false>
+You will need to wait for the "webworksready" event as it depends on WebWorks being loaded, but after that, follow the standard for getting Gamepad data.
+
+Listen to the window for "gamepadconnected" and "gamepaddisconnected" events:
+
+```
+window.addEventListener('gamepadconnected',function(event) {
+	console.log("Gamepad was connected: " + event.gamepad);
+	updateGamepadList();
+});
+window.addEventListener('gamepaddisconnected',function(event) {
+	console.log("Gamepad was disconnected: " + event.gamepad);
+	updateGamepadList();
+});
+
+```
+
+Read controller values from the navigator.getGamepads() method. It's recommended that you do so on AnimationFrame updates like so:
+
+```
+function readGamepads() {
+	window.requestAnimationFrame(readGamepads);
+	if (!navigator.getGamepads) {
+		return;
 	}
-*/
-
-callback(e) { } handles all joypad events
-/* e is a JSON object
-{ 	ctrl: <controller - 0/1>,
-	type: <see list 1>,
-	id: <see list 2>,
-	value: <value for event - button 0/1, analog X/Y = -128 to 127, analog Z = 0 to 255>
-*/
-
-community.joypad.stop();
-
+	var gamepads = navigator.getGamepads();
+	if (gamepads) {
+		for (var i = 0; i<gamepads.length; i++) {
+			readGamepad(gamepads[i]);
+		}
+	}
+}
 ```
 
-```
-list 1 - Event type constants
+The Gamepad object follows the spec as close as possible:
 
-	community.joypad.type.BUTTON:  0
-	community.joypad.type.ANALOG0: 1
-	community.joypad.type.ANALOG1: 2
+* id: The descriptive name of the controller, or the raw id values if it's not a known controller
+* index: The index of the controller in the list of connected controllers (up to 2 are supported)
+* connected: true if the controller is still connected
+* timestamp: an increasing counter updated every time a new update is received from the controller
+* mapping: always the empty string as this extension sends the raw hardware mapping without doing any remapping
+* buttons[]: an array of the button values. Each takes the format: { "pressed" : true/false, "value": 1.0/0.0 }
+* axes[]: an array of all the axes the controller supports. Some Analog buttons can appear here. Format is a value from -1.0 -> 1.0
 
-```
-
-```
-list 1 - Event id constants
-
-If type = community.joypad.type.BUTTON
-
-	community.joypad.button.BUTTON_A     : (1 << 0)
-	community.joypad.button.BUTTON_B     : (1 << 1)
-	community.joypad.button.BUTTON_C     : (1 << 2)
-	community.joypad.button.BUTTON_X     : (1 << 3)
-	community.joypad.button.BUTTON_Y     : (1 << 4)
-	community.joypad.button.BUTTON_Z     : (1 << 5)
-	community.joypad.button.BUTTON_MENU1 : (1 << 6)
-	community.joypad.button.BUTTON_MENU2 : (1 << 7)
-	community.joypad.button.BUTTON_MENU3 : (1 << 8)
-	community.joypad.button.BUTTON_MENU4 : (1 << 9)
-	community.joypad.button.BUTTON_L1	 : (1 << 10)
-	community.joypad.button.BUTTON_L2	 : (1 << 11)
-	community.joypad.button.BUTTON_L3	 : (1 << 12)
-	community.joypad.button.BUTTON_R1	 : (1 << 13)
-	community.joypad.button.BUTTON_R2	 : (1 << 14)
-	community.joypad.button.BUTTON_R3	 : (1 << 15)
-	community.joypad.button.DPAD_UP      : (1 << 16)
-	community.joypad.button.DPAD_DOWN    : (1 << 17)
-	community.joypad.button.DPAD_LEFT    : (1 << 18)
-	community.joypad.button.DPAD_RIGHT   : (1 << 19)
-
-If type = community.joypad.type.ANALOG0/1
-
-	community.joypad.analog.X: 0
-	community.joypad.analog.Y: 1
-	community.joypad.analog.Z: 2
-	
-```
+As this extension is a shim for the HTML5 spec, if you code your application to work based on this implementation, it should be highly portable and automatically work if at some point the Browser engine gets native support.
 
 ## Building the extension from source
 
@@ -146,24 +130,7 @@ With the extension copied into your WebWorks SDK as explained above, you can use
 <feature id="community.joypad" />
 ```
 
-All the methods in the extension will be prefixed by that feature id, so a method called start() supplied in the community.joypad extension will be called in JavaScript like so:
-
-```javascript
-community.joypad.start(callback);
-```
-
-### Modifying the Extension
-
-See the examples in the [Template Extension](https://github.com/blackberry/WebWorks-Community-APIs/blob/master/BB10/Template) for how to add additional features to this extension
-
-#### Rebuild 
-When making changes, rebuild regularly so you don't make a really hard to find typo.
-
-Follow the steps above to:
-1. [Build the native portion](#how-to-build-your-native-extension),
-2. [Copy the extension to your SDK](#copying-the-extension-to-the-sdk), and
-3. [Use the extension in your test app](#using-the-extension-in-an-application).
-
+This extension starts itself automatically in order to implement the HTML5 spec.
 
 **To contribute code to this repository you must be [signed up as an official contributor](http://blackberry.github.com/howToContribute.html).**
 
