@@ -19,53 +19,53 @@
 #include <json/reader.h>
 #include <json/writer.h>
 #include <pthread.h>
-#include "template_ndk.hpp"
-#include "template_js.hpp"
+#include "???PROJECT_NAME_LOWERCASE???_ndk.hpp"
+#include "???PROJECT_NAME_LOWERCASE???_js.hpp"
 
 namespace webworks {
 
-TemplateNDK::TemplateNDK(TemplateJS *parent):
+???PROJECT_NAME???_NDK::???PROJECT_NAME???_NDK(???PROJECT_NAME???_JS *parent):
 	m_pParent(parent),
-	templateProperty(50),
-	templateThreadCount(1),
+	???PROJECT_FUNCTION_START???Property(50),
+	???PROJECT_FUNCTION_START???ThreadCount(1),
 	threadHalt(true),
 	m_thread(0) {
 		pthread_cond_t cond  = PTHREAD_COND_INITIALIZER;
 		pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-		m_pParent->getLog()->info("Template Created");
+		m_pParent->getLog()->info("???PROJECT_NAME??? Created");
 }
 
-TemplateNDK::~TemplateNDK() {
+???PROJECT_NAME???_NDK::~???PROJECT_NAME???_NDK() {
 }
 
 // These methods are the true native code we intend to reach from WebWorks
-std::string TemplateNDK::templateTestString() {
+std::string ???PROJECT_NAME???_NDK::???PROJECT_FUNCTION_START???Test() {
 	m_pParent->getLog()->debug("testString");
-	return "Template Test Function";
+	return "???PROJECT_NAME??? Test Function";
 }
 
 // Take in input and return a value
-std::string TemplateNDK::templateTestString(const std::string& inputString) {
+std::string ???PROJECT_NAME???_NDK::???PROJECT_FUNCTION_START???Test(const std::string& inputString) {
 	m_pParent->getLog()->debug("testStringInput");
-	return "Template Test Function, got: " + inputString;
+	return "???PROJECT_NAME??? Test Function, got: " + inputString;
 }
 
 // Get an integer property
-std::string TemplateNDK::getTemplateProperty() {
-	m_pParent->getLog()->debug("get templateProperty");
+std::string ???PROJECT_NAME???_NDK::get???PROJECT_FUNCTION???Property() {
+	m_pParent->getLog()->debug("get???PROJECT_FUNCTION???Property");
 	stringstream ss;
-	ss << templateProperty;
+	ss << ???PROJECT_FUNCTION_START???Property;
 	return ss.str();
 }
 
 // set an integer property
-void TemplateNDK::setTemplateProperty(const std::string& inputString) {
-	m_pParent->getLog()->debug("set templateProperty");
-	templateProperty = (int) strtoul(inputString.c_str(), NULL, 10);
+void ???PROJECT_NAME???_NDK::set???PROJECT_FUNCTION???Property(const std::string& inputString) {
+	m_pParent->getLog()->debug("set???PROJECT_FUNCTION???Property");
+	???PROJECT_FUNCTION_START???Property = (int) strtoul(inputString.c_str(), NULL, 10);
 }
 
 // Asynchronous callback with JSON data input and output
-void TemplateNDK::templateTestAsync(const std::string& callbackId, const std::string& inputString) {
+void ???PROJECT_NAME???_NDK::???PROJECT_FUNCTION_START???TestAsync(const std::string& callbackId, const std::string& inputString) {
 	m_pParent->getLog()->debug("Async Test");
 	// Parse the arg string as JSON
 	Json::FastWriter writer;
@@ -89,20 +89,20 @@ void TemplateNDK::templateTestAsync(const std::string& callbackId, const std::st
 
 // The actual thread (must appear before the startThread method)
 // Loops and runs the callback method
-void* TemplateThread(void* parent) {
-	TemplateNDK *pParent = static_cast<TemplateNDK *>(parent);
+void* ???PROJECT_NAME???Thread(void* parent) {
+	???PROJECT_NAME???_NDK *pParent = static_cast<???PROJECT_NAME???_NDK *>(parent);
 
 	// Loop calls the callback function and continues until stop is set
 	while (!pParent->isThreadHalt()) {
 		sleep(1);
-		pParent->templateThreadCallback();
+		pParent->???PROJECT_FUNCTION_START???ThreadCallback();
 	}
 
 	return NULL;
 }
 
 // Starts the thread and returns a message on status
-std::string TemplateNDK::templateStartThread(const std::string& callbackId) {
+std::string ???PROJECT_NAME???_NDK::???PROJECT_FUNCTION_START???StartThread(const std::string& callbackId) {
 	if (!m_thread) {
 		int rc;
 	    rc = pthread_mutex_lock(&mutex);
@@ -114,7 +114,7 @@ std::string TemplateNDK::templateStartThread(const std::string& callbackId) {
 		pthread_attr_init(&thread_attr);
 		pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_JOINABLE);
 
-		pthread_create(&m_thread, &thread_attr, TemplateThread,
+		pthread_create(&m_thread, &thread_attr, ???PROJECT_NAME???Thread,
 				static_cast<void *>(this));
 		pthread_attr_destroy(&thread_attr);
 		threadCallbackId = callbackId;
@@ -127,7 +127,7 @@ std::string TemplateNDK::templateStartThread(const std::string& callbackId) {
 }
 
 // Sets the stop value
-std::string TemplateNDK::templateStopThread() {
+std::string ???PROJECT_NAME???_NDK::???PROJECT_FUNCTION_START???StopThread() {
 	int rc;
 	// Request thread to set prevent sleep to false and terminate
 	rc = pthread_mutex_lock(&mutex);
@@ -150,15 +150,15 @@ std::string TemplateNDK::templateStopThread() {
 }
 
 // The callback method that sends an event through JNEXT
-void TemplateNDK::templateThreadCallback() {
+void ???PROJECT_NAME???_NDK::???PROJECT_FUNCTION_START???ThreadCallback() {
 	Json::FastWriter writer;
 	Json::Value root;
-	root["threadCount"] = templateThreadCount++;
+	root["threadCount"] = ???PROJECT_FUNCTION_START???ThreadCount++;
 	m_pParent->NotifyEvent(threadCallbackId + " " + writer.write(root));
 }
 
 // getter for the stop value
-bool TemplateNDK::isThreadHalt() {
+bool ???PROJECT_NAME???_NDK::isThreadHalt() {
 	int rc;
 	bool isThreadHalt;
 	rc = pthread_mutex_lock(&mutex);
