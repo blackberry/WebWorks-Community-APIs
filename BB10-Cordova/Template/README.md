@@ -15,7 +15,7 @@ This template includes examples for communicating in several ways:
 
 ## Building and Testing the Sample
 
-RECENT UPDATE:
+**RECENT UPDATE:**
 Manually updating the template references can be error prone and hard to debug. An Apache Ant build has been created to setup the Momentics project as well as making the necessary updates to the sample web application. You will still need to follow the process below but will no longer have to update all of the template references as the Apache Ant build will take care of that prior to importing your project into Momentics.
 
 
@@ -44,17 +44,18 @@ This is a screenshot of the test data being displayed in the Hello World sample 
 
 ###Building The Template Project: 
 1. Parameters to be sent with the Apache Ant command:
-- projectName should be all upper case and contain only letters [A-Z]
-- cordovaPluginId should be in the format com.blackberry.community.<your project name>. The name should only contain letters
-- projectFunction should start with a upper case letter. This variable is used for code functions and should follow proper function naming conventions. e.g. MyProjectFunction
-- projectFunctionStart should start with a lower case letter. This variable is used for code functions and should follow proper function naming conventions. e.g. myProjectFunction
-- projectNameLowerCase should be all lower case and contain only letters [a-z]. This must be the same project name used for the projectName variable.
-- projectAuthor should be entered as the author of the plugin.
+- **projectName** should be all upper case and contain only letters [A-Z]
+- **cordovaPluginId** should be in the format com.blackberry.community.<your project name>. The name should only contain letters
+- **projectFunction** should start with a upper case letter. This variable is used for code functions and should follow proper function naming conventions. e.g. MyProjectFunction
+- **projectFunctionStart** should start with a lower case letter. This variable is used for code functions and should follow proper function naming conventions. e.g. myProjectFunction
+- **projectNameLowerCase** should be all lower case and contain only letters [a-z]. This must be the same project name used for the projectName variable.
+- **projectAuthor** should be entered as the author of the plugin.
 
 
  
 ant -f build.xml -DprojectName=<project name in caps>
 e.g. ant -f build.xml -DprojectName=MMS -DcordovaPluginId=com.blackberry.community.MMS -DprojectFunction=MMS -DprojectFunctionStart=mms -DprojectNameLowerCase=mms -DprojectAuthor=“blackberry author”
+**no space after the -D is intentional and required.**
 
 The output of this build script will produce a build folder that contains two directories:
 1. plugin
@@ -81,7 +82,7 @@ You can either import the project from the Template folder, or use the New Proje
 select File -> Import and choose "Existing Projects into Workspace".
 2. Choose "Select root directory: " and browse to the _/plugin/src/blackberry10/native_ directory that was just built by Apache Ant. Select the project name you entered in the Apache Ant build in the Projects list and check "Copy projects into workspace". Click Finish. 
 
-PLEASE NOTE:
+**PLEASE NOTE:**
 Each time the Apache Ant build is run it will delete the build directory and recreate a new project based on the downloaded template. If you have not checked the box to import the files into your Momentics workspace you will lose your work. You have been warned.
 
 3. Follow these next steps to build the template plugin to be sure the setup is working.
