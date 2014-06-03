@@ -55,6 +55,7 @@ This is a screenshot of the test data being displayed in the Hello World sample 
  
 ant -f build.xml -DprojectName=<project name in caps>
 e.g. ant -f build.xml -DprojectName=MMS -DcordovaPluginId=com.blackberry.community.MMS -DprojectFunction=MMS -DprojectFunctionStart=mms -DprojectNameLowerCase=mms -DprojectAuthor=“blackberry author”
+
 **no space after the -D is intentional and required.**
 
 The output of this build script will produce a build folder that contains two directories:
