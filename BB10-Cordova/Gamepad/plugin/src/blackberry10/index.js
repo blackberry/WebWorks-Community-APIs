@@ -25,12 +25,12 @@ module.exports = {
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
 		threadCallback = result.callbackId;
-		success(joypad.getInstance().start(result.callbackId));
+		result.ok(joypad.getInstance().start(result.callbackId), true);
 	},
 	stop: function (success, fail, args) {
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
-		success(joypad.getInstance().stop());
+		result.ok(joypad.getInstance().stop(), false);
 	}
 };
 
@@ -80,10 +80,10 @@ JNEXT.JoyPad = function () {
 		
 		if (result) {
 			if (callbackId != threadCallback) {
-				result.callbackOk(JSON.parse(data), false);
+				result.callbackOk(data, false);
 				delete resultObjs[callbackId];
 			} else {
-				result.callbackOk(JSON.parse(data), true);
+				result.callbackOk(data, true);
 			}
 		}
 	};

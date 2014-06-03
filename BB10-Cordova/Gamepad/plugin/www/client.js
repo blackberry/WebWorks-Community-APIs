@@ -20,9 +20,9 @@ var _self = {},
 
 	
 
-_self.start = function (callback) {
+_self.start = function () {
 	var success = function (data, response) {
-			callback(data);
+			eventHandler(data);
 		},
 		fail = function (data, response) {
 			console.log("Error: " + data);
@@ -87,15 +87,18 @@ dispatchGamepadEvent = function(type, gamepad) {
 	window.dispatchEvent(event);
 };
 
-if (!navigator.getGamepads) {
-	// only start if the HTML5 API is not present
-	var startup_messages = JSON.parse(_self.start());
-	if (startup_messages.error) {
-		console.log(startup_messages);
-	}
-}
-
-// setup as a shim for the HTML5 spec
-navigator.getGamepads = navigator.getGamepads || _self.getGamepads;
+window.addEventListener('load',function() {
+	document.addEventListener('deviceready', function(e) {
+		if (!navigator.getGamepads) {
+			// only start if the HTML5 API is not present
+			// setup as a shim for the HTML5 spec
+			navigator.getGamepads = _self.getGamepads;
+			var startup_messages = JSON.parse(_self.start());
+			if (startup_messages.error) {
+				console.log(startup_messages);
+			}
+		}
+	});
+});
 
 module.exports = _self;
