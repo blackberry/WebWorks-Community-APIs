@@ -59,6 +59,7 @@ e.g. ant -f build.xml -DprojectName=MMS -DcordovaPluginId=com.blackberry.communi
 **no space after the -D is intentional and required.**
 
 The output of this build script will produce a build folder that contains two directories:
+
 1. plugin
 2. www
 
