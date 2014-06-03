@@ -61,7 +61,7 @@ e.g. ant -f build.xml -DprojectName=MMS -DcordovaPluginId=com.blackberry.communi
 The output of this build script will produce a build folder that contains two directories:
 
 1. plugin
-2. www
+2. sample
 
 
 ### Momentics NDK setup
