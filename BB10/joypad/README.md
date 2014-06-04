@@ -46,11 +46,11 @@ Listen to the window for "gamepadconnected" and "gamepaddisconnected" events:
 
 ```
 window.addEventListener('gamepadconnected',function(event) {
-	console.log("Gamepad was connected: " + event.gamepad);
+	console.log("Gamepad was connected: " + event.gamepad.id);
 	updateGamepadList();
 });
 window.addEventListener('gamepaddisconnected',function(event) {
-	console.log("Gamepad was disconnected: " + event.gamepad);
+	console.log("Gamepad was disconnected: " + event.gamepad.id);
 	updateGamepadList();
 });
 
