@@ -50,11 +50,19 @@ const char *gcid[] = { 	"20D6-0DAD",
 						"1038-1412",
 						"25B6-0001",
 						"045E-028E",
+						"045E-0291",
+						"046D-C21D",
+						"1689-FD01",
+						"057E-0306",
 						NULL };
 const char *gcfriendly[] = { "Moga Pro HID",
 							 "Zeemote: SteelSeries FREE",
 							 "Gametel Bluetooth Controller",
 							 "XBox 360 Wired Controller",
+							 "XBox 360 Wireless Controller",
+							 "Logitech F310",
+							 "Razer Xbox 360",
+							 "Nintendo WiiMote",
 							 NULL };
 
 static void pollDevices();
