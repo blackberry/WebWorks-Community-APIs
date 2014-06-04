@@ -85,6 +85,12 @@ The Gamepad object follows the spec as close as possible:
 
 As this extension is a shim for the HTML5 spec, if you code your application to work based on this implementation, it should be highly portable and automatically work if at some point the Browser engine gets native support.
 
+## The Gamepad Button and Axis Mapping
+
+The arrays of buttons and axes that are returned in the Gamepad Object are in the raw mapping that the BlackBerry OS provides for the connected gamepad. It is __not__ remapped to the "standard" gamepad layout.
+
+The sample app shows the order of the supported buttons and axes, but small differences can be seen between each controller. It's recommended that you provide some form of mapping option in your application so that users can define the control scheme that works best for them and their gamepad.
+
 ## Building the extension from source
 
 Copy the extension folder to a location on your computer to start working with it.
