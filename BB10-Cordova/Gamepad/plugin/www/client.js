@@ -22,7 +22,12 @@ var _self = {},
 
 _self.start = function () {
 	var success = function (data, response) {
-			eventHandler(data);
+			var result = JSON.parse(data);
+			if (result.error !== undefined) {
+				console.log(result);
+			} else {
+				eventHandler(result);
+			}
 		},
 		fail = function (data, response) {
 			console.log("Error: " + data);
@@ -93,10 +98,7 @@ window.addEventListener('load',function() {
 			// only start if the HTML5 API is not present
 			// setup as a shim for the HTML5 spec
 			navigator.getGamepads = _self.getGamepads;
-			var startup_messages = JSON.parse(_self.start());
-			if (startup_messages.error) {
-				console.log(startup_messages);
-			}
+			_self.start();
 		}
 	});
 });

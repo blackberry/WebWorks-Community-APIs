@@ -21,13 +21,13 @@ var joypad,
 
 module.exports = {
 
-	start: function (success, fail, args) {
+	start: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
 		threadCallback = result.callbackId;
 		result.ok(joypad.getInstance().start(result.callbackId), true);
 	},
-	stop: function (success, fail, args) {
+	stop: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
 		result.ok(joypad.getInstance().stop(), false);
