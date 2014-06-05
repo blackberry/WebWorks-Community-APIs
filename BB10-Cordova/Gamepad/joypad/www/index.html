@@ -36,24 +36,24 @@
 	
 	var btntitle = ['BUTTON A',
 					'BUTTON B',
-					'BUTTON C',
 					'BUTTON X',
 					'BUTTON Y',
-					'BUTTON Z',
+					'BUTTON L1',
+					'BUTTON R1',
+					'BUTTON L2',
+					'BUTTON R2',
 					'BUTTON MENU1',
 					'BUTTON MENU2',
-					'BUTTON MENU3',
-					'BUTTON MENU4',
-					'BUTTON L1',
-					'BUTTON L2',
 					'BUTTON L3',
-					'BUTTON R1',
-					'BUTTON R2',
 					'BUTTON R3',
 					'DPAD UP',
 					'DPAD DOWN',
 					'DPAD LEFT',
-					'DPAD RIGHT'];
+					'DPAD RIGHT',
+					'BUTTON C',
+					'BUTTON Z',
+					'BUTTON MENU3',
+					'BUTTON MENU4'];
 
 	if(typeof window.devicePixelRatio != 'undefined') // Does device support devicePixelRatio?
 		{
@@ -192,12 +192,12 @@
 		// Analog Stick 1: X and Y
 		elm = document.getElementById('c_' + gamepad.index + '_s_' + 2);
 		xoff = 1;
-		elm.style.left = (((xoff * (sticksize + vpad)) + stickpad) + 112 + gamepad.axes[3] * 256) + 'px';
-		elm.style.top = (((2 * vpad) + vsize) + 112 + gamepad.axes[4] * 256) + 'px';
+		elm.style.left = (((xoff * (sticksize + vpad)) + stickpad) + 112 + gamepad.axes[2] * 256) + 'px';
+		elm.style.top = (((2 * vpad) + vsize) + 112 + gamepad.axes[3] * 256) + 'px';
 
 		// Analog Z axes
 		elm = document.getElementById('c_' + gamepad.index + '_z_' + 1);
-		elm.style.height = gamepad.axes[2] * 256 + 'px';
+		elm.style.height = gamepad.axes[4] * 256 + 'px';
 
 		elm = document.getElementById('c_' + gamepad.index + '_z_' + 2);
 		elm.style.height = gamepad.axes[5] * 256 + 'px';

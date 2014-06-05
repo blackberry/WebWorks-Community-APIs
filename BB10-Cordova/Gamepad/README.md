@@ -95,9 +95,9 @@ As this extension is a shim for the HTML5 spec, if you code your application to 
 
 ## The Gamepad Button and Axis Mapping
 
-The arrays of buttons and axes that are returned in the Gamepad Object are in the raw mapping that the BlackBerry OS provides for the connected gamepad. It is __not__ remapped to the "standard" gamepad layout.
+The arrays of buttons and axes that are returned in the Gamepad Object are will be remapped to the HTML5 "standard" mapping as long as the device has a known mapping. The __mapping__ attribute of the Gamepad object will be set to "standard" in this case. Otherwise the values will be returned in the raw mapping that the BlackBerry OS provides for the connected gamepad. In that case, the __mapping__ attribute will be set to the empty string.
 
-The sample app shows the order of the supported buttons and axes, but small differences can be seen between each controller. It's recommended that you provide some form of mapping option in your application so that users can define the control scheme that works best for them and their gamepad.
+The sample app shows the order of the supported buttons and axes, following the HTML5 standard mapping.
 
 ## Building the extension from source
 
