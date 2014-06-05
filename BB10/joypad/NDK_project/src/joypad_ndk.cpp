@@ -65,6 +65,11 @@ const char *gcfriendly[] = { "Moga Pro HID",
                              "Nintendo WiiMote",
                              NULL };
 
+// Mapping between BB10 button map and HTML5 Standard layout
+const int standardButtonMap[] = { 0, 1, 3, 4, 10, 13, 11, 14, 6, 7, 12, 15, 16, 17, 18, 19, 8, 2, 5, 9 };
+// 0-2 is Analog0, 3-5 is Analog1. Value is index in Axes[] where the reading goes
+const int standardAxesMap[] = { 0, 1, 4, 2, 3, 5 };
+
 static void pollDevices();
 bool loadController(GameController *);
 static void initController(GameController *, int);
@@ -74,6 +79,7 @@ static void initController(GameController *controller, int player)
     // Initialize controller values.
     controller->handle = 0;
     controller->type = 0;
+    controller->foundMap = false;
     controller->analogCount = 0;
     controller->buttonCount = 0;
     controller->buttons = 0;
@@ -110,10 +116,10 @@ bool loadController(GameController *controller)
     }
 
     nameorid = controller->id;
-
     while(gcid[i]) {
     	if(strncmp(&(controller->id[2]), gcid[i], 9) == 0) {
     	    nameorid = gcfriendly[i];
+    	    controller->foundMap = true;
     	    break;
     	}
     	i++;
@@ -375,6 +381,10 @@ void joypadNDK::joypadEventCallback(int ctrl, int type) {
         root["type"] = type;
         root["id"] = _controllers[ctrl].deviceString;
         root["mapping"] = "";
+        if (_controllers[ctrl].foundMap == true) {
+            root["mapping"] = "standard";
+        }
+        // standard mapping has the same first value so we're okay either way
         int mask = 1;
         for(int j=0; j<MAX_BUTTONS; j++) {
             if(mask & _controllers[ctrl].buttons) {
@@ -384,11 +394,25 @@ void joypadNDK::joypadEventCallback(int ctrl, int type) {
                 root["buttons"][j]["pressed"] = false;
                 root["buttons"][j]["value"] = 0.0f;
             }
-            mask = mask << 1;
+            if (_controllers[ctrl].foundMap == true) {
+                mask = 1 << standardButtonMap[j +1];
+            } else {
+                mask = mask << 1;
+            }
         }
+        // map if necessary
+        int axisMap0 = 0;
+        int axisMap1 = 0;
         for(int j=0; j<3; j++) {
-            root["axes"][j] = _controllers[ctrl].analog0[j]/256.0f;
-            root["axes"][j+3] = _controllers[ctrl].analog1[j]/256.0f;
+            if (_controllers[ctrl].foundMap == true) {
+                axisMap0 = standardAxesMap[j];
+                axisMap1 = standardAxesMap[j+3];
+            } else {
+                axisMap0 = j;
+                axisMap1 = j+3;
+            }
+            root["axes"][axisMap0] = _controllers[ctrl].analog0[j]/256.0f;
+            root["axes"][axisMap1] = _controllers[ctrl].analog1[j]/256.0f;
         }
         m_pParent->NotifyEvent(event + " " + writer.write(root));
 }

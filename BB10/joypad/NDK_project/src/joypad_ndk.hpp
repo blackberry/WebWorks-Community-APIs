@@ -31,6 +31,7 @@ typedef struct GameController_t {
     int analogCount;
     int buttonCount;
     char id[64];
+    bool foundMap;
 
     // Current state.
     int buttons;
