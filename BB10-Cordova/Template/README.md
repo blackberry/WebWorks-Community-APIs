@@ -43,20 +43,14 @@ This is a screenshot of the test data being displayed in the Hello World sample 
 2. For the current version of Ant, you will also need a JDK installed on your system, version 1.4 or later required, 1.7 or later strongly recommended. The more up-to-date the version of Java , the more Ant tasks you get.
 
 ###Building The Template Project: 
-1. Parameters to be sent with the Apache Ant command:
-- **projectName** should be all upper case and contain only letters [A-Z]
-- **cordovaPluginId** should be in the format com.blackberry.community.<your project name>. The name should only contain letters
-- **projectFunction** should start with a upper case letter. This variable is used for code functions and should follow proper function naming conventions. e.g. MyProjectFunction
-- **projectFunctionStart** should start with a lower case letter. This variable is used for code functions and should follow proper function naming conventions. e.g. myProjectFunction
-- **projectNameLowerCase** should be all lower case and contain only letters [a-z]. This must be the same project name used for the projectName variable.
-- **projectAuthor** should be entered as the author of the plugin.
+Executing the Apache Ant build will ask you answer a series of questions needed to build a project based on your input:
+- The project name input should be in the following format e.g. HelloWorld. The name should only contain letters
+- The cordova plugin id should be in the format com.blackberry.community.<your project name>. The name should only contain letters
+- The project author should be entered as the author of the plugin.
+- The build also asks to see if you would like to delete the build directory. Only delete the build directory if you no longer need the project in Momentics. The deletion is not recoverable once y for yes is entered
 
+To build the project execute the following command ***ant -f build.xml*** 
 
- 
-ant -f build.xml -DprojectName=<project name in caps>
-e.g. ant -f build.xml -DprojectName=MMS -DcordovaPluginId=com.blackberry.community.MMS -DprojectFunction=MMS -DprojectFunctionStart=mms -DprojectNameLowerCase=mms -DprojectAuthor=“blackberry author”
-
-**no space after the -D is intentional and required.**
 
 The output of this build script will produce a build folder that contains two directories:
 
@@ -82,10 +76,10 @@ You can either import the project from the Template folder, or use the New Proje
 
 1. Open the Momentics IDE. Navigate to the workbench and from the program menu
 select File -> Import and choose "Existing Projects into Workspace".
-2. Choose "Select root directory: " and browse to the _/plugin/src/blackberry10/native_ directory that was just built by Apache Ant. Select the project name you entered in the Apache Ant build in the Projects list and check "Copy projects into workspace". Click Finish. 
+2. Choose "Select root directory: " and browse to the _/plugin/src/blackberry10/native_ directory that was just built by Apache Ant. Select the project name you entered in the Apache Ant build in the Projects list and uncheck "Copy projects into workspace". Click Finish. 
 
 **PLEASE NOTE:**
-Each time the Apache Ant build is run it will delete the build directory and recreate a new project based on the downloaded template. If you have not checked the box to import the files into your Momentics workspace you will lose your work. You have been warned.
+Each time the Apache Ant build is run it will ask to delete the build/<Project Name> directory and recreate a new project based on the downloaded template. Since the instructions are to import the project but not copy the contents into your Momentics workspace only answer y for yes to delete the directory if you no longer need it. 
 
 3. Follow these next steps to build the template plugin to be sure the setup is working.
 
