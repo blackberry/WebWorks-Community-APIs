@@ -145,7 +145,11 @@
 			}
 			buf.innerHTML = "";
 			for (var i = 0; i<gamepads.length; i++) {
-				buf.innerHTML = buf.innerHTML + "<a href='#' onclick='showpad(" + i + "); return false;'>" + gamepads[i].id + "</a><br /><br />";
+				if (gamepads[i].connected) {
+					buf.innerHTML = buf.innerHTML + "<a href='#' onclick='showpad(" + i + "); return false;'>" + gamepads[i].id + "</a><br /><br />";
+				} else {
+					buf.innerHTML = buf.innerHTML + " Gamepad " + i + " disconnected<br /><br />";
+				}
 			}
 		}
 	}
