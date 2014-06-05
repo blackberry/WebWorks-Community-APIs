@@ -29,6 +29,23 @@ PLEASE NOTE: Each time you run the build command the build directory will be del
 	</description>
 
 
+	<scriptdef language="javascript" name="lower">
+	    <attribute name="string" />
+	    <attribute name="to" />
+	    project.setProperty( attributes.get("to"), attributes.get("string").toLowerCase());
+	</scriptdef>
+	<scriptdef language="javascript" name="ucFirst">
+	    <attribute name="string" />
+	    <attribute name="to" />
+	    var inputString = attributes.get("string");
+	    project.setProperty(attributes.get("to"), inputString.substr(0,1).toUpperCase() + inputString.substr(1));
+	</scriptdef> 
+	<scriptdef language="javascript" name="lcFirst">
+	    <attribute name="string" />
+	    <attribute name="to" />
+	    var inputString = attributes.get("string");
+	    project.setProperty(attributes.get("to"), inputString.substr(0,1).toLowerCase() + inputString.substr(1));
+	</scriptdef>
 
 	<!-- set global properties for this build -->
 	<property name="build" location="build" relative="true" />
@@ -36,13 +53,13 @@ PLEASE NOTE: Each time you run the build command the build directory will be del
 	<property name="src" location="${plugin}/src/blackberry10/native/src" relative="true" />
 	<property name="native" location="${plugin}/src/blackberry10/native" relative="true" />
 	<property name="sample" location="sample" relative="true" />
-	<property name="projectName" value="${projectName}" />
-	<property name="cordovaPluginId" value="${cordovaPluginId}" />
-	<property name="projectFunction" value="${projectFunction}" />
-	<property name="projectFunctionStart" value="${projectFunctionStart}" />
-	<property name="projectNameLowerCase" value="${projectNameLowerCase}" />
-	<property name="projectAuthor" value="${projectAuthor}" />
-	
+	<input message="Please enter a project name in the following format e.g. HelloWorld " addproperty="projectName" />
+	<input message="Please enter a cordova plugin id in the following format e.g. com.blackberry.community.helloworld " addproperty="cordovaPluginId" />
+	<ucFirst string="${projectName}" to="projectFunction" />
+	<lcFirst string="${projectName}" to="projectFunctionStart" />
+	<lower string="${projectName}" to="projectNameLowerCase" />
+	<input message="Please enter the project author name. " addproperty="projectAuthor"  />
+
 
 	<target name="init" depends="clean">
 	<!-- set build properties to values entered during the questionnaire -->
@@ -57,10 +74,26 @@ PLEASE NOTE: Each time you run the build command the build directory will be del
 	  </copy>
 	 
 	</target>
-	
-	<target name="clean">
-	<!-- each time this is run we need to delete the contents of the build directory -->
+
+	<target name="cleanConfirmation" depends="buildDirCheck" if="dir.exists" >
+	   <input message="WARNING: The complete build directory is about to be deleted. Please backup the directory to a different location prior to proceeding.  Continue (y/n)?" addproperty="cleanConfirm" validargs="y,n" defaultvalue="n" />
+	   <condition property="doClean">
+	   <equals arg1="y" arg2="${cleanConfirm}" />
+	   </condition>
+	   <fail message="Build directory must be cleaned in order to proceed with a new build." >
+	       <condition>
+	       <equals arg1="n" arg2="${cleanConfirm}" />
+	       </condition>
+	   </fail>
+	</target>	
+	<target name="clean" depends="cleanConfirmation" if="doClean" >
 		<delete dir="${build}"/>
+	</target>
+
+	<target name="buildDirCheck">
+	<condition property="dir.exists">
+	    <available file="${build}" type="dir" />
+	</condition>
 	</target>
 	
 	<target name="build" depends="init">
