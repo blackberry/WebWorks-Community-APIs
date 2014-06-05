@@ -387,17 +387,17 @@ void joypadNDK::joypadEventCallback(int ctrl, int type) {
         // standard mapping has the same first value so we're okay either way
         int mask = 1;
         for(int j=0; j<MAX_BUTTONS; j++) {
+            if (_controllers[ctrl].foundMap == true) {
+                mask = 1 << standardButtonMap[j];
+            } else {
+                mask = 1 << j;
+            }
             if(mask & _controllers[ctrl].buttons) {
                 root["buttons"][j]["pressed"] = true;
                 root["buttons"][j]["value"] = 1.0f;
             } else {
                 root["buttons"][j]["pressed"] = false;
                 root["buttons"][j]["value"] = 0.0f;
-            }
-            if (_controllers[ctrl].foundMap == true) {
-                mask = 1 << standardButtonMap[j +1];
-            } else {
-                mask = mask << 1;
             }
         }
         // map if necessary
