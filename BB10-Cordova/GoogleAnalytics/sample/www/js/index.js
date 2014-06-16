@@ -49,20 +49,15 @@ var app = {
 	},
 	testPluginCalls: function() {
 		if (community && community.googleanalyticsplugin) {
-			app.writeOut("Google Analytics Plugin Tests");
-			// Set & get the required base properties
-			community.googleanalyticsplugin.UUID = "5555"; // hardcoding now, could use web-storage
-			community.googleanalyticsplugin.GAaccount = "UA-50848230-1"; // must sign up a real account with GA
-			community.googleanalyticsplugin.AppName = "GATestApp";
-			app.writeOut('UUID = ' + community.googleanalyticsplugin.UUID);
-			app.writeOut('GAaccount = ' + community.googleanalyticsplugin.GAaccount);
-			app.writeOut('AppName = ' + community.googleanalyticsplugin.AppName);
-			app.writeOut('------------');
-			
-			document.getElementById("btn_pageview").addEventListener("click", community.clickPageView);
-
+			app.writeOut("Now with All 3 Property");
+			app.writeOut('AppName Property: ' + community.googleanalyticsplugin.appName);
+			app.writeOut('Setting AppName...');
+			community.googleanalyticsplugin.appName = 'BrandNew_App';
+			app.writeOut('Now AppName: ' + community.googleanalyticsplugin.appName);
+			app.writeOut('UUID: ' + community.googleanalyticsplugin.uuid);
+			app.writeOut('GA_Account: ' + community.googleanalyticsplugin.gaAccount);
 		} else {
-			app.writeOut("Plugin was not found");
+			app.writeOut("GA not found??");
 		}
 	},
 	writeOut: function(message) {
@@ -71,11 +66,4 @@ var app = {
 		output.appendChild(document.createElement('br'));
 		console.log(message);
 	},
-
-	clickPageView: function() 
-	{
-		community.googleanalyticsplugin.trackPageView("/home", "HOME", "BlackBerry.com");
-		document.getElementById("btn_text").innerText = "PageVew clicked";
-	}
-
 };
