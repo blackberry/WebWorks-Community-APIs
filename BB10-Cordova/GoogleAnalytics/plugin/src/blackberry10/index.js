@@ -17,10 +17,10 @@
 var googleanalytics,
 	resultObjs = {},
 	threadCallback = null,
-   _utils = require("../../lib/utils"),
-   gaUUID = "",
-   gaGAaccount = "",
-   gaAppName = "";
+	m_uuid = "Default_UUID",
+    m_gaAccount = "Default_GA_Account",
+    m_appName = "Default_AppName",
+   _utils = require("../../lib/utils");
 
 module.exports = {
 
@@ -29,39 +29,37 @@ module.exports = {
 	// here in this object.
 
 	// Object properties
-	UUID: function (success, fail, args, env) {
+	uuid: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		var value;
 		if (args && args["value"]) {
 			value = JSON.parse(decodeURIComponent(args["value"]));
-			gaUUID = value;
+			m_uuid = value;
 			result.noResult(false);
 		} else {
-			result.ok(gaUUID, false);
+			result.ok(m_uuid, false);
 		}
 	},
-
-	GAaccount: function (success, fail, args, env) {
+	gaAccount: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		var value;
 		if (args && args["value"]) {
 			value = JSON.parse(decodeURIComponent(args["value"]));
-			gaGAaccount = value;
+			m_gaAccount = value;
 			result.noResult(false);
 		} else {
-			result.ok(gaGAaccount, false);
+			result.ok(m_gaAccount, false);
 		}
 	},
-
-	AppName: function (success, fail, args, env) {
+	appName: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		var value;
 		if (args && args["value"]) {
 			value = JSON.parse(decodeURIComponent(args["value"]));
-			gaAppName = value;
+			m_appName = value;
 			result.noResult(false);
 		} else {
-			result.ok(gaAppName, false);
+			result.ok(m_appName, false);
 		}
 	},
 
@@ -119,7 +117,7 @@ SendGARequest = function(trackType, args)
 			}
 		};
 
-	optionString = "v=1&tid=" + gaGAaccount + "&cid=" + gaUUID + "&an=" + gaAppName;
+	optionString = "v=1&tid=" + m_gaAccount + "&cid=" + m_uuid + "&an=" + m_appName;
 	
 	jsonArgs = JSON.parse(args);
 

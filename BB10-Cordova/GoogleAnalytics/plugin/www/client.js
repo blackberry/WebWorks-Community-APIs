@@ -22,7 +22,7 @@ var _self = {},
     // Note: Google documentation says app name is optional, but without it doesn't work.
 
     // Unique user ID for tracking
-    Object.defineProperty(_self, "UUID", {
+    Object.defineProperty(_self, "uuid", {
         get: function () {
             var result,
                 success = function (data, response) {
@@ -31,7 +31,7 @@ var _self = {},
                 fail = function (data, response) {
                     console.log("Error: " + data);
                 };
-            exec(success, fail, _ID, "UUID", null);
+            exec(success, fail, _ID, "uuid", null);
             return result;
         },
         set: function (arg) {
@@ -42,13 +42,13 @@ var _self = {},
                 fail = function (data, response) {
                     console.log("Error: " + data);
                 };
-            exec(success, fail, _ID, "UUID", {"value": arg });
+            exec(success, fail, _ID, "uuid", {"value": arg });
             return result;
         }
     });
 
     // Google Analytics account
-    Object.defineProperty(_self, "GAaccount", {
+    Object.defineProperty(_self, "gaAccount", {
         get: function () {
             var result,
                 success = function (data, response) {
@@ -57,7 +57,7 @@ var _self = {},
                 fail = function (data, response) {
                     console.log("Error: " + data);
                 };
-            exec(success, fail, _ID, "GAaccount", null);
+            exec(success, fail, _ID, "gaAccount", null);
             return result;
         },
         set: function (arg) {
@@ -68,13 +68,12 @@ var _self = {},
                 fail = function (data, response) {
                     console.log("Error: " + data);
                 };
-            exec(success, fail, _ID, "GAaccount", {"value": arg });
+            exec(success, fail, _ID, "gaAccount", {"value": arg });
             return result;
         }
     });
-
     // App name
-    Object.defineProperty(_self, "AppName", {
+    Object.defineProperty(_self, "appName", {
         get: function () {
             var result,
                 success = function (data, response) {
@@ -83,7 +82,7 @@ var _self = {},
                 fail = function (data, response) {
                     console.log("Error: " + data);
                 };
-            exec(success, fail, _ID, "AppName", null);
+            exec(success, fail, _ID, "appName", null);
             return result;
         },
         set: function (arg) {
@@ -94,7 +93,7 @@ var _self = {},
                 fail = function (data, response) {
                     console.log("Error: " + data);
                 };
-            exec(success, fail, _ID, "AppName", {"value": arg });
+            exec(success, fail, _ID, "appName", {"value": arg });
             return result;
         }
     });
