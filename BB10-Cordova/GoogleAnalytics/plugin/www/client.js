@@ -104,18 +104,18 @@ var _self = {},
 
     // Pageview, &t=pageview, pageURL required
     _self.trackPageview = function (pageURL, pageTitle, hostName) {
-        var result = false;
+        var result = 'No pageURL';
 
         if (pageURL)
         {
             pageTitle = pageTitle || "";
             hostName = hostName || "";
             var success = function (data, response) {
-                    result = true;
+                    result = data;
                 },
                 fail = function (data, response) {
                     console.log("Error: " + data);
-                    result = false;
+                    result = "Error: " + data;
                 };
             exec(success, fail, _ID, "trackPageview", {
                 "pageURL": pageURL, 
@@ -128,18 +128,18 @@ var _self = {},
 
     // Event tracking, &t=event, Category and action are required
     _self.trackEvent = function (eventCategory, eventAction, eventLabel, eventValue) {
-        var result = false,
+        var result = "No category or action";
 
         if (eventCategory && eventAction)
         {
             eventLabel = eventLabel || "";
             eventValue = eventValue || "";
             var success = function (data, response) {
-                    result = true;
+                    result = data;
                 },
                 fail = function (data, response) {
                     console.log("Error: " + data);
-                    result = false;
+                    result = "Error: " + data;
                 };
             exec(success, fail, _ID, "trackEvent", { 
                 "eventCategory": eventCategory,
@@ -154,7 +154,7 @@ var _self = {},
     // Transaction tracking
     // ID is required, others optional
     _self.trackTransaction = function (tID, tAffil, tRevenue, tShipn, tTax, tCurr) {
-        var result = false,
+        var result = "No transaction ID";
 
         if (tID)
         {
@@ -165,11 +165,11 @@ var _self = {},
             tCurr = tCurr || "";
             
             var success = function (data, response) {
-                    result = true;
+                    result = data;
                 },
                 fail = function (data, response) {
                     console.log("Error: " + data);
-                    result = false;
+                    result = "Error: " + data;
                 };
             exec(success, fail, _ID, "trackEvent", { 
                     "tID": tID,
@@ -187,7 +187,7 @@ var _self = {},
     // Item hit tracking,
     // tID & iName is required, others optional
     _self.trackItem = function (tID, iName, iPrice, iQuant) {
-        var result = false,
+        var result = "No transaction ID or item name";
 
         if (tID && iName)
         {
@@ -195,11 +195,11 @@ var _self = {},
             iQuant = iQuant || "";
             
             var success = function (data, response) {
-                    result = true;
+                    result = data;
                 },
                 fail = function (data, response) {
                     console.log("Error: " + data);
-                    result = false;
+                    result = "Error: " + data;
                 };
             exec(success, fail, _ID, "trackEvent", { 
                     "tID": tID,

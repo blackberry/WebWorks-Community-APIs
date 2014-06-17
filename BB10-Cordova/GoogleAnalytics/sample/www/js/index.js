@@ -56,6 +56,8 @@ var app = {
 			app.writeOut('Now AppName: ' + community.googleanalyticsplugin.appName);
 			app.writeOut('UUID: ' + community.googleanalyticsplugin.uuid);
 			app.writeOut('GA_Account: ' + community.googleanalyticsplugin.gaAccount);
+			app.writeOut('--------------');
+			app.writeOut(community.googleanalyticsplugin.trackPageview('/home', '', ''));
 		} else {
 			app.writeOut("GA not found??");
 		}

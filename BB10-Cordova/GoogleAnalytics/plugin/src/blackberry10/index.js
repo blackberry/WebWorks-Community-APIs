@@ -17,16 +17,12 @@
 var googleanalytics,
 	resultObjs = {},
 	threadCallback = null,
-	m_uuid = "Default_UUID",
-    m_gaAccount = "Default_GA_Account",
+	m_uuid = "555555",
+    m_gaAccount = "UA-50848230-1", // default...
     m_appName = "Default_AppName",
    _utils = require("../../lib/utils");
 
 module.exports = {
-
-	// Code can be declared and used outside the module.exports object,
-	// but any functions to be called by client.js need to be declared
-	// here in this object.
 
 	// Object properties
 	uuid: function (success, fail, args, env) {
@@ -62,51 +58,73 @@ module.exports = {
 			result.ok(m_appName, false);
 		}
 	},
-
 	// Tracking functions
 	trackPageview: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
-		if (SendGARequest("pageview", args))
-			result.ok("Pageview tracking ok", false);
+		var sRequest = sendGARequest("pageview", args);
+		if (sRequest.length > 0)
+			result.ok(sRequest, false);
 		else
 			result.error("Pageview tracking error", false);
 	},
 
 	trackEvent: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
-		if (SendGARequest("event", args))
-			result.ok("EVent tracking ok", false);
+		var sRequest = sendGARequest("event", args);
+		if (sRequest.length > 0)
+			result.ok(sRequest, false);
 		else
 			result.error("Event tracking error", false);
 	},
 
 	trackTransaction: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
-		if (SendGARequest("transaction", args))
-			result.ok("Transaction tracking ok", false);
+		var sRequest = sendGARequest("transaction", args);
+		if (sRequest.length > 0)
+			result.ok(sRequest, false);
 		else
 			result.error("Transaction tracking error", false);
-	}
+	},
 
 	trackItem: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
-		if (SendGARequest("item", args))
-			result.ok("Item hit tracking ok", false);
+		var sRequest = sendGARequest("item", args);
+		if (sRequest.length > 0)
+			result.ok(sRequest, false);
 		else
 			result.error("Item hit tracking error", false);
 	},
+
+	googleanalyticsProperty: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		var value;
+		if (args && args["value"]) {
+			value = JSON.parse(decodeURIComponent(args["value"]));
+			googleanalytics.getInstance().googleanalyticsProperty(result.callbackId, value);
+			result.noResult(false);
+		} else {
+			result.ok(googleanalytics.getInstance().googleanalyticsProperty(), false);
+		}
+	}
 };
 
+// Send request to Google Anayltics based on tracking type
+// Return request string sent to GA if no error
+// Return empty string if error occurs
 SendGARequest = function(trackType, args)
 {
 	var xmlhttp,
 		status = "",
 		message = "",
 		optionString = "",
-		jsonArgs;
+		jsonArgs,
 		isOK = true;
 
-	// TODO: need to check if xmlhttprequest is available?
+	if (!XMLHttpRequest)
+	{
+		return '';
+	}
+
 	xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function ()
 		{
@@ -213,7 +231,14 @@ SendGARequest = function(trackType, args)
 	}
 
 	// TODO: Add check for non-OK xtml status? But GA always return status OK unless there is connection timeout.
-	return isOK;
+	if (isOK)
+	{
+		return optionString;
+	}
+	else
+	{
+		return '';
+	}
 };
 ///////////////////////////////////////////////////////////////////
 // JavaScript wrapper for JNEXT plugin for connection
