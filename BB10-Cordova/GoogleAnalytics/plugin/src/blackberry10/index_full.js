@@ -24,13 +24,6 @@ var googleanalytics,
 
 module.exports = {
 
-	// Code can be declared and used outside the module.exports object,
-	// but any functions to be called by client.js need to be declared
-	// here in this object.
-
-	// These methods call into JNEXT.Googleanalytics which handles the
-	// communication through the JNEXT plugin to googleanalytics_js.cpp
-
 	// Object properties
 	uuid: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
@@ -118,57 +111,137 @@ module.exports = {
 // Send request to Google Anayltics based on tracking type
 // Return request string sent to GA if no error
 // Return empty string if error occurs
-sendGARequest = function (trackType, args)
+SendGARequest = function(trackType, args)
 {
 	var xmlhttp,
 		status = "",
 		message = "",
 		optionString = "",
-		jsonArgs = "default json args",
+		jsonArgs,
 		isOK = true;
 
-	// check if xmlhttprequest is available?
-	if (XMLHttpRequest)
+	if (!XMLHttpRequest)
 	{
-		xmlhttp = new XMLHttpRequest();
-		xmlhttp.onreadystatechange = function ()
-			{
-				if (xmlhttp.readyState == 4)
-				{
-					status = xmlhttp.status;
-					message = xmlhttp.statusText;
-				}
-			};
+		return '';
+	}
 
-		optionString = "v=1&tid=" + m_gaAccount + "&cid=" + m_uuid + "&an=" + m_appName;
-		
-		//jsonArgs = JSON.parse(args);
-		// TODO: Add check for non-OK xtml status? But GA always return status OK unless there is connection timeout.
-		//return optionString;
-		if (JSON) 
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function ()
 		{
-			//var bewasdfjsonArgs = JSON.parse('true');
+			if (xmlhttp.readyState == 4)
+			{
+				status = xmlhttp.status;
+				message = xmlhttp.statusText;
+			}
+		};
 
-			//jsonArgs = JSON.parse(decodeURIComponent(args["pageURL"]));
-			//jsonArgs = JSON.parse('{ "hiredate": "2008-01-01", "birthdate": "2008-12-25" }');
-			/*jsonArgs = JSON.parse(args);
-			if (JSON.stringify)
-				return JSON.stringify(jsonArgs);
+	optionString = "v=1&tid=" + m_gaAccount + "&cid=" + m_uuid + "&an=" + m_appName;
+	
+	jsonArgs = JSON.parse(args);
+
+	// TODO: should check if type of arguments are correct?
+
+	switch (trackType)
+	{
+		case "pageview":
+			optionString += "&t=pageview";
+			if (jsonArgs.pageURL)
+				optionString += ("&dp=" + jsonArgs.pageURL);
+			if (jsonArgs.pageTitle)
+				optionString += ("&dt=" + jsonArgs.pageTitle);
+			if (jsonArgs.hostname)
+				optionString += ("&dh=" + jsonArgs.hostname);
+
+			break;
+
+		case "event";
+			optionString += "&t=event"
+			// Category and Action are required for event tracking
+			if (!jsonArgs.eventCategory || !jsonArgs.eventAction)
+			{
+				isOK = false;
+				break;
+			}
+			else 
+			{
+				optionString += ("&ec=" + jsonArgs.eventCategory);
+				optionString += ("&ea=" + jsonArgs.eventAction);
+			}
+			if (jsonArgs.eventLabel)
+				optionString += ("&el=" + jsonArgs.eventLabel);
+			if (jsonArgs.eventValue)
+				optionString += ("&ev=" + jsonArgs.eventValue);
+
+			break;
+
+		case "transaction":
+			optionString += "&t=transaction";
+			// only ID is required
+			if (!jsonArgs.tID)
+			{
+				isOK = false;
+				break;
+			}
 			else
-				return "stringify undef";
-			*/
-			jsonArgs = JSON.parse(JSON.stringify(args));
-			return decodeURIComponent(jsonArgs.pageURL) + " " + JSON.parse(decodeURIComponent(args["pageURL"]));
-		}
-		else
-			return "JSON NOT found";
+			{
+				optionString += ("&ti=" + jsonArgs.tID);
+			}
+			if (jsonArgs.tAffil)
+				optionString += ("&ta=" + jsonArgs.tAffil);
+			if (jsonArgs.tRevenue)
+				optionString += ("&tr=" + jsonArgs.tRevenue);
+			if (jsonArgs.tShipn)
+				optionString += ("&ts=" + jsonArgs.tShipn);
+			if (jsonArgs.tTax)
+				optionString += ("&tt=" + jsonArgs.tTax);
+			if (jsonArgs.tCurr)
+				optionString += ("&cu=" + tCurr);
+
+			break;
+
+		case "item";
+			optionString += "&t=item";
+			// tID and iName is required
+			if (!jsonArgs.tID || !jsonArgs.iName)
+			{
+				isOK = false;
+				break;
+			}
+			else
+			{
+				optionString += ("&ti=" + jsonArgs.tID);
+				optionString += ("&in=" + jsonArgs.iName);
+			}
+			if (jsonArgs.iPrice)
+				optionString += ("&ip=" + jsonArgs.iPrice);
+			if (jsonArgs.iQuant)
+				optionString += ("&iq=" + jsonArgs.iQuant);
+
+			break;
+
+		default:
+			isOK = false;
+			break;
+	}
+	
+	if (isOK)
+	{
+		xmlhttp.open("POST","http://www.google-analytics.com/collect",true);
+		xmlhttp.send(optionString);
+	}
+
+	// TODO: Add check for non-OK xtml status? But GA always return status OK unless there is connection timeout.
+	if (isOK)
+	{
+		return optionString;
 	}
 	else
 	{
-		return "";
+		return '';
 	}
 };
 ///////////////////////////////////////////////////////////////////
 // JavaScript wrapper for JNEXT plugin for connection
 ///////////////////////////////////////////////////////////////////
 
+// don't need JNEXT and native
