@@ -167,6 +167,11 @@ PLEASE NOTE: Each time you run the build command the build directory will be del
     <include name="**/*.xml"/>
     <replacetoken>???PROJECT_FUNCTION_START???</replacetoken>
     </replace>
+    <replace dir="${projectRoot}/${sample}" value="${projectNameLowerCase}">
+    <include name="**/*.js"/>
+    <include name="**/*.xml"/>
+    <replacetoken>???PROJECT_NAME_LOWERCASE???</replacetoken>
+    </replace>
     <replace dir="${projectRoot}/${sample}" value="${projectAuthor}">
     <include name="**/*.js"/>
     <include name="**/*.xml"/>
@@ -184,8 +189,6 @@ PLEASE NOTE: Each time you run the build command the build directory will be del
     <delete file="${projectRoot}/${native}/device/libTemplate.so" />
     <delete file="${projectRoot}/${native}/simulator/libTemplate.so" />
     
-    <!-- Remove the config.xml in the www folder. Webworks 2.0 creates one during project creation. -->
-    <delete file="${projectRoot}/${sample}/www/config.xml" />
 
 </target>
 
