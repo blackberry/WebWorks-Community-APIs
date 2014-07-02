@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-var _ID = "com.blackberry.qt",
+var _ID = "com.blackberry.community.qt",
 	exec = cordova.require("cordova/exec");
 
 var getArgs = function(args) {

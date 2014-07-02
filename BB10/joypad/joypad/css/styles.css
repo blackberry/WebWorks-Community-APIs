@@ -1,0 +1,15 @@
+body {
+	margin: 0px auto;
+	color: #F8F8F8;
+	background-color: #FFFFFF;
+}
+
+.buttontile {
+	width: 96px;
+	height: 96px;
+	background-color: #FF8080;
+	text-align: center;
+	padding-top: 24px;
+	box-sizing:border-box;
+
+}
