@@ -19,22 +19,22 @@ var service = "com.blackberry.community.LowLatencyAudio",
 
 module.exports = {
     preloadAudio: function (data, path, voices, success, fail) {
-        exec(success, fail, service, "preloadAudio", { data: data, path: path, voices: voices });
+        exec(success, fail, service, "preloadAudio", { data: data, path: path, voices: voices }, false);
     },
     unload: function (data, success, fail) {
-        exec(success, fail, service, "unload", { data: data });
+        exec(success, fail, service, "unload", { data: data }, false);
     },
     play: function (data, success, fail) {
-        exec(success, fail, service, "play", { data: data });
+        exec(success, fail, service, "play", { data: data }, false);
     },
     stop: function (data, success, fail) {
-        exec(success, fail, service, "stop", { data: data });
+        exec(success, fail, service, "stop", { data: data }, false);
     },
     getDuration: function (data, success, fail) {
-        exec(success, fail, service, "getDuration", { data: data });
+        exec(success, fail, service, "getDuration", { data: data }, false);
     },
     loop: function (data, success, fail) {
-        exec(success, fail, service, "loop", { data: data });
+        exec(success, fail, service, "loop", { data: data }, false);
     }
 
 };

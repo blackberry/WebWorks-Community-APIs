@@ -6,19 +6,14 @@ __This example follows an older format. It is recommended that you use the new t
 
 The implementation is split into two parts: [Native](#native) and [JavaScript](#JavaScript)
 
-The _ext&#95;sample_ folder includes the implementation of an example
-extension that retrieves the current amount of free memory on the device.
+This project implements an example extension that retrieves the current amount of free memory on the device.
 
-The resources in the _ext&#95;sample_ folder include:
+The resources here include:
 
-* TestApplication/ - Resources for a WebWorks application that uses the Memory
+* sample_application/ - Resources for a WebWorks application that uses the Memory
 Extension to get the amount of free memory on the device.
-* javascript_src/ - The JavaScript source files of the example Memory Extension.
-* native_src/ - The native source files for the Memory Extension.
-* output/ - An example file structure of a completed extension that can
-be copied into a WebWorks Installation extension folder.
-* project/ - An example file structure of a native extension project that can
-build the native portion of an extension.
+* ext/ - The JavaScript source files and the compiled native portions that make up the complete example Memory Extension.
+* NDK_project/ - The native source files for the Memory Extension, which can be imported to Momentics.
 
 The Memory Extension implementation should be used in conjunction with this
 read me file to understand how to create a WebWorks extension.
@@ -39,7 +34,7 @@ the device and another for the simulator.
 After completing the above steps you should be able to build WebWorks
 applications that can use your memory extension. If done correctly, the file
 structure of your extension should match the file structure of the output
-folder in the _ext&#95;sample_ folder.
+folder in the _ext_ folder.
 
 IMPORTANT: Make sure that your WebWorks applications whitelist the extension
 otherwise the application will not be able to use the extension.
@@ -94,7 +89,7 @@ utility functions that can be used in your native code. Your native extension
 must be derived from JSExt which is defined in plugin.h. Therefore your
 extension should include this header file.
 
-The MemoryExtension sample code included in the _ext&#95;sample_ folder
+The MemoryExtension sample code included in the _ext_ folder
 implements the native extension interface to JNEXT.
 
 Each native extension must implement the following callback functions:

@@ -1,22 +1,36 @@
 ExtractZIPFile 
 ==============
-Provides extraction (unzipping) of zip archives for html5 under Blackbery 10.
+
+**Provides:**
+* extraction (unzipping) of zip archives for html5 under Blackberry 10.
+* compression (zipping) of a single file for html5 under Blackberry 10.
+
+**Tested On**
+
+* BlackBerry 10.2.1.1927
+* Webworks 2.0.0.71
+* Dev Alpha C
+
+**Author(s)** 
+
+* [Daniel Dressler](https://github.com/daniel-dressler)
+* [Morgan Parlee](https://github.com/mkparlee) 
 
 
 ## Including the feature in your application
 
 This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
 
-	cordova plugin add com.blackberry.community.extractzipfile
+	cordova plugin add com.blackberry.community.extractZipFile
 
 or,
 	
-	webworks plugin add com.blackberry.community.extractzipfile
+	webworks plugin add com.blackberry.community.extractZipFile
 
-Installation from source is the same but instead of the id ("com.blackberry.community.extractzipfile"), use the file system path to the source plugin folder.
+Installation from source is the same but instead of the id ("com.blackberry.community.extractZipFile"), use the file system path to the source plugin folder.
 
 
-API Examples
+Extraction API Examples
 --------------
 ### Example of API usage
 	function extractFile(fileName) {
@@ -31,7 +45,7 @@ API Examples
 			onExtractCompletion);
 	}
 
-	function onExtractSuccess(status) {	
+	function onExtractCompletion(status) {	
 		if (status.result < 0) {
 			alert("Extraction Failed");
 			console.log(status.resultMessage);
@@ -40,10 +54,10 @@ API Examples
 			alert("Extracted " + status.zip + " to " + status.destination);
 			console.log(status.resultMessage);
 		}
-		console.log("Extraction returned with token: " + callbackToken);
+		console.log("Extraction returned with token: " + status.callbackToken);
   	}	 
     									
-API Details
+Extraction API Details
 ===============
 The API takes an option object and a callback function.
 The following options are supported.
@@ -80,5 +94,57 @@ callbackToken will contain a copy of the zip argument. Use this argument for
 concurrent zip extraction to differentiate between callbacks.
 
 Default: duplicate of zip argument.
+
+
+
+Compression API Examples
+--------------
+	### Example of API usage
+	function compressFile(filePath) {
+		community.extractZipFile.compress(
+			{
+				filePath: filePath, // filePath = "./app/native/res/zip/fileToCompress.txt"
+				destination: "./app/native/res/zip/zipFileDestination.zip",
+				callbackToken: ''
+			},
+			onCompressionCompletion);
+	}
+
+	function onCompressionCompletion(status) {	
+		if (status.result < 0) {
+			alert("Compression Failed");
+			console.log(status.resultMessage);
+
+		} else {
+			alert("Compression Succeeded to destination: " + status.callbackToken);
+			console.log(status.resultMessage);
+		}
+		console.log("Compression returned with token: " + status.callbackToken);
+  	}	 
+    									
+Compression API Details
+===============
+The API takes an option object and a callback function.
+The following options are supported.
+
+### filePath
+Required: As you can guess an unknown file cannot be compressed.
+The directory and file name (the path) to the file which is to be compressed. MUST BE A PROPER PATH -- directory + file name
+
+Default: none! This argument is required!
+
+
+### zipDestinationPath
+The path destination into which the file will be compressed. Must end with .zip extension.
+
+Default: none! This argument is required!
+
+
+### callbackToken
+String which will be passed back without alteration upon callback. If not given
+callbackToken will contain a copy of the zipDestinationPath argument. Use this argument for
+concurrent zip compression to differentiate between callbacks.
+
+Default: duplicate of zipDestinationPath argument.
 
 [![Analytics](https://ga-beacon.appspot.com/UA-46817652-1/WebWorks-Community-APIs/BB10-Cordova/ExtractZipFile?pixel)](https://github.com/igrigorik/ga-beacon)

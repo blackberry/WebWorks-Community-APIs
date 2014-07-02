@@ -64,6 +64,12 @@ var app = {
 						pass = status.entries == 12 && status.files == 7
 							&& status.directories == 5;
 						break;
+					case "3":
+						pass = status.result == 1;
+						break;
+					case "4":
+						pass = status.entries == 1 && status.files == 1;
+						break;
 				}
 
 				var pass_msg = "failed";
@@ -72,7 +78,7 @@ var app = {
 
 				app.writeOut("\nTest " + status.callbackToken + " " + pass_msg);
 				app.writeOut("Full Status: " + JSON.stringify(status, null, " "));
-			}
+			};
 			community.extractZipFile.extract(
 				{
 					zip: "./app/native/res/zip/test_single-file-no-folder.zip",
@@ -86,6 +92,22 @@ var app = {
 					zip: "./app/native/res/zip/test_multi-file-multi-folder.zip",
 					destination: "./tmp/test2test2",
 					callbackToken: "2"
+				},
+				onReturn
+				);
+			community.extractZipFile.compress( 
+				{ 
+					filePath: "./app/native/res/zip/test_single_file_compression.txt",
+					zipDestinationPath: "./tmp/compressed_test/zip_test.zip",
+					callbackToken: "3"
+				},
+				onReturn
+				);
+			community.extractZipFile.extract(
+				{
+					zip: "./tmp/compressed_test/zip_test.zip",
+					destination: "./tmp/compressed_test/",
+					callbackToken: "4"
 				},
 				onReturn
 				);

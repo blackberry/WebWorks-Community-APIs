@@ -28,4 +28,12 @@ _self.extract = function (options, callback) {
 	exec(wrapped_callback, wrapped_callback, _ID, "extract", [options]);
 };
 
+_self.compress = function (options, callback) {
+
+	var wrapped_callback = function (data, response) {
+			callback(JSON.parse(data));
+		};
+	exec(wrapped_callback, wrapped_callback, _ID, "compress", [options]);
+};
+
 module.exports = _self;

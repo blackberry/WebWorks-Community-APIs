@@ -1,11 +1,11 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     id="com.blackberry.community.extractZipFile"
-    version="1.0.0">
+    version="1.1.0">
 
     <name>ExtractZipFile</name>
     <description>BlackBerry 10 Community Contributed API to unzip files</description>
     <license>Apache 2.0</license>
-    <author>Daniel Dressler</author>
+    <author>Daniel Dressler, Morgan Parlee</author>
 
     <js-module src="www/client.js">
         <clobbers target="community.extractZipFile" />
