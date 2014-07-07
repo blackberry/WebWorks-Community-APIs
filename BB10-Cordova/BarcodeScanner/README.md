@@ -18,12 +18,10 @@ or,
 
 Installation from source is the same but instead of the id ("com.blackberry.community.barcodescanner"), use the file system path to the source plugin folder.
 
-This feature depends on the blackberry.io which is installed with it. Permission for the camera is required, so add the following to your config.xml file.
-```xml
-<rim:permissions>
-	<rim:permit>use_camera</rim:permit>
-</rim:permissions>
-```
+This feature depends on the blackberry.io which is installed with it. 
+
+Permission for the camera is required, so a permission check will automatically be added to your application, and the user will be prompted to allow it.
+
 
 It's also recommended that you stop scanning if the app goes into the background. To respond to app state,  include the blackberry.app feauture
 
