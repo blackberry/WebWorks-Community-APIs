@@ -14,7 +14,7 @@
     <platform name="blackberry10">
         <source-file src="src/blackberry10/index.js" />
         <lib-file src="src/blackberry10/native/device/libBarcodeScanner.so" arch="device"/>
-        <lib-file src="src/blackberry10/native/device/libBarcodeScanner.so" arch="simulator"/>
+        <lib-file src="src/blackberry10/native/simulator/libBarcodeScanner.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
             <feature name="com.blackberry.community.barcodescanner" value="com.blackberry.community.barcodescanner" />
         </config-file>
