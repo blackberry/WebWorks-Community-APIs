@@ -132,18 +132,21 @@ module.exports = {
     }
 };
 
-getParameter = function (oArgs, sParam)
+// oArgs = json arg object
+// sParam = name of GA parameter
+// sKey = key to the value of sParam in oArgs
+getParameter = function (oArgs, sParam, sKey)
 {
     var output;
+    output = JSON.parse(decodeURIComponent(oArgs[sKey]));
 
-    if ((output = JSON.parse(decodeURIComponent(oArgs[sParam]))))
+    // All optional parameters, if not supplied by user, is set to "" in client.js
+    if ("" != output)
     {
-        return output;
+        output = "&" + sParam + "=" + output;
     }
-    else
-    {
-        return "";
-    }
+
+    return output;
 };
 
 // Send request to Google Anayltics based on tracking type
@@ -177,10 +180,9 @@ sendGARequest = function (trackType, args)
         {
             case "pageview":
                 optionString += "&t=pageview";
-
-                optionString += ("&dp=" + getParameter(args, "pageURL"));
-                //optionString += ("&dt=" + getParameter(args, "pageTitle"));
-                //optionString += ("&dh=" + getParameter(args, "hostname"));
+                optionString += getParameter(args, "dp", "pageURL");
+                optionString += getParameter(args, "dt", "pageTitle");
+                optionString += getParameter(args, "dh", "hostName");
 
                 break;
 

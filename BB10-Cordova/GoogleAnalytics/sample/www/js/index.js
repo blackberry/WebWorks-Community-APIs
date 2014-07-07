@@ -48,16 +48,23 @@ var app = {
 		app.testPluginCalls();
 	},
 	testPluginCalls: function() {
+		var sError;
 		if (community && community.googleanalyticsplugin) {
-			app.writeOut("Now with All 3 Property");
-			app.writeOut('AppName Property: ' + community.googleanalyticsplugin.appName);
-			app.writeOut('Setting AppName...');
+			app.writeOut("Properties of this plugin:");
 			community.googleanalyticsplugin.appName = 'BrandNew_App';
-			app.writeOut('Now AppName: ' + community.googleanalyticsplugin.appName);
+			app.writeOut('AppName: ' + community.googleanalyticsplugin.appName);
+			community.googleanalyticsplugin.uuid = "";
+			//community.googleanalyticsplugin.setRandomUuid();
 			app.writeOut('UUID: ' + community.googleanalyticsplugin.uuid);
 			app.writeOut('GA_Account: ' + community.googleanalyticsplugin.gaAccount);
 			app.writeOut('--------------');
-			app.writeOut(community.googleanalyticsplugin.trackPageview('/home', '', ''));
+			sError = community.googleanalyticsplugin.trackPageview('/home', '/andrew');
+			if ("" == sError)
+				app.writeOut("No Error.");
+			else
+				app.writeOut(sError);
+			//community.googleanalyticsplugin.lastPayload = "asdfasd";
+			app.writeOut(community.googleanalyticsplugin.lastPayload);
 		} else {
 			app.writeOut("GA not found??");
 		}
