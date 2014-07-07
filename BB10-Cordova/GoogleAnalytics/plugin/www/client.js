@@ -69,6 +69,7 @@ var _self = {},
             return result;
         }
     });
+
     // App name
     Object.defineProperty(_self, "appName", {
         get: function () {
@@ -95,6 +96,32 @@ var _self = {},
         }
     });
     
+    // last payload string sent
+    Object.defineProperty(_self, "lastPayload", {
+        get: function () {
+            var result,
+                success = function (data, response) {
+                    result = data;
+                },
+                fail = function (data, response) {
+                    console.log("Error: " + data);
+                };
+            exec(success, fail, _ID, "lastPayload", null);
+            return result;
+        },
+        set: function (arg) {
+            var result,
+                success = function (data, response) {
+                    result = data;
+                },
+                fail = function (data, response) {
+                    console.log("Error: " + data);
+                };
+            exec(success, fail, _ID, "lastPayload", {"value": arg });
+            return result;
+        }
+    });
+
 	Object.defineProperty(_self, "googleanalyticsProperty", {
 		get: function () {
 			var result,

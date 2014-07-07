@@ -20,6 +20,7 @@ var googleanalytics,
     m_uuid = "555556",
     m_gaAccount = "UA-50848230-1", // default...
     m_appName = "Default_AppName",
+    m_lastPayload = "",
    _utils = require("../../lib/utils");
 
 module.exports = {
@@ -70,13 +71,23 @@ module.exports = {
             result.ok(m_appName, false);
         }
     },
+    lastPayload: function (success, fail, args, env) {
+        var result = new PluginResult(args, env);
+        if (args && args["value"]) {
+            //result.noResult(false);
+            result.error("Cannot set lastPayload property", false);
+        } else {
+            result.ok(m_lastPayload, false);
+        }
+    },
 
     // Tracking functions
     trackPageview: function (success, fail, args, env) {
         var result = new PluginResult(args, env);
-        var sRequest = sendGARequest("pageview", args);
-        if (sRequest.length > 0)
-            result.ok(sRequest, false);
+        m_lastPayload = "";
+        m_lastPayload = sendGARequest("pageview", args);
+        if (m_lastPayload.length > 0)
+            result.ok("", false);
         else
             result.error("Pageview tracking error", false);
     },
@@ -126,7 +137,6 @@ getParameter = function (oArgs, sParam)
     var output;
 
     if ((output = JSON.parse(decodeURIComponent(oArgs[sParam]))))
-    //if ((output = oArgs[sParam]))
     {
         return output;
     }
