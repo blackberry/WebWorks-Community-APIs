@@ -18,10 +18,7 @@ var _self = {},
 	_ID = "com.blackberry.community.googleanalyticsplugin",
 	exec = cordova.require("cordova/exec");
 
-    // UUID, GA account and app name are required for sending any tracking.
-    // Note: Google documentation says app name is optional, but without it doesn't work.
-
-    // Unique user ID for tracking
+	// Unique user ID for tracking
     Object.defineProperty(_self, "uuid", {
         get: function () {
             var result,
@@ -97,7 +94,31 @@ var _self = {},
             return result;
         }
     });
-
+    
+	Object.defineProperty(_self, "googleanalyticsProperty", {
+		get: function () {
+			var result,
+				success = function (data, response) {
+					result = data;
+				},
+				fail = function (data, response) {
+					console.log("Error: " + data);
+				};
+			exec(success, fail, _ID, "googleanalyticsProperty", null);
+			return result;
+		},
+		set: function (arg) {
+			var result,
+				success = function (data, response) {
+					result = data;
+				},
+				fail = function (data, response) {
+					console.log("Error: " + data);
+				};
+			exec(success, fail, _ID, "googleanalyticsProperty", {"value": arg });
+			return result;
+		}
+	});
 
     // Different types of tracking for GA
     // All tracking functions return true if tracking request is successful.
@@ -122,91 +143,6 @@ var _self = {},
                 "pageTitle": pageTitle,
                 "hostName": hostName 
             });
-        }
-        return result;
-    };  
-
-    // Event tracking, &t=event, Category and action are required
-    _self.trackEvent = function (eventCategory, eventAction, eventLabel, eventValue) {
-        var result = "No category or action";
-
-        if (eventCategory && eventAction)
-        {
-            eventLabel = eventLabel || "";
-            eventValue = eventValue || "";
-            var success = function (data, response) {
-                    result = data;
-                },
-                fail = function (data, response) {
-                    console.log("Error: " + data);
-                    result = "Error: " + data;
-                };
-            exec(success, fail, _ID, "trackEvent", { 
-                "eventCategory": eventCategory,
-                "eventAction": eventAction,
-                "eventLabel": eventLabel,
-                "eventValue": eventValue
-            });
-        }
-        return result;
-    };
-
-    // Transaction tracking
-    // ID is required, others optional
-    _self.trackTransaction = function (tID, tAffil, tRevenue, tShipn, tTax, tCurr) {
-        var result = "No transaction ID";
-
-        if (tID)
-        {
-            tAffil = tAffil || "";
-            tRevenue = tRevenue || "";
-            tShipn = tShipn || "";
-            tTax = tTax || "";
-            tCurr = tCurr || "";
-            
-            var success = function (data, response) {
-                    result = data;
-                },
-                fail = function (data, response) {
-                    console.log("Error: " + data);
-                    result = "Error: " + data;
-                };
-            exec(success, fail, _ID, "trackEvent", { 
-                    "tID": tID,
-                    "tAffil": tAffil,
-                    "tRevenue": tRevenue,
-                    "tShipn": tShipn,
-                    "tTax": tTax,
-                    "tCurr": tCurr
-                });
-        }
-        return result;
-    };
-
-
-    // Item hit tracking,
-    // tID & iName is required, others optional
-    _self.trackItem = function (tID, iName, iPrice, iQuant) {
-        var result = "No transaction ID or item name";
-
-        if (tID && iName)
-        {
-            iPrice = iPrice || "";
-            iQuant = iQuant || "";
-            
-            var success = function (data, response) {
-                    result = data;
-                },
-                fail = function (data, response) {
-                    console.log("Error: " + data);
-                    result = "Error: " + data;
-                };
-            exec(success, fail, _ID, "trackEvent", { 
-                    "tID": tID,
-                    "iName": iName,
-                    "iPrice": iPrice,
-                    "iQuant": iQuant
-                });
         }
         return result;
     };
