@@ -148,7 +148,8 @@ var _self = {},
 	});
 
     // Different types of tracking for GA
-    // All tracking functions return true if tracking request is successful.
+    // All tracking functions return empty string if tracking request is successful,
+    // or return error message if any error occurs.
 
     // Pageview, &t=pageview, pageURL required
     _self.trackPageview = function (pageURL, pageTitle, hostName) {
@@ -165,7 +166,8 @@ var _self = {},
                     console.log("Error: " + data);
                     result = "Error: " + data;
                 };
-            exec(success, fail, _ID, "trackPageview", {
+            exec(success, fail, _ID, "trackAll", {
+                "trackType": "pageview",
                 "pageURL": pageURL, 
                 "pageTitle": pageTitle,
                 "hostName": hostName 

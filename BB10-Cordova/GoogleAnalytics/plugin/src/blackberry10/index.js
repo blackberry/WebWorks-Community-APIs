@@ -17,26 +17,22 @@
 var googleanalytics,
     resultObjs = {},
     threadCallback = null,
-    m_uuid = "555556",
-    m_gaAccount = "UA-50848230-1", // default...
+    m_uuid = "555556", // default
+    m_gaAccount = "", 
+    bAccountSet = false,
     m_appName = "Default_AppName",
     m_lastPayload = "",
    _utils = require("../../lib/utils");
 
 module.exports = {
 
-    // Code can be declared and used outside the module.exports object,
-    // but any functions to be called by client.js need to be declared
-    // here in this object.
-
-    // These methods call into JNEXT.Googleanalytics which handles the
-    // communication through the JNEXT plugin to googleanalytics_js.cpp
-
     // Object properties
-    uuid: function (success, fail, args, env) {
+    uuid: function (success, fail, args, env) 
+    {
         var result = new PluginResult(args, env);
         var value;
-        if (args && args["value"]) {
+        if (args && args["value"]) 
+        {
             value = JSON.parse(decodeURIComponent(args["value"]));
             m_uuid = value;
             // if passed in value is empty string, generate random UUID
@@ -45,38 +41,55 @@ module.exports = {
                 m_uuid = Math.round(Math.random()*2147483647);
             }
             result.noResult(false);
-        } else {
+        }
+        else 
+        {
             result.ok(m_uuid, false);
         }
     },
-    gaAccount: function (success, fail, args, env) {
+
+    gaAccount: function (success, fail, args, env) 
+    {
         var result = new PluginResult(args, env);
         var value;
-        if (args && args["value"]) {
+        if (args && args["value"]) 
+        {
             value = JSON.parse(decodeURIComponent(args["value"]));
             m_gaAccount = value;
+            bAccountSet = true;
             result.noResult(false);
-        } else {
-            result.ok(m_gaAccount, false);
+        } 
+        else 
+        {
+            result.ok((bAccountSet? m_gaAccount: "Google Anayltics account not set"), false);
         }
     },
-    appName: function (success, fail, args, env) {
+
+    appName: function (success, fail, args, env) 
+    {
         var result = new PluginResult(args, env);
         var value;
-        if (args && args["value"]) {
+        if (args && args["value"]) 
+        {
             value = JSON.parse(decodeURIComponent(args["value"]));
             m_appName = value;
             result.noResult(false);
-        } else {
+        } 
+        else 
+        {
             result.ok(m_appName, false);
         }
     },
-    lastPayload: function (success, fail, args, env) {
+
+    lastPayload: function (success, fail, args, env) 
+    {
         var result = new PluginResult(args, env);
-        if (args && args["value"]) {
-            //result.noResult(false);
+        if (args && args["value"]) 
+        {
             result.error("Cannot set lastPayload property", false);
-        } else {
+        } 
+        else 
+        {
             result.ok(m_lastPayload, false);
         }
     },
@@ -119,6 +132,27 @@ module.exports = {
             result.error("Item hit tracking error", false);
     },
 
+    // Return client call with error message; empty string is no error
+    // Save last xmlhttprequest payload to m_lastPayload
+    trackAll: function (success, fail, args, env) 
+    {
+        var result = new PluginResult(args, env);
+        if (!bAccountSet) 
+        {
+            result.error("need to set Google Anayltics account first", false);
+        } 
+        else 
+        {
+            var sTrackType = JSON.parse(decodeURIComponent(args["trackType"]));
+            m_lastPayload = "";
+            m_lastPayload = sendGARequest(sTrackType, args);
+            if (m_lastPayload.length > 0)
+                result.ok("", false);
+            else
+                result.error("error in " + sTrackType + " tracking", false);
+        }
+    },
+
     googleanalyticsProperty: function (success, fail, args, env) {
         var result = new PluginResult(args, env);
         var value;
@@ -158,7 +192,7 @@ sendGARequest = function (trackType, args)
         status = "",
         message = "",
         optionString = "",
-        jsonArgs = "default json args",
+        jsonArgs = "",
         isOK = true;
 
     // check if xmlhttprequest is available?
@@ -208,7 +242,3 @@ sendGARequest = function (trackType, args)
 
     return ((isOK)? optionString: "");
 };
-///////////////////////////////////////////////////////////////////
-// JavaScript wrapper for JNEXT plugin for connection
-///////////////////////////////////////////////////////////////////
-

@@ -53,17 +53,20 @@ var app = {
 			app.writeOut("Properties of this plugin:");
 			community.googleanalyticsplugin.appName = 'BrandNew_App';
 			app.writeOut('AppName: ' + community.googleanalyticsplugin.appName);
-			community.googleanalyticsplugin.uuid = "";
-			//community.googleanalyticsplugin.setRandomUuid();
+			community.googleanalyticsplugin.uuid = ""; // Setting UUID to empty string trigger a random UUID
 			app.writeOut('UUID: ' + community.googleanalyticsplugin.uuid);
+			app.writeOut('Setting GA_Account number UA-xxxxxxxx-x.');
+			community.googleanalyticsplugin.gaAccount = "UA-50848230-1"; // Sign-up for your own account
 			app.writeOut('GA_Account: ' + community.googleanalyticsplugin.gaAccount);
 			app.writeOut('--------------');
-			sError = community.googleanalyticsplugin.trackPageview('/home', '/andrew');
+			app.writeOut('Sending track pageview:')
+			sError = community.googleanalyticsplugin.trackPageview('/home', '/andrew'); 
+			// tracking calls return error message if any error is encountered.
 			if ("" == sError)
-				app.writeOut("No Error.");
+				app.writeOut("No Error!!");
 			else
 				app.writeOut(sError);
-			//community.googleanalyticsplugin.lastPayload = "asdfasd";
+
 			app.writeOut(community.googleanalyticsplugin.lastPayload);
 		} else {
 			app.writeOut("GA not found??");
