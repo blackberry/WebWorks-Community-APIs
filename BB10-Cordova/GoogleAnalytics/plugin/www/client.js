@@ -153,7 +153,7 @@ var _self = {},
 
     // Pageview, &t=pageview, pageURL required
     _self.trackPageview = function (pageURL, pageTitle, hostName) {
-        var result = 'No pageURL';
+        var result = 'Missing pageURL parameter';
 
         if (pageURL)
         {
@@ -175,5 +175,93 @@ var _self = {},
         }
         return result;
     };
+
+    // Event tracking, &t=event, Category and action are required
+    _self.trackEvent = function (eventCategory, eventAction, eventLabel, eventValue) {
+        var result = 'Missing category or action parameter';
+
+        if (eventCategory && eventAction)
+        {
+            eventLabel = eventLabel || "";
+            eventValue = eventValue || "";
+            var success = function (data, response) {
+                    result = data;
+                },
+                fail = function (data, response) {
+                    console.log("Error: " + data);
+                    result = "Error: " + data;
+                };
+            exec(success, fail, _ID, "trackAll", { 
+                "trackType": "event",
+                "eventCategory": eventCategory,
+                "eventAction": eventAction,
+                "eventLabel": eventLabel,
+                "eventValue": eventValue
+            });
+        }
+        return result;
+    };
+
+    // Transaction tracking
+    // ID is required, others optional
+    _self.trackTransaction = function (tID, tAffil, tRevenue, tShipn, tTax, tCurr) {
+        var result = 'Missing transaction ID';
+
+        if (tID)
+        {
+            tAffil = tAffil || "";
+            tRevenue = tRevenue || "";
+            tShipn = tShipn || "";
+            tTax = tTax || "";
+            tCurr = tCurr || "";
+            
+            var success = function (data, response) {
+                    result = data;
+                },
+                fail = function (data, response) {
+                    console.log("Error: " + data);
+                    result = "Error: " + data;
+                };
+            exec(success, fail, _ID, "trackAll", { 
+                    "trackType": "transaction",
+                    "tID": tID,
+                    "tAffil": tAffil,
+                    "tRevenue": tRevenue,
+                    "tShipn": tShipn,
+                    "tTax": tTax,
+                    "tCurr": tCurr
+                });
+        }
+        return result;
+    };
+
+    // Item hit tracking,
+    // tID & iName is required, others optional
+    _self.trackItem = function (tID, iName, iPrice, iQuant) {
+        var result = 'Missing transaction ID or item name';
+
+        if (tID && iName)
+        {
+            iPrice = iPrice || "";
+            iQuant = iQuant || "";
+            
+            var success = function (data, response) {
+                    result = data;
+                },
+                fail = function (data, response) {
+                    console.log("Error: " + data);
+                    result = "Error: " + data;
+                };
+            exec(success, fail, _ID, "trackAll", { 
+                    "trackType": "item",
+                    "tID": tID,
+                    "iName": iName,
+                    "iPrice": iPrice,
+                    "iQuant": iQuant
+                });
+        }
+        return result;
+    };
+
 
 module.exports = _self;

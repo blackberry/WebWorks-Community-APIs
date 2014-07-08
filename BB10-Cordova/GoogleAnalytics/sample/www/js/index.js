@@ -18,25 +18,29 @@
  */
 var app = {
 	// Application Constructor
-	initialize: function() {
+	initialize: function() 
+	{
 		this.bindEvents();
 	},
 	// Bind Event Listeners
 	//
 	// Bind any events that are required on startup. Common events are:
 	// 'load', 'deviceready', 'offline', and 'online'.
-	bindEvents: function() {
+	bindEvents: function() 
+	{
 		document.addEventListener('deviceready', this.onDeviceReady, false);
 	},
 	// deviceready Event Handler
 	//
 	// The scope of 'this' is the event. In order to call the 'receivedEvent'
 	// function, we must explicity call 'app.receivedEvent(...);'
-	onDeviceReady: function() {
+	onDeviceReady: function() 
+	{
 		app.receivedEvent('deviceready');
 	},
 	// Update DOM on a Received Event
-	receivedEvent: function(id) {
+	receivedEvent: function(id) 
+	{
 		var parentElement = document.getElementById(id);
 		var listeningElement = parentElement.querySelector('.listening');
 		var receivedElement = parentElement.querySelector('.received');
@@ -47,32 +51,57 @@ var app = {
 		console.log('Received Event: ' + id);
 		app.testPluginCalls();
 	},
-	testPluginCalls: function() {
+
+	testPluginCalls: function() 
+	{
 		var sError;
-		if (community && community.googleanalyticsplugin) {
+		if (community && community.googleanalyticsplugin) 
+		{
 			app.writeOut("Properties of this plugin:");
 			community.googleanalyticsplugin.appName = 'BrandNew_App';
 			app.writeOut('AppName: ' + community.googleanalyticsplugin.appName);
-			community.googleanalyticsplugin.uuid = ""; // Setting UUID to empty string trigger a random UUID
+			// Setting UUID to empty string trigger a random UUID
+			community.googleanalyticsplugin.uuid = ""; 
 			app.writeOut('UUID: ' + community.googleanalyticsplugin.uuid);
-			app.writeOut('Setting GA_Account number UA-xxxxxxxx-x.');
-			community.googleanalyticsplugin.gaAccount = "UA-50848230-1"; // Sign-up for your own account
+			// Sign-up for your own account
+			app.writeOut('Setting GA_Account number UA-xxxxxxxx-x.');			
+			community.googleanalyticsplugin.gaAccount = "UA-50848230-1"; 
 			app.writeOut('GA_Account: ' + community.googleanalyticsplugin.gaAccount);
 			app.writeOut('--------------');
-			app.writeOut('Sending track pageview:')
+			// Test tracking...
+			app.writeOut('Tracking pageview:');
 			sError = community.googleanalyticsplugin.trackPageview('/home', '/andrew'); 
 			// tracking calls return error message if any error is encountered.
-			if ("" == sError)
-				app.writeOut("No Error!!");
-			else
-				app.writeOut(sError);
-
+			app.writeOut(("" == sError)? "No Error!": sError);
 			app.writeOut(community.googleanalyticsplugin.lastPayload);
-		} else {
+
+			app.writeOut('--------------');
+			app.writeOut('Tracking event:');
+			sError = community.googleanalyticsplugin.trackEvent('/home', '/andrew'); 
+			app.writeOut(("" == sError)? "No Error!": sError);
+			app.writeOut(community.googleanalyticsplugin.lastPayload);
+
+			app.writeOut('--------------');
+			app.writeOut('Tracking event:');
+			sError = community.googleanalyticsplugin.trackTransaction('/home', '/andrew'); 
+			app.writeOut(("" == sError)? "No Error!": sError);
+			app.writeOut(community.googleanalyticsplugin.lastPayload);
+
+			app.writeOut('--------------');
+			app.writeOut('Tracking event:');
+			sError = community.googleanalyticsplugin.trackItem('/home', '/andrew'); 
+			app.writeOut(("" == sError)? "No Error!": sError);
+			app.writeOut(community.googleanalyticsplugin.lastPayload);
+
+		} 
+		else 
+		{
 			app.writeOut("GA not found??");
 		}
 	},
-	writeOut: function(message) {
+
+	writeOut: function(message) 
+	{
 		var output = document.getElementById('results');
 		output.innerText = output.innerText + message;
 		output.appendChild(document.createElement('br'));

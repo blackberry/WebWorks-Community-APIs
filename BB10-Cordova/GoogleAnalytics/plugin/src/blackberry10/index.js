@@ -217,7 +217,32 @@ sendGARequest = function (trackType, args)
                 optionString += getParameter(args, "dp", "pageURL");
                 optionString += getParameter(args, "dt", "pageTitle");
                 optionString += getParameter(args, "dh", "hostName");
+                break;
 
+            case "event":
+                optionString += "&t=event";
+                optionString += getParameter(args, "&ec", "eventCategory");
+                optionString += getParameter(args, "&ea", "eventAction");
+                optionString += getParameter(args, "&el", "eventLabel");
+                optionString += getParameter(args, "&ev", "eventValue");
+                break;
+
+            case "transaction":
+                optionString += "&t=transaction";
+                optionString += getParameter(args, "&ti", "tID");
+                optionString += getParameter(args, "&ta", "tAffil");
+                optionString += getParameter(args, "&tr", "tRevenue");
+                optionString += getParameter(args, "&ts", "tShipn");
+                optionString += getParameter(args, "&tt", "tTax");
+                optionString += getParameter(args, "&cu", "tCurr");
+                break;
+
+            case "item":
+                optionString += "&t=item";
+                optionString += getParameter(args, "&ti", "tID");
+                optionString += getParameter(args, "&in", "iName");
+                optionString += getParameter(args, "&ip", "iPrice");
+                optionString += getParameter(args, "&iq", "iQuant");
                 break;
 
             default:
@@ -231,8 +256,6 @@ sendGARequest = function (trackType, args)
             xmlhttp.send(optionString);
             //xmlhttp.send("v=1&tid=UA-50848230-1&cid=1244382521&an=myapp2&av=1.0&t=transaction&ti=1111&tr=19.99&cu=USD");
         }
-
-        // TODO: Add check for non-OK xtml status? But GA always return status OK unless there is connection timeout.
 
     }
     else
