@@ -26,6 +26,7 @@
 #include "barcodescanner_ndk.hpp"
 #include "barcodescanner_js.hpp"
 
+#include <string>
 #include <sstream>
 
 using namespace zxing;
@@ -124,11 +125,13 @@ static uint32_t rotation = 0;
             Json::FastWriter writer;
             Json::Value root;
             root["value"] = newBarcodeData;
-            std::string event = "community.barcodescanner.codefound.native";
 
             // notify caller that a valid QR code has been decoded
             if ( eventDispatcher != NULL){
-            	 eventDispatcher->NotifyEvent(event + " " + writer.write(root));
+            	std::string event = "community.barcodescanner.codefound.native";
+            	event.insert(0, " ");
+            	event.insert(0, (char *) arg);
+            	eventDispatcher->NotifyEvent(event + " " + writer.write(root));
             }
 
 
@@ -220,9 +223,12 @@ static uint32_t rotation = 0;
 
 			// Send the file path for loading in the front end since JNEXT only handles strings
 			root["frame"]  = tempFilePath;
-			std::string event = "community.barcodescanner.frameavailable.native";
 			if ( eventDispatcher != NULL ){
-				 eventDispatcher->NotifyEvent(event + " " + writer.write(root));
+				std::string event = "community.barcodescanner.frameavailable.native";
+				event.insert(0, " ");
+				event.insert(0, (char *) arg);
+
+				eventDispatcher->NotifyEvent(event + " " + writer.write(root));
 			}
        	}
 
@@ -232,15 +238,16 @@ static uint32_t rotation = 0;
      * Constructor for Barcode Scanner NDK class
      */
     BarcodeScannerNDK::BarcodeScannerNDK(BarcodeScannerJS *parent) {
-    	m_pParent->getLog()->debug("Constructor");
+    	cbId = new char[1000];
         m_pParent     = parent;
         eventDispatcher = parent;
         mCameraHandle = CAMERA_HANDLE_INVALID;
-    	m_pParent->getLog()->debug("Constructor end");
-
     }
 
-    BarcodeScannerNDK::~BarcodeScannerNDK() {}
+    BarcodeScannerNDK::~BarcodeScannerNDK() {
+    	delete[] cbId;
+    }
+
 
     /*
      * BarcodeScannerNDK::startRead
@@ -248,15 +255,18 @@ static uint32_t rotation = 0;
      * This method is called to start a QR code read. A connection is opened to the device camera
      * and the photo viewfinder is started.
      */
-    int BarcodeScannerNDK::startRead() {
-    	m_pParent->getLog()->debug("Start Read");
-        std::string errorEvent = "community.barcodescanner.errorfound.native";
+    int BarcodeScannerNDK::startRead(const string &callbackId) {
+    	std::string errorEvent = "community.barcodescanner.errorfound.native";
         Json::FastWriter writer;
         Json::Value root;
+
+        std::copy(callbackId.begin(), callbackId.end(), this->cbId);
+        this->cbId[callbackId.size()] = '\0';
 
         camera_error_t err;
         // Open the camera first before running any operations on it
         err = camera_open(CAMERA_UNIT_REAR,CAMERA_MODE_RW | CAMERA_MODE_ROLL,&mCameraHandle);
+
         if ( err != CAMERA_EOK){
 #ifdef DEBUG
             fprintf(stderr, " Ran into an issue when initializing the camera = %d\n ", err);
@@ -264,7 +274,7 @@ static uint32_t rotation = 0;
             root["state"] = "Open Camera";
             root["error"] = err;
             root["description"] = getCameraErrorDesc( err );
-            m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
+            m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
             return EIO;
         }
 
@@ -293,7 +303,7 @@ static uint32_t rotation = 0;
 			root["state"] = "Set VF Props";
 			root["error"] = err;
 			root["description"] = getCameraErrorDesc( err );
-			m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
+			m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
 			return EIO;
 		}
 
@@ -307,12 +317,12 @@ static uint32_t rotation = 0;
 			root["state"] = "Set Cam Props";
 			root["error"] = err;
 			root["description"] = getCameraErrorDesc( err );
-			m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
+			m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
 			return EIO;
 		}
 
 		// Starting viewfinder up which will call the viewfinder callback - this gets the NV12 images for scanning
-        err = camera_start_photo_viewfinder( mCameraHandle, &viewfinder_callback, NULL, NULL);
+        err = camera_start_photo_viewfinder( mCameraHandle, &viewfinder_callback, NULL, this->cbId);
         if ( err != CAMERA_EOK) {
 #ifdef DEBUG
             fprintf(stderr, "Ran into a strange issue when starting up the camera viewfinder\n");
@@ -320,7 +330,7 @@ static uint32_t rotation = 0;
             root["state"] = "ViewFinder Start";
             root["error"] = err;
             root["description"] = getCameraErrorDesc( err );
-            m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
+            m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
             return EIO;
         }
 
@@ -333,12 +343,12 @@ static uint32_t rotation = 0;
 			root["state"] = "Set Focus Mode";
 			root["error"] = err;
 			root["description"] =  getCameraErrorDesc( err );
-			m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
+			m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
 			return EIO;
 		}
 
 		// Now start capturing burst frames in JPEG format for sending to the front end.
-		err = camera_start_burst(mCameraHandle, NULL, NULL, NULL, &image_callback, NULL);
+		err = camera_start_burst(mCameraHandle, NULL, NULL, NULL, &image_callback, this->cbId);
 		if ( err != CAMERA_EOK) {
 #ifdef DEBUG
 			fprintf(stderr, "Ran into an issue when starting up the camera in burst mode\n");
@@ -346,13 +356,13 @@ static uint32_t rotation = 0;
 			root["state"] = "Start Camera Burst";
 			root["error"] = err;
 			root["description"] = getCameraErrorDesc( err );
-			m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
+			m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
 			return EIO;
 		}
 
         std::string successEvent = "community.barcodescanner.started.native";
         root["successful"] = true;
-        m_pParent->NotifyEvent(successEvent + " " + writer.write(root));
+        m_pParent->NotifyEvent(callbackId + " " + successEvent + " " + writer.write(root));
         return EOK;
     }
 
@@ -363,8 +373,7 @@ static uint32_t rotation = 0;
      * This method is called to clean up following successful detection of a barcode.
      * Calling this method will stop the viewfinder and close an open connection to the device camera.
      */
-    int BarcodeScannerNDK::stopRead() {
-
+    int BarcodeScannerNDK::stopRead(const string &callbackId) {
     	std::string errorEvent = "community.barcodescanner.errorfound.native";
 		Json::FastWriter writer;
 		Json::Value root;
@@ -378,7 +387,7 @@ static uint32_t rotation = 0;
 #endif
 			root["error"] = err;
 			root["description"] = getCameraErrorDesc( err );
-			m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
+			m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
 			return EIO;
 		}
 
@@ -390,7 +399,7 @@ static uint32_t rotation = 0;
 #endif
             root["error"] = err;
 		    root["description"] = getCameraErrorDesc( err );
-		    m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
+		    m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
             return EIO;
         }
 
@@ -402,14 +411,14 @@ static uint32_t rotation = 0;
 #endif
             root["error"] = err;
             root["description"] = getCameraErrorDesc( err );
-            m_pParent->NotifyEvent(errorEvent + " " + writer.write(root));
+            m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
             return EIO;
         }
 
         std::string successEvent = "community.barcodescanner.ended.native";
         root["successful"] = true;
         mCameraHandle = CAMERA_HANDLE_INVALID;
-        m_pParent->NotifyEvent(successEvent + " " + writer.write(root));
+        m_pParent->NotifyEvent(callbackId + " " + successEvent + " " + writer.write(root));
 
         return EOK;
     }

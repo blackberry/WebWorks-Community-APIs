@@ -3,13 +3,7 @@
 	<storageModule moduleId="org.eclipse.cdt.core.settings">
 		<cconfiguration id="com.qnx.qcc.configuration.sharedLib.release.608922875.1009704567">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.sharedLib.release.608922875.1009704567" moduleId="org.eclipse.cdt.core.settings" name="device">
-				<externalSettings>
-					<externalSetting>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Cordova-Template"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Cordova-Template/device"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="Cordova-Template" srcPrefixMapping="" srcRootPath=""/>
-					</externalSetting>
-				</externalSettings>
+				<externalSettings/>
 				<extensions>
 					<extension id="com.qnx.tools.ide.qde.core.QDELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
@@ -18,16 +12,17 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="" id="com.qnx.qcc.configuration.sharedLib.release.608922875.1009704567" name="device" parent="com.qnx.qcc.configuration.sharedLib.release">
+				<configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="" errorParsers="com.qnx.tools.ide.qde.core.QDELinkerErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser" id="com.qnx.qcc.configuration.sharedLib.release.608922875.1009704567" name="device" parent="com.qnx.qcc.configuration.sharedLib.release" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="" prebuildStep="">
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.release.608922875.1009704567." name="/" resourcePath="">
-						<toolChain id="com.qnx.qcc.toolChain.2215983" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+						<toolChain errorParsers="" id="com.qnx.qcc.toolChain.2215983" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<option id="com.qnx.qcc.option.cpu.315540759" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1359109141" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/Template/Device-Release}" id="com.qnx.nto.938326560" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
-							<tool id="com.qnx.qcc.tool.compiler.242697771" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+							<builder buildPath="${workspace_loc:/Template/Device-Release}" errorParsers="" id="com.qnx.nto.938326560" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool command="qcc" commandLinePattern="${COMMAND}  ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS} ${FLAGS}" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="com.qnx.qcc.tool.compiler.242697771" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.shared.553244928" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.optlevel.2070537906" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.2" valueType="enumerated"/>
 								<option id="com.qnx.qcc.option.compiler.includePath.1483355415" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/img"/>
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
@@ -39,19 +34,27 @@
 								<option id="com.qnx.qcc.option.compiler.qccoptions.1015003128" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-frecord-gcc-switches"/>
 								</option>
+								<option id="com.qnx.qcc.option.compiler.warningLevel.331428330" name="Warning Level (-w)" superClass="com.qnx.qcc.option.compiler.warningLevel" value="com.qnx.qcc.option.warningLevel.9" valueType="enumerated"/>
 								<inputType id="com.qnx.qcc.inputType.compiler.1443568066" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
-							<tool id="com.qnx.qcc.tool.assembler.1996828008" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+							<tool command="qcc" commandLinePattern="${COMMAND}  ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS} ${FLAGS}" errorParsers="" id="com.qnx.qcc.tool.assembler.1996828008" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.warningLevel.1519589523" name="Warning Level (-w)" superClass="com.qnx.qcc.option.assembler.warningLevel" value="com.qnx.qcc.option.warningLevel.9" valueType="enumerated"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.116798417" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
-							<tool id="com.qnx.qcc.tool.linker.871546588" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+							<tool command="qcc" commandLinePattern="${COMMAND}  ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS} ${FLAGS}" errorParsers="com.qnx.tools.ide.qde.core.QDELinkerErrorParser;org.eclipse.cdt.core.GLDErrorParser" id="com.qnx.qcc.tool.linker.871546588" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
 								<option id="com.qnx.qcc.option.linker.shared.915102752" name="Shared (-shared)" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1049529253" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1157664997" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.1316432206" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
+								<option id="com.qnx.qcc.option.linker.libraries.1316432206" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="camapi"/>
+									<listOptionValue builtIn="false" value="zxing"/>
+									<listOptionValue builtIn="false" value="img"/>
+									<listOptionValue builtIn="false" value="slog2"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.warningLevel.2067914469" name="Warning Level (-w)" superClass="com.qnx.qcc.option.linker.warningLevel" value="com.qnx.qcc.option.warningLevel.9" valueType="enumerated"/>
 								<inputType id="com.qnx.qcc.inputType.linker.1028572887" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -70,13 +73,7 @@
 		</cconfiguration>
 		<cconfiguration id="com.qnx.qcc.configuration.sharedLib.debug.193597202.362186091">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.sharedLib.debug.193597202.362186091" moduleId="org.eclipse.cdt.core.settings" name="simulator">
-				<externalSettings>
-					<externalSetting>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Cordova-Template"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Cordova-Template/simulator"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="Cordova-Template" srcPrefixMapping="" srcRootPath=""/>
-					</externalSetting>
-				</externalSettings>
+				<externalSettings/>
 				<extensions>
 					<extension id="com.qnx.tools.ide.qde.core.QDELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
@@ -95,6 +92,7 @@
 								<option id="com.qnx.qcc.option.compiler.optlevel.1164238904" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
 								<option id="com.qnx.qcc.option.compile.debug.3716470" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.includePath.306305432" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/img"/>
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
@@ -117,7 +115,12 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.9141791" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.220836649" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
+								<option id="com.qnx.qcc.option.linker.libraries.220836649" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="zxing"/>
+									<listOptionValue builtIn="false" value="camapi"/>
+									<listOptionValue builtIn="false" value="img"/>
+									<listOptionValue builtIn="false" value="slog2"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.167117375" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -136,64 +139,78 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="Template.null.138005006" name="Template"/>
+		<project id="BarcodeScanner.null.629823540" name="BarcodeScanner"/>
 	</storageModule>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Simulator-Profile">
-			<resource resourceType="PROJECT" workspacePath="/Template"/>
-		</configuration>
-		<configuration configurationName="simulator">
-			<resource resourceType="PROJECT" workspacePath="/Template"/>
-		</configuration>
-		<configuration configurationName="Simulator-Coverage">
-			<resource resourceType="PROJECT" workspacePath="/Template"/>
-		</configuration>
-		<configuration configurationName="Device-Profile">
-			<resource resourceType="PROJECT" workspacePath="/Template"/>
+			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
 		</configuration>
 		<configuration configurationName="Device-Debug">
-			<resource resourceType="PROJECT" workspacePath="/Template"/>
+			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
+		</configuration>
+		<configuration configurationName="simulator"/>
+		<configuration configurationName="Simulator-Coverage">
+			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
+		</configuration>
+		<configuration configurationName="Device-Profile">
+			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
 		</configuration>
 		<configuration configurationName="Simulator-Debug">
-			<resource resourceType="PROJECT" workspacePath="/Template"/>
+			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
 		</configuration>
-		<configuration configurationName="device">
-			<resource resourceType="PROJECT" workspacePath="/Template"/>
-		</configuration>
+		<configuration configurationName="device"/>
 		<configuration configurationName="Device-Release">
-			<resource resourceType="PROJECT" workspacePath="/Template"/>
+			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
 		</configuration>
 		<configuration configurationName="Device-Coverage">
-			<resource resourceType="PROJECT" workspacePath="/Template"/>
+			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
 		</configuration>
 	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.profile.941124085">
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.coverage.1963950149">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.coverage.1806890017">
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.profile.1521124627">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.debug.193597202">
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.profile.1662874485">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.debug.1877214659">
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.release.1167756743">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.profile.27502649">
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.coverage.1920932411">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.release.608922875">
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.release.274485450">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.release.608922875.1009704567">
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.debug.823677416">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.coverage.537092296">
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.debug.606841429">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.profile.783070498">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.coverage.89043708">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.profile.815111702">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.debug.1815235065">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.debug.2137677126">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.coverage.1030515335">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>
