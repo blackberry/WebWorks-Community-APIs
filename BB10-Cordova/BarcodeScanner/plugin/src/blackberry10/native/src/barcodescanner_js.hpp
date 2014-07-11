@@ -20,6 +20,7 @@
 #include "../public/plugin.h"
 #include "barcodescanner_ndk.hpp"
 #include "Logger.hpp"
+#include <string>
 
 class BarcodeScannerJS: public JSExt {
 
@@ -30,10 +31,10 @@ public:
     virtual std::string InvokeMethod(const std::string& command);
     void NotifyEvent(const std::string& event);
     webworks::Logger* getLog();
+    webworks::BarcodeScannerNDK *m_pBarcodeScannerController;
 private:
     std::string m_id;
     // Definition of a pointer to the actual native extension code
-    webworks::BarcodeScannerNDK *m_pBarcodeScannerController;
     webworks::Logger *m_pLogger;
 };
 

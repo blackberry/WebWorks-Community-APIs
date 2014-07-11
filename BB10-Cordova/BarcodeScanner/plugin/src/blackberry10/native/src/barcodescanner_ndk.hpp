@@ -18,6 +18,7 @@
 #define BARCODESCANNERNDK_HPP_
 
 #include <camera/camera_api.h>
+#include <string>
 
 class BarcodeScannerJS;
 
@@ -28,15 +29,13 @@ public:
     explicit BarcodeScannerNDK(BarcodeScannerJS *parent = NULL);
     virtual ~BarcodeScannerNDK();
 
-    int stopRead();
-    int startRead();
-
-
+    int startRead(const std::string& callbackId);
+    int stopRead(const std::string& callbackId);
 
 private:
     BarcodeScannerJS *m_pParent;
     camera_handle_t mCameraHandle;
-
+    char* cbId;
 };
 
 } // namespace webworks
