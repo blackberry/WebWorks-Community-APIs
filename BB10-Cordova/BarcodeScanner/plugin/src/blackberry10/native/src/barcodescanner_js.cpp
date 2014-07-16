@@ -25,6 +25,7 @@ using namespace std;
  */
 BarcodeScannerJS::BarcodeScannerJS(const std::string& id) :
         m_id(id) {
+	m_pLogger = new webworks::Logger("BarcodeScannerJS", this);
     m_pBarcodeScannerController = new webworks::BarcodeScannerNDK(this);
 }
 
@@ -33,7 +34,13 @@ BarcodeScannerJS::BarcodeScannerJS(const std::string& id) :
  */
 BarcodeScannerJS::~BarcodeScannerJS() {
     if (m_pBarcodeScannerController)
-        delete m_pBarcodeScannerController;
+    		delete m_pBarcodeScannerController;
+	if (m_pLogger)
+		delete m_pLogger;
+}
+
+webworks::Logger* BarcodeScannerJS::getLog() {
+	return m_pLogger;
 }
 
 /**
@@ -70,17 +77,19 @@ bool BarcodeScannerJS::CanDelete() {
  * for invoking native code. This method is triggered when JNext.invoke is
  * called on the JavaScript side with this native objects id.
  */
-string BarcodeScannerJS::InvokeMethod(const string& command) {
+string BarcodeScannerJS::InvokeMethod(const std::string& command) {
     // command appears with parameters following after a space
-    int index = command.find_first_of(" ");
-    std::string strCommand = command.substr(0, index);
-    std::string arg = command.substr(index + 1, command.length());
+	size_t commandIndex = command.find_first_of(" ");
+	std::string strCommand = command.substr(0, commandIndex);
+	size_t callbackIndex = command.find_first_of(" ", commandIndex + 1);
+	std::string callbackId = command.substr(commandIndex + 1, callbackIndex - commandIndex - 1);
+	std::string arg = command.substr(callbackIndex + 1, command.length());
 
     if (strCommand == "startRead") {
-        m_pBarcodeScannerController->startRead();
+        m_pBarcodeScannerController->startRead(callbackId);
     }
     else if (strCommand == "stopRead") {
-        m_pBarcodeScannerController->stopRead();
+        m_pBarcodeScannerController->stopRead(callbackId);
     }
 
     strCommand.append(";");

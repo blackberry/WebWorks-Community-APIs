@@ -67,7 +67,7 @@
 				sleepPrevented = true;
 			}
 		}
-		exec(success, failure, _ID, "startRead", null);
+		exec(success, failure, _ID, "startRead", null, false);
 	};
 
 	BarcodeScanner.prototype.stopRead = function (succ, fail) {
@@ -93,7 +93,7 @@
 				sleepPrevented = false;
 			}
 		}
-		exec(success, failure, _ID, "stopRead", null)
+		exec(success, failure, _ID, "stopRead", null, false)
 	};
 
 	function readFile(filename) {
