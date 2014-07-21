@@ -214,6 +214,11 @@ static uint32_t rotation = 0;
 			} else {
 				dst = img;
 			}
+
+			// Set quality of output
+            dst.quality = 75;
+            dst.flags = dst.flags | IMG_QUALITY;
+
 			int writeResult = img_write_file( ilib, tempFilePath.c_str(), NULL, &dst );
 
 			img_lib_detach(ilib);
