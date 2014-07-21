@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Research In Motion Limited.
+ * Copyright 2013-2014 BlackBerry Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -217,6 +217,11 @@ static uint32_t rotation = 0;
 			} else {
 				dst = img;
 			}
+
+			// Set quality of output
+			dst.quality = 75;
+			dst.flags = dst.flags | IMG_QUALITY;
+
 			int writeResult = img_write_file( ilib, tempFilePath.c_str(), NULL, &dst );
 
 			img_lib_detach(ilib);
