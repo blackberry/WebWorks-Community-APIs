@@ -145,16 +145,16 @@
 		<configuration configurationName="Simulator-Profile">
 			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
 		</configuration>
+		<configuration configurationName="Device-Profile">
+			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
+		</configuration>
+		<configuration configurationName="Simulator-Coverage">
+			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
+		</configuration>
 		<configuration configurationName="Device-Debug">
 			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
 		</configuration>
 		<configuration configurationName="simulator"/>
-		<configuration configurationName="Simulator-Coverage">
-			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
-		</configuration>
-		<configuration configurationName="Device-Profile">
-			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
-		</configuration>
 		<configuration configurationName="Simulator-Debug">
 			<resource resourceType="PROJECT" workspacePath="/BarcodeScanner"/>
 		</configuration>
