@@ -24,12 +24,12 @@ Uncaught Exception Handler is responsible for reporting app crashes. Specificall
 
 AppLink Manager is responsible for handling operations related to AppLink, one of the key features that Distimo provides (More information required here).
 
+(In addition to the above, I have also implemented Debug Logger, which helps you print out values of some variables or structures, for example, data stored in the local storage.)
 
-## Notes and Tasks
 
-In addition to the above, I have also implemented Debug Logger, which helps you print out values of some variables or structures, for example, data stored in the local storage. 
+## Pending Tasks
 
-There are four tasks that needs potential work:
+There are five tasks that needs potential work:
 
 1. Try actually sending events to Distimo server: Plase see the implementation of the Event Manager. All the required bits and pieces are there, but they have never been actually tested yet due some barriers*. Though I don't think it will be a big problem, as the implementation is very straightforward. You will need a Distimo account and a Blackberry Vendor account.
 
