@@ -1,6 +1,8 @@
 Cordova Distimo Analytics Plugin For Blackberry 10 (incomplete)
 ===============================================================
 
+Important Note: the source file of the plugin is hosted [here](https://github.com/blackberry/DistimoSDK-PhoneGap-Plugin).
+
 ## Overview
 
 This plugin was written based on the Android and iOS versions of the [Distimo SDK](https://github.com/distimo/DistimoSDK-PhoneGap-Plugin/tree/master/src).
@@ -29,20 +31,15 @@ In addition to the above, I have also implemented Debug Logger, which helps you 
 
 There are four tasks that needs potential work:
 
-1. Try actually sending events to Distimo server
-Plase see the implementation of the Event Manager. All the required bits and pieces are there, but they have never been actually tested yet due some barriers*. Though I don't think it will be a big problem, as the implementation is very straightforward. You will need a Distimo account and a Blackberry Vendor account.
+1. Try actually sending events to Distimo server: Plase see the implementation of the Event Manager. All the required bits and pieces are there, but they have never been actually tested yet due some barriers*. Though I don't think it will be a big problem, as the implementation is very straightforward. You will need a Distimo account and a Blackberry Vendor account.
 
-2. Uncaught Exception Handler
-First, you will have to determine if it is possible to capture a stack trace or something similar when app crash occurs. If it is, start implementing the handler by looking at the implementations in other platforms. If not, please discuss with Tim what alternative options are available.
+2. Uncaught Exception Handler: First, you will have to determine if it is possible to capture a stack trace or something similar when app crash occurs. If it is, start implementing the handler by looking at the implementations in other platforms. If not, please discuss with Tim what alternative options are available.
 
-3. AppLink Manager
-I have not had a chance to fully understand what AppLink Manager does, but I'm pretty sure you will need a Distimo account and maybe a released app.
+3. AppLink Manager: I have not had a chance to fully understand what AppLink Manager does, but I'm pretty sure you will need a Distimo account and maybe a released app.
 
-4. Other BB10 specific functions
-If you look at distimosdk.js, you will notice that some of the functions are specific to some platforms. There will probably be BB10 specific functions that needs to be implemented, as well. Please discuss with Tim for this.
+4. Other BB10 specific functions: If you look at distimosdk.js, you will notice that some of the functions are specific to some platforms. There will probably be BB10 specific functions that needs to be implemented, as well. Please discuss with Tim for this.
 
-5. client.js
-When all of the above tasks are done, you will have to merge what's in our client.js into Distimo's [distimosdk.js](https://github.com/distimo/DistimoSDK-PhoneGap-Plugin/blob/master/js/distimosdk.js).
+5. Merge files: When all of the above tasks are done, you will have to merge what's in our client.js and plugin.xml into the [corresponding files](https://github.com/distimo/DistimoSDK-PhoneGap-Plugin).
 
 (* It looked like I had to actually release my test app to the store in order to test sending; otherwise Distimo would not recognize my app. It was already near end of the term by the time I was ready to test this, and my test app was not approved until the point I am writing this.)
 
