@@ -1,0 +1,21 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="com.blackberry.community.distimo"
+    version="1.0.0">
+
+    <name>BlackBerry 10 Distimo</name>
+    <description>BlackBerry 10 Community Contributed API for Distimo</description>
+    <license>Apache 2.0</license>
+    <author>Byunghoon Yoon</author>
+
+    <js-module src="www/client.js">
+        <clobbers target="community.distimo" />
+    </js-module>
+
+    <platform name="blackberry10">
+        <dependency id="com.blackberry.community.gsecrypto" />
+        <source-file src="src/blackberry10/index.js" />
+        <config-file target="www/config.xml" parent="/widget/rim:permissions">
+            <rim:permit>read_device_identifying_information</rim:permit>
+        </config-file>
+    </platform>
+</plugin>
