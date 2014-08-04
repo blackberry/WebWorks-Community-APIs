@@ -94,44 +94,6 @@ module.exports = {
         }
     },
 
-    // Tracking functions
-    trackPageview: function (success, fail, args, env) {
-        var result = new PluginResult(args, env);
-        m_lastPayload = "";
-        m_lastPayload = sendGARequest("pageview", args);
-        if (m_lastPayload.length > 0)
-            result.ok("", false);
-        else
-            result.error("Pageview tracking error", false);
-    },
-
-    trackEvent: function (success, fail, args, env) {
-        var result = new PluginResult(args, env);
-        var sRequest = sendGARequest("event", args);
-        if (sRequest.length > 0)
-            result.ok(sRequest, false);
-        else
-            result.error("Event tracking error", false);
-    },
-
-    trackTransaction: function (success, fail, args, env) {
-        var result = new PluginResult(args, env);
-        var sRequest = sendGARequest("transaction", args);
-        if (sRequest.length > 0)
-            result.ok(sRequest, false);
-        else
-            result.error("Transaction tracking error", false);
-    },
-
-    trackItem: function (success, fail, args, env) {
-        var result = new PluginResult(args, env);
-        var sRequest = sendGARequest("item", args);
-        if (sRequest.length > 0)
-            result.ok(sRequest, false);
-        else
-            result.error("Item hit tracking error", false);
-    },
-
     // Return client call with error message; empty string is no error
     // Save last xmlhttprequest payload to m_lastPayload
     trackAll: function (success, fail, args, env) 
@@ -150,18 +112,6 @@ module.exports = {
                 result.ok("", false);
             else
                 result.error("error in " + sTrackType + " tracking", false);
-        }
-    },
-
-    googleanalyticsProperty: function (success, fail, args, env) {
-        var result = new PluginResult(args, env);
-        var value;
-        if (args && args["value"]) {
-            value = JSON.parse(decodeURIComponent(args["value"]));
-            googleanalytics.getInstance().googleanalyticsProperty(result.callbackId, value);
-            result.noResult(false);
-        } else {
-            result.ok(googleanalytics.getInstance().googleanalyticsProperty(), false);
         }
     }
 };
