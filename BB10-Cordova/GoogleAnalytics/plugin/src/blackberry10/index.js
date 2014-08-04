@@ -17,11 +17,12 @@
 var googleanalytics,
     resultObjs = {},
     threadCallback = null,
-    m_uuid = "555556", // default
+    m_uuid = "",
     m_gaAccount = "", 
     bAccountSet = false,
     m_appName = "Default_AppName",
     m_lastPayload = "",
+    bRandomUuid = false,
    _utils = require("../../lib/utils");
 
 module.exports = {
@@ -38,7 +39,7 @@ module.exports = {
             // if passed in value is empty string, generate random UUID
             if ("" == m_uuid)
             {
-                m_uuid = Math.round(Math.random()*2147483647);
+                m_uuid = randomizeUuid();
             }
             result.noResult(false);
         }
@@ -94,11 +95,60 @@ module.exports = {
         }
     },
 
+    randomUuid: function (success, fail, args, env)
+    {
+        var result = new PluginResult(args, env);
+        var bValue = "";
+        if (args && args["value"])
+        {
+            bValue = JSON.parse(decodeURIComponent(args["value"]));
+            bValue = bValue.toLowerCase();
+            switch (bValue)
+            {
+                case ("true"):
+                    bRandomUuid = true;
+                    break;
+                case ("false"):
+                    bRandomUuid = false;
+                    break;
+                default:
+                    result.error("True/False only for setting random UUID feature", false);
+                    break;
+            }
+        }
+        else
+            result.ok(bRandomUuid, false);
+    },
+
+    initializeGA: function (success, fail, args, env)
+    {
+        var result = new PluginResult(args, env);
+        // args in the order: gaAccount, [UUID], [appName]
+        m_gaAccount = JSON.parse(decodeURIComponent(args["arg_gaAccount"]));
+        if ("" == m_gaAccount)
+        {
+            result.error("GA account number is required", false);
+        }
+        else
+        {
+            bAccountSet = true;
+            m_uuid = JSON.parse(decodeURIComponent(args["arg_uuid"])) || m_uuid || randomizeUuid();
+            m_appName = JSON.parse(decodeURIComponent(args["arg_appName"])) || m_appName;
+            result.ok("GA initialized with account " + m_gaAccount, false);
+        }
+
+    },
+
     // Return client call with error message; empty string is no error
     // Save last xmlhttprequest payload to m_lastPayload
     trackAll: function (success, fail, args, env) 
     {
         var result = new PluginResult(args, env);
+        if (bRandomUuid)
+        {
+            m_uuid = randomizeUuid();
+        }
+
         if (!bAccountSet) 
         {
             result.error("need to set Google Anayltics account first", false);
@@ -114,6 +164,26 @@ module.exports = {
                 result.error("error in " + sTrackType + " tracking", false);
         }
     }
+};
+
+// return a random uuid
+randomizeUuid = function()
+{
+    //Version4(random) UUID:
+    //xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx where x is any hexadecimal digit and y is one of 8, 9, A, or B
+    //012345678901234567890123456789012345 - index
+    function _p8(split) {
+        var p = (Math.random().toString(16)+"000000000").substr(2,8);
+        return split? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;
+    }
+    var ret = _p8() + _p8(true) + _p8(true) + _p8();
+    ret = ret.substr(0,14) + "4" + ret.substr(15);
+    var ch = ret.charAt(19);
+    if ('8' != ch || '9' != ch || 'A' != ch || 'B' != ch)
+    {
+        ret = ret.substr(0,19) + "A" + ret.substr(20);
+    }
+    return ret;
 };
 
 // oArgs = json arg object
