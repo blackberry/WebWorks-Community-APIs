@@ -427,12 +427,11 @@ var storage = (function() {
 
     // save & load for any arbitrary key:value pair
     var saveData = function(key, value) {
-        var result = error;
-        if (!result) {
-            gaStorage[key] = value;
-            window.localStorage.setItem(storagename, JSON.stringify(gaStorage));
+        if (error) {
+            return error;
         }
-        return result;
+        gaStorage[key] = value;
+        window.localStorage.setItem(storagename, JSON.stringify(gaStorage));
     };
 
     var loadData = function(key) {
