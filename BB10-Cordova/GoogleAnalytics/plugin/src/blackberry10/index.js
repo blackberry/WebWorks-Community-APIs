@@ -384,3 +384,88 @@ var ga = (function() {
     };
 
 })();
+
+
+//Storage module
+var storage = (function() {
+    // root of storage structure
+    var gaStorage = {},
+        error = "Storage not initialized yet.",
+        storagename = "bb10googleanalyticsplugin_";
+    // A list specific for storing payloads of http post request to GA
+    gaStorage["arrPayloads"] = [];
+    var arrPayloads = gaStorage["arrPayloads"];
+
+    // Storage needed to be init with a unique ID, since technically multiple apps 
+    // can be using the plugin at the same time.
+    var init = function(id) {
+        // At start up, retrieve previous instance of storage if any
+        // If none, create one. Use JSON to convert storage structure into pure string.
+        if (id) {
+            storagename += id;
+            error = "";
+        }
+        else {
+            return "Required unique ID to initialize storage.";
+        }
+
+        if (window.localStorage) {
+            var oldStorage = window.localStorage.getItem(storagename);
+            if (oldStorage) {
+                gaStorage = JSON.parse(oldStorage);
+            }
+            else {
+                window.localStorage.setItem(storagename, JSON.stringify(gaStorage));
+            }
+            error = "";
+        }
+        else {
+            error = "LocalStorage not supported.";
+        }
+    };
+    // Always keep the most updated gaStorage both in memeory and in web storage
+
+    // save & load for any arbitrary key:value pair
+    var saveData = function(key, value) {
+        var result = error;
+        if (!result) {
+            gaStorage[key] = value;
+            window.localStorage.setItem(storagename, JSON.stringify(gaStorage));
+        }
+        return result;
+    };
+
+    var loadData = function(key) {
+        if (error) {
+            return "";
+        }
+        return gaStorage[key];
+    };
+
+    // save & load for payloads data only, use queue
+    var pushPayload = function(sPayload) {
+        if (error) {
+            return error;
+        }
+        arrPayloads[arrPayloads.length] = sPayload;
+        window.localStorage.setItem(storagename, JSON.stringify(gaStorage));
+    };
+
+    // load
+    var popPayload = function() {
+        if (error) {
+            return "";
+        }
+        var value = arrPayloads.shift();
+        window.localStorage.setItem(storagename, JSON.stringify(gaStorage));
+        return value;
+    };
+
+    return {
+        init: init,
+        saveData: saveData,
+        loadData: loadData,
+        pushPayload: pushPayload,
+        popPayload: popPayload
+    };
+})();
