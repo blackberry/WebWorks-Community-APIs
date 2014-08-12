@@ -143,52 +143,11 @@ module.exports = {
         }
     },
 
-    mapConnectionType: function(con) {
-        switch (con.type) {
-        case 'wired':
-            return 'ethernet';
-        case 'wifi':
-            return 'wifi';
-        case 'none':
-            return 'none';
-        case 'cellular':
-            switch (con.technology) {
-            case 'edge':
-            case 'gsm':
-                return '2g';
-            case 'evdo':
-                return '3g';
-            case 'umts':
-                return '3g';
-            case 'lte':
-                return '4g';
-            }
-            return "cellular";
-        }
-        return 'unknown';
-    },
     //check connection type
     checkConnection: function(success, fail, args, env) {
         var result = new PluginResult(args, env);
-/*        if (navigator.connection) {
-            var networkState = navigator.connection.type;
 
-            var states = {};
-            states[Connection.UNKNOWN]  = 'Unknown connection';
-            states[Connection.ETHERNET] = 'Ethernet connection';
-            states[Connection.WIFI]     = 'WiFi connection';
-            states[Connection.CELL_2G]  = 'Cell 2G connection';
-            states[Connection.CELL_3G]  = 'Cell 3G connection';
-            states[Connection.CELL_4G]  = 'Cell 4G connection';
-            states[Connection.CELL]     = 'Cell generic connection';
-            states[Connection.NONE]     = 'No network connection';
-
-            //document.getElementById('mytext').innerHTML="Connection type: " + states[networkState];
-            result.ok("Connection type: " + states[networkState], false);
-        }
-        else {
-            result.error("Navigator.connection not found", false);
-        }*/
+        // Doesn't matter what type of connection, just check if activeConnection exists
         if (window.qnx.webplatform.device.activeConnection) {
             result.ok(JSON.stringify(window.qnx.webplatform.device.activeConnection), false);
         }
@@ -227,7 +186,8 @@ var ga = (function() {
         m_appName = "Default_AppName",
         m_lastPayload = "",
         bAccountSet = false,
-        bRandomUuid = false;
+        bRandomUuid = false,
+        bUseQueue = true;
 
     //***********************************
     // Functions for setting properties
@@ -319,6 +279,7 @@ var ga = (function() {
         return output;
     };
 
+    // Return a randomly generated UUID
     var randomizeUuid = function() {
         //Version4(random) UUID:
         //xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx where x is any hexadecimal digit and y is one of 8, 9, A, or B
@@ -337,6 +298,16 @@ var ga = (function() {
         return ret;
     };
 
+    // Return true if has active connection (not neccessarily has internet connectivity tho)
+    var checkConnection = function() {
+        // Doesn't matter what type of connection, just check if activeConnection exists
+        if (window.qnx.webplatform.device.activeConnection) {
+            result.ok(JSON.stringify(window.qnx.webplatform.device.activeConnection), false);
+        }
+        else {
+            result.error("window.qnx.webplatform.device.activeConnection not found");
+        }
+    };
     //***********************************
     // Core functions
     //***********************************
@@ -426,6 +397,31 @@ var ga = (function() {
         return error;
     };
 
+    // Actual http POST
+    var sendData = function (sPayload) {
+        var xhr;
+
+        if (XMLHttpRequest && sPayload) {
+            xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        // ok, no timeout
+                    }
+                    else {
+                        // timed-out, queue up or discard
+                        if (bUseQueue) {
+                            queue.enqueue(sPayload);
+                        }
+                    }
+                }
+            }
+
+            xhr.open("POST","http://www.google-analytics.com/collect",true);
+            xhr.send(sPayload);
+        }
+    };
+
     // export
     return {
         account: account,
@@ -438,6 +434,31 @@ var ga = (function() {
 
 })();
 
+// Queue module
+var queue = (function() {
+    var bIsEmpty = true,
+        size = 0;
+
+    var enqueue = function(data) {
+
+    };
+
+    // Return dequeued data
+    var dequeue = function() {
+
+    };
+
+    // If queue is non-empty, periodically attempt to send data
+    var triggerSend = function() {
+
+    };
+
+    return {
+        enqueue: enqueue,
+        dequeue: dequeue
+    };
+
+})();
 
 //Storage module
 var storage = (function() {
