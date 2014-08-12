@@ -143,6 +143,59 @@ module.exports = {
         }
     },
 
+    mapConnectionType: function(con) {
+        switch (con.type) {
+        case 'wired':
+            return 'ethernet';
+        case 'wifi':
+            return 'wifi';
+        case 'none':
+            return 'none';
+        case 'cellular':
+            switch (con.technology) {
+            case 'edge':
+            case 'gsm':
+                return '2g';
+            case 'evdo':
+                return '3g';
+            case 'umts':
+                return '3g';
+            case 'lte':
+                return '4g';
+            }
+            return "cellular";
+        }
+        return 'unknown';
+    },
+    //check connection type
+    checkConnection: function(success, fail, args, env) {
+        var result = new PluginResult(args, env);
+/*        if (navigator.connection) {
+            var networkState = navigator.connection.type;
+
+            var states = {};
+            states[Connection.UNKNOWN]  = 'Unknown connection';
+            states[Connection.ETHERNET] = 'Ethernet connection';
+            states[Connection.WIFI]     = 'WiFi connection';
+            states[Connection.CELL_2G]  = 'Cell 2G connection';
+            states[Connection.CELL_3G]  = 'Cell 3G connection';
+            states[Connection.CELL_4G]  = 'Cell 4G connection';
+            states[Connection.CELL]     = 'Cell generic connection';
+            states[Connection.NONE]     = 'No network connection';
+
+            //document.getElementById('mytext').innerHTML="Connection type: " + states[networkState];
+            result.ok("Connection type: " + states[networkState], false);
+        }
+        else {
+            result.error("Navigator.connection not found", false);
+        }*/
+        if (window.qnx.webplatform.device.activeConnection) {
+            result.ok(JSON.stringify(window.qnx.webplatform.device.activeConnection), false);
+        }
+        else {
+            result.error("window.qnx.webplatform.device.activeConnection not found");
+        }
+    },
     trackAll: function (success, fail, args, env) {
         var result = new PluginResult(args, env);
         var sTrackType,

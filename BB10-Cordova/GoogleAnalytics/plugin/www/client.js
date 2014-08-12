@@ -263,5 +263,17 @@ var _self = {},
         return result;
     };
 
+    _self.checkConnection = function () {
+        var result,
+            success = function (data, response) {
+                result = data;
+            },
+            fail = function (data, response) {
+                result = "Error: " + data;
+            };
+        exec(success, fail, _ID, "checkConnection", null);
+
+        return result;
+    };
 
 module.exports = _self;

@@ -64,7 +64,7 @@ var app = {
 			community.googleanalyticsplugin.uuid = ""; 
 			app.writeOut('UUID: ' + community.googleanalyticsplugin.uuid);
 			// Sign-up for your own account
-			app.writeOut('Setting GA_Account number UA-xxxxxxxx-x.');			
+			app.writeOut('Setting GA_Account.');			
 			community.googleanalyticsplugin.gaAccount = "UA-50848230-1"; 
 			app.writeOut('GA_Account: ' + community.googleanalyticsplugin.gaAccount);
 			app.writeOut('--------------');
@@ -92,6 +92,10 @@ var app = {
 			sError = community.googleanalyticsplugin.trackItem('/home', '/andrew'); 
 			app.writeOut(("" == sError)? "No Error!": sError);
 			app.writeOut(community.googleanalyticsplugin.lastPayload);
+
+			app.writeOut('--------------');
+			app.writeOut('Check Connection:');
+			app.writeOut(community.googleanalyticsplugin.checkConnection());
 
 		} 
 		else 
