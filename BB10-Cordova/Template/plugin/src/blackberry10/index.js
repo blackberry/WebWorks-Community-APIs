@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-var template,
+var ???PROJECT_FUNCTION_START???,
 	resultObjs = {},
 	threadCallback = null,
    _utils = require("../../lib/utils");
@@ -25,55 +25,55 @@ module.exports = {
 	// but any functions to be called by client.js need to be declared
 	// here in this object.
 
-	// These methods call into JNEXT.Template which handles the
-	// communication through the JNEXT plugin to template_js.cpp
-	test: function (success, fail, args, env) {
+	// These methods call into JNEXT.???PROJECT_NAME??? which handles the
+	// communication through the JNEXT plugin to ???PROJECT_NAME_LOWERCASE???_js.cpp
+	???PROJECT_FUNCTION_START???Test: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
-		result.ok(template.getInstance().test(), false);
+		result.ok(???PROJECT_FUNCTION_START???.getInstance().???PROJECT_FUNCTION_START???Test(), false);
 	},
-	testInput: function (success, fail, args, env) {
+	???PROJECT_FUNCTION_START???TestInput: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		args = JSON.parse(decodeURIComponent(args["input"]));
-		result.ok(template.getInstance().testInput(result.callbackId, args), false);
+		result.ok(???PROJECT_FUNCTION_START???.getInstance().???PROJECT_FUNCTION_START???TestInput(result.callbackId, args), false);
 	},
 	// Asynchronous function calls into the plugin and returns
-	testAsync: function (success, fail, args, env) {
+	???PROJECT_FUNCTION_START???TestAsync: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
 		args = JSON.parse(decodeURIComponent(args["input"]));
-		template.getInstance().testAsync(result.callbackId, args);
+		???PROJECT_FUNCTION_START???.getInstance().???PROJECT_FUNCTION_START???TestAsync(result.callbackId, args);
 		result.noResult(true);
 	},
-	templateProperty: function (success, fail, args, env) {
+	???PROJECT_FUNCTION_START???Property: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		var value;
 		if (args && args["value"]) {
 			value = JSON.parse(decodeURIComponent(args["value"]));
-			template.getInstance().templateProperty(result.callbackId, value);
+			???PROJECT_FUNCTION_START???.getInstance().???PROJECT_FUNCTION_START???Property(result.callbackId, value);
 			result.noResult(false);
 		} else {
-			result.ok(template.getInstance().templateProperty(), false);
+			result.ok(???PROJECT_FUNCTION_START???.getInstance().???PROJECT_FUNCTION_START???Property(), false);
 		}
 	},
 	// Thread methods to start and stop
-	startThread: function (success, fail, args, env) {
+	???PROJECT_FUNCTION_START???StartThread: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		if (!threadCallback) {
 			threadCallback = result.callbackId;
 			resultObjs[result.callbackId] = result;
-			result.ok(template.getInstance().startThread(result.callbackId), true);
+			result.ok(???PROJECT_FUNCTION_START???.getInstance().???PROJECT_FUNCTION_START???StartThread(result.callbackId), true);
 		} else {
-			result.error(template.getInstance().startThread(result.callbackId), false);
+			result.error(???PROJECT_FUNCTION_START???.getInstance().???PROJECT_FUNCTION_START???StartThread(result.callbackId), false);
 		}
 	},
-	stopThread: function (success, fail, args, env) {
+	???PROJECT_FUNCTION_START???StopThread: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		if (!threadCallback) {
 			result.error("Thread is not running", false);
 		} else {
 			delete resultObjs[threadCallback];
 			threadCallback = null;
-			result.ok(template.getInstance().stopThread(), false);
+			result.ok(???PROJECT_FUNCTION_START???.getInstance().???PROJECT_FUNCTION_START???StopThread(), false);
 		}
 	}
 };
@@ -82,7 +82,7 @@ module.exports = {
 // JavaScript wrapper for JNEXT plugin for connection
 ///////////////////////////////////////////////////////////////////
 
-JNEXT.Template = function () {
+JNEXT.???PROJECT_NAME??? = function () {
 	var self = this,
 		hasInstance = false;
 
@@ -91,11 +91,11 @@ JNEXT.Template = function () {
 	};
 
 	self.init = function () {
-		if (!JNEXT.require("libTemplate")) {
+		if (!JNEXT.require("lib???PROJECT_NAME???")) {
 			return false;
 		}
 
-		self.m_id = JNEXT.createObject("libTemplate.TemplateJS");
+		self.m_id = JNEXT.createObject("lib???PROJECT_NAME???.???PROJECT_NAME???_JS");
 
 		if (self.m_id === "") {
 			return false;
@@ -108,21 +108,21 @@ JNEXT.Template = function () {
 	// Enter your methods here
 	// ************************
 
-	// calls into InvokeMethod(string command) in template_js.cpp
-	self.test = function () {
-		return JNEXT.invoke(self.m_id, "testString");
+	// calls into InvokeMethod(string command) in ???PROJECT_NAME_LOWERCASE???_js.cpp
+	self.???PROJECT_FUNCTION_START???Test = function () {
+		return JNEXT.invoke(self.m_id, "???PROJECT_FUNCTION_START???Test");
 	};
-	self.testInput = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "testStringInput " + callbackId + " " + input);
+	self.???PROJECT_FUNCTION_START???TestInput = function (callbackId, input) {
+		return JNEXT.invoke(self.m_id, "???PROJECT_FUNCTION_START???TestInput " + callbackId + " " + input);
 	};
-	self.testAsync = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "testAsync " + callbackId + " " + JSON.stringify(input));
+	self.???PROJECT_FUNCTION_START???TestAsync = function (callbackId, input) {
+		return JNEXT.invoke(self.m_id, "???PROJECT_FUNCTION_START???TestAsync " + callbackId + " " + JSON.stringify(input));
 	};
-	self.templateProperty = function (callbackId, value) {
+	self.???PROJECT_FUNCTION_START???Property = function (callbackId, value) {
 		if (value) {
-			return JNEXT.invoke(self.m_id, "templateProperty " + callbackId + " " + value);
+			return JNEXT.invoke(self.m_id, "???PROJECT_FUNCTION_START???Property " + callbackId + " " + value);
 		} else {
-			return JNEXT.invoke(self.m_id, "templateProperty");
+			return JNEXT.invoke(self.m_id, "???PROJECT_FUNCTION_START???Property");
 		}
 	};
 	// Fired by the Event framework (used by asynchronous callbacks)
@@ -143,11 +143,11 @@ JNEXT.Template = function () {
 	};
 
 	// Thread methods
-	self.startThread = function (callbackId) {
-		return JNEXT.invoke(self.m_id, "templateStartThread " + callbackId);
+	self.???PROJECT_FUNCTION_START???StartThread = function (callbackId) {
+		return JNEXT.invoke(self.m_id, "???PROJECT_FUNCTION_START???StartThread " + callbackId);
 	};
-	self.stopThread = function () {
-		return JNEXT.invoke(self.m_id, "templateStopThread");
+	self.???PROJECT_FUNCTION_START???StopThread = function () {
+		return JNEXT.invoke(self.m_id, "???PROJECT_FUNCTION_START???StopThread");
 	};
 
 	// ************************
@@ -165,4 +165,4 @@ JNEXT.Template = function () {
 
 };
 
-template = new JNEXT.Template();
+???PROJECT_FUNCTION_START??? = new JNEXT.???PROJECT_NAME???();

@@ -7,11 +7,11 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.sharedLib.debug.1877214659" moduleId="org.eclipse.cdt.core.settings" name="Device-Debug">
 				<externalSettings>
 					<externalSetting>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Device-Debug"/>
-						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
-						<entry flags="RESOLVED" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/???PROJECT_NAME???/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/???PROJECT_NAME???"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/???PROJECT_NAME???/Device-Debug"/>
+						<entry flags="" kind="libraryFile" name="???PROJECT_NAME???" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="RESOLVED" kind="libraryFile" name="???PROJECT_NAME???" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -27,7 +27,7 @@
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.debug.191768618" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<option id="com.qnx.qcc.option.cpu.1578303771" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.436831450" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/Template/Device-Debug}" id="com.qnx.nto.606064165" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/???PROJECT_NAME???/Device-Debug}" id="com.qnx.nto.606064165" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
 							<tool id="com.qnx.qcc.tool.compiler.1879271926" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.shared.1417199508" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.optlevel.970212540" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
@@ -78,11 +78,11 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.sharedLib.release.608922875" moduleId="org.eclipse.cdt.core.settings" name="Device-Release">
 				<externalSettings>
 					<externalSetting>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Device-Release"/>
-						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
-						<entry flags="RESOLVED" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/???PROJECT_NAME???/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/???PROJECT_NAME???"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/???PROJECT_NAME???/Device-Release"/>
+						<entry flags="" kind="libraryFile" name="???PROJECT_NAME???" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="RESOLVED" kind="libraryFile" name="???PROJECT_NAME???" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -98,7 +98,7 @@
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.release.1688650878" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<option id="com.qnx.qcc.option.cpu.644399334" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.2097864805" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/Template/Device-Release}" id="com.qnx.nto.204940733" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/???PROJECT_NAME???/Device-Release}" id="com.qnx.nto.204940733" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
 							<tool id="com.qnx.qcc.tool.compiler.935907476" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.shared.78720761" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.optlevel.723931478" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.2" valueType="enumerated"/>
@@ -149,9 +149,9 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.sharedLib.profile.27502649" moduleId="org.eclipse.cdt.core.settings" name="Device-Profile">
 				<externalSettings>
 					<externalSetting>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Device-Profile"/>
-						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/???PROJECT_NAME???/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/???PROJECT_NAME???/Device-Profile"/>
+						<entry flags="" kind="libraryFile" name="???PROJECT_NAME???" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -167,7 +167,7 @@
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.profile.942439565" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<option id="com.qnx.qcc.option.cpu.2055455815" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1460803543" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/Template/Device-Profile}" id="com.qnx.nto.1317522383" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/???PROJECT_NAME???/Device-Profile}" id="com.qnx.nto.1317522383" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
 							<tool id="com.qnx.qcc.tool.compiler.445493654" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.shared.1834537273" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.optlevel.512579134" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
@@ -220,9 +220,9 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.sharedLib.coverage.1806890017" moduleId="org.eclipse.cdt.core.settings" name="Device-Coverage">
 				<externalSettings>
 					<externalSetting>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Device-Coverage"/>
-						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/???PROJECT_NAME???/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/???PROJECT_NAME???/Device-Coverage"/>
+						<entry flags="" kind="libraryFile" name="???PROJECT_NAME???" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -238,7 +238,7 @@
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.coverage.1658857194" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<option id="com.qnx.qcc.option.cpu.1201722330" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.403898679" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/Template/Device-Coverage}" id="com.qnx.nto.1526448130" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/???PROJECT_NAME???/Device-Coverage}" id="com.qnx.nto.1526448130" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
 							<tool id="com.qnx.qcc.tool.compiler.896107073" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.shared.2016926234" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.optlevel.571725797" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
@@ -291,9 +291,9 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.sharedLib.debug.193597202" moduleId="org.eclipse.cdt.core.settings" name="Simulator-Debug">
 				<externalSettings>
 					<externalSetting>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Simulator-Debug"/>
-						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/???PROJECT_NAME???/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/???PROJECT_NAME???/Simulator-Debug"/>
+						<entry flags="" kind="libraryFile" name="???PROJECT_NAME???" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -308,7 +308,7 @@
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.debug.193597202." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.debug.716711966" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.929990965" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/Template/Simulator-Debug}" id="com.qnx.nto.9741914" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/???PROJECT_NAME???/Simulator-Debug}" id="com.qnx.nto.9741914" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
 							<tool id="com.qnx.qcc.tool.compiler.138396159" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.shared.1392174570" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.optlevel.1178007212" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
@@ -359,9 +359,9 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.sharedLib.profile.941124085" moduleId="org.eclipse.cdt.core.settings" name="Simulator-Profile">
 				<externalSettings>
 					<externalSetting>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Simulator-Profile"/>
-						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/???PROJECT_NAME???/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/???PROJECT_NAME???/Simulator-Profile"/>
+						<entry flags="" kind="libraryFile" name="???PROJECT_NAME???" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -376,7 +376,7 @@
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.profile.941124085." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.profile.2039571511" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.2056186062" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/Template/Simulator-Profile}" id="com.qnx.nto.720646111" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/???PROJECT_NAME???/Simulator-Profile}" id="com.qnx.nto.720646111" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
 							<tool id="com.qnx.qcc.tool.compiler.695327139" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.shared.1333895577" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.optlevel.1510595019" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
@@ -429,9 +429,9 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.sharedLib.coverage.537092296" moduleId="org.eclipse.cdt.core.settings" name="Simulator-Coverage">
 				<externalSettings>
 					<externalSetting>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Template/public"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Template/Simulator-Coverage"/>
-						<entry flags="" kind="libraryFile" name="Template" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/???PROJECT_NAME???/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/???PROJECT_NAME???/Simulator-Coverage"/>
+						<entry flags="" kind="libraryFile" name="???PROJECT_NAME???" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -446,7 +446,7 @@
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.coverage.537092296." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.coverage.1409700437" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.123435356" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/Template/Simulator-Coverage}" id="com.qnx.nto.540805157" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/???PROJECT_NAME???/Simulator-Coverage}" id="com.qnx.nto.540805157" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
 							<tool id="com.qnx.qcc.tool.compiler.595727552" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.shared.1993375109" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.optlevel.1636380900" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
@@ -499,9 +499,9 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.sharedLib.release.608922875.1009704567" moduleId="org.eclipse.cdt.core.settings" name="device">
 				<externalSettings>
 					<externalSetting>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Cordova-Template"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Cordova-Template/device"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="Cordova-Template" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Cordova-???PROJECT_NAME???"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Cordova-???PROJECT_NAME???/device"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="Cordova-???PROJECT_NAME???" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -517,7 +517,7 @@
 						<toolChain id="com.qnx.qcc.toolChain.2215983" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<option id="com.qnx.qcc.option.cpu.315540759" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1359109141" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/Template/Device-Release}" id="com.qnx.nto.938326560" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/???PROJECT_NAME???/Device-Release}" id="com.qnx.nto.938326560" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
 							<tool id="com.qnx.qcc.tool.compiler.242697771" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.shared.553244928" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.optlevel.2070537906" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.2" valueType="enumerated"/>
@@ -568,9 +568,9 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.sharedLib.debug.193597202.362186091" moduleId="org.eclipse.cdt.core.settings" name="simulator">
 				<externalSettings>
 					<externalSetting>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Cordova-Template"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Cordova-Template/simulator"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="Cordova-Template" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/Cordova-???PROJECT_NAME???"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/Cordova-???PROJECT_NAME???/simulator"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="Cordova-???PROJECT_NAME???" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -585,7 +585,7 @@
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.debug.193597202.362186091." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.688026907" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.469207190" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/Template/Simulator-Debug}" id="com.qnx.nto.2029800497" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<builder buildPath="${workspace_loc:/???PROJECT_NAME???/Simulator-Debug}" id="com.qnx.nto.2029800497" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
 							<tool id="com.qnx.qcc.tool.compiler.1028279123" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.shared.235893159" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.optlevel.1164238904" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
@@ -634,10 +634,10 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="Template.null.138005006" name="Template"/>
+		<project id="???PROJECT_NAME???.null.138005006" name="???PROJECT_NAME???"/>
 	</storageModule>
 	<storageModule moduleId="refreshScope" versionNumber="1">
-		<resource resourceType="PROJECT" workspacePath="/Template"/>
+		<resource resourceType="PROJECT" workspacePath="/???PROJECT_NAME???"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 	<storageModule moduleId="scannerConfiguration">

@@ -1,22 +1,22 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.templateplugin"
+    id="???CORDOVA_PLUGIN_ID???"
     version="1.0.0">
 
-    <name>BlackBerry 10 Template</name>
-    <description>BlackBerry 10 Community Contributed API Template</description>
+    <name>???PROJECT_NAME???</name>
+    <description>BlackBerry 10 Community Contributed ???PROJECT_NAME??? API</description>
     <license>Apache 2.0</license>
-    <author>Tim Windsor</author>
+    <author>???PROJECT_AUTHOR???</author>
 
     <js-module src="www/client.js">
-        <clobbers target="community.templateplugin" />
+        <clobbers target="???CORDOVA_PLUGIN_ID???" />
     </js-module>
 
     <platform name="blackberry10">
         <source-file src="src/blackberry10/index.js" />
-        <lib-file src="src/blackberry10/native/device/libTemplate.so" arch="device"/>
-        <lib-file src="src/blackberry10/native/simulator/libTemplate.so" arch="simulator"/>
+        <lib-file src="src/blackberry10/native/device/lib???PROJECT_NAME???.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/lib???PROJECT_NAME???.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.templateplugin" value="com.blackberry.community.templateplugin" />
+            <feature name="???CORDOVA_PLUGIN_ID???" value="???CORDOVA_PLUGIN_ID???" />
         </config-file>
     </platform>
 </plugin>

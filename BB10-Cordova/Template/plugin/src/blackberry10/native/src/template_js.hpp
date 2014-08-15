@@ -14,19 +14,19 @@
 * limitations under the License.
 */
 
-#ifndef TemplateJS_HPP_
-#define TemplateJS_HPP_
+#ifndef ???PROJECT_NAME???_JS_HPP_
+#define ???PROJECT_NAME???_JS_HPP_
 
 #include <string>
 #include "../public/plugin.h"
-#include "template_ndk.hpp"
+#include "???PROJECT_NAME_LOWERCASE???_ndk.hpp"
 #include "Logger.hpp"
 
-class TemplateJS: public JSExt {
+class ???PROJECT_NAME???_JS: public JSExt {
 
 public:
-    explicit TemplateJS(const std::string& id);
-    virtual ~TemplateJS();
+    explicit ???PROJECT_NAME???_JS(const std::string& id);
+    virtual ~???PROJECT_NAME???_JS();
     virtual bool CanDelete();
     virtual std::string InvokeMethod(const std::string& command);
     void NotifyEvent(const std::string& event);
@@ -34,8 +34,8 @@ public:
 private:
     std::string m_id;
     // Definition of a pointer to the actual native extension code
-    webworks::TemplateNDK *m_pTemplateController;
+    webworks::???PROJECT_NAME???_NDK *m_p???PROJECT_FUNCTION???Controller;
     webworks::Logger *m_pLogger;
 };
 
-#endif /* TemplateJS_HPP_ */
+#endif /* ???PROJECT_NAME???_JS_HPP_ */

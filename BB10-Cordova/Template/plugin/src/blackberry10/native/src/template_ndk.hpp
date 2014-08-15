@@ -14,44 +14,44 @@
 * limitations under the License.
 */
 
-#ifndef TEMPLATENDK_HPP_
-#define TEMPLATENDK_HPP_
+#ifndef ???PROJECT_NAME???_NDK_HPP_
+#define ???PROJECT_NAME???_NDK_HPP_
 
 #include <string>
 #include <pthread.h>
 
-class TemplateJS;
+class ???PROJECT_NAME???_JS;
 
 namespace webworks {
 
-class TemplateNDK {
+class ???PROJECT_NAME???_NDK {
 public:
-	explicit TemplateNDK(TemplateJS *parent = NULL);
-	virtual ~TemplateNDK();
+	explicit ???PROJECT_NAME???_NDK(???PROJECT_NAME???_JS *parent = NULL);
+	virtual ~???PROJECT_NAME???_NDK();
 
 	// The extension methods are defined here
-	std::string templateTestString();
+	std::string ???PROJECT_FUNCTION_START???Test();
 
-	std::string templateTestString(const std::string& inputString);
+	std::string ???PROJECT_FUNCTION_START???Test(const std::string& inputString);
 
-	std::string getTemplateProperty();
+	std::string get???PROJECT_FUNCTION???Property();
 
-	void setTemplateProperty(const std::string& inputString);
+	void set???PROJECT_FUNCTION???Property(const std::string& inputString);
 
-	void templateTestAsync(const std::string& callbackId, const std::string& inputString);
+	void ???PROJECT_FUNCTION_START???TestAsync(const std::string& callbackId, const std::string& inputString);
 
-	std::string templateStartThread(const std::string& callbackId);
+	std::string ???PROJECT_FUNCTION_START???StartThread(const std::string& callbackId);
 
-	std::string templateStopThread();
+	std::string ???PROJECT_FUNCTION_START???StopThread();
 
 	bool isThreadHalt();
 
-	void templateThreadCallback();
+	void ???PROJECT_FUNCTION_START???ThreadCallback();
 
 private:
-	TemplateJS *m_pParent;
-	int templateProperty;
-	int templateThreadCount;
+	???PROJECT_NAME???_JS *m_pParent;
+	int ???PROJECT_FUNCTION_START???Property;
+	int ???PROJECT_FUNCTION_START???ThreadCount;
 	bool threadHalt;
 	std::string threadCallbackId;
 	pthread_t m_thread;
@@ -61,4 +61,4 @@ private:
 
 } // namespace webworks
 
-#endif /* TEMPLATENDK_H_ */
+#endif /* ???PROJECT_NAME???_NDK_HPP_ */

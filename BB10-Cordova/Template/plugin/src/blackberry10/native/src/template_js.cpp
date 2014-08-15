@@ -16,31 +16,31 @@
 
 #include <string>
 #include "../public/tokenizer.h"
-#include "template_js.hpp"
-#include "template_ndk.hpp"
+#include "???PROJECT_NAME_LOWERCASE???_js.hpp"
+#include "???PROJECT_NAME_LOWERCASE???_ndk.hpp"
 
 using namespace std;
 
 /**
  * Default constructor.
  */
-TemplateJS::TemplateJS(const std::string& id) :
+???PROJECT_NAME???_JS::???PROJECT_NAME???_JS(const std::string& id) :
 		m_id(id) {
-	m_pLogger = new webworks::Logger("TemplateJS", this);
-	m_pTemplateController = new webworks::TemplateNDK(this);
+	m_pLogger = new webworks::Logger("???PROJECT_NAME???_JS", this);
+	m_p???PROJECT_FUNCTION???Controller = new webworks::???PROJECT_NAME???_NDK(this);
 }
 
 /**
- * TemplateJS destructor.
+ * ???PROJECT_NAME???_JS destructor.
  */
-TemplateJS::~TemplateJS() {
-	if (m_pTemplateController)
-		delete m_pTemplateController;
+???PROJECT_NAME???_JS::~???PROJECT_NAME???_JS() {
+	if (m_p???PROJECT_FUNCTION???Controller)
+		delete m_p???PROJECT_FUNCTION???Controller;
 	if (m_pLogger)
 		delete m_pLogger;
 }
 
-webworks::Logger* TemplateJS::getLog() {
+webworks::Logger* ???PROJECT_NAME???_JS::getLog() {
 	return m_pLogger;
 }
 
@@ -49,17 +49,17 @@ webworks::Logger* TemplateJS::getLog() {
  * extension.
  */
 char* onGetObjList() {
-	static char name[] = "TemplateJS";
+	static char name[] = "???PROJECT_NAME???_JS";
 	return name;
 }
 
 /**
- * This method is used by JNext to instantiate the TemplateJS object when
+ * This method is used by JNext to instantiate the ???PROJECT_NAME???_JS object when
  * an object is created on the JavaScript server side.
  */
 JSExt* onCreateObject(const string& className, const string& id) {
-	if (className == "TemplateJS") {
-		return new TemplateJS(id);
+	if (className == "???PROJECT_NAME???_JS") {
+		return new ???PROJECT_NAME???_JS(id);
 	}
 
 	return NULL;
@@ -68,7 +68,7 @@ JSExt* onCreateObject(const string& className, const string& id) {
 /**
  * Method used by JNext to determine if the object can be deleted.
  */
-bool TemplateJS::CanDelete() {
+bool ???PROJECT_NAME???_JS::CanDelete() {
 	return true;
 }
 
@@ -78,7 +78,7 @@ bool TemplateJS::CanDelete() {
  * for invoking native code. This method is triggered when JNext.invoke is
  * called on the JavaScript side with this native objects id.
  */
-string TemplateJS::InvokeMethod(const string& command) {
+string ???PROJECT_NAME???_JS::InvokeMethod(const string& command) {
 	// format must be: "command callbackId params"
 	size_t commandIndex = command.find_first_of(" ");
 	std::string strCommand = command.substr(0, commandIndex);
@@ -86,24 +86,24 @@ string TemplateJS::InvokeMethod(const string& command) {
 	std::string callbackId = command.substr(commandIndex + 1, callbackIndex - commandIndex - 1);
 	std::string arg = command.substr(callbackIndex + 1, command.length());
 
-	// based on the command given, run the appropriate method in template_ndk.cpp
-	if (strCommand == "testString") {
-		return m_pTemplateController->templateTestString();
-	} else if (strCommand == "testStringInput") {
-		return m_pTemplateController->templateTestString(arg);
-	} else if (strCommand == "templateProperty") {
+	// based on the command given, run the appropriate method in ???PROJECT_NAME_LOWERCASE???_ndk.cpp
+	if (strCommand == "???PROJECT_FUNCTION_START???Test") {
+		return m_p???PROJECT_FUNCTION???Controller->???PROJECT_FUNCTION_START???Test();
+	} else if (strCommand == "???PROJECT_FUNCTION_START???TestInput") {
+		return m_p???PROJECT_FUNCTION???Controller->???PROJECT_FUNCTION_START???Test(arg);
+	} else if (strCommand == "???PROJECT_FUNCTION_START???Property") {
 		// if arg exists we are setting property
 		if (arg != strCommand) {
-			m_pTemplateController->setTemplateProperty(arg);
+			m_p???PROJECT_FUNCTION???Controller->set???PROJECT_FUNCTION???Property(arg);
 		} else {
-			return m_pTemplateController->getTemplateProperty();
+			return m_p???PROJECT_FUNCTION???Controller->get???PROJECT_FUNCTION???Property();
 		}
-	} else if (strCommand == "testAsync") {
-		m_pTemplateController->templateTestAsync(callbackId, arg);
-	} else if (strCommand == "templateStartThread") {
-		return m_pTemplateController->templateStartThread(callbackId);
-	} else if (strCommand == "templateStopThread") {
-		return m_pTemplateController->templateStopThread();
+	} else if (strCommand == "???PROJECT_FUNCTION_START???TestAsync") {
+		m_p???PROJECT_FUNCTION???Controller->???PROJECT_FUNCTION_START???TestAsync(callbackId, arg);
+	} else if (strCommand == "???PROJECT_FUNCTION_START???StartThread") {
+		return m_p???PROJECT_FUNCTION???Controller->???PROJECT_FUNCTION_START???StartThread(callbackId);
+	} else if (strCommand == "???PROJECT_FUNCTION_START???StopThread") {
+		return m_p???PROJECT_FUNCTION???Controller->???PROJECT_FUNCTION_START???StopThread();
 	}
 
 	strCommand.append(";");
@@ -112,7 +112,7 @@ string TemplateJS::InvokeMethod(const string& command) {
 }
 
 // Notifies JavaScript of an event
-void TemplateJS::NotifyEvent(const std::string& event) {
+void ???PROJECT_NAME???_JS::NotifyEvent(const std::string& event) {
 	std::string eventString = m_id + " ";
 	eventString.append(event);
 	SendPluginEvent(eventString.c_str(), m_pContext);
