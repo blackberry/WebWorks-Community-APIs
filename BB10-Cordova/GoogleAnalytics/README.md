@@ -15,7 +15,7 @@ One issue with using GA is that it is difficult to debug issues with HTTP reques
 - To try the sample app included, copy the `sample\www` directory to the `\www` directory of a new WebWorks project
 
 ## Using the GA Plugin
-**Make sure you sign up for an account with Google Analytics, then use your account number in place of the default in the sample app.**
+**Make sure you sign up for an account with Google Analytics, then use your account number (UA-xxxxxxxx-x) in place of the default in the sample app.**
 
 ### Init & Properties
 To start the Google Analytics plugin, call:
@@ -24,7 +24,7 @@ community.googleanalyticsplugin.initializeGA(gaAccount, appName, [UUID], [useQue
 ```
 - `gaAccount` -- your registered Google Analytics account number in the format UA-xxxxxxxx-x
 - `appName` -- name of the app
-- `UUID` -- (optional) an unique ID for the mobile device. If not explicitly set, use UUID from previous session if exists. Otherwise a random UUID will be generated and stored.
+- `UUID` -- (optional) an unique ID for the mobile device. If not explicitly set, UUID from previous session will be used if exists. Otherwise a random UUID will be generated and stored. UUID format used is [HERE](http://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_.28random.29).
 - `useQueue` -- (optional, "true"/"false") If enabled, will queue up and save all tracking data until successfully sent. Un-sent data from previous session will also be retrieved to be re-sent. If disabled, will only attempt to send every tracking request once, and no tracking data will be queued or saved.
 
 You can get/set individual properties if you want/need to:
@@ -32,7 +32,7 @@ You can get/set individual properties if you want/need to:
 - `community.googleanalyticsplugin.uuid;`
 - `community.googleanalyticsplugin.gaAccount;`
 - `community.googleanalyticsplugin.lastPayload;` - get only property; return the last payload data being sent/queued
-- `community.googleanalyticsplugin.randomUuid;` - "true" or "false"; if enabled, will use random UUID for every single tracking, good for debugging purpose.
+- `community.googleanalyticsplugin.randomUuid;` - "true" or "false"; if enabled, will use random UUID for every single tracking, good for real-time debugging purpose. Note that the random UUIDs generated with this feature is not saved. The original UUID from init or set property will remain.
 
 
 ### Tracking Functions
