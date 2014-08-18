@@ -1,0 +1,77 @@
+-package
+-debugToken
+/Users/zainadil/.cordova/blackberry10debugtoken.bar
+-devMode
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/device/bb10app.bar
+-barVersion
+1.5
+-C
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src
+bar-descriptor.xml
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/config.xml
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/cordova.js
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/cordova_plugins.js
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/default-icon.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/index.html
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/spec.html
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/wwe
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/chrome/frameworkModules.js
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/chrome/index.html
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/chrome/require.js
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/chrome/ui.html
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/chrome/lib/exception.js
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/chrome/lib/utils.js
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/css/index.css
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/img/logo.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/js/index.js
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/plugins/com.blackberry.community.facebookplugin/www/client.js
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/plugins/jnext/auth.txt
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/android/icon-36-ldpi.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/android/icon-48-mdpi.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/android/icon-72-hdpi.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/android/icon-96-xhdpi.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/bada/icon-128.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/bada-wac/icon-48-type5.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/bada-wac/icon-50-type3.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/bada-wac/icon-80-type4.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/blackberry/icon-80.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/ios/icon-57-2x.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/ios/icon-57.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/ios/icon-72-2x.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/ios/icon-72.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/tizen/icon-128.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/webos/icon-64.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/windows-phone/icon-173-tile.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/windows-phone/icon-48.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/icon/windows-phone/icon-62-tile.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/android/screen-hdpi-landscape.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/android/screen-hdpi-portrait.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/android/screen-ldpi-landscape.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/android/screen-ldpi-portrait.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/android/screen-mdpi-landscape.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/android/screen-mdpi-portrait.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/android/screen-xhdpi-landscape.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/android/screen-xhdpi-portrait.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/bada/screen-portrait.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/bada-wac/screen-type3.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/bada-wac/screen-type4.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/bada-wac/screen-type5.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/blackberry/screen-225.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/ios/screen-ipad-landscape-2x.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/ios/screen-ipad-landscape.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/ios/screen-ipad-portrait-2x.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/ios/screen-ipad-portrait.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/ios/screen-iphone-landscape-2x.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/ios/screen-iphone-landscape.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/ios/screen-iphone-portrait-2x.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/ios/screen-iphone-portrait-568h-2x.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/ios/screen-iphone-portrait.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/tizen/README.md
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/webos/screen-64.png
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/res/screen/windows-phone/screen-portrait.jpg
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/spec/helper.js
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/spec/index.js
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/spec/lib/jasmine-1.2.0/MIT.LICENSE
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/spec/lib/jasmine-1.2.0/jasmine-html.js
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/spec/lib/jasmine-1.2.0/jasmine.css
+/Users/zainadil/Documents/BlackBerry UCOSP/WebWorks-Community-APIs/BB10-Cordova/FB/FacebookTestApp/platforms/blackberry10/build/src/spec/lib/jasmine-1.2.0/jasmine.js
