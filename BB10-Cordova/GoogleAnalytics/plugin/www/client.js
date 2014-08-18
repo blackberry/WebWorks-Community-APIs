@@ -18,6 +18,40 @@ var _self = {},
 	_ID = "com.blackberry.community.googleanalyticsplugin",
 	exec = cordova.require("cordova/exec");
 
+    // Init function, first 2 args are required
+    // Without UUID arg, server side will attempt to retrieve from storage
+    // If none found in storage, will generate a random UUID
+    // Newly generated random UUID will be stored
+    // Return: error if any
+    _self.initializeGA = function (gaAccount, appName, uuid) {
+        var result = '';
+
+        if (!gaAccount) {
+            result = 'Missing GA account number';
+        }
+        else if (!appName) {
+            result = 'Missing app name';
+        }
+        
+        if (!result) {
+             var success = function (data, response) {
+                    //result = data;
+                },
+                fail = function (data, response) {
+                    console.log("Init: " + data);
+                    result = "Init error: " + data;
+                };
+            exec(success, fail, _ID, "initializeGA", {
+                "arg_gaAccount": gaAccount,
+                "arg_appName": appName, 
+                "arg_uuid": (uuid || "")
+            });
+
+        }
+
+        return result;
+    };
+
 	// Unique user ID for tracking
     Object.defineProperty(_self, "uuid", {
         get: function () {
@@ -160,7 +194,8 @@ var _self = {},
             pageTitle = pageTitle || "";
             hostName = hostName || "";
             var success = function (data, response) {
-                    result = data;
+                    //result = data;
+                    result = "";
                 },
                 fail = function (data, response) {
                     console.log("Error: " + data);
@@ -185,7 +220,8 @@ var _self = {},
             eventLabel = eventLabel || "";
             eventValue = eventValue || "";
             var success = function (data, response) {
-                    result = data;
+                    //result = data;
+                    result = "";
                 },
                 fail = function (data, response) {
                     console.log("Error: " + data);
@@ -216,7 +252,8 @@ var _self = {},
             tCurr = tCurr || "";
             
             var success = function (data, response) {
-                    result = data;
+                    //result = data;
+                    result = "";
                 },
                 fail = function (data, response) {
                     console.log("Error: " + data);
@@ -246,7 +283,8 @@ var _self = {},
             iQuant = iQuant || "";
             
             var success = function (data, response) {
-                    result = data;
+                    //result = data;
+                    result = "";
                 },
                 fail = function (data, response) {
                     console.log("Error: " + data);

@@ -155,6 +155,7 @@ module.exports = {
             result.error("window.qnx.webplatform.device.activeConnection not found");
         }
     },
+
     trackAll: function (success, fail, args, env) {
         var result = new PluginResult(args, env);
         var sTrackType,
@@ -185,9 +186,18 @@ var ga = (function() {
         m_account = "", 
         m_appName = "Default_AppName",
         m_lastPayload = "",
+        m_fncbSendSuccess,
+        m_fncbSendFail,
         bAccountSet = false,
         bRandomUuid = false,
-        bUseQueue = true;
+        bSendBusy = false,
+        bUseQueue = false; //******************************** TODO SET to true as default **************************
+
+    var DEFAULT_DELAY = 500,
+        MAX_TIMEOUT_DELAY = 10000, // max ms to retry timeouted request
+        MAX_NETWORK_DELAY = 300000, // max ms to retry checking for active connection
+        timeout_delay = DEFAULT_DELAY,
+        network_delay = DEFAULT_DELAY;
 
     //***********************************
     // Functions for setting properties
@@ -291,9 +301,9 @@ var ga = (function() {
         var ret = _p8() + _p8(true) + _p8(true) + _p8();
         ret = ret.substr(0,14) + "4" + ret.substr(15);
         var ch = ret.charAt(19);
-        if ('8' != ch || '9' != ch || 'A' != ch || 'B' != ch)
+        if ('8' != ch && '9' != ch && 'a' != ch && 'b' != ch)
         {
-            ret = ret.substr(0,19) + "A" + ret.substr(20);
+            ret = ret.substr(0,19) + "a" + ret.substr(20);
         }
         return ret;
     };
@@ -301,11 +311,16 @@ var ga = (function() {
     // Return true if has active connection (not neccessarily has internet connectivity tho)
     var checkConnection = function() {
         // Doesn't matter what type of connection, just check if activeConnection exists
-        if (window.qnx.webplatform.device.activeConnection) {
-            result.ok(JSON.stringify(window.qnx.webplatform.device.activeConnection), false);
+        try {
+            if (window.qnx.webplatform.device.activeConnection) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
-        else {
-            result.error("window.qnx.webplatform.device.activeConnection not found");
+        catch (e) {
+            return false;
         }
     };
     //***********************************
@@ -316,12 +331,8 @@ var ga = (function() {
     // Return error if any
     var processtracking = function (trackType, args) {
         var xmlhttp,
-            status = "",
-            message = "",
             optionString = "",
-            jsonArgs = "",
-            error = "",
-            isOK = true;
+            error = "";
 
         if (bRandomUuid) {
             m_uuid = randomizeUuid();
@@ -331,22 +342,7 @@ var ga = (function() {
             error = "Need GA account number first";
         }
 
-        // check if xmlhttprequest is available
-        if (!XMLHttpRequest) {
-            error = "XMLHttpRequest not found";
-        }
-
         if (!error) {
-            xmlhttp = new XMLHttpRequest();
-            // TODO need to check for timeout and network connection
-            xmlhttp.onreadystatechange = function () {
-                    if (xmlhttp.readyState == 4)
-                    {
-                        status = xmlhttp.status;
-                        message = xmlhttp.statusText;
-                    }
-                };
-
             optionString = "v=1&tid=" + m_account + "&cid=" + m_uuid + "&an=" + m_appName;
             
             switch (trackType)
@@ -360,28 +356,28 @@ var ga = (function() {
 
                 case "event":
                     optionString += "&t=event";
-                    optionString += getParameter(args, "&ec", "eventCategory");
-                    optionString += getParameter(args, "&ea", "eventAction");
-                    optionString += getParameter(args, "&el", "eventLabel");
-                    optionString += getParameter(args, "&ev", "eventValue");
+                    optionString += getParameter(args, "ec", "eventCategory");
+                    optionString += getParameter(args, "ea", "eventAction");
+                    optionString += getParameter(args, "el", "eventLabel");
+                    optionString += getParameter(args, "ev", "eventValue");
                     break;
 
                 case "transaction":
                     optionString += "&t=transaction";
-                    optionString += getParameter(args, "&ti", "tID");
-                    optionString += getParameter(args, "&ta", "tAffil");
-                    optionString += getParameter(args, "&tr", "tRevenue");
-                    optionString += getParameter(args, "&ts", "tShipn");
-                    optionString += getParameter(args, "&tt", "tTax");
-                    optionString += getParameter(args, "&cu", "tCurr");
+                    optionString += getParameter(args, "ti", "tID");
+                    optionString += getParameter(args, "ta", "tAffil");
+                    optionString += getParameter(args, "tr", "tRevenue");
+                    optionString += getParameter(args, "ts", "tShipn");
+                    optionString += getParameter(args, "tt", "tTax");
+                    optionString += getParameter(args, "cu", "tCurr");
                     break;
 
                 case "item":
                     optionString += "&t=item";
-                    optionString += getParameter(args, "&ti", "tID");
-                    optionString += getParameter(args, "&in", "iName");
-                    optionString += getParameter(args, "&ip", "iPrice");
-                    optionString += getParameter(args, "&iq", "iQuant");
+                    optionString += getParameter(args, "ti", "tID");
+                    optionString += getParameter(args, "in", "iName");
+                    optionString += getParameter(args, "ip", "iPrice");
+                    optionString += getParameter(args, "iq", "iQuant");
                     break;
 
                 default:
@@ -389,29 +385,86 @@ var ga = (function() {
                     break;
             }
         
-            xmlhttp.open("POST","http://www.google-analytics.com/collect",true);
-            xmlhttp.send(optionString);
             m_lastPayload = optionString;
+
+            // Send immediately if not using queue.
+            // Otherwise, store to queue first & then trigger send
+            if (bUseQueue) {
+                error = queue.enqueue(optionString);
+                if (!error){
+                    // If send is busy, all enqueued will be sent, no need to re-trigger send
+                    if (!bSendBusy) {
+                        bSendBusy = true;
+                        error = sendData(optionString, m_fncbSendSuccess, m_fncbSendFail);
+                    }
+                }
+            }
+            else {
+                error = sendData(optionString, m_fncbSendSuccess, m_fncbSendFail);
+            }
         }
 
         return error;
     };
 
-    // Actual http POST
-    var sendData = function (sPayload) {
+    // Actual http POST function, return error if any
+    var sendData = function (sPayload, fncbSuccess, fncbFail) {
         var xhr;
+        bSendBusy = true;
+        // If Not using queue, attempt POST immediately once only
+        // If Using Queue, send and re-send til timeout, and dequeue once sent successfully
 
+        if (!sPayload) {
+            return "No payload data to send";
+        }
+
+        // Check for active connection
+        if (!checkConnection()) {
+            if (fncbFail) {
+                fncbFail("No network connection");
+            }
+            if (bUseQueue) {
+                // Using queue, re-test for connection
+                if (network_delay <= MAX_NETWORK_DELAY) {
+                    network_delay *= 2;
+                }
+                setTimeout(function(){sendData(sPayload, fncbSuccess, fncbFail);}, network_delay);
+            }
+            return "No network connection";
+        }
+        else {
+            network_delay = DEFAULT_DELAY;
+        }
+
+        // Send
         if (XMLHttpRequest && sPayload) {
             xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
-                        // ok, no timeout
+                        // ok, success no timeout
+                        if (fncbSuccess) {
+                                fncbSuccess();
+                        }
+                        if (bUseQueue) {
+                            // Using queue: done & remove this payload from queue
+                            queue.dequeue();
+                            timeout_delay = DEFAULT_DELAY;
+                            bSendBusy = false;
+                            checkQueue();
+                        }
                     }
                     else {
-                        // timed-out, queue up or discard
-                        if (bUseQueue) {
-                            queue.enqueue(sPayload);
+                        // timed-out
+                        if (fncbFail) {
+                            fncbFail("Connection timed-out");
+                        }
+                        if (bUseQueue) {                        
+                            // Using queue, re-send
+                            if (timeout_delay <= MAX_TIMEOUT_DELAY) {
+                                timeout_delay *= 2;
+                            }
+                            setTimeout(function(){sendData(sPayload, fncbSuccess, fncbFail);}, timeout_delay);
                         }
                     }
                 }
@@ -419,6 +472,23 @@ var ga = (function() {
 
             xhr.open("POST","http://www.google-analytics.com/collect",true);
             xhr.send(sPayload);
+        }
+        else {
+            if (fncbFail) {
+                fncbFail("No XMLHttpRequest");
+            }
+        }
+        return "";
+    };
+
+    // Trigger send if any data in queue
+    var checkQueue = function() {
+        var sPayload;
+
+        sPayload = queue.top();
+        if (!bSendBusy && sPayload) {
+            bSendBusy = true;
+            sendData(sPayload, m_fncbSendSuccess, m_fncbSendFail);
         }
     };
 
@@ -440,22 +510,31 @@ var queue = (function() {
         size = 0;
 
     var enqueue = function(data) {
+        var error = "";
 
+        return error;
     };
 
     // Return dequeued data
     var dequeue = function() {
+        var value = "";
 
+        return value;
     };
 
-    // If queue is non-empty, periodically attempt to send data
-    var triggerSend = function() {
+    // Return top item on queue, does not dequeue
+    // Return empty string if nothing on queue
+    var top = function() {
+        var value = "";
 
+        return value;
     };
+
 
     return {
         enqueue: enqueue,
-        dequeue: dequeue
+        dequeue: dequeue,
+        top: top
     };
 
 })();
