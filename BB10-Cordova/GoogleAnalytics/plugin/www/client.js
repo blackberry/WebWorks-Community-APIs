@@ -18,6 +18,41 @@ var _self = {},
 	_ID = "com.blackberry.community.googleanalyticsplugin",
 	exec = cordova.require("cordova/exec");
 
+    // Init function, first 2 args are required
+    // Without UUID arg, server side will attempt to retrieve from storage
+    // If none found in storage, will generate a random UUID
+    // Newly generated random UUID will be stored
+    // Return: error if any
+    _self.initializeGA = function (gaAccount, appName, uuid, bUseQueue) {
+        var result = '';
+
+        if (!gaAccount) {
+            result = 'Missing GA account number';
+        }
+        else if (!appName) {
+            result = 'Missing app name';
+        }
+
+        if (!result) {
+             var success = function (data, response) {
+                    //result = data;
+                },
+                fail = function (data, response) {
+                    console.log("Init: " + data);
+                    result = "Init error: " + data;
+                };
+            exec(success, fail, _ID, "initializeGA", {
+                "arg_gaAccount": gaAccount,
+                "arg_appName": appName, 
+                "arg_uuid": (uuid || ""),
+                "arg_bUseQueue": (bUseQueue || "")
+            });
+
+        }
+
+        return result;
+    };
+
 	// Unique user ID for tracking
     Object.defineProperty(_self, "uuid", {
         get: function () {
@@ -122,30 +157,72 @@ var _self = {},
         }
     });
 
-	Object.defineProperty(_self, "googleanalyticsProperty", {
-		get: function () {
-			var result,
-				success = function (data, response) {
-					result = data;
-				},
-				fail = function (data, response) {
-					console.log("Error: " + data);
-				};
-			exec(success, fail, _ID, "googleanalyticsProperty", null);
-			return result;
-		},
-		set: function (arg) {
-			var result,
-				success = function (data, response) {
-					result = data;
-				},
-				fail = function (data, response) {
-					console.log("Error: " + data);
-				};
-			exec(success, fail, _ID, "googleanalyticsProperty", {"value": arg });
-			return result;
-		}
-	});
+    // Check if queue is enabled
+    Object.defineProperty(_self, "useQueue", {
+        get: function () {
+            var result,
+                success = function (data, response) {
+                    result = data;
+                },
+                fail = function (data, response) {
+                    console.log("Error: " + data);
+                };
+            exec(success, fail, _ID, "useQueue", null);
+            return result;
+        },
+        set: function (arg) {
+            var result,
+                success = function (data, response) {
+                    result = data;
+                },
+                fail = function (data, response) {
+                    console.log("Error: " + data);
+                };
+            exec(success, fail, _ID, "useQueue", {"value": arg });
+            return result;
+        }
+    });
+
+    // Random UUID feature
+    Object.defineProperty(_self, "randomUuid", {
+        get: function () {
+            var result,
+                success = function (data, response) {
+                    result = data;
+                },
+                fail = function (data, response) {
+                    console.log("Error: " + data);
+                };
+            exec(success, fail, _ID, "randomUuid", null);
+            return result;
+        },
+        set: function (arg) {
+            var result,
+                success = function (data, response) {
+                    result = data;
+                },
+                fail = function (data, response) {
+                    console.log("Error: " + data);
+                };
+            exec(success, fail, _ID, "randomUuid", {"value": arg });
+            return result;
+        }
+    });
+
+    _self.getDelay = function () {
+        var result = '';
+
+        var success = function (data, response) {
+                result = data;
+            },
+            fail = function (data, response) {
+                console.log("Error: " + data);
+                result = "Error: " + data;
+            };
+
+        exec(success, fail, _ID, "getDelay", "");
+        return result;
+    };
 
     // Different types of tracking for GA
     // All tracking functions return empty string if tracking request is successful,
@@ -160,7 +237,8 @@ var _self = {},
             pageTitle = pageTitle || "";
             hostName = hostName || "";
             var success = function (data, response) {
-                    result = data;
+                    //result = data;
+                    result = "";
                 },
                 fail = function (data, response) {
                     console.log("Error: " + data);
@@ -185,7 +263,8 @@ var _self = {},
             eventLabel = eventLabel || "";
             eventValue = eventValue || "";
             var success = function (data, response) {
-                    result = data;
+                    //result = data;
+                    result = "";
                 },
                 fail = function (data, response) {
                     console.log("Error: " + data);
@@ -216,7 +295,8 @@ var _self = {},
             tCurr = tCurr || "";
             
             var success = function (data, response) {
-                    result = data;
+                    //result = data;
+                    result = "";
                 },
                 fail = function (data, response) {
                     console.log("Error: " + data);
@@ -246,7 +326,8 @@ var _self = {},
             iQuant = iQuant || "";
             
             var success = function (data, response) {
-                    result = data;
+                    //result = data;
+                    result = "";
                 },
                 fail = function (data, response) {
                     console.log("Error: " + data);
@@ -262,6 +343,5 @@ var _self = {},
         }
         return result;
     };
-
 
 module.exports = _self;

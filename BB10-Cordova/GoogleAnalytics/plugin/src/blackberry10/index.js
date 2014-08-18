@@ -87,6 +87,26 @@ module.exports = {
         }
     },
 
+    useQueue: function (success, fail, args, env) {
+        var result = new PluginResult(args, env);
+        var value;
+        if (args && args["value"]) 
+        {
+            value = JSON.parse(decodeURIComponent(args["value"]));
+            ga.setUseQueue(value);
+            result.noResult(false);
+        } 
+        else 
+        {
+            result.ok(ga.setUseQueue(), false);
+        }
+    },
+
+    getDelay: function (success, fail, args, env) {
+        var result = new PluginResult(args, env);
+        result.ok(ga.getDelay(), false);
+    },
+
     randomUuid: function (success, fail, args, env) {
         var result = new PluginResult(args, env);
         var value = "";
@@ -111,18 +131,18 @@ module.exports = {
         var result = new PluginResult(args, env);
         var value, 
             error;
-        // args in the order: gaAccount, [UUID], [appName]
+
         if (!args || !args["arg_gaAccount"]) {
             error = "GA account number is required";
         }
         if (!error) {
             value = JSON.parse(decodeURIComponent(args["arg_gaAccount"]));
-            if ("" == value) {
-                error = "GA account number is required";
-            }
-        }
-        if (!error) {
             error = ga.account(value);
+        }
+
+        if (!error && args["arg_appName"]) {
+            value = JSON.parse(decodeURIComponent(args["arg_appName"]));
+            error = ga.appname(value);
         }
 
         if (!error && args["arg_uuid"]) {
@@ -130,9 +150,9 @@ module.exports = {
             error = ga.gauuid(value);
         }
 
-        if (!error && args["arg_appName"]) {
-            value = JSON.parse(decodeURIComponent(args["arg_appName"]));
-            error = ga.appname(value);
+        if (!error && args["arg_bUseQueue"]) {
+            value = JSON.parse(decodeURIComponent(args["arg_bUseQueue"]));
+            error = ga.setUseQueue(value);
         }
 
         if (error) {
@@ -171,10 +191,20 @@ module.exports = {
 var ga = (function() {
     var m_uuid = "",
         m_account = "", 
-        m_appName = "Default_AppName",
+        m_appName = "",
         m_lastPayload = "",
+        m_fncbSendSuccess,
+        m_fncbSendFail,
         bAccountSet = false,
-        bRandomUuid = false;
+        bRandomUuid = false,
+        bSendBusy = false,
+        bUseQueue = false; 
+
+    var DEFAULT_DELAY = 500,
+        MAX_TIMEOUT_DELAY = 10000, // max ms to retry timeouted request
+        MAX_NETWORK_DELAY = 300000, // max ms to retry checking for active connection
+        timeout_delay = DEFAULT_DELAY,
+        network_delay = DEFAULT_DELAY;
 
     //***********************************
     // Functions for setting properties
@@ -201,7 +231,8 @@ var ga = (function() {
                 return "AppName cannot be empty";
             }
             m_appName = value;
-            return "";
+            // Init storage, use app name as unique ID for storage
+            return storage.init(m_appName);
         }
         else {
             return m_appName;
@@ -211,12 +242,31 @@ var ga = (function() {
     var gauuid = function(value) {
         if (undefined != value) { 
             m_uuid = value;
+            // if uuid provided is empty, attempt to load from storage
+            // If no storage uuid, create one with random
             if ("" == m_uuid) {
+                m_uuid = storage.loadData('uuid');
+            }
+            if ("" == m_uuid){
                 m_uuid = randomizeUuid();
+            }
+            // store UUID
+            return storage.saveData("uuid", m_uuid);
+        }
+        return m_uuid;
+    };
+
+    var setUseQueue = function(value) {
+        if (undefined != value) {
+            value = value.toLowerCase();
+            if ("true" == value) {
+                bUseQueue = true;
             }
             return "";
         }
-        return m_uuid;
+        else {
+            return bUseQueue;
+        }
     };
 
     var lastpayload = function() {
@@ -266,6 +316,7 @@ var ga = (function() {
         return output;
     };
 
+    // Return a randomly generated UUID
     var randomizeUuid = function() {
         //Version4(random) UUID:
         //xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx where x is any hexadecimal digit and y is one of 8, 9, A, or B
@@ -277,13 +328,28 @@ var ga = (function() {
         var ret = _p8() + _p8(true) + _p8(true) + _p8();
         ret = ret.substr(0,14) + "4" + ret.substr(15);
         var ch = ret.charAt(19);
-        if ('8' != ch || '9' != ch || 'A' != ch || 'B' != ch)
+        if ('8' != ch && '9' != ch && 'a' != ch && 'b' != ch)
         {
-            ret = ret.substr(0,19) + "A" + ret.substr(20);
+            ret = ret.substr(0,19) + "a" + ret.substr(20);
         }
         return ret;
     };
 
+    // Return true if has active connection (not neccessarily has internet connectivity tho)
+    var checkConnection = function() {
+        // Doesn't matter what type of connection, just check if activeConnection exists
+        try {
+            if (window.qnx.webplatform.device.activeConnection) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        catch (e) {
+            return false;
+        }
+    };
     //***********************************
     // Core functions
     //***********************************
@@ -292,37 +358,24 @@ var ga = (function() {
     // Return error if any
     var processtracking = function (trackType, args) {
         var xmlhttp,
-            status = "",
-            message = "",
             optionString = "",
-            jsonArgs = "",
-            error = "",
-            isOK = true;
+            error = "";
 
         if (bRandomUuid) {
             m_uuid = randomizeUuid();
         }
 
         if (!bAccountSet) {
-            error = "Need GA account number first";
+            error = "Need GA account number";
         }
-
-        // check if xmlhttprequest is available
-        if (!XMLHttpRequest) {
-            error = "XMLHttpRequest not found";
+        if (!m_uuid) {
+            error = "UUID not set. Set to empty string for a random UUID";
+        }
+        if (!m_appName){
+            error = "App Name not set";
         }
 
         if (!error) {
-            xmlhttp = new XMLHttpRequest();
-            // TODO need to check for timeout and network connection
-            xmlhttp.onreadystatechange = function () {
-                    if (xmlhttp.readyState == 4)
-                    {
-                        status = xmlhttp.status;
-                        message = xmlhttp.statusText;
-                    }
-                };
-
             optionString = "v=1&tid=" + m_account + "&cid=" + m_uuid + "&an=" + m_appName;
             
             switch (trackType)
@@ -336,28 +389,28 @@ var ga = (function() {
 
                 case "event":
                     optionString += "&t=event";
-                    optionString += getParameter(args, "&ec", "eventCategory");
-                    optionString += getParameter(args, "&ea", "eventAction");
-                    optionString += getParameter(args, "&el", "eventLabel");
-                    optionString += getParameter(args, "&ev", "eventValue");
+                    optionString += getParameter(args, "ec", "eventCategory");
+                    optionString += getParameter(args, "ea", "eventAction");
+                    optionString += getParameter(args, "el", "eventLabel");
+                    optionString += getParameter(args, "ev", "eventValue");
                     break;
 
                 case "transaction":
                     optionString += "&t=transaction";
-                    optionString += getParameter(args, "&ti", "tID");
-                    optionString += getParameter(args, "&ta", "tAffil");
-                    optionString += getParameter(args, "&tr", "tRevenue");
-                    optionString += getParameter(args, "&ts", "tShipn");
-                    optionString += getParameter(args, "&tt", "tTax");
-                    optionString += getParameter(args, "&cu", "tCurr");
+                    optionString += getParameter(args, "ti", "tID");
+                    optionString += getParameter(args, "ta", "tAffil");
+                    optionString += getParameter(args, "tr", "tRevenue");
+                    optionString += getParameter(args, "ts", "tShipn");
+                    optionString += getParameter(args, "tt", "tTax");
+                    optionString += getParameter(args, "cu", "tCurr");
                     break;
 
                 case "item":
                     optionString += "&t=item";
-                    optionString += getParameter(args, "&ti", "tID");
-                    optionString += getParameter(args, "&in", "iName");
-                    optionString += getParameter(args, "&ip", "iPrice");
-                    optionString += getParameter(args, "&iq", "iQuant");
+                    optionString += getParameter(args, "ti", "tID");
+                    optionString += getParameter(args, "in", "iName");
+                    optionString += getParameter(args, "ip", "iPrice");
+                    optionString += getParameter(args, "iq", "iQuant");
                     break;
 
                 default:
@@ -365,12 +418,115 @@ var ga = (function() {
                     break;
             }
         
-            xmlhttp.open("POST","http://www.google-analytics.com/collect",true);
-            xmlhttp.send(optionString);
             m_lastPayload = optionString;
+
+            // Send immediately if not using queue.
+            // Otherwise, store to queue first & then trigger send
+            if (bUseQueue) {
+                error = queue.enqueue(optionString);
+                if (!error){
+                    // If send is already busy, all enqueued will be sent, no need to re-trigger send
+                    if (!bSendBusy) {
+                        bSendBusy = true;
+                        error = sendData(optionString, m_fncbSendSuccess, m_fncbSendFail);
+                    }
+                }
+            }
+            else {
+                error = sendData(optionString, m_fncbSendSuccess, m_fncbSendFail);
+            }
         }
 
         return error;
+    };
+
+    var getDelay = function () {
+        return ("Network: " + network_delay + "; Timeout: " + timeout_delay);
+    };
+
+    // Actual http POST function, return error if any
+    var sendData = function (sPayload, fncbSuccess, fncbFail) {
+        var xhr;
+        bSendBusy = true;
+        // If Not using queue, attempt POST immediately once only
+        // If Using Queue, send and re-send til timeout, and dequeue once sent successfully
+
+        if (!sPayload) {
+            return "No payload data to send";
+        }
+
+        // Check for active connection
+        if (!checkConnection()) {
+            if (fncbFail) {
+                fncbFail("No network connection");
+            }
+            if (bUseQueue) {
+                // Using queue, re-test for connection
+                if (network_delay < MAX_NETWORK_DELAY) {
+                    network_delay *= 2;
+                }
+                setTimeout(function(){sendData(sPayload, fncbSuccess, fncbFail);}, network_delay);
+            }
+            return "No network connection";
+        }
+        else {
+            network_delay = DEFAULT_DELAY;
+        }
+
+        // Send
+        if (XMLHttpRequest && sPayload) {
+            xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        // ok, success no timeout
+                        if (fncbSuccess) {
+                                fncbSuccess();
+                        }
+                        if (bUseQueue) {
+                            // Using queue: done & remove this payload from queue
+                            queue.dequeue();
+                            timeout_delay = DEFAULT_DELAY;
+                            bSendBusy = false;
+                            checkQueue();
+                        }
+                    }
+                    else {
+                        // timed-out
+                        if (fncbFail) {
+                            fncbFail("Connection timed-out");
+                        }
+                        if (bUseQueue) {                        
+                            // Using queue, re-send
+                            if (timeout_delay < MAX_TIMEOUT_DELAY) {
+                                timeout_delay *= 2;
+                            }
+                            setTimeout(function(){sendData(sPayload, fncbSuccess, fncbFail);}, timeout_delay);
+                        }
+                    }
+                }
+            }
+
+            xhr.open("POST","http://www.google-analytics.com/collect",true);
+            xhr.send(sPayload);
+        }
+        else {
+            if (fncbFail) {
+                fncbFail("No XMLHttpRequest");
+            }
+        }
+        return "";
+    };
+
+    // Trigger send if any data in queue
+    var checkQueue = function() {
+        var sPayload;
+
+        sPayload = queue.top();
+        if (!bSendBusy && sPayload) {
+            bSendBusy = true;
+            sendData(sPayload, m_fncbSendSuccess, m_fncbSendFail);
+        }
     };
 
     // export
@@ -380,18 +536,52 @@ var ga = (function() {
         gauuid: gauuid,
         lastpayload: lastpayload,
         randomuuid: randomuuid,
-        processtracking: processtracking
+        processtracking: processtracking,
+        setUseQueue: setUseQueue,
+        getDelay: getDelay
     };
 
 })();
 
+// Queue module for storing payload
+// An interface to the Storage module
+var queue = (function() {
+    var enqueue = function(data) {
+        var error = "";
+        error = storage.pushPayload(data);
+        return error;
+    };
+
+    // Return dequeued data
+    var dequeue = function() {
+        var value = "";
+        value = storage.popPayload();
+        return value;
+    };
+
+    // Return top item on queue, does not dequeue
+    // Return empty string if nothing on queue
+    var top = function() {
+        var value = "";
+        value = storage.topPayload();
+        return value;
+    };
+
+    return {
+        enqueue: enqueue,
+        dequeue: dequeue,
+        top: top
+    };
+
+})();
 
 //Storage module
 var storage = (function() {
     // root of storage structure
     var gaStorage = {},
         error = "Storage not initialized yet.",
-        storagename = "bb10googleanalyticsplugin_";
+        DEFAULT_NAME = "bb10googleanalyticsplugin_",
+        storagename;
     // A list specific for storing payloads of http post request to GA
     gaStorage["arrPayloads"] = [];
     var arrPayloads = gaStorage["arrPayloads"];
@@ -402,7 +592,7 @@ var storage = (function() {
         // At start up, retrieve previous instance of storage if any
         // If none, create one. Use JSON to convert storage structure into pure string.
         if (id) {
-            storagename += id;
+            storagename = DEFAULT_NAME + id;
             error = "";
         }
         else {
@@ -413,6 +603,8 @@ var storage = (function() {
             var oldStorage = window.localStorage.getItem(storagename);
             if (oldStorage) {
                 gaStorage = JSON.parse(oldStorage);
+                // retrieve old arrPayloads
+                arrPayloads = gaStorage["arrPayloads"];
             }
             else {
                 window.localStorage.setItem(storagename, JSON.stringify(gaStorage));
@@ -422,6 +614,7 @@ var storage = (function() {
         else {
             error = "LocalStorage not supported.";
         }
+        return error;
     };
     // Always keep the most updated gaStorage both in memeory and in web storage
 
@@ -432,13 +625,14 @@ var storage = (function() {
         }
         gaStorage[key] = value;
         window.localStorage.setItem(storagename, JSON.stringify(gaStorage));
+        return "";
     };
 
     var loadData = function(key) {
         if (error) {
             return "";
         }
-        return gaStorage[key];
+        return (gaStorage[key] || "");
     };
 
     // save & load for payloads data only, use queue
@@ -448,11 +642,12 @@ var storage = (function() {
         }
         arrPayloads[arrPayloads.length] = sPayload;
         window.localStorage.setItem(storagename, JSON.stringify(gaStorage));
+        return "";
     };
 
     // load
     var popPayload = function() {
-        if (error) {
+        if (error || (arrPayloads.length == 0)) {
             return "";
         }
         var value = arrPayloads.shift();
@@ -460,11 +655,20 @@ var storage = (function() {
         return value;
     };
 
+    // return first item in storage arr
+    var topPayload = function() {
+        if (error || (arrPayloads.length == 0)) {
+            return "";
+        }
+        return arrPayloads[0];
+    };
+
     return {
         init: init,
         saveData: saveData,
         loadData: loadData,
         pushPayload: pushPayload,
-        popPayload: popPayload
+        popPayload: popPayload,
+        topPayload: topPayload
     };
 })();
