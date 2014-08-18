@@ -38,20 +38,20 @@ You can get/set individual properties if you want/need to:
 ### Tracking Functions
 Calling these functions will send a HTTP POST request to GA, with the sepecified parameters. The function parameters in square-brackets, e.g. `[pageTitle]` are optional. Unless otherwise stated, most parameters take strings as input. If error occurs, the tracking functions return an error message. Otherwise an empty string is returned.
 
-Tracking pageviews:
+- Tracking pageviews:
 ```
 community.googleanalyticsplugin.trackPageview(pageURL, [pageTitle], [hostName])
 ```
-Tracking events: *Actions* are grouped under *Categories* in GA dashboard. There is no pre-defined actions or categories in GA, you can define any you need.
+- Tracking events: *Actions* are grouped under *Categories* in GA dashboard. There is no pre-defined actions or categories in GA, you can define any you need.
 
 ```
 community.googleanalyticsplugin.trackEvent(eventCategory, eventAction, [eventLabel], [eventValue])
 ```
-Tracking eCommerce transaction: **You need to enable eCommerce tracking in GA dashboard**, otherwise all transaction tracking will simply be discarded without any warning message. `tRevenue`, `tShipn` and `tTax` require currency input, i.e. non-negative number. `tAffil` is used for company or store name.
+- Tracking eCommerce transaction: **You need to enable eCommerce tracking in GA dashboard**, otherwise all transaction tracking will simply be discarded without any warning message. `tRevenue`, `tShipn` and `tTax` require currency input, i.e. non-negative number. `tAffil` is used for company or store name.
 ```
 community.googleanalyticsplugin.trackTransaction(tID, [tAffil], [tRevenue], [tShipn], [tTax], [tCurr])
 ```
-Tracking eCommerce item hits. **You need to enable eCommerce tracking in GA dashboard**, otherwise all item hit tracking will simply be discarded without any warning message. `iPrice` requires currency input, and `iQuant` requires non-negative integer. An item hit tracking must be assosicated with a transaction ID `tID`.
+- Tracking eCommerce item hits. **You need to enable eCommerce tracking in GA dashboard**, otherwise all item hit tracking will simply be discarded without any warning message. `iPrice` requires currency input, and `iQuant` requires non-negative integer. An item hit tracking must be assosicated with a transaction ID `tID`.
 ```
 community.googleanalyticsplugin.trackItem(tID, iName, [iPrice], [iQuant])
 ```
