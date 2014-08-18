@@ -57,8 +57,8 @@ community.googleanalyticsplugin.trackItem(tID, iName, [iPrice], [iQuant])
 
 ## Tips
 - For debugging purpose, using a random ID for each HTTP request can be helpful since each request will be considered as an unique user, which will show up as unique user count in GA dashboard limited *Real-time* statistics. To do this, set `community.googleanalyticsplugin.randomUuid = "true";`. This will use a random UUID for every single tracking request.
-- For app that needs tracking of numerous "events", e.g. clicking/taping actions in gaming app, it would be better to disable queueing of tracking payload data, as queueing requires disk access.
-- For app that needs small number of tracking and need all tracking requests to be collected, enable queueing will be better. This will ensure all data be sent to GA. Data will be stored and re-sent later if network is down or connection time-out occur.
+- For app that needs tracking of numerous "events", e.g. clicking/taping actions in gaming app, it would be better to disable queueing of tracking payload data, as queueing requires disk access, which may slow down the app performance. Also, if network is down, then a very large amount of data will be stored with queue enabled.
+- For app that needs small number of tracking and need all tracking requests to be collected, enabling queueing will be better. This will ensure all data be sent to GA. Data will be stored and re-sent later if network is down or connection time-out occur.
 
 
 ## Disclaimer
