@@ -23,7 +23,7 @@ community.googleanalyticsplugin.initializeGA(gaAccount, appName, [UUID], [useQue
 - `gaAccount` -- your registered Google Analytics account number in the format UA-xxxxxxxx-x
 - `appName` -- name of the app
 - `UUID` -- (optional) an unique ID for the mobile device. If not explicitly set, use UUID from previous session if exists. Otherwise a random UUID will be generated and stored.
-- `useQueue` -- (optional, "true"/"false") If enabled, will queue up all tracking data until successfully sent.
+- `useQueue` -- (optional, "true"/"false") If enabled, will queue up and save all tracking data until successfully sent. Un-sent data from previous session will also be retrieved to be re-sent. If disabled, will only attempt to send every tracking request once, and no tracking data will be queued or saved.
 
 You can get/set individual properties if you want/need to:
 - `community.googleanalyticsplugin.appName;`
