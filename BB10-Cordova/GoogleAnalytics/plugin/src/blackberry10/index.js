@@ -426,7 +426,11 @@ var ga = (function() {
                 error = queue.enqueue(optionString);
                 if (!error){
                     // If send is already busy, all enqueued will be sent, no need to re-trigger send
-                    if (!bSendBusy) {
+                    // but that may mean no active network and connection timed-out
+                    if (bSendBusy) {
+                        error = "Network busy";
+                    }
+                    else {
                         bSendBusy = true;
                         error = sendData(optionString, m_fncbSendSuccess, m_fncbSendFail);
                     }
