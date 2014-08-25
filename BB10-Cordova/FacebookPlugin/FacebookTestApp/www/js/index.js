@@ -64,7 +64,10 @@ var app = {
 			community.facebookplugin.login(alert, {"scope":"email"});
 
 			app.writeOut("--- Graph API Call ----");
-			community.facebookplugin.			
+			community.facebookplugin.api({path: '/me/friends', success: successHandler, error: errorHandler});
+
+			app.writeOut("-- Logout ----");
+			community.facebookplugin.logout(alert);
 
 		} else {
 			app.writeOut("Plugin was not found");
