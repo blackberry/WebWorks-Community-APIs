@@ -15,23 +15,36 @@
 */
 
 var _self = {},
-	_ID = "com.blackberry.community.curl",
-	exec = cordova.require("cordova/exec");
+    _ID = "com.blackberry.community.curl",
+    exec = cordova.require("cordova/exec");
 
-	// These methods are called by your App's JavaScript
-	// They make WebWorks function calls to the methods
-	// in the index.js of the Extension
+    // These methods are called by your App's JavaScript
+    // They make WebWorks function calls to the methods
+    // in the index.js of the Extension
 
-	_self.get = function (input) {
-		var result,
-			success = function (data, response) {
-				result = data;
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "get", { input: input });
-		return result;
-	};
+    _self.get = function (input, callback) {
+        var success = function (data, response) {
+                if (typeof successCallback === 'function') {
+                    successCallback(data, response, input);
+                } else {
+                    // print data by default
+                    console.log(input);
+                    console.log(data);
+                }
+            },
+            fail = function (data, response) {
+                if (typeof failCallback === 'function') {
+                    failCallback(data, response, input);
+                } else {
+                    // print error by default
+                    console.log(input);
+                    console.log("Error: " + data);
+                }
+            };
+        
+        input = input || "";
+
+        exec(success, fail, _ID, "get", {input: input}, true);
+    };
 
 module.exports = _self;
