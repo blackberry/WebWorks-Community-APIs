@@ -9,110 +9,105 @@ The AboutScreen Control will allow you to show a beautiful and standard about sc
 ![AboutScreen 9900](https://github.com/blackberry/WebWorks-Community-APIs/raw/master/Smartphone/AboutScreen/screenshot_9900.png)
 
 ![AboutScreen 9800](https://github.com/blackberry/WebWorks-Community-APIs/raw/master/Smartphone/AboutScreen/screenshot_9810.png)
-## Tested On
+
+## Tested On ##
 
 * BlackBerry Bold 9900 v7.1.0.1098
 * BlackBerry Bold 9930 v7.0.0.318 (simulator)
 * BlackBerry Torch 9810 v7.1.0.912
 
-**Requires BlackBerry WebWorks SDK for Smartphones v2.0 or higher**
+**Requires BlackBerry WebWorks SDK for Smartphones v2.0 or higher, and only apply to BlackBerry OS6 or higher**
 
-Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks-Community-APIs/issues) or contact the [Author](https://github.com/tneil)
+Have a problem with this extension?  [Log an Issue](https://github.com/blackberry/WebWorks-Community-APIs/issues) or contact the [Author](https://github.com/Walkline80)
 
-## How To Configure The Extension For Use
+## How To Configure The Extension For Use ##
 
 1. Locate your BlackBerry WebWorks SDK for Smartphone extensions directory using your File Explorer.  Default path is _**C:\Program Files\Research In Motion\BlackBerry WebWorks Packager\ext**_
 
-2. Create a new _**blackberry.ui.Spinner**_ directory in the _**ext**_ directory
+2. Create a new _**webworks.ui.AboutScreen**_ directory in the _**ext**_ directory
 
 3. Download the source from this repository and unzip it to a location on your computer
 
-4. Using File Explorer browse to this extension's downloaded source code _**Smartphone\SpinnerControl**_
+4. Using File Explorer browse to this extension's downloaded source code _**Smartphone\AboutScreen\Extension**_
 
-5. Copy the _**library.xml**_ file from the downloaded _**Smartphone\SpinnerControl**_ directory to your new _**ext\blackberry.ui.Spinner**_ directory
+5. Copy the _**library.xml**_ file from the downloaded _**Smartphone\AboutScreen\Extension**_ directory to your new _**ext\webworks.ui.AboutScreen**_ directory
 
-6. Copy the downloaded _**Smartphone\SpinnerControl\src\blackberry**_ directory to your new _**ext\blackberry.ui.Spinner\blackberry**_ directory
+6. Copy the downloaded _**Smartphone\AboutScreen\Extension\webworks**_ directory to your new _**ext\webworks.ui.AboutScreen**_ directory
 
-**NOTE:** Be sure to back-up this _**ext\blackberry.ui.Spinner**_ directory in your WebWorks SDK extensions directory before performing a WebWorks SDK upgrade. Simply copy it back into the _**ext**_ directory after you have completed your SDK upgrade.
+**NOTE:** Be sure to back-up this _**ext\webworks.ui.AboutScreen**_ directory in your WebWorks SDK extensions directory before performing a WebWorks SDK upgrade. Simply copy it back into the _**ext**_ directory after you have completed your SDK upgrade.
 
-## Required Feature ID
+## Required Feature ID ##
 Whenever you use the below feature id in any of your WebWorks applications this extension will be loaded for use.
 
-    <feature id="blackberry.ui.Spinner" />
+    <feature id="webworks.ui.AboutScreen" />
 
-## Summary
+## Summary ##
 
-    static void open(options : OptionsInterface, callback : function (selectedIndex : Number) )
+    static void show(params : OptionsInterface)
 
     OptionsInterface:
-    readwrite  property  String[]   items
-    readwrite  property  Number     rowHeight
-    readwrite  property  String     selectedIndex
-    readwrite  property  String     title
-    readwrite  property  Number     visibleRows
+    readwrite  property  String   title
+    readwrite  property  String   version
+    readwrite  property  String   intro
+    readwrite  property  String   author
+    readwrite  property  String   email
+    readwrite  property  String   weibo
+    readwrite  property  String   alipay
+    readwrite  property  String   facebook
+    readwrite  property  String   twitter
 
-## Code Example
+## Code Example ##
 
-    function foo()
+    function showAboutScreen()
     {
-        var rowHeight;
-        var visibleRows;
+        //Configure the options
+        var params = {'title': 'AboutScreen Control',
+      				  'version': '0.0.1',
+      				  'intro': 'Used to show a beautiful and standard about screen, just like this :)',
+      				  'author': 'Walkline Wang',
+      				  'email': 'walkline@gmail.com',	//optional
+      				  'weibo': '@Walkline',				//optional
+      				  'alipay': 'walkline@gmail.com'	//optional
+      				  'facebook': 'walklinewang',		//optional
+      				  'twitter': '@walklinewang',		//optional
+      			 	 };
 
-        // Populate our items
-        var items = new Array('Barcelona', 'Beijing', 'Brasilia', 'Melbourne', 'Moscow', 'New York', 'Paris' );
-
-        // Figure out our height and rows based on screen size
-        if (screen.height < 480){
-          rowHeight = 60;
-          visibleRows = 3;
-        }
-        else {
-          rowHeight = 75;
-          visibleRows = 4;
-        }
-
-        // Configure the options 
-        var options = {'title': 'Choose A City:',
-          'rowHeight': rowHeight,
-          'visibleRows': visibleRows,
-          'selectedIndex': 2,
-          'items' : items};
-
-        // Open the spin dialog
-            blackberry.ui.Spinner.open(options, function (selectedIndex) {
-              alert(selectedIndex); }	  
-        );	
+        //Open the about screen
+		webworks.ui.AboutScreen.show(params);	
     }
 
-## Usage Information
-When creating a spinner control you will pass it an options object that you can
-create out of simple JSON.  This will provide the spinner with all the information it 
+## Usage Information ##
+When creating a AboutScreen control you will pass it an options object that you can
+create out of simple JSON. This will provide the AboutScreen with all the information it 
 needs to display properly.
 
-You will also pass in an event callback that will be triggered once the user has 
-selected an item or cancelled the screen.  If the user does not select an item
-the selectedIndex returned as a parameter in the callback will be undefined.
-
-_**NOTE:**_ The callback is handled asynchronously, so code that is placed directly after
-the "open" function call will be executed immediately while waiting for the user's 
-response input.
-
-## Properties
-**items:**
-Is an array of string items you wish to display in the spinner control
-
-**rowHeight:**
-Is the height of each of the rows that you wish to display in the spinner
-
-**selectedIndex:**
-Is the index of the item you wish to be displayed as the default selected 
-item when the spinner is shown
-
+## Properties ##
 **title:**
-Is the title caption you wish to have at the top of the spinner
+Is the title of your app
 
-**visibleRows:**
-Is the number of rows you wish to have visible in the spinner control
+**version:**
+Is the current version of your app
 
-## Change Log
+**intro:**
+Is the shortly description of your app
+
+**author:**
+Is yourself
+
+**email:**
+Is your e-mail address, this is an optional item
+
+**weibo**
+Is an ID of your Sina Weibo, this is an optional item
+
+**alipay**
+Is an ID of your Alibaba payment tool, this is an optional item
+
+**facebook**
+Is an ID of your Facebook, this is an optional item
+
+**twitter**
+Is an ID of your Twitter, this is an optional item
+
+## Change Log ##
 _Empty_
