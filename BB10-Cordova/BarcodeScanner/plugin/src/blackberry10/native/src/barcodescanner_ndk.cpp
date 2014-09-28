@@ -124,6 +124,18 @@ static uint32_t rotation = 0;
 
             Json::FastWriter writer;
             Json::Value root;
+			
+			char c;
+            int i=0;
+            while (newBarcodeData[i])//substitue space to _ to prevent parse error
+            {
+              c = newBarcodeData[i];
+              if (isspace(c)) 
+				c = '_';
+              newBarcodeData[i] = c;
+              i++;
+            }
+			
             root["value"] = newBarcodeData;
 
             // notify caller that a valid QR code has been decoded
