@@ -48,6 +48,8 @@
 				canvas.style.display = "block"
 			}
 			else if(receivedEvent == "community.barcodescanner.codefound.native") {
+				if(arData[1].indexOf("_") != -1)
+					arData[1] = arData[1].replace(/_/g, " ");//covert the substitue character back to space
 				var codeFoundData = JSON.parse(arData[1])
 				succ(codeFoundData)
 			}
