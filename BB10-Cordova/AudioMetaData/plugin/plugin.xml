@@ -1,0 +1,23 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="com.blackberry.community.audiometadata"
+    version="1.0.0">
+
+    <name>AudioMetaData</name>
+    <description>BlackBerry 10 Community Contributed AudioMetaData API</description>
+    <license>Apache 2.0</license>
+    <author>jim wen</author>
+
+    <js-module src="www/client.js">
+        <clobbers target="com.blackberry.community.audiometadata" />
+    </js-module>
+
+    <platform name="blackberry10">
+        <!-- <dependency id="com.blackberry.read" /> -->
+        <source-file src="src/blackberry10/index.js" />
+        <lib-file src="src/blackberry10/native/device/libAudioMetaData.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libAudioMetaData.so" arch="simulator"/>
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="com.blackberry.community.audiometadata" value="com.blackberry.community.audiometadata" />
+        </config-file>
+    </platform>
+</plugin>
