@@ -1,0 +1,81 @@
+#AudioMetaData Cordova/Webworks Plugin
+
+This plugin is designed to be able to retrive the ID3 tag of a MP3 file. This tag contains information for the file such as title, genre, artist, year of production, track number on the album etc. For more info visit <a href="http://en.wikipedia.org/wiki/ID3">here</a> for more information.
+
+##Setting Up
+
+####Buidling the Plugin
+```
+Open momentic and import the plugin/src/blackberry10/native directory. 
+Build the project.
+```
+
+The .cproject file should be automatically picked up by Momentics with regards to linking the id3v2lib static library. However, if not, then follow the steps below to link it manually.
+
+```
+Right click on the imported project and choose properties.
+Drop down C/C++ Build and choose Settings
+Navigate to Tool Settings tab and choose Libraries under QCC Linker
+ 1. press add in  Library Path(the file with gree + icon) and navigate to plugin/src/blackberry10/native/extlib
+ 2. press add in Libraries(Same icon as above) and type "id3v2" without the quotes.
+```
+
+####Loading the plugin
+
+Simply open up a terminal and perform the following commands while in your application path:
+
+````
+webworks plugin add path/to/AudioMetaData plugin/plugin
+```
+
+#####However the following permissions must be applied to config.xml of you application
+
+```
+<rim:permissions>
+    <rim:permit>access_shared</rim:permit>
+</rim:permissions></pre>
+```
+
+####Running the TestApplication
+
+Connect your blackberry 10 to your computer and with Developement Mode enabled on your BB then input the following commands.
+
+````
+cd path/to/your/application
+webworks platform add blackberry10
+webworks plugin add path/to/AudioMetaData plugin/plugin
+webworks run
+```
+
+
+##Calling The Extraction Functions
+
+Currently the only function to call in the plugin is
+
+````
+audioMetaDataGetMetaData(path, callBack);
+````
+where:
+````
+path: The path to your mp3 file
+callBack: The callback function to handle the data returned. eg: retrievedData(data)
+````
+
+###Tested on
+
+Z10 running v10.2
+
+Note: Some error occurring in reading some mp3 files, this could be the problem with the library it self. This needs more investigation.
+
+
+##Final Notes
+
+The same code used for the test application falls under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache 2.0 License</a>.
+
+Contributing Changes
+
+Please see the README of the BB10-WebWorks-Community-Samples repository for instructions on how to add new Samples or make modifications to existing Samples.
+
+Disclaimer
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
