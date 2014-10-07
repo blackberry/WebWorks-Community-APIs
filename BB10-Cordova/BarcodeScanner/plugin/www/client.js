@@ -38,6 +38,12 @@
 		var success = function (data, response) {
 			var arData = data.split(" "),
 				receivedEvent = arData[0]
+				
+			if(arData.length > 2){
+				var i;
+				for(i=2; i<arData.length; i++)
+					arData[1] += " " + arData[i];
+			}
 
 			if(receivedEvent == "community.barcodescanner.frameavailable.native") {
 				var frameData = JSON.parse(arData[1])
