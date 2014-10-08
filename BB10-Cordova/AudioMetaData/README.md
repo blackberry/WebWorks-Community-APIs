@@ -4,7 +4,7 @@ This plugin is designed to be able to retrive the ID3 tag of a MP3 file. This ta
 
 ##Setting Up
 
-####Buidling the Plugin
+####Building the Plugin
 ```
 Open momentic and import the plugin/src/blackberry10/native directory. 
 Build the project.
