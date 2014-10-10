@@ -44,6 +44,7 @@ Connect your blackberry 10 to your computer and with Developement Mode enabled o
 cd path/to/your/application
 webworks platform add blackberry10
 webworks plugin add path/to/AudioMetaData plugin/plugin
+webworks plugin add com.blackberry.invoke.card
 webworks run
 ```
 

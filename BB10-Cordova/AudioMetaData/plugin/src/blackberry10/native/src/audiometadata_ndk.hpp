@@ -17,6 +17,8 @@
 #ifndef AudioMetaData_NDK_HPP_
 #define AudioMetaData_NDK_HPP_
 
+#include <json/reader.h>
+#include <json/writer.h>
 #include <string>
 #include <pthread.h>
 
@@ -33,6 +35,10 @@ public:
 	void audioMetaDataGetMetaData(const std::string& callbackId, const std::string& inputString);
 
 private:
+	Json::Value parseMp3ForMetaData(const char* path);
+	std::string fromUtf16ToUtf8(char* strArray, int size);
+	std::string getProperString(char* strArray, int size, char encoding);
+
 	AudioMetaData_JS *m_pParent;
 	std::string threadCallbackId;
 };
