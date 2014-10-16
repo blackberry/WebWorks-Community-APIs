@@ -41,6 +41,7 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
 	Json::Value input;
 	bool parse = reader.parse(inputString, input);
 	if(parse){
+		Json::Value Type = input["Type"];
 		Json::Value From = input["From"];
 		Json::Value To = input["To"];
 		Json::Value Cc = input["Cc"];
@@ -103,7 +104,14 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
 		string stringBody = body.asString();
 		QByteArray bodyData ;
 		bodyData.append(QString::fromStdString(body.asString()));
-		builder->body(MessageBody::PlainText,bodyData);
+
+        if(Type=="html"){
+            builder->body(MessageBody::Html, bodyData);
+        }
+        else{
+            builder->body(MessageBody::PlainText, bodyData);
+        }
+
 		Message m = *builder;
 		MessageKey mk = messageService.send (m.accountId(), m );
 

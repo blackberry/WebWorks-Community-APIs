@@ -9,6 +9,7 @@ This extension provides additional APIs to send emails from an app.
 **Author(s)** 
 
 * [Alexandre Huot](https://github.com/alexhuot1/)
+* [Stefan Schielke](https://github.com/stefanschielke)
 
 ## Set up
 From registry
@@ -33,6 +34,7 @@ Use the command:
 ```javascript
 // Build email JSON
 var emailJSON = {
+	"Type": "html", //for plain text replace with "txt"
 	"From": "12345678", //id of an email account on the device
 	"To": "email@domain.com",
 	"Cc": "email_CC@domain.com",
@@ -48,6 +50,7 @@ The fields "To", "Cc" and "Bcc" can be filled with a json array. Here's an exemp
 ```javascript
 // Build email JSON
 var emailJSON = {
+	"Type": "html",
 	"From": "12345678", //id of an email account on the device
 	"To": ["email_1@domain.com", "email_2@domain.com", "email_3@domain.com"],
 	"Cc": "email_CC@domain.com",
@@ -61,6 +64,7 @@ To use the default account use "-1" as the account id:
 ```javascript
 // Build email JSON
 var emailJSON = {
+	"Type": "txt",
 	"From": "-1", //use the default email
 	"To": ["email_1@domain.com", "email_2@domain.com", "email_3@domain.com"],
 	"Cc": "email_CC@domain.com",
@@ -93,7 +97,7 @@ The plugin require the following permissions:
 </pre>
 
 ## Known Issues
-As i'm writing those lines, the plugin can't send email from a microsoft account(hotmail, live, outlook, etc) and an Yahoo! account.
+As of 09-Oct, the plugin can't send email from a microsoft account(hotmail, live, outlook, etc).
 
 ## Contributing Changes
 
