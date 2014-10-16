@@ -9,6 +9,7 @@ This extension provides additional APIs to send emails from an app.
 **Author(s)** 
 
 * [Alexandre Huot](https://github.com/alexhuot1/)
+* [Stefan Schielke](https://github.com/stefanschielke)
 
 ## Set up
 From registry
