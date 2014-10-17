@@ -36,7 +36,6 @@ public:
 
 private:
 	Json::Value parseMp3ForMetaData(const char* path);
-	std::string fromUtf16ToUtf8(char* strArray, int size);
 	std::string getProperString(char* strArray, int size, char encoding);
 
 	AudioMetaData_JS *m_pParent;
