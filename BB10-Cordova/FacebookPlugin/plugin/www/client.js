@@ -1,5 +1,5 @@
-/*
-* Copyright (c) 2013 BlackBerry Limited
+/**
+* Copyright (c) 2014 BlackBerry Limited
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -12,213 +12,260 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
+*
+* @author: Justin Carvalho
+*         jcarvalho.ca, github.com/jstncarvalho
+*
+* Notice: This code is based off of Christophe Coenraets' OpenFB library
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+* OpenFB License:
+* Copyright (c) 2014 CHRISTOPHE COENRAETS
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in all
+* copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
 */
 
 var _self = {},
 	_ID = "com.blackberry.community.facebookplugin",
-	exec = cordova.require("cordova/exec");
 
-var facebookLoginURL = 'https://www.facebook.com/dialog/oauth',
-    facebookLogoutURL = 'https://www.facebook.com/logout.php',
+    FB_LOGIN_URL = 'https://www.facebook.com/dialog/oauth',
+    FB_LOGOUT_URL = 'https://www.facebook.com/logout.php',
+
+    // By default we store access_token in sessionStorage. This can be overridden in init()
     tokenStore = window.sessionStorage,
-    fbAppId,
-    urlContext = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)),
-    
-    /* May Have to Change this*/
-    baseURL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + urlContext,
-    oauth = baseURL + '/oauth.html',
-    logout = baseURL + '/logout.html',
 
-    //Since the OAuth process spans multiple functions.
+    fbAppId,
+
+    context = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)),
+
+    baseURL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + context,
+
+    oauthRedirectURL = baseURL + '/oauthcallback.html',
+
+    logoutRedirectURL = baseURL + '/logoutcallback.html',
+
+    // Because the OAuth login spans multiple processes, we need to keep the login callback function as a variable
+    // inside the module instead of keeping it local within the login function.
     loginCallback,
+
+    // Indicates if the app is running inside Cordova
+    runningInCordova,
+
     // Used in the exit event handler to identify if the login has already been processed elsewhere (in the oauthCallback function)
     loginProcessed;
 
-    //Retrieves value from JSON Object
-    function getValue(args, valueName){
-        return JSON.parse(decodeURIComponent(args[valueName]));
+
+document.addEventListener("deviceready", function () {
+    runningInCordova = true;
+}, false);
+
+/**
+ * Initialize the OpenFB module. You must use this function and initialize the module with an appId before you can
+ * use any other function.
+ * @param params - init paramters
+ *  appId: The id of the Facebook app,
+ *  tokenStore: The store used to save the Facebook token. Optional. If not provided, we use sessionStorage.
+ */
+_self.init = function(params) {
+    if (params.appId) {
+        fbAppId = params.appId;
+    } else {
+        throw 'appId parameter not set in init()';
     }
 
-    //Converts the passed object into a Query String for Facebook    
-    function toQueryString(obj) {
-        var parts = [];
-        for (var i in obj) {
-            if (obj.hasOwnProperty(i)) {
-                parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
-            }
-        }
-        return parts.join("&");
+    if (params.tokenStore) {
+        tokenStore = params.tokenStore;
+    }
+};
+
+/**
+ * Checks if the user has logged in with openFB and currently has a session api token.
+ * @param callback the function that receives the loginstatus
+ */
+_self.getLoginStatus = function(callback) {
+    var token = tokenStore['access_token'],
+        loginStatus = {};
+    if (token) {
+        loginStatus.status = 'connected';
+        loginStatus.authResponse = {token: token};
+    } else {
+        loginStatus.status = 'unknown';
+    }
+    if (callback) callback(loginStatus);
+};
+
+/**
+ * Login to Facebook using OAuth.
+ *
+ * @param callback - Callback function to invoke when the login process succeeds
+ * @param options - options.scope: The set of Facebook permissions requested
+ * @returns {*}
+ */
+_self.login = function(callback, options) {
+
+    var loginWindow,
+        startTime,
+        scope = '';
+
+    if (!fbAppId) {
+        return callback({status: 'unknown', error: 'Facebook App Id not set.'});
     }
 
-    function oauthCallback(url) {
-        // Parse the OAuth data received from Facebook
-        var queryString,
-            obj;
+    if (options && options.scope) {
+        scope = options.scope;
+    }
 
-        loginProcessed = true;
-        if (url.indexOf("access_token=") > 0) 
-        {
-            queryString = url.substr(url.indexOf('#') + 1);
-            obj = parseQueryString(queryString);
-            tokenStore['fbtoken'] = obj['access_token'];
-            
-            if (loginCallback) 
-                loginCallback({status: 'connected', authResponse: {token: obj['access_token']}});
-        
-        } else if (url.indexOf("error=") > 0) {
-            
-            queryString = url.substring(url.indexOf('?') + 1, url.indexOf('#'));
-            obj = parseQueryString(queryString);
-            
-            if (loginCallback) 
-                loginCallback({status: 'not_authorized', error: obj.error});
-        } else {
-            
-            if (loginCallback) loginCallback({status: 'not_authorized'});
+    loginCallback = callback;
+    loginProcessed = false;
+
+    oauthRedirectURL = "https://www.facebook.com/connect/login_success.html";
+
+    startTime = new Date().getTime();
+    redirectUri = FB_LOGIN_URL + '?client_id=' + fbAppId + '&redirect_uri=' + oauthRedirectURL +
+        '&response_type=token&scope=' + scope;
+    loginWindow = window.open(FB_LOGIN_URL + '?client_id=' + fbAppId + '&redirect_uri=' + oauthRedirectURL +
+        '&response_type=token&scope=' + scope, '_blank');
+    console.log(loginWindow);
+
+    var inter = setInterval(function() {
+        var currentURL = loginWindow.window.location.href;
+        var callbackURL = redirectUri;
+        var inCallback = currentURL.indexOf("access_token=");
+
+        // location has changed to our callback url
+        if (inCallback != -1) {
+
+            // stop the interval
+            clearInterval(inter);
+
+            // parse the access token
+            var code = currentURL;
+            code = code.split('access_token=');
+            code = code[1];
+            code = code.split('&expires_in=');
+            code = code[0];
+            tokenStore.access_token = code;
+
+            // close the loginWindow
+            loginWindow.window.close();
+        }
+    }, 1000);
+
+};
+
+/**
+ * Logout from Facebook, and remove the token.
+ * IMPORTANT: For the Facebook logout to work, the logoutRedirectURL must be on the domain specified in "Site URL" in your Facebook App Settings
+ *
+ */
+_self.logout = function(callback) {
+    var logoutWindow,
+        token = tokenStore['access_token'];
+
+    if (token) {
+        tokenStore.removeItem('access_token');
+        logoutWindow = window.open(FB_LOGOUT_URL + '?access_token=' + token + '&next=' + logoutRedirectURL, '_blank', 'location=no');
+        if (runningInCordova) {
+            setTimeout(function() {
+                logoutWindow.close();
+            }, 1000);
         }
     }
 
-    function parseQueryString(queryString) {
-        var qs = decodeURIComponent(queryString),
-            obj = {},
-            params = qs.split('&');
-        
-        params.forEach(function (param) {
-            var splitter = param.split('=');
-            obj[splitter[0]] = splitter[1];
-        });
-        return obj;
+    if (callback) {
+        callback();
     }
 
-    /*
-    Initialize the Facebook Plugin with the Applications's AppID
-    Can also specify a custom tokenStore location in the jsonData 
-    object if desired.
-    */
-	
-    _self.init = function (jsonData) {
+};
 
-		if (getValue(jsonData, "appID")) {
-		    fbAppId = getValue(jsonData, "appID");
-        } 
-	};
+/**
+ * Lets you make any Facebook Graph API request.
+ * @param obj - Request configuration object. Can include:
+ *  method:  HTTP method: GET, POST, etc. Optional - Default is 'GET'
+ *  path:    path in the Facebook graph: /me, /me.friends, etc. - Required
+ *  params:  queryString parameters as a map - Optional
+ *  success: callback function when operation succeeds - Optional
+ *  error:   callback function when operation fails - Optional
+ */
+_self.api = function (obj) {
 
-     /*
-     Function to retrieve the login status, Client can pass a callback
-     function if desired. 
-     */
+    var method = obj.method || 'GET',
+        params = obj.params || {},
+        xhr = new XMLHttpRequest(),
+        url;
 
-	_self.getLoginStatus = function (callback) {
+    params['access_token'] = tokenStore.access_token;
 
-	 var token = tokenStore['fbtoken'],
-            loginStatus = {};
-        if (token) {
-            loginStatus.status = 'connected';
-            loginStatus.authResponse = {token: token};
+    url = 'https://graph.facebook.com' + obj.path + '?' + toQueryString(params);
 
-        } else {
-            loginStatus.status = 'unknown';
-        }
-
-        if (callback) callback(loginStatus);
-	};
-
-    
-    /*
-    The Login Function, pass it the successful login callback and the scope 
-    within an object
-    */
-	_self.login = function (callbackFunction, data) {
-
-	 var loginWindow,
-            startTime,
-            scope = '';
-
-        if (!fbAppId) {
-            return callbackFunction({status: 'unknown', error: 'Facebook App Id not set.'});
-        }
-
-        function loginStartHandler(event) {  
-            var url = event.url;
-            if (url.indexOf("access_token=") > 0 || url.indexOf("error=") > 0) {
-
-                var timeout = 600 - (new Date().getTime() - startTime);
-                setTimeout(function () {
-                    loginWindow.close();
-                }, timeout > 0 ? timeout : 0);
-                oauthCallback(url);
-            }
-        }
-
-        function loginExitHandler() {           
-            deferredLogin.reject({error: 'user_cancelled', error_description: 'User cancelled login process', error_reason: "user_cancelled"});
-            loginWindow.removeEventListener('loadstop', loginStartHandler);
-            loginWindow.removeEventListener('exit', loginExitHandler);
-            loginWindow = null;
-        }
-
-        if(data && data.scope){
-            scope = options.scope;
-        }
-
-        // Set the callback function, this is called from within ouathCallback function once login is processed.
-        loginCallback = callbackFunction;
-        loginProcessed = false;
-        
-        oauthRedirectURL = "https://www.facebook.com/connect/login_success.html";
-        
-        startTime = new Date().getTime();
-
-        loginWindow = window.open(facebookLoginURL + '?client_id=' + fbAppId + '&redirect_uri=' + oauthRedirectURL +
-            '&response_type=token&scope=' + scope, '_blank', 'location=no');
-
-            loginWindow.addEventListener('loadstart', loginStartHandler);
-            loginWindow.addEventListener('exit', loginExitHandler);
-	};
-
-    //TODO: Works for now, but maybe gigure out a better implementation for this, without having to access another html file..
-    _self.logout = function(callback){
-        var logoutWindow;
-        var token = tokenStore['fbtoken'];
-        
-        tokenStore.removeItem('fbtoken');
-        if (token) {
-            logoutWindow = window.open(facebookLogoutURL + '?access_token=' + token + '&next=' + logout, '_blank', 'location=no');
-            setTimeout(function() { logoutWindow.close(); }, 1000);
-        }
-
-        if (callback) {
-            callback();
-        }
-    };
-  
-    /*Make a call to Facbeook's Graph API, pass it object with path,
-      params and call backs
-    */
-    _self.api = function (obj) {
-
-        var method = obj.method || 'GET',
-            params = obj.params || {},
-            xhr = new XMLHttpRequest(),
-            url;
-
-        params['access_token'] = tokenStore['fbtoken'];
-
-        url = 'https://graph.facebook.com' + obj.path + '?' + toQueryString(params);
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    if (obj.success) obj.success(JSON.parse(xhr.responseText));
-                } else {
-                    var error = xhr.responseText ? JSON.parse(xhr.responseText).error : {message: 'An error has occurred'};
-                    if (obj.error) obj.error(error);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                if (obj.success) obj.success(JSON.parse(xhr.responseText));
+            } else {
+                var error = xhr.responseText ? JSON.parse(xhr.responseText).error : {message: 'An error has occurred'};
+                if (obj.error) {
+                    obj.error(error);
+                    console.log(obj);
                 }
             }
-        };
-
-        xhr.open(method, url, true);
-        xhr.send();
+        }
     };
+
+    xhr.open(method, url, true);
+    xhr.send();
+};
+
+/**
+ * De-authorizes the app
+ * @param success
+ * @param error
+ * @returns {*}
+ */
+_self.revokePermissions = function (success, error) {
+    return _self.api({method: 'DELETE',
+        path: '/me/permissions',
+        success: function () {
+            tokenStore['access_token'] = undefined;
+            success();
+        },
+        error: error});
+};
+
+function parseQueryString(queryString) {
+    var qs = decodeURIComponent(queryString),
+        obj = {},
+        params = qs.split('&');
+    params.forEach(function (param) {
+        var splitter = param.split('=');
+        obj[splitter[0]] = splitter[1];
+    });
+    return obj;
+}
+
+function toQueryString(obj) {
+    var parts = [];
+    for (var i in obj) {
+        if (obj.hasOwnProperty(i)) {
+            parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
+        }
+    }
+    return parts.join("&");
+}
 
 module.exports = _self;

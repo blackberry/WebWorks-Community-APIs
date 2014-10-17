@@ -14,4 +14,5 @@
 * limitations under the License.
 */
 
-// Complete plugin's in Client.js
+// TODO: Abstract code away from client, in preparation for merge with offical
+//       plugin
