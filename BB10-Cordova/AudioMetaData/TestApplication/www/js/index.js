@@ -99,7 +99,7 @@ var app = {
 			app.writeOut(app.clearApplicationLog);
 			for (var key in data) {
 				if (data.hasOwnProperty(key)) {
-					app.writeOut(key + " : " + data[key]);
+					app.writeOut(key + " : " + decodeURIComponent(escape(data[key])));
 				}
 			}
 			app.writeOut("\n");
