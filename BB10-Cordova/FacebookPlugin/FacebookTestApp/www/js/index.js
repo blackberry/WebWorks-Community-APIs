@@ -63,7 +63,7 @@ var app = {
             app.writeOut("--- Facebook Plugin is installed ---");
 
             app.writeOut("--- Initialzing Facebook ---");
-            var appInfo = {"appId":1509970445915630};
+            var appInfo = {"appId":++APPID_HERE++};
             community.facebookplugin.init(appInfo);
 
             app.writeOut("--- Getting Login Status---");
