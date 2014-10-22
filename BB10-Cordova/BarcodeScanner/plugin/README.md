@@ -27,6 +27,13 @@ It's also recommended that you stop scanning if the app goes into the background
 
 When you start scanning, you can make the experience better for your users with the [Prevent Sleep Extension](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/PreventSleep). If you include Prevent Sleep in your app, the BarcodeScanner will automatically use it as needed to keep the screen on. Instructions for installing are in the Prevent Sleep [README](https://github.com/blackberry/WebWorks-Community-APIs/blob/master/BB10-Cordova/PreventSleep/README.md)
 
+## Version History
+
+1.0.0 Initial Release
+1.0.1 Async function calls, use_camera permission inclusion, simulator .so file fix
+1.0.2 Image Quality fix for viewfinder
+1.0.3 Fix to read codes with spaces
+
 ## Javascript API
 
 

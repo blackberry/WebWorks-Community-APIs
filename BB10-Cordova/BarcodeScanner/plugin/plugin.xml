@@ -1,11 +1,11 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     id="com.blackberry.community.barcodescanner"
-    version="1.0.2">
+    version="1.0.3">
 
     <name>Barcode Scanner</name>
     <description>BlackBerry 10 Community Contributed API to scan barcodes</description>
     <license>Apache 2.0</license>
-    <author>Alex Kwan, Mike Delong, Jasmin Auger, Alex Tough, and Tim Windsor</author>
+    <author>Alex Kwan, Mike Delong, Jasmin Auger, Alex Tough, Tim Tung, and Tim Windsor</author>
 
     <js-module src="www/client.js">
         <clobbers target="community.barcodescanner" />
