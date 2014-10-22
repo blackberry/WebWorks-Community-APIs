@@ -34,6 +34,7 @@ public:
 private:
 	ExtractZipFileJS *m_pParent;
 	std::string threadCallbackId;
+	void getDirectoryContent(std::string directoryPath, std::string rootDirectory);
 	std::string getFileNameFromPath(std::string filePath);
 	std::string getDirectoryFromPath(std::string path);
 	long getFileSize(FILE* file);

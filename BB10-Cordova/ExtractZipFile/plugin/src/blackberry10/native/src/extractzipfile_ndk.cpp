@@ -22,6 +22,10 @@
 #include <json/writer.h>
 #include <slog2.h>
 
+#include <vector>
+#include <sstream>
+#include <sys/dir.h>
+
 // minizip
 #include "unzip.h"
 #include "zip.h"
@@ -255,6 +259,11 @@ void ExtractZipFileNDK::extractFile(const std::string& callbackId, const std::st
 	extractReturn(filesExtracted, "Extraction successful.");
 }
 
+std::vector<std::string> f_path;
+std::vector<std::string> f_name;
+string file_name = "";
+bool getRootFileName = false;
+
 void ExtractZipFileNDK::compressFile(const std::string& callbackId, const std::string& inputString) {
 	#define compressReturn(x,y) \
 		do {retval["result"] = x; \
@@ -285,9 +294,48 @@ void ExtractZipFileNDK::compressFile(const std::string& callbackId, const std::s
 
 	// file to compress
 	std::string filePath = root["filePath"].asString();
+
+    std::stringstream ss(filePath);
+    int i, f_cout = 100;
+    std::string token;
+    int c = 0;
+    int totalFileCount = 0;
+
 	if (filePath == "")
 		compressReturn(-1, "Compression Failed: filePath argument must not be empty");
 	std::string fileName = getFileNameFromPath(filePath);
+
+    if (filePath.find(':') != std::string::npos){//check if file has more than one
+
+        while(std::getline(ss, token, ':')) {//store them into an array
+            string filePath = token;
+            string fileName = getFileNameFromPath(filePath);
+
+            struct stat s_multiple;
+            if(stat(filePath.c_str(),&s_multiple) == 0 ){
+                if( s_multiple.st_mode & S_IFDIR ){//if it is a directory
+                    DIR *dir;
+                    struct dirent *ent;
+                    bool isDir = true;
+                    getDirectoryContent(filePath, fileName);
+                }else{
+                    f_name.push_back(fileName);
+                    f_path.push_back(filePath);
+                }
+            }
+            ++c;
+        }
+    }else{//only one file
+        struct stat s_single;
+        if(stat(filePath.c_str(),&s_single) == 0 ){
+            if( s_single.st_mode & S_IFDIR ){
+                getDirectoryContent(filePath, fileName);
+            }else{
+                f_name.push_back(fileName);
+                f_path.push_back(filePath);
+            }
+        }
+    }
 
 	// zip destination
 	std::string zipDestinationPath = root["zipDestinationPath"].asString();
@@ -303,65 +351,109 @@ void ExtractZipFileNDK::compressFile(const std::string& callbackId, const std::s
 	if(zipFileCreate == NULL) {
 		compressReturn(-1, "Compression Failed: Failed to create zip file");
 	} else {
-		zip_fileinfo zi;
-        zi.tmz_date.tm_sec = zi.tmz_date.tm_min = zi.tmz_date.tm_hour =
-        zi.tmz_date.tm_mday = zi.tmz_date.tm_mon = zi.tmz_date.tm_year = 0;
-        zi.dosDate = 0;
-        zi.internal_fa = 0;
-        zi.external_fa = 0;
-		int errorCode = zipOpenNewFileInZip(zipFileCreate,
-												fileName.c_str(),
-												&zi,
-												NULL, 0,
-												NULL, 0,
-												NULL,
-												Z_DEFLATED,
-												Z_DEFAULT_COMPRESSION
-				);
+	    for( unsigned a = 0; a < f_name.size(); a++){
+            zip_fileinfo zi;
+            zi.tmz_date.tm_sec = zi.tmz_date.tm_min = zi.tmz_date.tm_hour =
+            zi.tmz_date.tm_mday = zi.tmz_date.tm_mon = zi.tmz_date.tm_year = 0;
+            zi.dosDate = 0;
+            zi.internal_fa = 0;
+            zi.external_fa = 0;
+            int errorCode = zipOpenNewFileInZip(zipFileCreate,
+                                                    f_name[a].c_str(),
+                                                    &zi,
+                                                    NULL, 0,
+                                                    NULL, 0,
+                                                    NULL,
+                                                    Z_DEFLATED,
+                                                    Z_DEFAULT_COMPRESSION
+            );
 
-		if(errorCode != ZIP_OK) {
-			zipClose(zipFileCreate, "");
-			compressReturn(-1, "Compression Failed: Failed to make file in zip");
-		}
+            if(errorCode != ZIP_OK) {
+                zipClose(zipFileCreate, "");
+                compressReturn(-1, "Compression Failed: Failed to make file in zip");
+            }
 
-		// open file we are going to zip
-		FILE* fileToZip = fopen(filePath.c_str(), "r");
-		if(fileToZip == NULL) {
-			zipCloseFileInZip(zipFileCreate);
-			zipClose(zipFileCreate, "");
-			compressReturn(-1,"Compression Failed: Failed to open file to zip");
-		}
+            // open file we are going to zip
+            FILE* fileToZip = fopen(f_path[a].c_str(), "r");
+            if(fileToZip == NULL) {
+                zipCloseFileInZip(zipFileCreate);
+                zipClose(zipFileCreate, "");
+                compressReturn(-1,"Compression Failed: Failed to open file to zip");
+            }
 
-		if(fileToZip != NULL) {
-			long fileSize = getFileSize(fileToZip);
-			if(fileSize > 0) {
-				unsigned int charactorSizeInBytes = 1;
-				unsigned int bufferLength = (fileSize <= 4096) ? fileSize : 4096;
-				void* buffer = malloc(charactorSizeInBytes * bufferLength);
+            if(fileToZip != NULL) {
+                long fileSize = getFileSize(fileToZip);
+                if(fileSize > 0) {
+                    unsigned int charactorSizeInBytes = 1;
+                    unsigned int bufferLength = (fileSize <= 4096) ? fileSize : 4096;
+                    void* buffer = malloc(charactorSizeInBytes * bufferLength);
 
-				bool finishedFileCopy = false;
-				do
-				{
-					int numCharactorsRead = fread(buffer, charactorSizeInBytes, bufferLength, fileToZip);
+                    bool finishedFileCopy = false;
+                    do
+                    {
+                        int numCharactorsRead = fread(buffer, charactorSizeInBytes, bufferLength, fileToZip);
 
-					if(ferror(fileToZip)){
-						break;
-					}
+                        if(ferror(fileToZip)){
+                            break;
+                        }
 
-					if(feof(fileToZip)) {
-						finishedFileCopy = true;
-					}
-					zipWriteInFileInZip(zipFileCreate, buffer, numCharactorsRead);
-				}while(!finishedFileCopy);
+                        if(feof(fileToZip)) {
+                            finishedFileCopy = true;
+                        }
+                        zipWriteInFileInZip(zipFileCreate, buffer, numCharactorsRead);
+                    }while(!finishedFileCopy);
 
-				fclose(fileToZip);
-				free(buffer);
-			}
-		}
-		zipCloseFileInZip(zipFileCreate);
+                    fclose(fileToZip);
+                    free(buffer);
+                }
+            }
+        }
+        zipCloseFileInZip(zipFileCreate);
+        while (!f_name.empty()){//reset for next case
+            f_name.pop_back();
+            f_path.pop_back();
+        }
+        getRootFileName = false;//reset for next case
+        file_name = "";
 	}
 	zipClose(zipFileCreate, "");
 	compressReturn(1, "Compression Successful");
+}
+
+void ExtractZipFileNDK::getDirectoryContent(std::string directoryPath, std::string rootDirectory) {
+    DIR *dir;
+    struct dirent *ent;
+    string f_content;
+    if(!getRootFileName){
+        file_name = getFileNameFromPath(directoryPath);
+    }
+    getRootFileName = true;
+
+    if ((dir = opendir (directoryPath.c_str())) != NULL) {
+      while ((ent = readdir (dir)) != NULL) {
+          f_content = ent->d_name;
+
+              string newPath = directoryPath+"/"+f_content;
+              string newContent = "/" + f_content;
+
+              struct stat s;
+              if(stat(newPath.c_str(),&s) == 0 ){
+                  if( s.st_mode & S_IFDIR ){//directory
+
+                      if(f_content!="." && f_content!=".."){
+                          getDirectoryContent(newPath, rootDirectory);
+                      }
+                  }else{
+                      string f_final = newPath.substr(newPath.find(file_name),newPath.length() -1);
+                      f_name.push_back(f_final);
+                      f_path.push_back(newPath);
+                  }
+              }
+      }
+      closedir (dir);
+    } else {
+        m_pParent->getLog()->info("getDirectoryContent:could not open directory");
+    }
 }
 
 std::string ExtractZipFileNDK::getFileNameFromPath(std::string filePath) {
