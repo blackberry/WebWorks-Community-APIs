@@ -18,6 +18,8 @@
 #include "audiometadata_ndk.hpp"
 #include "audiometadata_js.hpp"
 #include <vector>
+#include <cctype> // isdigit()
+#include <algorithm> // remove_if()
 #include <unicode/unistr.h>
 
 #define BUF_LEN 512
@@ -27,6 +29,24 @@ extern "C" {
 }
 
 using namespace std;
+
+/*
+ *  Genre strings for ID3 tags, most used in ID3v1 but can be used in v2. Currently contains 0 - 79
+ *  for more information visit http://en.wikipedia.org/wiki/ID3.
+ *
+ */
+static const string genre_strings[] = {
+        "Blues", "Classic Rock", "Country", "Dance", "Disco", "Funk", "Grunge", "Hip-Hop",
+        "Jazz", "Metal", "New Age", "Oldies", "Other", "Pop", "Rhythm and Blues", "Rap",
+        "Reggae", "Rock", "Techno", "Industrial", "Alternative", "Ska", "Death Metal", "Pranks",
+        "Soundtrack", "Euro-Techno", "Ambient", "Trip-Hop", "Vocal", "Jazz & Funk", "Fusion", "Trance",
+        "Classical", "Instrumental", "Acid", "House", "Game", "Sound Clip", "Gospel", "Noise",
+        "Alternative Rock", "Bass", "Soul", "Punk rock", "Space", "Meditative", "Instrumental Pop", "Instrumental Rock",
+        "Ethnic", "Gothic", "Darkwave", "Techno-Industrial", "Electronic", "Pop-Folk", "Eurodance", "Dream",
+        "Southern Rock", "Comedy", "Cult", "Gangsta", "Top 40", "Christian Rap", "Pop/Funk", "Jungle",
+        "Native American", "Cabaret", "New Wave", "Psychedelic", "Rave", "Showtunes", "Trailer", "Lo-Fi",
+        "Tribal", "Acid Punk", "Acid Jazz", "Polka", "Retro", "Musical", "Rock & Roll", "Hard Rock"
+};
 
 namespace {
     vector<wchar_t> constructUtf16String(uint16_t* string, int numOfBytes, int &strSize) {
@@ -41,7 +61,7 @@ namespace {
                 break;
             }
 
-            if(string[i] == 0xFFFE || string[i] == 0xFEFF) { //skiping addition bom markers
+            if(string[i] == 0xFFFE || string[i] == 0xFEFF) { //skiping additional bom markers
                 continue;
             }
 
@@ -52,6 +72,20 @@ namespace {
         res.push_back(0x0000);
         strSize = (i-1); //not null terminated
         return res;
+    }
+
+    bool isNotDigit(char ch) {
+        return !isdigit(ch);
+    }
+
+    /*
+     * not the same as converting string to number. Since we are parsing the specials characters
+     * from the string first.
+     */
+    int extractNumberFromString(const string& str) {
+        string temp = str;
+        temp.erase(std::remove_if(temp.begin(), temp.end(), isNotDigit), temp.end());
+        return (temp.length() > 0) ? atoi(temp.c_str()) : -1; // if temp is empty, then no number is found
     }
 }
 
@@ -133,7 +167,9 @@ Json::Value AudioMetaData_NDK::parseMp3ForMetaData(const char* path) {
             content = parse_text_frame_content(genre);
             if (content) {
                 if (content->size > 0) {
-                    res["genre"] = getProperString(content->data, content->size, content->encoding);
+                    string genreStr = getProperString(content->data, content->size, content->encoding);
+                    int genreNum = extractNumberFromString(genreStr); //checking for numeric genre
+                    res["genre"] = (genreNum != -1) ? genre_strings[genreNum] : genreStr;
                 }
                 free(content);
             }
