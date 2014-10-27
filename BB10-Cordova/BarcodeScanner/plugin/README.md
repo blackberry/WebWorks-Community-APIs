@@ -29,10 +29,10 @@ When you start scanning, you can make the experience better for your users with 
 
 ## Version History
 
-1.0.0 Initial Release
-1.0.1 Async function calls, use_camera permission inclusion, simulator .so file fix
-1.0.2 Image Quality fix for viewfinder
-1.0.3 Fix to read codes with spaces
+* 1.0.0 Initial Release
+* 1.0.1 Async function calls, use_camera permission inclusion, simulator .so file fix
+* 1.0.2 Image Quality fix for viewfinder
+* 1.0.3 Fix to read codes with spaces
 
 ## Javascript API
 
