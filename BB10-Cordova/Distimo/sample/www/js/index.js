@@ -48,24 +48,26 @@ var app = {
 		app.testPluginCalls();
 	},
 	testPluginCalls: function() {
-		if (community && community.distimo) {
+		if (DistimoSDK) {
 			
 			app.writeOut("*** DISTIMO TEST STARTED ***");
 			
 			var print = function(str) { app.writeOut(str); };
-			
-			community.distimo.start("SUGuR5ueBMFaDoN2", print);
-			community.distimo.version(print);
-			community.distimo.logUserRegistered(print);
-			community.distimo.setUserID("randomId"+Math.floor(Math.random()*10), print);
-			community.distimo.logExternalPurchaseWithCurrency("product1", "CAD", "4.99", "2", print);
-			community.distimo.logExternalPurchaseWithCurrency("product2", "KRW", "4500", "1", print);
-			community.distimo.logExternalPurchaseWithCurrency("product3", "USD", "2.99", "3", print);
-			community.distimo.logBannerClick("publisher1", print);
-			community.distimo.logBannerClick("publisher2", print);
-			
-			community.distimo.debug(print);
 
+			DistimoSDK.start("9fy141hMgZD98ZVa");
+			DistimoSDK.version(print);
+			DistimoSDK.logUserRegistered();
+			DistimoSDK.setUserID("randomId"+Math.floor(Math.random()*10), print);
+			DistimoSDK.logExternalPurchaseWithCurrency("product1", "CAD", "4.99", "2", print);
+			DistimoSDK.logExternalPurchaseWithCurrency("product2", "KRW", "4500", "1", print);
+			DistimoSDK.logExternalPurchaseWithCurrency("product3", "USD", "2.99", "3", print);
+			DistimoSDK.logBannerClick("publisher1", print);
+			DistimoSDK.logBannerClick("publisher2", print);
+
+			var openFn = function() { DistimoSDK.openAppLink("Bbt", "c"); };
+			document.getElementById("applkTest").addEventListener("click", openFn);
+
+			// DistimoSDK.debug(print);
 			app.writeOut("*** DISTIMO TEST ENDED ***");
 
 		} else {
