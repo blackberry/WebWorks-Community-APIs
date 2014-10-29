@@ -53,7 +53,7 @@ var app = {
         console.log(obj);
     },
 
-    errorHandler: function(pbj) {
+    errorHandler: function(obj) {
         console.log(obj);
     },
 
