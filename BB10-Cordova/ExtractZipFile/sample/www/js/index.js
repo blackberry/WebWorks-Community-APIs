@@ -61,8 +61,8 @@ var app = {
 						pass = status.entries == 1 && status.files == 1;
 						break;
 					case "2":
-						pass = status.entries == 12 && status.files == 7
-							&& status.directories == 5;
+						pass = status.entries == 10 && status.files == 7
+							&& status.directories == 3;
 						break;
 					case "3":
 						pass = status.result == 1;
@@ -94,8 +94,7 @@ var app = {
 				app.writeOut("\nTest " + status.callbackToken + " " + pass_msg);
 				app.writeOut("Full Status: " + JSON.stringify(status, null, " "));
 			};
-			//cd accounts/1000/appdata/io.cordova.hellocordova.testDev_ellocordova39597f64/tmp
-			//cd sdcard/music/
+
 			community.extractZipFile.extract(
 				{
 					zip: "./app/native/res/zip/test_single-file-no-folder.zip",
@@ -107,7 +106,6 @@ var app = {
 			community.extractZipFile.extract(
 				{
 					zip: "./app/native/res/zip/test_multi-file-multi-folder.zip",
-//					destination: "./tmp/test2test2",
 					destination: "./tmp/tttttt/",
 					callbackToken: "2"
 				},
@@ -132,7 +130,7 @@ var app = {
 			
 			community.extractZipFile.compress( //zip 3 files, no directory
 				{ 
-					filePath: "./app/native/res/zip/aaaa.txt:./app/native/res/zip/bbbb.txt:./app/native/res/zip/LICENSE", 
+					filePath: "./app/native/res/zip/aaaa.txt:./app/native/res/zip/bbbb.txt:./app/native/res/zip/cccc.txt", 
 					zipDestinationPath: "./tmp/case/folder123.zip",
 					callbackToken: "5"
 				},
