@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.cordova.hellocordova" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:rim="http://www.blackberry.com/ns/widgets"  xmlns:gap="http://phonegap.com/ns/1.0" >
     <name>FaceBook Test</name>
-    <author>Zain Adil</author> 
+    <author>Justin Carvalho</author>
     <description>A sample WebWorks application for testing the FacebBook Plugin</description>
     <content src="index.html" />
     <preference name="AutoHideSplashScreen" value="true" />
