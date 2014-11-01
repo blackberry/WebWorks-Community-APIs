@@ -322,27 +322,10 @@ void ExtractZipFileNDK::compressFile(const std::string& callbackId, const std::s
 	        struct stat s_multiple;
 	        if(stat(filePath.c_str(),&s_multiple) == 0 ){
                 if( s_multiple.st_mode & S_IFDIR ){//if it is a directory
-              //      totalFileCount += getFileCount(f_path[c]);
                     DIR *dir;
                     struct dirent *ent;
                     bool isDir = true;
-                    /*
-                    1.get file list
-                    2.store file type into an array
-                    3.if it is a folder, loop thru the folder and get the file name then attach to file path then push to array
-                    4.if folder exist in the folder, repeat action till all files are there
 
-                    /usr/lib/webplatform/plugins/jnext
-                    ./app/native/res/zip/libExtractZipFile.so
-
-                    ./app/native/res/zip/2/cccc.txt
-                    ./app/native/res/zip/2/1/cccc.txt
-                    ./app/native/res/zip/aaaa.txt
-
-                    ./app/native/res/zip/aaaa.txt
-                    ./app/native/res/zip/2",
-
-                     */
                     getDirectoryContent(filePath, fileName);
 
                 }else{
