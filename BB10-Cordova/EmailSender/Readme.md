@@ -40,7 +40,8 @@ var emailJSON = {
 	"Cc": "email_CC@domain.com",
 	"Bcc": "email_BCC@domain.com",
 	"subject" : "Email Subject",
-	"body": "Email body"
+	"body": "Email body",
+	"attachment": "file:\\\accounts\1000\shared\documents\file.ext" //will also accept file path as "\accounts\1000\shared\documents\file.ext"
 };
 var status = community.emailsenderplugin.sendEmail(emailJSON);
 ```
@@ -56,7 +57,8 @@ var emailJSON = {
 	"Cc": "email_CC@domain.com",
 	"Bcc": "email_BCC@domain.com",
 	"subject" : "Email Subject",
-	"body": "Email body"
+	"body": "Email body",
+	"attachment": "\accounts\1000\shared\documents\file.ext"
 };
 var status = community.emailsenderplugin.sendEmail(emailJSON);
 ```
@@ -70,7 +72,8 @@ var emailJSON = {
 	"Cc": "email_CC@domain.com",
 	"Bcc": "email_BCC@domain.com",
 	"subject" : "Email Subject",
-	"body": "Email body"
+	"body": "Email body",
+	"attachment": "/accounts/1000/removable/sdcard/My Files/file.dat"
 };
 ```
 **Here's the usage for the getEmailAccounts() method:**
@@ -94,10 +97,11 @@ The plugin require the following permissions:
 <pre>
 <b>access_pimdomain_contacts</b>
 <b>access_pimdomain_messages</b>
+<b>access_shared</b>
 </pre>
 
 ## Known Issues
-As of 09-Oct, the plugin can't send email from a microsoft account(hotmail, live, outlook, etc).
+As of 09-Oct-2014, the plugin can't send email from a microsoft account(hotmail, live, outlook, etc).
 
 ## Contributing Changes
 

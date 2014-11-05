@@ -6,6 +6,7 @@
     <description>BlackBerry 10 Community Contributed API to send email accounts on the device</description>
     <license>Apache 2.0</license>
     <author>Alexandre Huot</author>
+    <author>Stefan Schielke</author>
 
     <js-module src="www/client.js">
         <clobbers target="community.emailsenderplugin" />
@@ -17,6 +18,12 @@
         <lib-file src="src/blackberry10/native/simulator/libEmailSender.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
             <feature name="com.blackberry.community.emailsenderplugin" value="com.blackberry.community.emailsenderplugin" />
+			<feature name="File">
+				<param name="blackberry-package" value="org.apache.cordova.file.FileManager" />
+			</feature>
+			<feature name="FileTransfer">
+				<param name="blackberry-package" value="org.apache.cordova.http.FileTransfer" />
+			</feature>
         </config-file>
     </platform>
 </plugin>

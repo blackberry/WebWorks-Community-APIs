@@ -69,7 +69,8 @@ var app = {
 					"Cc": document.getElementById('Cc').value,
 					"Bcc": document.getElementById('Bcc').value,
 					"subject" : document.getElementById('Subject').value,
-					"body": document.getElementById('Body').value
+					"body": document.getElementById('Body').value,
+					"attachment": document.getElementById('attachmentType').value.split(',')
 				};
 				statusSpan.innerHTML = community.emailsenderplugin.sendEmail(jsonEmail);
 			};

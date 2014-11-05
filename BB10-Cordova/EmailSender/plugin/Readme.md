@@ -9,6 +9,7 @@ This extension provides additional APIs to send emails from an app.
 **Author(s)** 
 
 * [Alexandre Huot](https://github.com/alexhuot1/)
+* [Stefan Schielke](https://github.com/stefanschielke)
 
 ## Set up
 From registry
@@ -33,12 +34,14 @@ Use the command:
 ```javascript
 // Build email JSON
 var emailJSON = {
+	"Type": "html", //for plain text replace with "txt"
 	"From": "12345678", //id of an email account on the device
 	"To": "email@domain.com",
 	"Cc": "email_CC@domain.com",
 	"Bcc": "email_BCC@domain.com",
 	"subject" : "Email Subject",
-	"body": "Email body"
+	"body": "Email body",
+	"attachment": "file:\\\accounts\1000\shared\documents\file.ext" //will also accept file path as "\accounts\1000\shared\documents\file.ext"
 };
 var status = community.emailsenderplugin.sendEmail(emailJSON);
 ```
@@ -48,12 +51,14 @@ The fields "To", "Cc" and "Bcc" can be filled with a json array. Here's an exemp
 ```javascript
 // Build email JSON
 var emailJSON = {
+	"Type": "html",
 	"From": "12345678", //id of an email account on the device
 	"To": ["email_1@domain.com", "email_2@domain.com", "email_3@domain.com"],
 	"Cc": "email_CC@domain.com",
 	"Bcc": "email_BCC@domain.com",
 	"subject" : "Email Subject",
-	"body": "Email body"
+	"body": "Email body",
+	"attachment": "\accounts\1000\shared\documents\file.ext"
 };
 var status = community.emailsenderplugin.sendEmail(emailJSON);
 ```
@@ -61,12 +66,14 @@ To use the default account use "-1" as the account id:
 ```javascript
 // Build email JSON
 var emailJSON = {
+	"Type": "txt",
 	"From": "-1", //use the default email
 	"To": ["email_1@domain.com", "email_2@domain.com", "email_3@domain.com"],
 	"Cc": "email_CC@domain.com",
 	"Bcc": "email_BCC@domain.com",
 	"subject" : "Email Subject",
-	"body": "Email body"
+	"body": "Email body",
+	"attachment": "/accounts/1000/removable/sdcard/My Files/file.dat"
 };
 ```
 **Here's the usage for the getEmailAccounts() method:**
@@ -90,10 +97,11 @@ The plugin require the following permissions:
 <pre>
 <b>access_pimdomain_contacts</b>
 <b>access_pimdomain_messages</b>
+<b>access_shared</b>
 </pre>
 
 ## Known Issues
-As i'm writing those lines, the plugin can't send email from a microsoft account(hotmail, live, outlook, etc) and an Yahoo! account.
+As of 09-Oct-2014, the plugin can't send email from a microsoft account(hotmail, live, outlook, etc).
 
 ## Contributing Changes
 
