@@ -17,11 +17,11 @@ This extension provides additional APIs to identify the device.
 
 This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
 
-    cordova plugin add com.blackberry.community.deviceinfo
+    cordova plugin add com.blackberry.community.deviceinfoplugin
 
 or,
     
-    webworks plugin add com.blackberry.community.deviceinfo
+    webworks plugin add com.blackberry.community.deviceinfoplugin
 
 Installation from source is the same but instead of the id ("com.blackberry.community.deviceinfo"), use the file system path to the source plugin folder.
 
