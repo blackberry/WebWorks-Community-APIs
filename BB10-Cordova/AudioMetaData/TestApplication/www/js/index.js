@@ -50,8 +50,8 @@ var app = {
 		butt.addEventListener("click", this.onClicked, false);
 	},
 	testMetaDataExtraction: function(path) {
-		if (com && com.blackberry.community.audiometadata) {
-			com.blackberry.community.audiometadata.audioMetaDataGetMetaData(path, app.metadataCallback);
+		if (community && community.audiometadata) {
+			community.audiometadata.audioMetaDataGetMetaData(path, app.metadataCallback);
 		} else {
 			alert("Plugin was not found");
 		}
