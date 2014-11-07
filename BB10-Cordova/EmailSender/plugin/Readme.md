@@ -41,7 +41,7 @@ var emailJSON = {
 	"Bcc": "email_BCC@domain.com",
 	"subject" : "Email Subject",
 	"body": "Email body",
-	"attachment": "file:\\\accounts\1000\shared\documents\file.ext" //will also accept file path as "\accounts\1000\shared\documents\file.ext"
+	"attachment": "file:///accounts/1000/shared/documents/file.ext" //will also accept file path as "\accounts\1000\shared\documents\file.ext"
 };
 var status = community.emailsenderplugin.sendEmail(emailJSON);
 ```
@@ -58,7 +58,7 @@ var emailJSON = {
 	"Bcc": "email_BCC@domain.com",
 	"subject" : "Email Subject",
 	"body": "Email body",
-	"attachment": "\accounts\1000\shared\documents\file.ext"
+	"attachment": "/accounts/1000/shared/documents/file.ext"
 };
 var status = community.emailsenderplugin.sendEmail(emailJSON);
 ```
