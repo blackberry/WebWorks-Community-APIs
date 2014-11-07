@@ -83,6 +83,10 @@ var app = {
             }
             div.className = 'invoked';
 
+            div = document.getElementById('network');
+            div.innerHTML = community.deviceInfo.getNetwork();
+            div.className = 'invoked';
+
 		} else {
 			app.writeOut("Plugin was not found");
 		}
