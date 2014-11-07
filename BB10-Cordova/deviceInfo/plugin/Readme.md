@@ -2,6 +2,11 @@
 
 This extension provides additional APIs to identify the device.
 
+## Version History
+
+    1.0.0 Initial Release
+    1.0.1 Bug fix for getNetwork() on 10.3.0+
+
 **Applies To**
 
 * [BlackBerry 10 WebWorks SDK](https://developer.blackberry.com/html5/download/sdk) 
