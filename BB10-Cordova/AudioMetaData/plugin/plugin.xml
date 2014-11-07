@@ -8,11 +8,10 @@
     <author>jim wen</author>
 
     <js-module src="www/client.js">
-        <clobbers target="com.blackberry.community.audiometadata" />
+        <clobbers target="community.audiometadata" />
     </js-module>
 
     <platform name="blackberry10">
-        <!-- <dependency id="com.blackberry.read" /> -->
         <source-file src="src/blackberry10/index.js" />
         <lib-file src="src/blackberry10/native/device/libAudioMetaData.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libAudioMetaData.so" arch="simulator"/>
