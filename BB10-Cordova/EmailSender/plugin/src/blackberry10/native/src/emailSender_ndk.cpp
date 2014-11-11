@@ -21,9 +21,9 @@
 #include <pthread.h>
 #include <bb/pim/message/MessageBuilder>
 #include <QtCore/QObject>
+#include <QFileInfo>
 #include "emailSender_ndk.hpp"
 #include "emailSender_js.hpp"
-
 
 namespace webworks {
 
@@ -48,6 +48,7 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
 		Json::Value Bcc = input["Bcc"];
 		Json::Value subject = input["subject"];
 		Json::Value body = input["body"];
+		Json::Value attachment = input["attachment"];
 
 		long id = atol(From.asString().c_str());
 		Account account;
@@ -101,6 +102,7 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
 		}
 
 		builder->subject(QString::fromStdString(subject.asString()));
+
 		string stringBody = body.asString();
 		QByteArray bodyData ;
 		bodyData.append(QString::fromStdString(body.asString()));
@@ -110,6 +112,30 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
         }
         else{
             builder->body(MessageBody::PlainText, bodyData);
+        }
+
+        if (!attachment.empty()){
+            foreach(Json::Value v, attachment){
+
+				// remove any leading or trailing spaces from a file path
+                string checkpath = v.asString();
+                char ws = ' ';
+                checkpath = checkpath.erase(0, checkpath.find_first_not_of(ws));
+                checkpath = checkpath.erase(checkpath.find_last_not_of(ws) + 1);
+
+                // allow for full or partial path to be entered
+                string match = "file://";
+                if(checkpath.length() >= match.length() && !equal(match.begin(), match.end(), checkpath.begin()))
+                    checkpath = "file://" + checkpath;
+
+                QString path = QString::fromStdString(checkpath);
+                QUrl filepath(path);
+                QFileInfo fileinfo(path);
+                QString filename = fileinfo.fileName();
+                QString filetype = fileinfo.completeSuffix();
+                Attachment msgAttach(filetype, filename, filepath);
+                builder->addAttachment(msgAttach);
+            }
         }
 
 		Message m = *builder;
