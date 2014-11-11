@@ -1,6 +1,6 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     id="com.blackberry.community.deviceinfoplugin"
-    version="1.0.0">
+    version="1.0.1">
 
     <name>DeviceInfo</name>
     <description>BlackBerry 10 Community Contributed API to get hardware and network information from the device</description>

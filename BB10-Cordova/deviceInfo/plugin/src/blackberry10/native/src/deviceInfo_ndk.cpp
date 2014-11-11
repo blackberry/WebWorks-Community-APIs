@@ -32,9 +32,12 @@ namespace webworks {
 
 
 DeviceinfoNDK::DeviceinfoNDK(DeviceinfoJS *parent):
-	m_pParent(parent){}
+	m_pParent(parent){
+    bps_initialize();
+}
 
 DeviceinfoNDK::~DeviceinfoNDK() {
+    bps_shutdown();
 }
 
 std::string DeviceinfoNDK::getModelNumber() {

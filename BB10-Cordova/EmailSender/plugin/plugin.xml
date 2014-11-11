@@ -1,12 +1,13 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     id="com.blackberry.community.emailsenderplugin"
-    version="1.0.1">
+    version="1.0.2">
 
     <name>Email Sender</name>
     <description>BlackBerry 10 Community Contributed API to send email accounts on the device</description>
     <license>Apache 2.0</license>
-    <author>Alexandre Huot</author>
-    <author>Stefan Schielke</author>
+
+    <author>Alexandre Huot, Stefan Schielke</author>
+
 
     <js-module src="www/client.js">
         <clobbers target="community.emailsenderplugin" />

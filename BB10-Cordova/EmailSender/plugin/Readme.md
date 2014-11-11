@@ -11,6 +11,12 @@ This extension provides additional APIs to send emails from an app.
 * [Alexandre Huot](https://github.com/alexhuot1/)
 * [Stefan Schielke](https://github.com/stefanschielke)
 
+## Version History
+
+	1.0.0 Initial Release
+	1.0.1 Adds method for getting Email Accounts
+	1.0.2 Now supports HTML emails in addition to plaintext
+
 ## Set up
 From registry
 Use the command:
@@ -101,19 +107,8 @@ The plugin require the following permissions:
 </pre>
 
 ## Known Issues
-As of 09-Oct-2014, the plugin can't send email from a microsoft account(hotmail, live, outlook, etc).
-
-## Contributing Changes
-
-Please see the [README](https://github.com/blackberry/WebWorks-Community-APIs) of the WebWorks-Community-APIs repository for instructions on how to add new Samples or make modifications to existing Samples.
-
-
-## Bug Reporting and Feature Requests
-
-If you find a bug in a Sample, or have an enhancement request, simply file an [Issue](https://github.com/blackberry/WebWorks-Community-APIs//issues) for the Sample and send a message (via github messages) to the Sample Author(s) to let them know that you have filed an [Issue](https://github.com/blackberry/WebWorks-Community-APIs//issues).
+As of 09-Oct-2014, the plugin can't send email from a Microsoft account(hotmail, live, outlook, etc).
 
 ## Disclaimer
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-[![Analytics](https://ga-beacon.appspot.com/UA-46817652-1/WebWorks-Community-APIs/BB10/DeviceInfo?pixel)](https://github.com/igrigorik/ga-beacon)
