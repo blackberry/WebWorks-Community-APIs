@@ -5,6 +5,12 @@ ExtractZIPFile
 * extraction (unzipping) of zip archives for html5 under Blackberry 10.
 * compression (zipping) of a single file or multiple files for html5 under Blackberry 10.
 
+## Version History
+
+	1.0.0 Initial Release
+	1.1.0 Adds compression of files
+	1.1.1 Adds compression of multiple files and directories
+
 **Tested On**
 
 * BlackBerry 10.2.1.1927
