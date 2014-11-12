@@ -33,10 +33,13 @@ public:
 
 	// The extension methods are defined here
 	void audioMetaDataGetMetaData(const std::string& callbackId, const std::string& inputString);
+	std::string audioMetaDataSetTagData(const std::string& inputString);
+	std::string audioMetaDataRemoveTag(const std::string& inputString);
 
 private:
 	Json::Value parseMp3ForMetaData(const char* path);
 	std::string getProperString(char* strArray, int size, char encoding);
+	void setTagData(const char* path, const Json::Value &data);
 
 	AudioMetaData_JS *m_pParent;
 	std::string threadCallbackId;

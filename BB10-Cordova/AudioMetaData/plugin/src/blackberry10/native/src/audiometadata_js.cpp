@@ -88,7 +88,11 @@ string AudioMetaData_JS::InvokeMethod(const string& command) {
 	// based on the command given, run the appropriate method in audiometadata_ndk.cpp
 	if (strCommand == "audioMetaDataGetMetaData") {
 		m_pAudioMetaDataController->audioMetaDataGetMetaData(callbackId, arg);
-	}
+	} else if (strCommand == "audioMetaDataSetTagData") {
+	    return m_pAudioMetaDataController->audioMetaDataSetTagData(arg);
+    } else if (strCommand == "audioMetaDataRemoveTag") {
+        return m_pAudioMetaDataController->audioMetaDataRemoveTag(arg);
+    }
 
 	strCommand.append(";");
 	strCommand.append(command);

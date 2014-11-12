@@ -34,6 +34,24 @@ module.exports = {
 			audioMetaData.getInstance().audioMetaDataGetMetaData(result.callbackId, value);
 			result.noResult(true);
 		}
+	},
+
+	audioMetaDataSetTagData: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		var value;
+		if (args && args["input"]) {
+			value = JSON.parse(decodeURIComponent(args["input"]));
+			result.ok(audioMetaData.getInstance().audioMetaDataSetTagData(result.callbackId, value), false);
+		}
+	},
+	
+	audioMetaDataRemoveTag: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		var value;
+		if (args && args["input"]) {
+			value = JSON.parse(decodeURIComponent(args["input"]));
+			result.ok(audioMetaData.getInstance().audioMetaDataRemoveTag(result.callbackId, value), false);
+		}
 	}
 };
 
@@ -68,6 +86,14 @@ JNEXT.AudioMetaData = function () {
 	//Gets the metadata of the mp3 passed in
 	self.audioMetaDataGetMetaData = function (callbackId, input) {
 		return JNEXT.invoke(self.m_id, "audioMetaDataGetMetaData " + callbackId + " " + input);
+	};
+	
+	self.audioMetaDataSetTagData = function (callbackId, input) {
+		return JNEXT.invoke(self.m_id, "audioMetaDataSetTagData " + callbackId + " " + JSON.stringify(input));
+	};
+	
+	self.audioMetaDataRemoveTag = function (callbackId, input) {
+		return JNEXT.invoke(self.m_id, "audioMetaDataRemoveTag " + callbackId + " " + input);
 	};
 	
 	// Fired by the Event framework (used by asynchronous callbacks)

@@ -102,9 +102,45 @@ AudioMetaData_NDK::~AudioMetaData_NDK() {
 // Asynchronous callback with mp3 path to get metadata
 void AudioMetaData_NDK::audioMetaDataGetMetaData(const std::string& callbackId, const std::string& inputString) {
     m_pParent->getLog()->debug("starting meta-data extraction...");
+    m_pParent->getLog()->debug(inputString.c_str());
     Json::FastWriter writer;
     Json::Value root = parseMp3ForMetaData(inputString.c_str());
+    m_pParent->getLog()->debug(writer.write(root).c_str());
     m_pParent->NotifyEvent(callbackId + " " + writer.write(root));
+}
+
+string AudioMetaData_NDK::audioMetaDataSetTagData(const std::string& inputString) {
+    m_pParent->getLog()->debug("Setting ID3 metadata");
+    Json::Reader reader;
+    Json::Value root;
+    bool parsed = reader.parse(inputString, root);
+
+    if (parsed) {
+        const char* path = "";
+        Json::Value pathVal = root["path"];
+        if (pathVal.isArray()) {
+            path = (*pathVal.begin()).asString().c_str();
+        } else {
+            path = pathVal.asString().c_str();
+        }
+        setTagData(path, root);
+        return "metadata set";
+    } else {
+        return "failed to parsed input json data";
+    }
+}
+
+string AudioMetaData_NDK::audioMetaDataRemoveTag(const std::string& inputString) {
+    m_pParent->getLog()->debug("removing ID3 metadata");
+    const char* path = inputString.c_str();
+    ID3v2_tag *tag = load_tag(path);
+    if (tag == NULL) {
+        return "No metadata found";
+    } else {
+        remove_tag(path);
+        free(tag);
+        return "successfully removed metadata";
+    }
 }
 
 // Extract metadata from MP3
@@ -211,6 +247,55 @@ string AudioMetaData_NDK::getProperString(char* strArray, int size, char encodin
         result = string(strArray, size);
     }
     return result;
+}
+
+void AudioMetaData_NDK::setTagData(const char* path, const Json::Value &data) {
+    Json::Value res;
+    Json::FastWriter writer;
+
+    // check if tag already exists on the file
+    ID3v2_tag *tag = load_tag(path);
+    if (tag == NULL) {
+        tag = new_tag();
+    }
+
+    // iterate through the input data to see what needs to be changed
+    Json::Value::iterator it = data.begin();
+    for (; it != data.end(); it++) {
+
+        const char* key = it.memberName();
+        // note: due to the fact that a path can be passed in as
+        // a string or a JS object, to avoid errors in "const char* value = (*it).asString().c_str();"
+        // line, this check is needed.
+        if (strcmp(key, "path") == 0) {
+            continue;
+        }
+
+        const char* value = (*it).asString().c_str();
+        m_pParent->getLog()->debug(value);
+        int size = strlen(value);
+        char buff[size+1];
+        memset(buff,0,size+1);
+        strncpy(buff, value, size);
+
+        //todo: handle different encodings
+
+        if (strcmp(key, "title") == 0) {
+            tag_set_title(buff, ISO_ENCODING, tag);
+        } else if (strcmp(key, "artist") == 0) {
+            tag_set_artist(buff, ISO_ENCODING, tag);
+        } else if (strcmp(key, "genre") == 0) {
+            tag_set_genre(buff, ISO_ENCODING, tag);
+        } else if (strcmp(key, "year") == 0) {
+            tag_set_year(buff, ISO_ENCODING, tag);
+        } else if (strcmp(key, "album") == 0) {
+            tag_set_album(buff, ISO_ENCODING, tag);
+        } else if (strcmp(key, "track") == 0) {
+            tag_set_track(buff, ISO_ENCODING, tag);
+        }
+    }
+    set_tag(path, tag);
+    free(tag);
 }
 
 } /* namespace webworks */

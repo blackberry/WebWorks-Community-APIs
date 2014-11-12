@@ -34,7 +34,26 @@
                 <p class="event received">Device is Ready</p>
             </div>
             <br><button id="select" type="button" class="buttonStyle">Select a file</button><br>
-	    <br><div id="results"></div>
+            <br>
+            <div style="display:inline-block;" >
+                <select id="dropdown" name="Attributes" >
+                    <option value="title">Title</option>
+                    <option value="genre">Genre</option>
+                    <option value="artist">Artist</option>
+                    <option value="track">Track</option>
+                    <option value="year">Year</option>
+                    <option value="album">Album</option>
+                </select>
+                <input type="text" id="textfield" placeholder="Attribute Text" style="width: 100px">
+            </div>                                            
+            <button id="setter" type="button" class="buttonStyle">Set Attribute</button><br>
+            <div class="custom-buttons" style="display:inline-block">
+            <br><button type="button" id="getButton" style="float:left" class="buttonStyle">Get</button>
+            <button type="button" id="setButton" style="float:left" class="buttonStyle">Set</button>
+            <br><button type="button" id="removeButton" style="float:center" class="buttonStyle">Remove</button>
+            <p style="clear:floats"></p>
+            </div><br>
+	    <br><br><div id="results"></div>
         </div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
