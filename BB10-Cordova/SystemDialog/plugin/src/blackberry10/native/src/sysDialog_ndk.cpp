@@ -14,22 +14,15 @@
  * limitations under the License.
  */
 
-#include <json/reader.h>
-#include <json/value.h>
-//#include <algorithm>
-#include <json/writer.h>
-#include <QMetaObject>
-
 #include <map>
 #include <sstream>
-#include "sysDialog_ndk.hpp"
-#include "sysDialog_js.hpp"
 #include <QObject>
 #include <bb/platform/NotificationError>
-
-// TODO: root["error"] = NotificationError works?
-// TODO: m_notificationDialog->clearButtons(); works?
-
+#include <json/reader.h>
+#include <json/value.h>
+#include <json/writer.h>
+#include "sysDialog_ndk.hpp"
+#include "sysDialog_js.hpp"
 
 namespace webworks {
 
@@ -39,14 +32,8 @@ namespace webworks {
     map<NotificationError::Type, string> SysDialogNDK::m_errorMessage;
 
     SysDialogNDK::~SysDialogNDK() {
-        // unsigned int i, len;
-        // len = m_buttonList.size();
-        // for (i = 0; i < len; ++i) {
-        //     delete m_buttonList[i]
-        // }
-        m_notificationDialog->clearButtons();
-        // The button instances will be deleted.
-        delete[] m_buttonList;
+        // in case show returns with error before finished();
+        cleanUp();
     };
 
     // enum NotificationError::Type cannot be safely converted to int
@@ -61,11 +48,24 @@ namespace webworks {
         }
     }
 
-        void SysDialogNDK::onChanged(bool value) {
-            int x = 0;
-        }
+    void SysDialogNDK::cleanUp() {
 
-    void SysDialogNDK::onDialogFinished(NotificationResult::Type value) {
+        if (NULL != m_notificationDialog) {
+            // The button instances will be deleted.
+            m_notificationDialog->clearButtons();
+            delete m_notificationDialog;
+        }
+        m_notificationDialog = NULL;
+
+
+        if (NULL != m_buttonList) {
+            delete[] m_buttonList;
+        }
+        m_buttonList = NULL;
+    }
+
+
+    void SysDialogNDK::onDialogFinished(bb::platform::NotificationResult::Type value) {
         Json::FastWriter writer;
         Json::Value root;
         SystemUiButton * select;
@@ -77,11 +77,12 @@ namespace webworks {
                 break;
 
             case NotificationResult::Error:
-                // root["error"] = m_errorMessage[m_notificationDialog->error()];
-                root["error"] = m_notificationDialog->error();
+                root["result"] = "error";
+                root["error"] = m_errorMessage[m_notificationDialog->error()];
                 break;
 
             case NotificationResult::ButtonSelection:
+                root["result"] = "select";
                 select = m_notificationDialog->buttonSelection();
                 if ( NULL != select) {
                     root["select"] = (select - m_buttonList[0])/sizeof(SystemUiButton * );
@@ -89,14 +90,17 @@ namespace webworks {
                 break;
 
             default:
+                root["result"] = "error";
                 root["error"] = "unknown NotificationResult Type";
                 break;
         } // switch
+
+        // callback, notify js object
         m_pParent->NotifyEvent(m_callbackId + " " + writer.write(root));
 
-        delete m_notificationDialog;
+        // clean before next dialog invoked
+        cleanUp();
     }
-
 
     string SysDialogNDK::show(std::string& callbackId, const std::string& inputString) {
 
@@ -125,7 +129,6 @@ namespace webworks {
         // button list
         value = root["buttons"];
         if (!value.empty()) {
-
             len = value.size();
             m_buttonList = new SystemUiButton*[len];
             for (i = 0; i < len; ++i) {
@@ -148,64 +151,17 @@ namespace webworks {
             m_notificationDialog->setRepeat(true);
         }
 
-        bool success = false;
-        // success = QMetaObject::checkConnectArgs(SIGNAL(finished(SystemUiResult::Type)), SLOT(onDialogFinished(SystemUiResult::Type)));
-// QMetaMethod valueChangedSignal = QMetaMethod::fromSignal(&MyObject::valueChanged);
-// if (! success) {
-//     return "not match";
-// }
+        bool success = QObject::connect(m_notificationDialog,
+                        SIGNAL(finished(bb::platform::NotificationResult::Type)),
+                        this,
+                        SLOT(onDialogFinished(bb::platform::NotificationResult::Type)));
 
-// success = m_notificationDialog->isSignalConnected();
-// if ( success){
-//     return "signal connected";
-// }
-        success = QObject::connect(m_notificationDialog, SIGNAL(finished(SystemUiResult::ButtonSelection *)),
-                                        this, SLOT(onDialogFinished(SystemUiResult::Type)));
-
-        // success = QObject::connect(m_notificationDialog, SIGNAL(finished(SystemUiResult::Type)),
-        //                                 this, SLOT(onDialogFinished(SystemUiResult::Type)));
-
-        // success = QObject::connect(m_notificationDialog, SIGNAL(finished(SystemUiResult::Type)),
-        //                                 m_notificationDialog, SLOT(onDialogFinished(SystemUiResult::Type)));
-
-
-
- // bool success = QObject::connect(m_notificationDialog, SIGNAL(repeatChanged (bool )),
- //         this, SLOT(onSelected(bool)));
-
-            // NotificationResult::Type ret = m_notificationDialog->exec();
-            m_notificationDialog->show();
-            NotificationResult::Type ret = m_notificationDialog->result();
-
-            // while (NotificationResult::None == m_notificationDialog->result()){}
-
-
-// onDialogFinished(NotificationResult::ButtonSelection);
-// m_notificationDialog->finished(NotificationResult::Error);
 
         if (success) {
-            // m_notificationDialog->show();
-            return "ok?";
-
+            m_notificationDialog->show();
         } else {
-
-            // onDialogFinished(m_notificationDialog->result());
-
-
-            if (NotificationResult::None == ret) {
-                return "No result";
-            }
-
-            if (NotificationResult::Error == ret) {
-                return m_errorMessage[m_notificationDialog->error()];
-
-            }
-
-            return "select";
-
-            // onDialogFinished(m_notificationDialog->result()  );
-            // return "SysDialogNdk fail to connect finished()";
-            // return m_errorMessage[m_notificationDialog->error()];
+            // this is not normal in most cases
+            return "sysDialogNDK qt connect fail";
         }
 
         return "";

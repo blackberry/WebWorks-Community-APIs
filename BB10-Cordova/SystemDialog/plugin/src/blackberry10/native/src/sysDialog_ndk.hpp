@@ -40,35 +40,43 @@ namespace webworks {
 	    Q_OBJECT
 
 		SysDialogJS *m_pParent;
+
+// TODO: what if multiply dialogs are invoked simultaneously? use vector<dialog>?
+// seems cannot delete before finished(). Also it seems new dialog is not popped
+// before old one cancelled... maybe its ok, later show() is bloked...
+
 		NotificationDialog * m_notificationDialog;
 		string m_callbackId;
 
 		// store allocated SystemUiButton, used to calculate button index
 		SystemUiButton ** m_buttonList;
 
-		// map enum NotificationResult to error message
+		// map enum NotificationResult to error message to return
 		static map<NotificationError::Type, string> m_errorMessage;
+
 		// init m_errorMessage
 		void initErrorMsg();
 
+		// delete buttons & m_notificationDialog
+		void cleanUp();
+
 	  public:
+
 		explicit SysDialogNDK(SysDialogJS *parent = NULL) :
 		m_pParent(parent), m_buttonList(NULL) { initErrorMsg();}
 
 		virtual ~SysDialogNDK();
 
+		// create a NotificationDialog according to inputString & show
 		Q_INVOKABLE string show(std::string& callbackId, const std::string& inputString);
 
 	  public slots:
-		// slot for finished(), have to be class member
-		void onDialogFinished (NotificationResult::Type value);
-		// void onSelected(NotificationResult::ButtonSelection* b);
-	    void onChanged(bool);
 
+		// slot for finished(); have to be class member; have to include the complete namespace
+		// to match finished()'s signature
+		void onDialogFinished (bb::platform::NotificationResult::Type value);
 	};
 
 } // namespace webworks
-
-//#include "moc_sysDialog.cpp"
 
 #endif // _SYSDILOG_NDK_HPP_
