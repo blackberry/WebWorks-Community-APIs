@@ -17,6 +17,10 @@
  * under the License.
  */
 var app = {
+	pathGlobal: "",
+	attributes: new Object(),
+	dropDownGlobal: null,
+	textfieldGlobal: null,
 	clearApplicationLog: "_clear_",
 	// Application Constructor
 	initialize: function() {
@@ -44,14 +48,57 @@ var app = {
 
 		listeningElement.setAttribute('style', 'display:none;');
 		receivedElement.setAttribute('style', 'display:block;');
+		
+		app.dropDownGlobal = document.getElementById("dropdown");
+		app.textfieldGlobal = document.getElementById("textfield");
 
 		console.log('Received Event: ' + id);
-		var butt = document.getElementById("select");
-		butt.addEventListener("click", this.onClicked, false);
+		var selectButt = document.getElementById("select");
+		selectButt.addEventListener("click", this.onClicked, false);
+		var getButt = document.getElementById("getButton");
+		getButt.addEventListener("click", this.testMetaDataExtraction, false);
+		var attributeButt = document.getElementById("setButton");
+		attributeButt.addEventListener("click", this.testMetaDataSet, false);
+		var removeButt = document.getElementById("removeButton");
+		removeButt.addEventListener("click", this.testMetaDataRemove, false);
+		var selectButt = document.getElementById("setter");
+		selectButt.addEventListener("click", this.setAttribute, false);
 	},
-	testMetaDataExtraction: function(path) {
-		if (community && community.audiometadata) {
-			community.audiometadata.audioMetaDataGetMetaData(path, app.metadataCallback);
+	testMetaDataExtraction: function(event) {
+		if (com && com.blackberry.community.audiometadata) {
+			if (app.pathGlobal.length > 0) {
+				com.blackberry.community.audiometadata.audioMetaDataGetMetaData(app.pathGlobal, app.metadataCallback);
+			} else {
+				alert("No file selected");
+			}
+		} else {
+			alert("Plugin was not found");
+		}
+	},
+	testMetaDataSet: function(event) {
+		if (com && com.blackberry.community.audiometadata) {
+			if (app.pathGlobal.length > 0) {
+				if (Object.keys(app.attributes).length > 1 && app.attributes["path"] == app.pathGlobal) {
+					app.writeOut(app.clearApplicationLog);
+					app.writeOut(com.blackberry.community.audiometadata.audioMetaDataSetTagData(app.attributes));
+				} else {
+					alert("Not enough inputs");
+				}
+			} else {
+				alert("No file selected");
+			}
+		} else {
+			alert("Plugin was not found");
+		}
+	},
+	testMetaDataRemove: function(event) {
+		if (com && com.blackberry.community.audiometadata) {
+			if (app.pathGlobal.length > 0) {
+				app.writeOut(app.clearApplicationLog);
+				app.writeOut(com.blackberry.community.audiometadata.audioMetaDataRemoveTag(app.pathGlobal));
+			} else {
+				alert("No file selected");
+			}
 		} else {
 			alert("Plugin was not found");
 		}
@@ -68,7 +115,9 @@ var app = {
 					sortOrder: blackberry.invoke.card.FILEPICKER_SORT_ORDER_DESCENDING
 			};
 			blackberry.invoke.card.invokeFilePicker(details, function(path) {
-				app.testMetaDataExtraction(path);
+				app.pathGlobal = path;
+				app.attributes = new Object();
+				app.attributes["path"] = app.pathGlobal;
 			},
 			// cancel callback
 			function(reason) {
@@ -83,6 +132,9 @@ var app = {
 				}
 			});
 		}
+	},
+	setAttribute: function(event) {
+		app.attributes[app.dropDownGlobal.value] = app.textfieldGlobal.value;
 	},
 	writeOut: function(message) {
 		var output = document.getElementById('results');
