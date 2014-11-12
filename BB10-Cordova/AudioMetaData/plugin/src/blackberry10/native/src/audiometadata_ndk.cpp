@@ -253,11 +253,13 @@ void AudioMetaData_NDK::setTagData(const char* path, const Json::Value &data) {
     Json::Value res;
     Json::FastWriter writer;
 
+    // check if tag already exists on the file
     ID3v2_tag *tag = load_tag(path);
     if (tag == NULL) {
         tag = new_tag();
     }
 
+    // iterate through the input data to see what needs to be changed
     Json::Value::iterator it = data.begin();
     for (; it != data.end(); it++) {
 
