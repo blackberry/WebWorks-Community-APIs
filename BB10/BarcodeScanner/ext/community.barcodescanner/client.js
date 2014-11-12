@@ -82,9 +82,7 @@ var _self = {},
 	var sleepPrevented = false;
 
 	function readFile(filename) {
-		window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-
-		window.requestFileSystem(window.TEMPORARY, fsSize,
+		window.webkitRequestFileSystem(window.TEMPORARY, fsSize,
 			function (fs) {
 				fs.root.getFile(filename, {create: false},
 					function (fileEntry) {
