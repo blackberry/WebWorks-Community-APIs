@@ -37,9 +37,40 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
+    	
+    	var parentElement = document.getElementById(id);
+		var listeningElement = parentElement.querySelector('.listening');
+		var receivedElement = parentElement.querySelector('.received');
+
+		listeningElement.setAttribute('style', 'display:none;');
+		receivedElement.setAttribute('style', 'display:block;');
+    	
 		PGLowLatencyAudio.preloadAudio("low.wav", "sounds/", 4, function(echoValue) {
             console.log(echoValue);
+			app.writeOut(echoValue);
         });
+		
         console.log('Received Event: ' + id);
-    }
+        
+        PGLowLatencyAudio.play("low.wav", function(echoValue) {
+            alert(echoValue);
+        }); 
+         
+        /*
+        PGLowLatencyAudio.unload("low.wav", function(echoValue) {
+            alert(echoValue);
+        });
+        
+        PGLowLatencyAudio.loop("low.wav", function(echoValue) {
+            //  alert(echoValue);
+              app.writeOut(echoValue);
+          }); 
+        */
+    },
+	writeOut: function(message) {
+		var output = document.getElementById('results');
+		output.innerText = output.innerText + message;
+		output.appendChild(document.createElement('br'));
+		console.log(message);
+	}
 };
