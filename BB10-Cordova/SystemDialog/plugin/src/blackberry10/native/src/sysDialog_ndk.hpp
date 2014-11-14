@@ -21,6 +21,7 @@
 #include <vector>
 #include <QObject>
 #include <QString>
+#include <QByteArray>
 #include <QtCore>
 
 #include <bb/system/SystemUiButton>
@@ -35,47 +36,73 @@ namespace webworks {
 	using namespace bb::system;
 	using namespace std;
 
+	class SysDialogNDK;
+
+	class DialogHandler : public QObject {
+
+		Q_OBJECT
+		SysDialogNDK * m_parentNDK;
+
+		string m_callbackId;
+		NotificationDialog * m_notificationDialog;
+
+	  public:
+
+		DialogHandler( SysDialogNDK * parentNDK, string callbackId, NotificationDialog * dialog) :
+		m_parentNDK(parentNDK), m_callbackId(callbackId), m_notificationDialog(dialog) { }
+
+
+		~DialogHandler() {
+            // The button instances will be deleted.
+            m_notificationDialog->clearButtons();
+			delete m_notificationDialog;
+		};
+
+	  public slots:
+
+  		// return m_notificationDialog->error as string
+		string getError();
+
+		// call m_notificationDialog->show() and return error
+		string show();
+
+		// slot for finished(); have to be class member; have to include the complete namespace
+		Q_SLOT void onDialogFinished (bb::platform::NotificationResult::Type value);
+	};
+
+
 	class SysDialogNDK : public QObject {
 
 	    Q_OBJECT
 
 		SysDialogJS *m_pParent;
 
-// TODO: what if multiply dialogs are invoked simultaneously? use vector<dialog>?
-// seems cannot delete before finished(). Also it seems new dialog is not popped
-// before old one cancelled... maybe its ok, later show() is bloked...
+		int m_id;
 
-		NotificationDialog * m_notificationDialog;
-		string m_callbackId;
+		// multiply dialogs can be invoked simultaneously
+		QHash<int, DialogHandler*> m_dialogHandlerList;
 
-		// store allocated SystemUiButton, used to calculate button index
-		SystemUiButton ** m_buttonList;
-
-		// map enum NotificationResult to error message to return
-		static map<NotificationError::Type, string> m_errorMessage;
-
-		// init m_errorMessage
-		void initErrorMsg();
-
-		// delete buttons & m_notificationDialog
-		void cleanUp();
 
 	  public:
 
 		explicit SysDialogNDK(SysDialogJS *parent = NULL) :
-		m_pParent(parent), m_buttonList(NULL) { initErrorMsg();}
+			m_pParent(parent), m_id(0) {}
 
-		virtual ~SysDialogNDK();
+		virtual ~SysDialogNDK() {};
 
-		// create a NotificationDialog according to inputString & show
-		Q_INVOKABLE string show(std::string& callbackId, const std::string& inputString);
+		void sendEvent( const std::string& msg);
 
-	  public slots:
+	public slots:
 
-		// slot for finished(); have to be class member; have to include the complete namespace
-		// to match finished()'s signature
-		void onDialogFinished (bb::platform::NotificationResult::Type value);
+		void join( string inputString);
+
+		string create(string callbackId, string inputString);
+		string show(string id);
+
+		void cleanup();
 	};
+
+
 
 } // namespace webworks
 

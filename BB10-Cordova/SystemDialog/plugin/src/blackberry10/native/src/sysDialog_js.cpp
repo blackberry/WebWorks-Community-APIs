@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+#include <iostream>
+#include <sstream>
+#include <QMetaObject>
 #include "sysDialog_js.hpp"
-// #include "sysDialog_ndk.hpp"
 
 using namespace std;
 
@@ -23,16 +25,27 @@ using namespace std;
  * constructor.
  */
 SysDialogJS::SysDialogJS(const std::string& id) : m_id(id) {
-  m_sysDialogMgr = new webworks::SysDialogNDK(this);
+	m_thread = new bb::webworks::extensions::ApplicationThread(QThread::LowPriority);
+	m_sysDialogMgr = new webworks::SysDialogNDK(this);
+	m_sysDialogMgr->moveToThread(m_thread);
+
 }
 
 /**
  * destructor.
  */
 SysDialogJS::~SysDialogJS() {
-	if (m_sysDialogMgr) {
-		delete m_sysDialogMgr;
-	}
+
+	QMetaObject::invokeMethod(m_sysDialogMgr, "cleanup", Qt::BlockingQueuedConnection);
+	m_thread->wait(50);
+
+	delete m_thread;
+
+
+//TODO: where does m_sysDialogMgr get deleted?
+	// if (m_sysDialogMgr) {
+	// 	delete m_sysDialogMgr;
+	// }
 }
 
 /**
@@ -77,14 +90,38 @@ string SysDialogJS::InvokeMethod(const string& command) {
 	std::string callbackId = command.substr(commandIndex + 1, callbackIndex - commandIndex - 1);
 	std::string arg = command.substr(callbackIndex + 1, command.length());
 
+	// After call finished, result can be inited value (call fail), method returned error or
+	// noError return value. hasError = (result.find_first_of(" ")!=string::npos)
+	string result = "Fail to invoke method " + strCommand;
+	bool success = false;
+
 	// based on the command given, run the appropriate method in sysDialog_ndk.cpp
-	if (strCommand == "show") {
-		return m_sysDialogMgr->show(callbackId, arg);
+	if (strCommand == "create") {
+
+		success = QMetaObject::invokeMethod(m_sysDialogMgr, "create",
+			Qt::BlockingQueuedConnection, Q_RETURN_ARG(string, result),
+			Q_ARG(string, callbackId), Q_ARG(string, arg));
+
+	} else if (strCommand == "show") {
+
+		success = QMetaObject::invokeMethod(m_sysDialogMgr, "show",
+			Qt::BlockingQueuedConnection, Q_RETURN_ARG(string, result),
+			Q_ARG(string, arg));
+
+	} else if (command == "join") {
+
+		success = QMetaObject::invokeMethod(m_sysDialogMgr, "join", 
+			Qt::BlockingQueuedConnection, Q_ARG(string, arg));
+
+		if ( success) {
+			result = "";
+		}
+
+	} else {
+		result = "Invalid Method " + strCommand;
 	}
 
-	strCommand.append(";");
-	strCommand.append(command);
-	return strCommand;
+	return result;
 }
 
 // Notifies JavaScript of an event

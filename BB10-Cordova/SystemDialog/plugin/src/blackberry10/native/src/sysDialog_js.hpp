@@ -18,8 +18,11 @@
 #define __SYSDIALOG_JS_HPP__
 
 #include <string>
+#include <QThread>
 #include "../public/plugin.h"
 #include "sysDialog_ndk.hpp"
+#include "ApplicationThread.hpp"
+
 
 class SysDialogJS: public JSExt {
 
@@ -29,9 +32,12 @@ public:
     virtual bool CanDelete();
     virtual std::string InvokeMethod(const std::string& command);
     void NotifyEvent(const std::string& event);
+    bb::webworks::extensions::ApplicationThread* applicationThread() const { return m_thread; };
 
 private:
     std::string m_id;
+	bb::webworks::extensions::ApplicationThread *m_thread;
+
     // Definition of a pointer to the actual native extension code
     webworks::SysDialogNDK *m_sysDialogMgr;
 };

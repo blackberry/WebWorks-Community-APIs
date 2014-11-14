@@ -112,6 +112,7 @@ simulator {
 
 config_pri_source_group1 {
     SOURCES += \
+        $$quote($$BASEDIR/src/ApplicationThread.cpp) \
         $$quote($$BASEDIR/src/json_reader.cpp) \
         $$quote($$BASEDIR/src/json_value.cpp) \
         $$quote($$BASEDIR/src/json_writer.cpp) \
@@ -121,6 +122,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/tokenizer.cpp)
 
     HEADERS += \
+        $$quote($$BASEDIR/src/ApplicationThread.hpp) \
         $$quote($$BASEDIR/src/sysDialog_js.hpp) \
         $$quote($$BASEDIR/src/sysDialog_ndk.hpp)
 }

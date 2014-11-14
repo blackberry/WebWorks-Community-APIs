@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-#include <map>
 #include <sstream>
+#include <QMetaObject>
+#include <QMetaEnum>
 #include <QObject>
 #include <bb/platform/NotificationError>
 #include <json/reader.h>
@@ -23,88 +24,31 @@
 #include <json/writer.h>
 #include "sysDialog_ndk.hpp"
 #include "sysDialog_js.hpp"
+#include "ApplicationThread.hpp"
 
 namespace webworks {
 
     using namespace bb::platform;
     using namespace bb::system;
     using namespace std;
-    map<NotificationError::Type, string> SysDialogNDK::m_errorMessage;
 
-    SysDialogNDK::~SysDialogNDK() {
-        // in case show returns with error before finished();
-        cleanUp();
-    };
 
-    // enum NotificationError::Type cannot be safely converted to int
-    // mapping type to string
-    void SysDialogNDK::initErrorMsg() {
-        if (m_errorMessage.count(NotificationError::None) == 0) {
-            m_errorMessage[NotificationError::None] = "None";
-            m_errorMessage[NotificationError::Unknown] = "Unknown";
-            m_errorMessage[NotificationError::InvalidRequest] = "InvalidRequest";
-            m_errorMessage[NotificationError::NoButtons] = "NoButtons";
-            m_errorMessage[NotificationError::ServiceUnavailable] = "ServiceUnavailable";
-        }
+     void SysDialogNDK::join( string inputString) {
+        QByteArray byteArray(inputString.c_str(), inputString.length());
+        m_pParent->applicationThread()->join(byteArray);
+     }
+
+
+    void SysDialogNDK::cleanup() {
+            qDeleteAll(m_dialogHandlerList.values());
+            deleteLater();
     }
 
-    void SysDialogNDK::cleanUp() {
-
-        if (NULL != m_notificationDialog) {
-            // The button instances will be deleted.
-            m_notificationDialog->clearButtons();
-            delete m_notificationDialog;
-        }
-        m_notificationDialog = NULL;
-
-
-        if (NULL != m_buttonList) {
-            delete[] m_buttonList;
-        }
-        m_buttonList = NULL;
+    void SysDialogNDK::sendEvent( const std::string& msg) {
+        m_pParent->NotifyEvent(msg);
     }
 
-
-    void SysDialogNDK::onDialogFinished(bb::platform::NotificationResult::Type value) {
-        Json::FastWriter writer;
-        Json::Value root;
-        SystemUiButton * select;
-
-        switch(value) {
-
-            case NotificationResult::None:
-                root["result"] = "None";
-                break;
-
-            case NotificationResult::Error:
-                root["result"] = "error";
-                root["error"] = m_errorMessage[m_notificationDialog->error()];
-                break;
-
-            case NotificationResult::ButtonSelection:
-                root["result"] = "select";
-                select = m_notificationDialog->buttonSelection();
-                if ( NULL != select) {
-                    root["select"] = (select - m_buttonList[0])/sizeof(SystemUiButton * );
-                }
-                break;
-
-            default:
-                root["result"] = "error";
-                root["error"] = "unknown NotificationResult Type";
-                break;
-        } // switch
-
-        // callback, notify js object
-        m_pParent->NotifyEvent(m_callbackId + " " + writer.write(root));
-
-        // clean before next dialog invoked
-        cleanUp();
-    }
-
-    string SysDialogNDK::show(std::string& callbackId, const std::string& inputString) {
-
-        m_callbackId = callbackId;
+    string SysDialogNDK::create(string callbackId, string inputString) {
 
         Json::Reader reader;
         Json::Value root, value;
@@ -114,27 +58,27 @@ namespace webworks {
         bool parse = reader.parse(inputString, root);
 
         if (!parse) {
-            return "sysDialogNDK Parse Error";
+            return "parse error";
         }
 
-        m_notificationDialog = new NotificationDialog();
+        NotificationDialog * dialog = new NotificationDialog();
 
         // message
         value = root["message"];
         if (!value.empty()) {
             context = QString::fromStdString(value.asString());
-            m_notificationDialog->setBody(context);
+            dialog->setBody(context);
         }
 
         // button list
         value = root["buttons"];
         if (!value.empty()) {
             len = value.size();
-            m_buttonList = new SystemUiButton*[len];
             for (i = 0; i < len; ++i) {
                 context = QString::fromStdString(value[i].asString());
-                m_buttonList[i] = new SystemUiButton(context);
-                m_notificationDialog->appendButton(m_buttonList[i]);
+                // dialog will delete its buttons
+                SystemUiButton * button = new SystemUiButton(context);
+                dialog->appendButton(button);
             }
         }
 
@@ -142,29 +86,126 @@ namespace webworks {
         value = root["settings"]["title"];
         if (!value.empty()) {
             context = QString::fromStdString(value.asString());
-            m_notificationDialog->setTitle(context);
+            dialog->setTitle(context);
         }
 
         // repeat
         value = root["settings"]["repeat"];
         if (value.asBool()) {
-            m_notificationDialog->setRepeat(true);
+            dialog->setRepeat(true);
         }
 
-        bool success = QObject::connect(m_notificationDialog,
+        // key passed by reference
+        int key = ++m_id;
+        DialogHandler * dialogHandler = new DialogHandler( this, callbackId, dialog);
+        m_dialogHandlerList.insert(key, dialogHandler);
+
+        bool success = QObject::connect(dialog,
                         SIGNAL(finished(bb::platform::NotificationResult::Type)),
-                        this,
+                        dialogHandler,
                         SLOT(onDialogFinished(bb::platform::NotificationResult::Type)));
 
-
-        if (success) {
-            m_notificationDialog->show();
-        } else {
+        if (!success) {
             // this is not normal in most cases
-            return "sysDialogNDK qt connect fail";
+            return "qt connect fail";
         }
 
+        stringstream ss;
+        ss << key;
+        string retId = ss.str();
+
+        return retId;
+    }
+
+
+
+
+    string DialogHandler::getError(){
+        const QMetaObject mObj = NotificationError::staticMetaObject;
+        NotificationError::Type nError = m_notificationDialog->error();
+        int index = mObj.indexOfEnumerator("Type");
+        QMetaEnum mEnum = mObj.enumerator(index);
+        const char * errorType = (mEnum.valueToKey(nError));
+
+        return string(errorType);
+    }
+
+
+    string DialogHandler::show() {
+        m_notificationDialog->show();
+        if (m_notificationDialog->result() == NotificationResult::Error) {
+            return getError();
+        }
         return "";
+    }
+
+    string SysDialogNDK::show(string id){
+
+        int key;
+        stringstream ss( id );
+        ss >> dec >> key;
+
+        DialogHandler *dialogHandler = m_dialogHandlerList.value(key, NULL);
+
+        if (NULL != dialogHandler) {
+            return dialogHandler->show();
+        } else {
+            return "dialog empty";
+        }
+    }
+
+
+    void DialogHandler::onDialogFinished(bb::platform::NotificationResult::Type value) {
+
+        Json::FastWriter writer;
+        Json::Value root;
+
+        switch(value) {
+
+            case NotificationResult::None:
+                root["result"] = "None";
+                break;
+
+            case NotificationResult::Error:
+                root["result"] = "Error";
+                root["error"] = getError();
+                break;
+
+            case NotificationResult::ButtonSelection:
+            {
+                // get selected button index
+                root["result"] = "ButtonSelection";
+                SystemUiButton * select = m_notificationDialog->buttonSelection();
+                // root["button0"] = (unsigned int) m_notificationDialog->buttonAt(0);
+                // root["button1"] = (unsigned int) m_notificationDialog->buttonAt(1);
+                // root["button2"] = (unsigned int) m_notificationDialog->buttonAt(2);
+                // root["button3"] = (unsigned int) m_notificationDialog->buttonAt(3);
+                // root["button"] = (unsigned int) select;
+                if (NULL != select) {
+                    const int size = m_notificationDialog->buttonCount();
+                    for (int i = 0; i < size; ++i ) {
+                        if (m_notificationDialog->buttonAt(i) == select ) {
+                            root["select"] = i;
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+
+            default:
+                root["result"] = "error";
+                root["error"] = "unknown NotificationResult Type";
+                break;
+        } // switch
+
+        // cleanup, buttons will be deleted
+        m_notificationDialog->clearButtons();
+
+        // callback, notify js object
+        m_parentNDK->sendEvent(m_callbackId + " " + writer.write(root));
+
+        // m_notificationDialog->deleteLater();
     }
 
 } /* namespace webworks */

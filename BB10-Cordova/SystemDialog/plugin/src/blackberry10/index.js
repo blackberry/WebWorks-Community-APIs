@@ -51,19 +51,6 @@ module.exports = {
 };
 
 
-// sysDialog = (function() {
-
-
-
-//     return {
-
-//         show: function() {
-
-
-//     }
-
-
-
 ///////////////////////////////////////////////////////////////////
 // JavaScript wrapper for JNEXT plugin for connection
 ///////////////////////////////////////////////////////////////////
@@ -88,6 +75,23 @@ JNEXT.sysDialog = function () {
 		}
 
 		JNEXT.registerEvents(self);
+
+		var views = qnx.webplatform.getWebViews()
+		var windowGroup = null;
+        var z = -1;
+        for (var i = 0; i < views.length; i++) {
+                if (views[i].visible && views[i].zOrder > z){
+                        z = views[i].zOrder;
+                        windowGroup = views[i].windowGroup;
+                }
+        }
+
+        // cmd must be "call callbackId args", add placeholder for callbackId
+		var initResult = JNEXT.invoke(self.m_id, "join callbackId " + JSON.stringify(windowGroup));
+		if (initResult) {
+			return initResult;
+		}
+
 	};
 
 	// ************************
@@ -95,7 +99,18 @@ JNEXT.sysDialog = function () {
 	// ************************
 
 	self.show = function(callbackId, args){
-		return JNEXT.invoke(self.m_id, "show " + callbackId + " " + JSON.stringify(args)); 
+
+		var error;
+		try {
+			var id = JNEXT.invoke(self.m_id, "create " + callbackId + " " + JSON.stringify(args));
+			error = JNEXT.invoke(self.m_id, "show " + callbackId + " " + id);
+		} catch (e) {
+
+			return e;
+		}
+
+		return error;
+		// return id;
 	};
 
 	self.onEvent = function (strData) {
