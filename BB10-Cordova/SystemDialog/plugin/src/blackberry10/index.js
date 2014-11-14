@@ -16,7 +16,7 @@
 
 var resultObjs = {},
     threadCallback = null,
-   _utils = require("../../lib/utils");
+    _utils = require("../../lib/utils");
 
 module.exports = {
 
@@ -24,29 +24,43 @@ module.exports = {
         var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
 		threadCallback = result.callbackId;
+		var error;
 
-        // args = { message:, buttons:, settings };
-        if (args.message) {
-            args.message = decodeURIComponent(args.message);
-            args.message = args.message.replace(/^"|"$/g, "").replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-        }
+        // args = { message:, buttons:, [settings] };
 
+        args.message = decodeURIComponent(args.message);
+        if (! JSON.parse(args.message) ) {
+        	// do not show message "null"/"undefined" when given null/undefined message
+        	args.message = "";
+        } else {
+	        args.message = args.message.replace(/^"|"$/g, "").replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+		}
+
+        args.buttons = JSON.parse(decodeURIComponent(args.buttons));
         if (args.buttons) {
-            args.buttons = JSON.parse(decodeURIComponent(args.buttons));
+	        if (!Array.isArray(args.buttons)) {
+	        	error = "buttons is not an array";
+	        }
+        } else {
+        	error = "buttons is undefined";
         }
 
         if (args.settings) {
             args.settings = JSON.parse(decodeURIComponent(args.settings));
+        } else {
+        	args.settings = {};
         }
 
-        // try{ 		
-        result.ok(sysDialog.getInstance().show(result.callbackId, args), false); 
 
-		// if (error) {
-			// result.error(error, false);
-		// } else {
-			// result.ok(true, false);
-		// }
+        if (!error) {
+	        error = sysDialog.getInstance().show(result.callbackId, args);
+	    }
+
+		if (error) {
+			result.error(error, false);
+			// fail to create dialog, onEvent will not be called
+			delete resultObjs[threadCallback]
+		}
     }
 };
 
@@ -85,9 +99,7 @@ JNEXT.sysDialog = function () {
                         windowGroup = views[i].windowGroup;
                 }
         }
-
-        // cmd must be "call callbackId args", add placeholder for callbackId
-		var initResult = JNEXT.invoke(self.m_id, "join callbackId " + JSON.stringify(windowGroup));
+		var initResult = JNEXT.invoke(self.m_id, "join " + threadCallback + " " + JSON.stringify(windowGroup));
 		if (initResult) {
 			return initResult;
 		}
@@ -103,30 +115,36 @@ JNEXT.sysDialog = function () {
 		var error;
 		try {
 			var id = JNEXT.invoke(self.m_id, "create " + callbackId + " " + JSON.stringify(args));
+			if (id.indexOf(' ') >= 0) {
+				// it's an error instead of real id
+				return id;
+			}
+
 			error = JNEXT.invoke(self.m_id, "show " + callbackId + " " + id);
 		} catch (e) {
-
 			return e;
 		}
 
 		return error;
-		// return id;
 	};
 
 	self.onEvent = function (strData) {
+
 		var arData = strData.split(" "),
 			callbackId = arData[0],
 			result = resultObjs[callbackId],
 			data = arData.slice(1, arData.length).join(" ");
-		
-		if (result) {
-			if (callbackId != threadCallback) {
-				result.callbackOk(data, false);
-				delete resultObjs[callbackId];
-			} else {
-				result.callbackOk(data, true);
-			}
+			data = JSON.parse(data);
+
+		var isThread = (callbackId == threadCallback);
+
+		if (data.result == "ButtonSelection") {
+			result.callbackOk(data.select, isThread);
+		} else {
+			result.callbackError(data.error, isThread);
 		}
+		// dialog finished, don't need the resultObj
+		delete resultObjs[callbackId];
 	};
 
 	// ************************

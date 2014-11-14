@@ -10,10 +10,5 @@
     <access origin="*" />
     <preference name="fullscreen" value="true" />
     <preference name="webviewbounce" value="true" />
-                <feature name="com.blackberry.community.qt" value="com.blackberry.community.qt" />
-
     <content src="index.html" />
-    <rim:permissions>
-        <rim:permit>access_led_control</rim:permit>
-    </rim:permissions>
 </widget>

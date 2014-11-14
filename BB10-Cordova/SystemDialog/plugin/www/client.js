@@ -19,15 +19,16 @@ var _self = {},
     exec = cordova.require("cordova/exec");
 
     _self.show = function(message, buttons, settings, onSuccess, onFail) {
-        var result = null;
-        var args = {"message" : message, "buttons" : buttons, "settings" : settings };
+        var args = {"message" : message, "buttons" : buttons };
+        if (settings) {
+            args.settings = settings;
+        }
         var defaultCallback = function (data, response, args) {
             console.log("data: " + data);
             console.log("response: " + response);
             console.log("input: " + args);
         };
         var success = function (data, response, args) {
-            result = data;
             if (typeof onSuccess === 'function') {
                 onSuccess(data);
             } else {
@@ -44,8 +45,8 @@ var _self = {},
             }
         };
 
-        exec(success, fail, _ID, "show", args);
-        return result;
+        // makeAsyncCall
+        exec(success, fail, _ID, "show", args, false);
     };
 
 module.exports = _self;

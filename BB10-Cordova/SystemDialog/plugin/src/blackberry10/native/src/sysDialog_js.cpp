@@ -35,17 +35,10 @@ SysDialogJS::SysDialogJS(const std::string& id) : m_id(id) {
  * destructor.
  */
 SysDialogJS::~SysDialogJS() {
-
 	QMetaObject::invokeMethod(m_sysDialogMgr, "cleanup", Qt::BlockingQueuedConnection);
 	m_thread->wait(50);
 
 	delete m_thread;
-
-
-//TODO: where does m_sysDialogMgr get deleted?
-	// if (m_sysDialogMgr) {
-	// 	delete m_sysDialogMgr;
-	// }
 }
 
 /**
@@ -98,22 +91,21 @@ string SysDialogJS::InvokeMethod(const string& command) {
 	// based on the command given, run the appropriate method in sysDialog_ndk.cpp
 	if (strCommand == "create") {
 
-		success = QMetaObject::invokeMethod(m_sysDialogMgr, "create",
-			Qt::BlockingQueuedConnection, Q_RETURN_ARG(string, result),
-			Q_ARG(string, callbackId), Q_ARG(string, arg));
+		success = QMetaObject::invokeMethod(m_sysDialogMgr, "create", Qt::BlockingQueuedConnection,
+				Q_RETURN_ARG(string, result), Q_ARG(string, callbackId), Q_ARG(string, arg));
 
 	} else if (strCommand == "show") {
 
-		success = QMetaObject::invokeMethod(m_sysDialogMgr, "show",
-			Qt::BlockingQueuedConnection, Q_RETURN_ARG(string, result),
-			Q_ARG(string, arg));
+		success = QMetaObject::invokeMethod(m_sysDialogMgr, "show", Qt::BlockingQueuedConnection,
+				Q_RETURN_ARG(string, result), Q_ARG(string, arg));
 
 	} else if (command == "join") {
 
-		success = QMetaObject::invokeMethod(m_sysDialogMgr, "join", 
-			Qt::BlockingQueuedConnection, Q_ARG(string, arg));
+		success = QMetaObject::invokeMethod(m_sysDialogMgr, "join", Qt::BlockingQueuedConnection,
+				Q_ARG(string, arg));
 
 		if ( success) {
+			// join() no return, reset
 			result = "";
 		}
 

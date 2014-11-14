@@ -163,7 +163,9 @@ namespace webworks {
         switch(value) {
 
             case NotificationResult::None:
+                // shouldn't happen
                 root["result"] = "None";
+                root["error"] = "None";
                 break;
 
             case NotificationResult::Error:
@@ -176,11 +178,6 @@ namespace webworks {
                 // get selected button index
                 root["result"] = "ButtonSelection";
                 SystemUiButton * select = m_notificationDialog->buttonSelection();
-                // root["button0"] = (unsigned int) m_notificationDialog->buttonAt(0);
-                // root["button1"] = (unsigned int) m_notificationDialog->buttonAt(1);
-                // root["button2"] = (unsigned int) m_notificationDialog->buttonAt(2);
-                // root["button3"] = (unsigned int) m_notificationDialog->buttonAt(3);
-                // root["button"] = (unsigned int) select;
                 if (NULL != select) {
                     const int size = m_notificationDialog->buttonCount();
                     for (int i = 0; i < size; ++i ) {
@@ -194,18 +191,19 @@ namespace webworks {
             }
 
             default:
-                root["result"] = "error";
+                root["result"] = "Error";
                 root["error"] = "unknown NotificationResult Type";
                 break;
         } // switch
 
-        // cleanup, buttons will be deleted
-        m_notificationDialog->clearButtons();
+
 
         // callback, notify js object
         m_parentNDK->sendEvent(m_callbackId + " " + writer.write(root));
 
-        // m_notificationDialog->deleteLater();
+        // cleanup, buttons will be deleted
+        m_notificationDialog->clearButtons();
+        m_notificationDialog->deleteLater();
     }
 
 } /* namespace webworks */

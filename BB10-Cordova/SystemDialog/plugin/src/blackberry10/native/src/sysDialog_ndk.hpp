@@ -51,13 +51,6 @@ namespace webworks {
 		DialogHandler( SysDialogNDK * parentNDK, string callbackId, NotificationDialog * dialog) :
 		m_parentNDK(parentNDK), m_callbackId(callbackId), m_notificationDialog(dialog) { }
 
-
-		~DialogHandler() {
-            // The button instances will be deleted.
-            m_notificationDialog->clearButtons();
-			delete m_notificationDialog;
-		};
-
 	  public slots:
 
   		// return m_notificationDialog->error as string
