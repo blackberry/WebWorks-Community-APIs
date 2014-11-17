@@ -18,7 +18,7 @@ var _self = {},
     _ID = "com.blackberry.community.sysdialog",
     exec = cordova.require("cordova/exec");
 
-    _self.show = function(message, buttons, settings, onSuccess, onFail) {
+    _self.show = function(message, buttons, settings, onOptionSelected, onFail) {
         var args = {"message" : message, "buttons" : buttons };
         if (settings) {
             args.settings = settings;
@@ -29,8 +29,8 @@ var _self = {},
             console.log("input: " + args);
         };
         var success = function (data, response, args) {
-            if (typeof onSuccess === 'function') {
-                onSuccess(data);
+            if (typeof onOptionSelected === 'function') {
+                onOptionSelected(data);
             } else {
                 console.log("sysdialog.show() success: buttons[" + data + "] is selected." );
                 defaultCallback(data, response, args);  

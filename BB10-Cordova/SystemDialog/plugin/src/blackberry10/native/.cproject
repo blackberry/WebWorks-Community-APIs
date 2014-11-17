@@ -23,28 +23,12 @@
 							<builder autoBuildTarget="Device-Debug" enableAutoBuild="true" id="com.qnx.qcc.toolChain.946199072.746868639" incrementalBuildTarget="Device-Debug" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="device-debug builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="qml.device-debug"/>
 							<tool id="com.qnx.qcc.tool.compiler.1969955980" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.optlevel.754168669" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
-								<option id="com.qnx.qcc.option.compiler.includePath.1802475210" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4/QtDeclarative"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/bb"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/bb/system"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/bb/platform"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4/QtCore"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/native/public}&quot;"/>
-								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.28970255" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.1329242766" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<inputType id="com.qnx.qcc.inputType.assembler.1491089631" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
-							<tool id="com.qnx.qcc.tool.linker.2075359392" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
-								<option id="com.qnx.qcc.option.linker.libraries.1917614620" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
-									<listOptionValue builtIn="false" value="QtCore"/>
-									<listOptionValue builtIn="false" value="bbplatform"/>
-									<listOptionValue builtIn="false" value="bbsystem"/>
-									<listOptionValue builtIn="false" value="bb"/>
-									<listOptionValue builtIn="false" value="QtDeclarative"/>
-								</option>
-							</tool>
+							<tool id="com.qnx.qcc.tool.linker.2075359392" name="QCC Linker" superClass="com.qnx.qcc.tool.linker"/>
 							<tool id="com.qnx.qcc.tool.archiver.1567626332" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
@@ -78,11 +62,6 @@
 							<tool id="com.qnx.qcc.tool.compiler.1964609825" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.optlevel.1080089217" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
 								<option id="com.qnx.qcc.option.compiler.includePath.1803307873" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4/QtDeclarative"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/bb"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/bb/system"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/bb/platform"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4/QtCore"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/native/public}&quot;"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.916731626" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -90,15 +69,7 @@
 							<tool id="com.qnx.qcc.tool.assembler.102163556" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<inputType id="com.qnx.qcc.inputType.assembler.654355324" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
-							<tool id="com.qnx.qcc.tool.linker.806976243" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
-								<option id="com.qnx.qcc.option.linker.libraries.215309970" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
-									<listOptionValue builtIn="false" value="QtCore"/>
-									<listOptionValue builtIn="false" value="bbplatform"/>
-									<listOptionValue builtIn="false" value="bbsystem"/>
-									<listOptionValue builtIn="false" value="bb"/>
-									<listOptionValue builtIn="false" value="QtDeclarative"/>
-								</option>
-							</tool>
+							<tool id="com.qnx.qcc.tool.linker.806976243" name="QCC Linker" superClass="com.qnx.qcc.tool.linker" />
 							<tool id="com.qnx.qcc.tool.archiver.28659273" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
@@ -132,11 +103,6 @@
 							<tool id="com.qnx.qcc.tool.compiler.2144260415" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.optlevel.814227144" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
 								<option id="com.qnx.qcc.option.compiler.includePath.1246885447" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4/QtDeclarative"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/bb"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/bb/system"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/bb/platform"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4/QtCore"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/native/public}&quot;"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1031324451" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -144,15 +110,7 @@
 							<tool id="com.qnx.qcc.tool.assembler.479272772" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<inputType id="com.qnx.qcc.inputType.assembler.686286947" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
-							<tool id="com.qnx.qcc.tool.linker.1802030037" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
-								<option id="com.qnx.qcc.option.linker.libraries.946252991" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
-									<listOptionValue builtIn="false" value="QtCore"/>
-									<listOptionValue builtIn="false" value="bbplatform"/>
-									<listOptionValue builtIn="false" value="bbsystem"/>
-									<listOptionValue builtIn="false" value="bb"/>
-									<listOptionValue builtIn="false" value="QtDeclarative"/>
-								</option>
-							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1802030037" name="QCC Linker" superClass="com.qnx.qcc.tool.linker"/>
 							<tool id="com.qnx.qcc.tool.archiver.1461600148" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
@@ -186,11 +144,6 @@
 							<tool id="com.qnx.qcc.tool.compiler.1552855880" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.optlevel.1319797126" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
 								<option id="com.qnx.qcc.option.compiler.includePath.1916551048" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4/QtDeclarative"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/bb"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/bb/system"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/bb/platform"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4/QtCore"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/native/public}&quot;"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1670063626" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -198,15 +151,7 @@
 							<tool id="com.qnx.qcc.tool.assembler.1925012330" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<inputType id="com.qnx.qcc.inputType.assembler.1585087628" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
-							<tool id="com.qnx.qcc.tool.linker.923226546" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
-								<option id="com.qnx.qcc.option.linker.libraries.360958741" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
-									<listOptionValue builtIn="false" value="QtCore"/>
-									<listOptionValue builtIn="false" value="bbplatform"/>
-									<listOptionValue builtIn="false" value="bbsystem"/>
-									<listOptionValue builtIn="false" value="bb"/>
-									<listOptionValue builtIn="false" value="QtDeclarative"/>
-								</option>
-							</tool>
+							<tool id="com.qnx.qcc.tool.linker.923226546" name="QCC Linker" superClass="com.qnx.qcc.tool.linker" />
 							<tool id="com.qnx.qcc.tool.archiver.1829074660" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
