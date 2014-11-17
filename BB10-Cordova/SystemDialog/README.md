@@ -1,4 +1,4 @@
-# SysDialog #
+# SystemDialog #
 
 This BlackBerry 10 Cordova Plugin prompts a global notification dialog. The notification also triggers effects vibration and LED flashing. The effects are dependent on the notification settings of the call. 
 
@@ -68,9 +68,9 @@ See the [Sample Application](sample) for an full example of how to use the API.
 
 ## How to build your native Plugin
 
-1.  Clone this repo to your local machine>
+1.  Clone this repo to your local machine
 
-2.  Ensure the [BlackBerry 10 **Native** SDK](https://developer.blackberry.com/native/download/sdk) is correctly installed
+2.  Ensure the [BlackBerry 10 Native SDK](https://developer.blackberry.com/native/download/sdk) is correctly installed
 
 3.  Import the native extension project into momentics. It is located at `/plugin/src/blackberry10/native` within **this project**
 
