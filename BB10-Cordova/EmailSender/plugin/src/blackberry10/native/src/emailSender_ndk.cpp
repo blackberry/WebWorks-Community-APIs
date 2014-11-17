@@ -16,6 +16,8 @@
 
 #include <string>
 #include <sstream>
+#include <fstream>
+#include <iostream>
 #include <json/reader.h>
 #include <json/writer.h>
 #include <pthread.h>
@@ -48,6 +50,7 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
 		Json::Value Bcc = input["Bcc"];
 		Json::Value subject = input["subject"];
 		Json::Value body = input["body"];
+		Json::Value signature = input["signature"];
 		Json::Value attachment = input["attachment"];
 
 		long id = atol(From.asString().c_str());
@@ -103,10 +106,49 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
 
 		builder->subject(QString::fromStdString(subject.asString()));
 
-		string stringBody = body.asString();
-		QByteArray bodyData ;
-		bodyData.append(QString::fromStdString(body.asString()));
+        std:string msgBody = body.asString();
 
+		if(signature.asString().compare("true") == 0){
+		    std::string senderName = account.settingsProperty("email_address").value<QString>().toStdString();
+		    std::string sn = senderName.substr(0, senderName.find("@"));
+
+		    std::string signat = "./app/native/res/signature/" + sn + ".vcf";
+		    QString vCard = QString::fromStdString(signat);
+            QUrl filepath(vCard);
+            QFileInfo fileinfo(vCard);
+
+            if(fileinfo.exists()){
+                QString filename = fileinfo.fileName();
+                QString filetype = fileinfo.completeSuffix();
+                Attachment msgAttach(filetype, filename, filepath);
+                builder->addAttachment(msgAttach);
+            }
+            else{
+                signat = "./app/native/res/signature/" + sn + ".txt";
+                QString eSig = QString::fromStdString(signat);
+                QUrl filepath(eSig);
+                QFileInfo fileinfo(eSig);
+
+                if(fileinfo.exists()){
+                    std::string line = "";
+                    msgBody += '\n';
+                    std::ifstream file(signat.c_str());
+                    while(getline(file, line)){
+                        msgBody += line + '\n';
+                    }
+                    file.close();
+                }
+                else{
+                    signat = "The signature file does not exist.";
+                    char * cnofile = new char[signat.length()+1];
+                    std::strcpy(cnofile, signat.c_str());
+                    m_pParent->getLog()->info(cnofile);
+                }
+            }
+		}
+		
+		QByteArray bodyData ;
+		bodyData.append(QString::fromStdString(msgBody));
         if(Type=="html"){
             builder->body(MessageBody::Html, bodyData);
         }
@@ -116,7 +158,6 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
 
         if (!attachment.empty()){
             foreach(Json::Value v, attachment){
-
 				// remove any leading or trailing spaces from a file path
                 string checkpath = v.asString();
                 char ws = ' ';
@@ -124,17 +165,38 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
                 checkpath = checkpath.erase(checkpath.find_last_not_of(ws) + 1);
 
                 // allow for full or partial path to be entered
-                string match = "file://";
-                if(checkpath.length() >= match.length() && !equal(match.begin(), match.end(), checkpath.begin()))
-                    checkpath = "file://" + checkpath;
+				QString forChecking = QString::fromStdString(checkpath);
+				QString path;
 
-                QString path = QString::fromStdString(checkpath);
+				if(forChecking.startsWith(QString::fromStdString("file:///")) || forChecking.startsWith(QString::fromStdString("./"))){
+					path = forChecking;
+				}
+				else if(forChecking.startsWith(QString::fromStdString("/accounts/"))){
+					path = QString::fromStdString("file://") + forChecking;
+				}
+				else if(forChecking.startsWith(QString::fromStdString("/res/"))){
+					path = QString::fromStdString("./app/native/") + forChecking;;
+				}
+				else{
+					path = forChecking;
+				}
+
                 QUrl filepath(path);
                 QFileInfo fileinfo(path);
-                QString filename = fileinfo.fileName();
-                QString filetype = fileinfo.completeSuffix();
-                Attachment msgAttach(filetype, filename, filepath);
-                builder->addAttachment(msgAttach);
+
+				if(!fileinfo.exists()){
+					string nofile = "The file " + checkpath + " cannot be found";
+					char * cnofile = new char[nofile.length()+1];
+					std::strcpy(cnofile, nofile.c_str());
+					m_pParent->getLog()->info(cnofile);
+					continue;
+				}
+				else{
+					QString filename = fileinfo.fileName();
+					QString filetype = fileinfo.completeSuffix();
+					Attachment msgAttach(filetype, filename, filepath);
+					builder->addAttachment(msgAttach);
+				}
             }
         }
 
@@ -149,7 +211,7 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
 		}
 	}
 	else{
-		return "The JSON can't be parse.";
+		return "The JSON can't be parsed.";
 	}
 
 	return "An error as occurred.";
@@ -157,15 +219,14 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
 
 std::string EmailSenderNDK::getEmailAccounts(){
 	QList<Account> accounts = accountService.accounts(Service::Messages);
-	std::string accountsArray = "{" ;
+	std::string accountsArray = "{";
 	foreach(Account account, accounts){
 		//To only select the email address.
 		if(account.settingsProperty("email_address").value<QString>().toStdString().find("@") == std::string::npos) continue;
 		//To convert the AccounKey to string
 		stringstream idString;
 		idString << account.id();
-		accountsArray += "\"" + idString.str() + "\":\""+ account.settingsProperty("email_address").value<QString>().toStdString() + "\",";
-
+		accountsArray += "\"" + idString.str() + "\":\"" + account.settingsProperty("email_address").value<QString>().toStdString() + "\",";
 	}
 	accountsArray.resize(accountsArray.size()-1);
 	return accountsArray + "}";

@@ -16,6 +16,7 @@ This extension provides additional APIs to send emails from an app.
 	1.0.0 Initial Release
 	1.0.1 Adds method for getting Email Accounts
 	1.0.2 Now supports HTML emails in addition to plaintext
+	1.0.3 Supports automatic adding of vcf attachment or signature to email
 
 ## Set up
 From registry
@@ -47,7 +48,9 @@ var emailJSON = {
 	"Bcc": "email_BCC@domain.com",
 	"subject" : "Email Subject",
 	"body": "Email body",
-	"attachment": "file:///accounts/1000/shared/documents/file.ext" //will also accept file path as "\accounts\1000\shared\documents\file.ext"
+	"signature": document.getElementById('Signature').value,
+	"attachment": "file:///accounts/1000/shared/documents/file.ext" //will also accept file path as "/accounts/1000/shared/...",
+																	"/accounts/1000/removable/sdcard/...", or "./app/native/..."
 };
 var status = community.emailsenderplugin.sendEmail(emailJSON);
 ```
@@ -64,6 +67,7 @@ var emailJSON = {
 	"Bcc": "email_BCC@domain.com",
 	"subject" : "Email Subject",
 	"body": "Email body",
+	"signature": document.getElementById('Signature').value,
 	"attachment": "/accounts/1000/shared/documents/file.ext"
 };
 var status = community.emailsenderplugin.sendEmail(emailJSON);
@@ -79,6 +83,7 @@ var emailJSON = {
 	"Bcc": "email_BCC@domain.com",
 	"subject" : "Email Subject",
 	"body": "Email body",
+	"signature": document.getElementById('Signature').value,
 	"attachment": "/accounts/1000/removable/sdcard/My Files/file.dat"
 };
 ```
@@ -97,6 +102,24 @@ var emailAccounts = JSON.parse(community.emailsenderplugin.getEmailAccounts());
 	"account4Id":"email_4@domain.com"
 }
 ```
+**Automatically add email signature:**
+For adding an automatic email signature to the message check the add signature checkbox in the index.html
+A vCard file will be checked for first. If not found, it will look for a text file and parse the data into the email body.
+The signature files must be saved in the following directory:
+```javascript
+    /www/res/signature/
+```
+Associated email account:
+```javascript
+    "From": "12345678" //id of an email account associated to testaccount@gmail.com
+```
+The .vcf or .txt file must be in the format of the sender email address that the message is been sent from.
+```javascript
+	testaccount.vcf
+	    or
+    testaccount.txt
+```
+
 ## Permissions
 
 The plugin require the following permissions:
@@ -108,6 +131,7 @@ The plugin require the following permissions:
 
 ## Known Issues
 As of 09-Oct-2014, the plugin can't send email from a Microsoft account(hotmail, live, outlook, etc).
+17-Nov-2014 - When sending emails as html, multiple lines are formatted into one continuous line.
 
 ## Disclaimer
 

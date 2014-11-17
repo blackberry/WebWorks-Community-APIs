@@ -61,6 +61,10 @@ var app = {
 			document.getElementById('send').onclick=function(){
 				
 				statusSpan.innerHTML = "Sending...";
+
+				if(document.getElementById('Signature').checked)
+					document.getElementById('Signature').value = "true";
+
 				var jsonEmail = 
 				{
 					"Type": document.getElementById('emailType').value,
@@ -70,6 +74,7 @@ var app = {
 					"Bcc": document.getElementById('Bcc').value,
 					"subject" : document.getElementById('Subject').value,
 					"body": document.getElementById('Body').value,
+					"signature": document.getElementById('Signature').value,
 					"attachment": document.getElementById('attachmentType').value.split(',')
 				};
 				statusSpan.innerHTML = community.emailsenderplugin.sendEmail(jsonEmail);
