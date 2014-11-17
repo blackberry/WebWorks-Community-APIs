@@ -118,8 +118,6 @@ namespace webworks {
     }
 
 
-
-
     string DialogHandler::getError(){
         const QMetaObject mObj = NotificationError::staticMetaObject;
         NotificationError::Type nError = m_notificationDialog->error();
@@ -195,8 +193,6 @@ namespace webworks {
                 root["error"] = "unknown NotificationResult Type";
                 break;
         } // switch
-
-
 
         // callback, notify js object
         m_parentNDK->sendEvent(m_callbackId + " " + writer.write(root));

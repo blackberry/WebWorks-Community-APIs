@@ -13,17 +13,8 @@ LIBS += -lcpp  -lbb -lbbdata -lbbdevice -lbbcascades -lscreen -lbbplatform -lbbs
 QMAKE_CFLAGS   += -Wno-psabi
 QMAKE_CXXFLAGS += -Wno-psabi
 
-device {
-    QNX_VARIANT = so.le-v7
-}
-
-simulator {
-    QNX_VARIANT = so
-}
-
 CONFIG(release, debug|release) {
     TEMPLATE = lib
-    DESTDIR = $$QNX_VARIANT
     #QMAKE_CFLAGS += -fstack-protector-strong -fvisibility=hidden -mthumb -Os
     #QMAKE_CXXFLAGS += -fstack-protector-strong -fvisibility=hidden -mthumb -Os
     #QMAKE_LFLAGS += -Wl,-z,relro
@@ -32,16 +23,10 @@ CONFIG(release, debug|release) {
 }
 
 CONFIG(debug, debug|release) {
-    DESTDIR = $$QNX_VARIANT-g
     QMAKE_CFLAGS += -Og
 }
 
-profile {
-    QMAKE_CXXFLAGS += -g -finstrument-functions
-    LIBS += -lprofilingS
-}
-
-OBJECTS_DIR = $${DESTDIR}/.obj
-MOC_DIR = $${DESTDIR}/.moc
-RCC_DIR = $${DESTDIR}/.rcc
-UI_DIR = $${DESTDIR}/.ui
+OBJECTS_DIR = .obj
+MOC_DIR = .moc
+RCC_DIR = .rcc
+UI_DIR = .ui

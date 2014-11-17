@@ -2,8 +2,8 @@
     id="com.blackberry.community.sysdialog"
     version="1.0.0">
 
-    <name>Systerm Dialog</name>
-    <description>BlackBerry 10 Community Contributed API to get hardware and network information from the device</description>
+    <name>System Dialog</name>
+    <description>BlackBerry 10 Community Contributed API to Prompt Global Notification Dialog</description>
     <license>Apache 2.0</license>
     <author>Yifan Ren</author>
 
@@ -13,8 +13,8 @@
 
     <platform name="blackberry10">
         <source-file src="src/blackberry10/index.js" />
-        <lib-file src="src/blackberry10/native/arm/so.le-v7/libSysDialog.so" arch="device"/>
-        <lib-file src="src/blackberry10/native/x86/so-g/libSysDialog.so" arch="simulator"/>
+        <lib-file src="src/blackberry10/native/device/libSysDialog.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libSysDialog.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget/rim:permissions">
             <rim:permit>post_notification</rim:permit>
         </config-file>
