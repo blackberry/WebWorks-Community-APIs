@@ -3,7 +3,13 @@ ExtractZIPFile
 
 **Provides:**
 * extraction (unzipping) of zip archives for html5 under Blackberry 10.
-* compression (zipping) of a single file for html5 under Blackberry 10.
+* compression (zipping) of a single file or multiple files for html5 under Blackberry 10.
+
+## Version History
+
+	1.0.0 Initial Release
+	1.1.0 Adds compression of files
+	1.1.1 Adds compression of multiple files and directories
 
 **Tested On**
 
@@ -15,6 +21,7 @@ ExtractZIPFile
 
 * [Daniel Dressler](https://github.com/daniel-dressler)
 * [Morgan Parlee](https://github.com/mkparlee) 
+* [Tim Tung](https://github.com/t470520) 
 
 
 ## Including the feature in your application
@@ -99,12 +106,23 @@ Default: duplicate of zip argument.
 
 Compression API Examples
 --------------
-	### Example of API usage
+	### Example of API usage for single file compression
 	function compressFile(filePath) {
 		community.extractZipFile.compress(
 			{
 				filePath: filePath, // filePath = "./app/native/res/zip/fileToCompress.txt"
 				destination: "./app/native/res/zip/zipFileDestination.zip",
+				callbackToken: ''
+			},
+			onCompressionCompletion);
+	}
+	
+	### Example of API usage for multiple files or directories compression
+	function compressFile(filePath) {
+		community.extractZipFile.compress(
+			{
+				filePath: filePath, // filePath = "./app/native/res/zip/aaaa.txt:./app/native/res/zip/3"
+				destination: "./tmp/case/folder333.zip",
 				callbackToken: ''
 			},
 			onCompressionCompletion);
@@ -130,6 +148,7 @@ The following options are supported.
 ### filePath
 Required: As you can guess an unknown file cannot be compressed.
 The directory and file name (the path) to the file which is to be compressed. MUST BE A PROPER PATH -- directory + file name
+For multiple files and directories compression, use : as a delimeter. All the files and directories inside a directory will be added to compression list by the crawler function, users do not need to input each single file or directory in specific.
 
 Default: none! This argument is required!
 

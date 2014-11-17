@@ -6,7 +6,7 @@ This plugin is designed to be able to retrive the ID3 tag of a MP3 file. This ta
 
 ####Building the Plugin
 ```
-Open momentic and import the plugin/src/blackberry10/native directory. 
+Open momentic and import the plugin/src/blackberry10/native directory.
 Build the project.
 ```
 
@@ -16,7 +16,7 @@ The .cproject file should be automatically picked up by Momentics with regards t
 Right click on the imported project and choose properties.
 Drop down C/C++ Build and choose Settings
 Navigate to Tool Settings tab and choose Libraries under QCC Linker
- 1. press add in  Library Path(the file with gree + icon) and navigate to plugin/src/blackberry10/native/extlib
+ 1. press add in Library Path(the file with gree + icon) and navigate to plugin/src/blackberry10/native/extlib
  2. press add in Libraries(Same icon as above) and type "id3v2" without the quotes.
 ```
 
@@ -32,7 +32,7 @@ webworks plugin add path/to/AudioMetaData plugin/plugin
 
 ```
 <rim:permissions>
-    <rim:permit>access_shared</rim:permit>
+ <rim:permit>access_shared</rim:permit>
 </rim:permissions></pre>
 ```
 
@@ -60,6 +60,33 @@ where:
 ````
 path: The path to your mp3 file
 callBack: The callback function to handle the data returned. eg: retrievedData(data)
+````
+
+````
+audioMetaDataSetTagData(input);
+````
+where:
+````
+input: a json object containing the following information
+  "path": path to the file
+  "title": changing title
+  "genre": changing genre
+  "track": changing track number
+  "year": changing year of the production of the song
+  "album": changing album of the song
+  "artist": changing the artist of the song
+
+Follow is an example to change the songs title and artist
+
+var data = { "path":"path/to/my/file.mp3", "title":"very nice", "artist":"yours truly" }
+````
+
+````
+audioMetaDataRemoveTag(path);
+````
+where:
+````
+path: The path to your mp3 file
 ````
 
 ###Tested on
