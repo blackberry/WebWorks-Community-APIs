@@ -1,6 +1,6 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     id="com.blackberry.community.led"
-    version="1.0.0">
+    version="1.0.1">
 
     <name>LED</name>
     <description>BlackBerry 10 Community Contributed API to flash the LED with RGB colors</description>
@@ -17,6 +17,9 @@
         <lib-file src="src/blackberry10/native/simulator/libLed.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
             <feature name="com.blackberry.community.led" value="com.blackberry.community.led" />
+        </config-file>
+        <config-file target="www/config.xml" parent="/widget/rim:permissions">
+            <rim:permit>access_led_control</rim:permit>
         </config-file>
     </platform>
 </plugin>
