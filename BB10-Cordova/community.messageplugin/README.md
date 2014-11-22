@@ -1,10 +1,10 @@
 Message Plugin For Blackberry 10
 ===============================================
 
-Plugin for retrieving a message body knowing account ID and message ID. These information komes to the application with the invocation data (when you use SHARE from the hub, for example).
+Plugin for retrieving a message body knowing account ID and message ID. These information komes to the application with the invocation data.
 
+Example : getting a body of the email message, action invoked by SHARE from the hub.
 
-Example : getting a list of friends (relative to the access token) that use the app
 ```javascript
 var json = base64.decode(invokedInfo.data);
                 if (community && community.messageplugin) {
