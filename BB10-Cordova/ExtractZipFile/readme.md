@@ -49,11 +49,11 @@ Extraction API Examples
 	function onExtractCompletion(status) {	
 		if (status.result < 0) {
 			alert("Extraction Failed");
-			console.log(status.resultMessage);
+			console.log(status.result_message);
 
 		} else {
 			alert("Extracted " + status.zip + " to " + status.destination);
-			console.log(status.resultMessage);
+			console.log(status.result_message);
 		}
 		console.log("Extraction returned with token: " + status.callbackToken);
   	}	 
@@ -105,7 +105,7 @@ Compression API Examples
 		community.extractZipFile.compress(
 			{
 				filePath: filePath, // filePath = "./app/native/res/zip/fileToCompress.txt"
-				destination: "./app/native/res/zip/zipFileDestination.zip",
+				zipDestinationPath: "./app/native/res/zip/zipFileDestination.zip",
 				callbackToken: ''
 			},
 			onCompressionCompletion);
@@ -116,7 +116,7 @@ Compression API Examples
 		community.extractZipFile.compress(
 			{
 				filePath: filePath, // filePath = "./app/native/res/zip/aaaa.txt:./app/native/res/zip/3"
-				destination: "./tmp/case/folder333.zip",
+				zipDestinationPath: "./tmp/case/folder333.zip",
 				callbackToken: ''
 			},
 			onCompressionCompletion);
@@ -125,11 +125,11 @@ Compression API Examples
 	function onCompressionCompletion(status) {	
 		if (status.result < 0) {
 			alert("Compression Failed");
-			console.log(status.resultMessage);
+			console.log(status.result_message);
 
 		} else {
 			alert("Compression Succeeded to destination: " + status.callbackToken);
-			console.log(status.resultMessage);
+			console.log(status.result_message);
 		}
 		console.log("Compression returned with token: " + status.callbackToken);
   	}	 
