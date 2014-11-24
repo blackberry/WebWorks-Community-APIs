@@ -16,67 +16,92 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 var app = {
-	// Application Constructor
-	initialize: function() {
-		this.bindEvents();
-	},
-	// Bind Event Listeners
-	//
-	// Bind any events that are required on startup. Common events are:
-	// 'load', 'deviceready', 'offline', and 'online'.
-	bindEvents: function() {
-		document.addEventListener('deviceready', this.onDeviceReady, false);
-	},
-	// deviceready Event Handler
-	//
-	// The scope of 'this' is the event. In order to call the 'receivedEvent'
-	// function, we must explicity call 'app.receivedEvent(...);'
-	onDeviceReady: function() {
-		app.receivedEvent('deviceready');
-	},
-	// Update DOM on a Received Event
-	receivedEvent: function(id) {
-		var parentElement = document.getElementById(id);
-		var listeningElement = parentElement.querySelector('.listening');
-		var receivedElement = parentElement.querySelector('.received');
+    // Application Constructor
+    initialize: function() {
+        this.bindEvents();
+    },
+    // Bind Event Listeners
+    //
+    // Bind any events that are required on startup. Common events are:
+    // 'load', 'deviceready', 'offline', and 'online'.
+    bindEvents: function() {
+        document.addEventListener('deviceready', this.onDeviceReady, false);
+    },
+    // deviceready Event Handler
+    //
+    // The scope of 'this' is the event. In order to call the 'receivedEvent'
+    // function, we must explicity call 'app.receivedEvent(...);'
+    onDeviceReady: function() {
+        app.receivedEvent('deviceready');
+    },
+    // Update DOM on a Received Event
+    receivedEvent: function(id) {
+        var parentElement = document.getElementById(id);
+        var listeningElement = parentElement.querySelector('.listening');
+        var receivedElement = parentElement.querySelector('.received');
 
-		listeningElement.setAttribute('style', 'display:none;');
-		receivedElement.setAttribute('style', 'display:block;');
+        listeningElement.setAttribute('style', 'display:none;');
+        receivedElement.setAttribute('style', 'display:block;');
 
-		console.log('Received Event: ' + id);
-		app.testPluginCalls();
-	},
+        console.log('Received Event: ' + id);
+        app.testPluginCalls();
+    },
 
-	testPluginCalls: function() {
+    successHandler: function(obj) {
+        console.log(obj);
+    },
 
-		if (community && community.facebookplugin) {
-			app.writeOut("--- Facebook Plugin is working ---");
-			
-			app.writeOut("--- Initialzing Facebook ---");
-			var appInfo = {"appID":570515386348687};
-			app.writeOut(community.facebookplugin.init(appInfo));
+    errorHandler: function(obj) {
+        console.log(obj);
+    },
 
-			app.writeOut("--- Getting Login Status---");
-			community.facebookplugin.getLoginStatus(alert);
+    testPluginCalls: function() {
 
-			app.writeOut("--- Login with Facebook | Email ----");
-			community.facebookplugin.login(alert, {"scope":"email"});
+        if (community && community.facebookplugin) {
+            app.writeOut("--- Facebook Plugin is installed ---");
 
-			app.writeOut("--- Graph API Call ----");
-			community.facebookplugin.api({path: '/me/friends', success: successHandler, error: errorHandler});
+            app.writeOut("--- Initialzing Facebook ---");
+            var appInfo = {"appId":++APPID_HERE++};
+            community.facebookplugin.init(appInfo);
 
-			app.writeOut("-- Logout ----");
-			community.facebookplugin.logout(alert);
+            app.writeOut("--- Getting Login Status---");
+            community.facebookplugin.getLoginStatus(app.successHandler);
 
-		} else {
-			app.writeOut("Plugin was not found");
-		}
-	},
-	writeOut: function(message) {
-		var output = document.getElementById('results');
-		output.innerText = output.innerText + message;
-		output.appendChild(document.createElement('br'));
-		console.log(message);
-	}
+            app.writeOut("--- Login with Facebook | Email ----");
+            community.facebookplugin.login(app.successHandler, {"scope":"email"});
+
+            app.writeOut("--- Getting Login Status ---");
+            community.facebookplugin.getLoginStatus(app.successHandler);
+
+            app.writeOut("--- Graph API Call ----");
+            community.facebookplugin.api(
+                {
+                    path: '/me',
+                    success: app.successHandler,
+                    error: app.errorHandler
+                }
+            );
+
+            //Set timeouts to test, in order to prevent window vars from changing
+            //when running async
+            // app.writeOut("--- Logging Out ---");
+            // community.facebookplugin.logout();
+            // OR
+            // app.writeOut("--- Revoking Permissions ---");
+            // community.facebookplugin.revokePermissions();
+            // app.writeOut("--- Getting Login Status ---");
+            // community.facebookplugin.getLoginStatus(app.successHandler);
+
+        } else {
+            app.writeOut("Plugin was not found");
+        }
+    },
+    writeOut: function(message) {
+        var output = document.getElementById('results');
+        output.innerText = output.innerText + message;
+        output.appendChild(document.createElement('br'));
+        console.log(message);
+    }
 };

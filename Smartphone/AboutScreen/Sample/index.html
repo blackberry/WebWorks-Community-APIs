@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, height=device-height, user-scalable=0, initial-scale=1.0, maximum-scale=1.0"/> 
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="x-blackberry-defaultHoverEffect" content="true" /> 
+    	<title>AboutScreenControl Sample</title>
+
+		<script type="text/javascript">
+			function whichButton(event)
+			{
+				if (event.keyCode=='65')
+				{
+					var params = {'title': 'AboutScreen Control',
+      							  'version': '0.0.1',
+      							  'intro': 'Used to show a beautiful and standard about screen, just like this :)',
+      							  'author': 'Walkline Wang',
+      							  'email': 'walkline@gmail.com',	//optional
+      							  'weibo': '@Walkline',				//optional
+      							  'alipay': 'walkline@gmail.com'	//optional
+      							  'facebook': 'walklinewang',		//optional
+      							  'twitter': '@walklinewang',		//optional
+      							 };
+
+					webworks.ui.AboutScreen.show(params);
+				}
+			}
+		</script>
+	</head>
+
+	<body onkeyup="whichButton(event)">
+		Press 'A' to show about screen
+	</body>
+</html>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+        xmlns:rim="http://www.blackberry.com/ns/widgets"
+        version="1.0.0.0">  
+        <name>AboutScreenControl Sample</name>
+    <author>Walkline Wang</author>
+    <description>AboutScreen Control Sample</description>
+    <icon src="images/icon.png"/>
+	<feature id="blackberry.app" required="true" version="1.0.0.0"/>
+	<feature id="webworks.ui.AboutScreen" />
+	<rim:navigation mode="focus" />
+    <content src="index.html"/>
+	<access subdomains="true" uri="*"/>
+</widget>

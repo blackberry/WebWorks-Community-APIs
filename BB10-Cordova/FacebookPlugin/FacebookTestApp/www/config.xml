@@ -8,6 +8,7 @@
         Apache Cordova Team
     </author>
     <access origin="*" />
+    <access origin="https://www.facebook.com/connect/login_success.html" />
     <preference name="fullscreen" value="true" />
     <preference name="webviewbounce" value="true" />
     <content src="index.html" />

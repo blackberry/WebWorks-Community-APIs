@@ -2,6 +2,11 @@
 
 This extension provides additional APIs to identify the device.
 
+## Version History
+
+    1.0.0 Initial Release
+    1.0.1 Bug fix for getNetwork() on 10.3.0+
+
 **Applies To**
 
 * [BlackBerry 10 WebWorks SDK](https://developer.blackberry.com/html5/download/sdk) 
@@ -17,11 +22,11 @@ This extension provides additional APIs to identify the device.
 
 This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
 
-    cordova plugin add com.blackberry.community.deviceinfo
+    cordova plugin add com.blackberry.community.deviceinfoplugin
 
 or,
     
-    webworks plugin add com.blackberry.community.deviceinfo
+    webworks plugin add com.blackberry.community.deviceinfoplugin
 
 Installation from source is the same but instead of the id ("com.blackberry.community.deviceinfo"), use the file system path to the source plugin folder.
 
