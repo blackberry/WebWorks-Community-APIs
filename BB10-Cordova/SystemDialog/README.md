@@ -76,6 +76,14 @@ See the [Sample Application](sample) for an full example of how to use the API.
 
 4.  Build the native extension project for all architectures: Right click on the project and choose "Build Configurations" > "Build All"
 
+Note: When build on the Mac/Linux platform, you will have the build directory contents as shown below. The "libSysDialog.so" is a symlink to the actual shared object "libSysDialog.so.1.0.0" in order to manage build version. Thus copying your build to the Windows platform and adding the plugin will NOT work. You need to rebuild on Windows, or remove the symlinks and rename you shared object "libSysDialog.so.1.0.0" to "libSysDialog.so".
+
+	lrwxr-xr-x   libSysDialog.so@ -> libSysDialog.so.1.0.0
+	lrwxr-xr-x   libSysDialog.so.1@ -> libSysDialog.so.1.0.0
+	lrwxr-xr-x   libSysDialog.so.1.0@ -> libSysDialog.so.1.0.0
+	-rwxr-xr-x   libSysDialog.so.1.0.0*
+
+
 ## Using the Plugin in an Application
 
 To use the plugin in another project, that's been created with Cordova, run __cordova plugin add <path to the SysDialog folder>/plugin__.
