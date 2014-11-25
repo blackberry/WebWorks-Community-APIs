@@ -14,8 +14,6 @@
 * limitations under the License.
 */
 
-#include "pgaudio_js.hpp"
-
 #include <QDir>
 #include <qdebug.h>
 #include <stdio.h>
@@ -24,7 +22,26 @@
 #include <unistd.h>
 #include <sstream>
 
+#include <iostream>
+#include <pthread.h>
+#include <time.h>
+
+#include "pgaudio_js.hpp"
+
 using namespace std;
+
+bool isUsed = false;
+
+void *useCheck(void *x_void_ptr){
+
+    int *x_ptr = (int *)x_void_ptr;
+    usleep(*x_ptr * 1000000);
+
+    if(isUsed == false)
+        alutExit();
+
+    return NULL;
+}
 
 /**
  * Default constructor.
@@ -124,6 +141,7 @@ string PGaudio::preload(QString path, QString fileName, int voices)
     bufferID = alutCreateBufferFromFile(applicationDirectory.append(fileName).toStdString().c_str());
 
     // Create sources and buffers corresponding to each unique file name.
+
     m_soundBuffersHash[fileName] = bufferID;
     for (int i = 0; i < voices; i++) {
         // Generate the sources, one by one, and store them into m_sourceIndexHash, our hash, using insert Multi hashing
@@ -133,11 +151,23 @@ string PGaudio::preload(QString path, QString fileName, int voices)
         m_sourceIndexHash.insertMulti(fileName, source);
     }
 
-    return "loaded " + fileName.toStdString();
+    //this->~PGaudio();  calling destructor to kill this object, not used in this case
+    int x = 3;
+    pthread_t useCheck_thread;
+
+    // create a thread to check if the preloaded audio file if being used or not. If not, kill the audio device channel
+    if(pthread_create(&useCheck_thread, NULL, useCheck, &x)) {
+        fprintf(stderr, "Error creating thread\n");
+        return NULL;
+    }
+
+     return "File: <" + fileName.toStdString() + "> is loaded";
 }
 
-string PGaudio::unload(QString fileName)
-{
+string PGaudio::unload(QString fileName){
+
+    isUsed = true;
+
     // Stop all sources before unloading.
     stop(fileName);
 
@@ -155,12 +185,17 @@ string PGaudio::unload(QString fileName)
 
     // Re-initalize the buffers.
     m_soundBuffersHash[fileName] = 0;
+
+    alutExit();
+
     return "Unloading " + fileName.toStdString();
 }
 
 // Function to stop playing sounds. Takes in sound file name.
-string PGaudio::stop(QString fileName)
-{
+string PGaudio::stop(QString fileName){
+
+    isUsed = true;
+
     // Loop and stop every sound with corresponding fileName.
     QList<ALuint> sources = m_sourceIndexHash.values(fileName);
     for (int i = 0; i < sources.size(); ++i)
@@ -171,8 +206,10 @@ string PGaudio::stop(QString fileName)
 }
 
 // Function to get Duration. Takes in sound file name.
-float PGaudio::getDuration(QString fileName)
-{
+float PGaudio::getDuration(QString fileName){
+
+    isUsed = true;
+
     ALuint bufferID = m_soundBuffersHash[fileName];
 
     if (!bufferID)
@@ -184,16 +221,18 @@ float PGaudio::getDuration(QString fileName)
     ALint bufferSize, frequency, bitsPerSample, channels;
     alGetBufferi(bufferID, AL_SIZE, &bufferSize);
     alGetBufferi(bufferID, AL_FREQUENCY, &frequency);
-    alGetBufferi(bufferID, AL_CHANNELS, &channels);    
-    alGetBufferi(bufferID, AL_BITS, &bitsPerSample);   
+    alGetBufferi(bufferID, AL_CHANNELS, &channels);
+    alGetBufferi(bufferID, AL_BITS, &bitsPerSample);
 
     float result = ((double)bufferSize) / (frequency * channels * (bitsPerSample / 8));
     return result;
 }
 
 // Function to play single sound. Takes in one parameter, the sound file name.
-string PGaudio::play(QString fileName)
-{
+string PGaudio::play(QString fileName){
+
+    isUsed = true;
+
     float currentTime = 0, furthestTime = 0;
     ALuint replayingSource = 0;
 
@@ -226,15 +265,17 @@ string PGaudio::play(QString fileName)
 }
 
 // Function to loop sound. Takes in one parameter, the sound file name.
-string PGaudio::loop(QString fileName)
-{
+string PGaudio::loop(QString fileName){
+
+    isUsed = true;
+
     // Get corresponding buffers and sources from the unique file name.
     ALuint bufferID = m_soundBuffersHash[fileName];
 
     // If sound file has been preloaded loop sound
     if (!bufferID)
         return "Could not find the file " + fileName.toStdString() + " . Maybe it hasn't been loaded.";
-    
+
     // Get the source from which the sound will be played.
     ALuint source;
     QList<ALuint> sources = m_sourceIndexHash.values(fileName);
@@ -254,6 +295,8 @@ string PGaudio::loop(QString fileName)
         }
         return fileName.toStdString() + " is already playing";
     }
+
+
     return "Could not find the file " + fileName.toStdString() + " . Maybe it hasn't been loaded.";
 }
 
@@ -279,7 +322,7 @@ string PGaudio::InvokeMethod(const string& command)
     // Play with given fileName.
     if (strCommand == "play")
         return play(fileName);
- 
+
     // Loop with given fileName.
     if (strCommand == "load") {
         // parse path from strValue, end up with fileAndVoice
