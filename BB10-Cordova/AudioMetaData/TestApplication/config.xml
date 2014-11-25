@@ -1,7 +1,7 @@
 <widget id="com.sample.audiometadata" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>jim wen</name>
+    <name>AudioMetadata</name>
     <description>
-        A sample Apache Cordova application that tests the cordova plugin you just created.
+        AudioMetaData test application.
     </description>
     <author email="dev@callback.apache.org" href="http://cordova.io">
         Apache Cordova Team
