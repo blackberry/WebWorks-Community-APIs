@@ -4,6 +4,13 @@ Plays audio .wav files using openAL, ALUT, Qdir, and QtCore libraries.
 
 For a sample application demonstrating the use of this API, please see the [LowLatencySequencer](https://github.com/blackberry/Cordova-Samples/tree/master/LowLatencySequencer)
 
+## Version History
+
+	1.0.0 Initial Release
+	1.0.1 Shutsdown audio channels when not in use
+
+## Installation
+
 The plugin can be installed from source or the [Cordova Plugin Registry](http://plugins.cordova.io) using one of the following commands in your Cordova project location:
 
 Registry: 
@@ -126,5 +133,3 @@ https://github.com/blackberry/cordova-blackberry/tree/master/blackberry10
 ## Disclaimer
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-[![Analytics](https://ga-beacon.appspot.com/UA-46817652-1/WebWorks-Community-APIs/BB10-Cordova/LowLatencyAudio?pixel)](https://github.com/igrigorik/ga-beacon)

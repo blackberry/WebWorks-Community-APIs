@@ -17,7 +17,7 @@
 -->
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     id="com.blackberry.community.LowLatencyAudio"
-    version="1.0.0">
+    version="1.0.1">
 
     <name>Low Latency Audio</name>
     <description>BlackBerry 10 Community Contributed API to support Low Latency Audio for .WAV files using OpenAL</description>
