@@ -279,6 +279,8 @@ void ExtractZipFileNDK::compressFile(const std::string& callbackId, const std::s
 	Json::Value retval;
 	s2jInit(retval);
 
+	// store files that are requested to be compressed but do not exist
+	std::vector<std::string> f_miss;
 
 	bool parse = reader.parse(inputString, root);
 	if (!parse) {
@@ -311,20 +313,16 @@ void ExtractZipFileNDK::compressFile(const std::string& callbackId, const std::s
 
 
 	/*added*/
-	if (filePath.find(':') != std::string::npos){//check if file has more than one
-	    m_pParent->getLog()->info(": exist");
 
 	    while(std::getline(ss, token, ':')) {//store them into an array
 
 	        string filePath = token;
 	        string fileName = getFileNameFromPath(filePath);
 
-	        struct stat s_multiple;
-	        if(stat(filePath.c_str(),&s_multiple) == 0 ){
-                if( s_multiple.st_mode & S_IFDIR ){//if it is a directory
-                    DIR *dir;
-                    struct dirent *ent;
-                    bool isDir = true;
+	        struct stat st;
+
+	        if(stat(filePath.c_str(),&st) == 0 ){
+                if( st.st_mode & S_IFDIR ){//if it is a directory
 
                     getDirectoryContent(filePath, fileName);
 
@@ -332,28 +330,21 @@ void ExtractZipFileNDK::compressFile(const std::string& callbackId, const std::s
                     f_name.push_back(fileName);
                     f_path.push_back(filePath);
                 }
-	        }
 
-	        m_pParent->getLog()->info(f_path[c].c_str());
-	        m_pParent->getLog()->info(f_name[c].c_str());
-	        ++c;
+    	        m_pParent->getLog()->info(f_path[c].c_str());
+		        m_pParent->getLog()->info(f_name[c].c_str());
+		        ++c;
+
+	        } else if (errno == ENOENT) {
+                // file <filePath> does not exist
+                f_miss.push_back(filePath);
+	        }
 	    }
 
-	}else{//only one file
-
-	    struct stat s_single;
-        if(stat(filePath.c_str(),&s_single) == 0 ){
-            if( s_single.st_mode & S_IFDIR ){
-                getDirectoryContent(filePath, fileName);
-            }else{
-                f_name.push_back(fileName);
-                f_path.push_back(filePath);
-            }
-        }
-
-
-	    m_pParent->getLog()->info(": exist NOT exist");
-	    m_pParent->getLog()->info(fileName.c_str());
+    if (f_path.empty()) { // no files to compress
+		// we have checked that filePath is nonempty, so here we must have that all given
+		// files/directories are not existed; no zip will be created so compression failed
+		compressReturn( -1, "Compression Failed: all given files and directories are not found; nothing to do! ");
     }
 	/*added*/
 
@@ -441,7 +432,19 @@ void ExtractZipFileNDK::compressFile(const std::string& callbackId, const std::s
 		/*added*/
 	}
 	zipClose(zipFileCreate, "");
-	compressReturn(1, "Compression Successful");
+
+	// warning missed files in result_message
+	std::string retMessage = "Compression Successful";
+	if ( !f_miss.empty() ) {
+		retMessage.append("\\nwarning: the following files or directories are not found:");
+		std::vector<std::string>::iterator it;
+		for ( it = f_miss.begin() ; it != f_miss.end(); ++it) {
+			retMessage.append("\\n");
+			retMessage.append(*it);
+		}
+	}
+
+	compressReturn(1, retMessage );
 }
 
 /*added*/
