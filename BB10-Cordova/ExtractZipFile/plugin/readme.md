@@ -10,6 +10,7 @@ ExtractZIPFile
 	1.0.0 Initial Release
 	1.1.0 Adds compression of files
 	1.1.1 Adds compression of multiple files and directories
+	1.1.2 Fixes issue with compressing files that don't exist
 
 **Tested On**
 
