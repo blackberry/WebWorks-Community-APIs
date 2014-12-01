@@ -102,17 +102,16 @@ AudioMetaData_NDK::~AudioMetaData_NDK() {
 // Asynchronous callback with mp3 path to get metadata
 void AudioMetaData_NDK::audioMetaDataGetMetaData(const std::string& callbackId, const std::string& inputString) {
     m_pParent->getLog()->debug("starting meta-data extraction...");
-    m_pParent->getLog()->debug(inputString.c_str());
     Json::FastWriter writer;
     Json::Value root = parseMp3ForMetaData(inputString.c_str());
-    m_pParent->getLog()->debug(writer.write(root).c_str());
     m_pParent->NotifyEvent(callbackId + " " + writer.write(root));
 }
 
-string AudioMetaData_NDK::audioMetaDataSetTagData(const std::string& inputString) {
+void AudioMetaData_NDK::audioMetaDataSetTagData(const std::string& callbackId, const std::string& inputString) {
     m_pParent->getLog()->debug("Setting ID3 metadata");
     Json::Reader reader;
-    Json::Value root;
+    Json::FastWriter writer;
+    Json::Value root, res;
     bool parsed = reader.parse(inputString, root);
 
     if (parsed) {
@@ -124,23 +123,28 @@ string AudioMetaData_NDK::audioMetaDataSetTagData(const std::string& inputString
             path = pathVal.asString().c_str();
         }
         setTagData(path, root);
-        return "metadata set";
+        res["result"] = "metadata set";
     } else {
-        return "failed to parsed input json data";
+        res["result"] = "failed to parsed input json data";
     }
+    m_pParent->NotifyEvent(callbackId + " " + writer.write(res));
+
 }
 
-string AudioMetaData_NDK::audioMetaDataRemoveTag(const std::string& inputString) {
+void AudioMetaData_NDK::audioMetaDataRemoveTag(const std::string& callbackId, const std::string& inputString) {
     m_pParent->getLog()->debug("removing ID3 metadata");
     const char* path = inputString.c_str();
+    Json::FastWriter writer;
+    Json::Value res;
     ID3v2_tag *tag = load_tag(path);
     if (tag == NULL) {
-        return "No metadata found";
+        res["result"] = "No metadata found";
     } else {
         remove_tag(path);
         free(tag);
-        return "successfully removed metadata";
+        res["result"] = "successfully removed metadata";
     }
+    m_pParent->NotifyEvent(callbackId + " " + writer.write(res));
 }
 
 // Extract metadata from MP3
@@ -272,7 +276,6 @@ void AudioMetaData_NDK::setTagData(const char* path, const Json::Value &data) {
         }
 
         const char* value = (*it).asString().c_str();
-        m_pParent->getLog()->debug(value);
         int size = strlen(value);
         char buff[size+1];
         memset(buff,0,size+1);

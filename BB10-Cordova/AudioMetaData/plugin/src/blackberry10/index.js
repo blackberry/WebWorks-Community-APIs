@@ -17,6 +17,7 @@
 var audioMetaData,
 	resultObjs = {},
 	threadCallback = null,
+	processing = false,
    _utils = require("../../lib/utils");
 
 module.exports = {
@@ -26,31 +27,44 @@ module.exports = {
 	// here in this object.
 
 	audioMetaDataGetMetaData: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		resultObjs[result.callbackId] = result;
-		var value;
-		if (args && args["input"]) {
-			value = JSON.parse(decodeURIComponent(args["input"]));
-			audioMetaData.getInstance().audioMetaDataGetMetaData(result.callbackId, value);
-			result.noResult(true);
+		if (!processing) {
+			processing = true;
+			var result = new PluginResult(args, env);
+			resultObjs[result.callbackId] = result;
+			var value;
+			if (args && args["input"]) {
+				value = JSON.parse(decodeURIComponent(args["input"]));
+				audioMetaData.getInstance().audioMetaDataGetMetaData(result.callbackId, value);
+				result.noResult(true);
+			}
 		}
 	},
 
 	audioMetaDataSetTagData: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		var value;
-		if (args && args["input"]) {
-			value = JSON.parse(decodeURIComponent(args["input"]));
-			result.ok(audioMetaData.getInstance().audioMetaDataSetTagData(result.callbackId, value), false);
+		if (!processing) {
+			processing = true;
+			var result = new PluginResult(args, env);
+			resultObjs[result.callbackId] = result;
+			var value;
+			if (args && args["input"]) {
+				value = JSON.parse(decodeURIComponent(args["input"]));
+				audioMetaData.getInstance().audioMetaDataSetTagData(result.callbackId, value);
+				result.noResult(true);
+			}
 		}
 	},
 	
 	audioMetaDataRemoveTag: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		var value;
-		if (args && args["input"]) {
-			value = JSON.parse(decodeURIComponent(args["input"]));
-			result.ok(audioMetaData.getInstance().audioMetaDataRemoveTag(result.callbackId, value), false);
+		if (!processing) {
+			processing = true;
+			var result = new PluginResult(args, env);
+			resultObjs[result.callbackId] = result;
+			var value;
+			if (args && args["input"]) {
+				value = JSON.parse(decodeURIComponent(args["input"]));
+				audioMetaData.getInstance().audioMetaDataRemoveTag(result.callbackId, value);
+				result.noResult(true);
+			}
 		}
 	}
 };
@@ -88,10 +102,12 @@ JNEXT.AudioMetaData = function () {
 		return JNEXT.invoke(self.m_id, "audioMetaDataGetMetaData " + callbackId + " " + input);
 	};
 	
+	//Sets metadata given user input
 	self.audioMetaDataSetTagData = function (callbackId, input) {
 		return JNEXT.invoke(self.m_id, "audioMetaDataSetTagData " + callbackId + " " + JSON.stringify(input));
 	};
 	
+	//Removes metadata from file
 	self.audioMetaDataRemoveTag = function (callbackId, input) {
 		return JNEXT.invoke(self.m_id, "audioMetaDataRemoveTag " + callbackId + " " + input);
 	};
@@ -103,6 +119,7 @@ JNEXT.AudioMetaData = function () {
 			result = resultObjs[callbackId],
 			data = arData.slice(1, arData.length).join(" ");
 
+		processing = false;
 		if (result) {
 			if (callbackId != threadCallback) {
 				result.callbackOk(data, false);

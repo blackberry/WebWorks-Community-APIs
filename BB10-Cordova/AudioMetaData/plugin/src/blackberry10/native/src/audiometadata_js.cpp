@@ -89,9 +89,9 @@ string AudioMetaData_JS::InvokeMethod(const string& command) {
 	if (strCommand == "audioMetaDataGetMetaData") {
 		m_pAudioMetaDataController->audioMetaDataGetMetaData(callbackId, arg);
 	} else if (strCommand == "audioMetaDataSetTagData") {
-	    return m_pAudioMetaDataController->audioMetaDataSetTagData(arg);
+	    m_pAudioMetaDataController->audioMetaDataSetTagData(callbackId, arg);
     } else if (strCommand == "audioMetaDataRemoveTag") {
-        return m_pAudioMetaDataController->audioMetaDataRemoveTag(arg);
+        m_pAudioMetaDataController->audioMetaDataRemoveTag(callbackId, arg);
     }
 
 	strCommand.append(";");

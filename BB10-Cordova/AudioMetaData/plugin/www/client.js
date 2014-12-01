@@ -34,28 +34,26 @@ _self.audioMetaDataGetMetaData = function (input, callback) {
 	exec(success, fail, _ID, "audioMetaDataGetMetaData", { input: input }, true);
 };
 
-_self.audioMetaDataSetTagData = function (input) {
-	var result,
+_self.audioMetaDataSetTagData = function (input, callback) {
 	success = function (data, response) {
-		result = data;
+		var json = JSON.parse(data);
+		callback(json);
 	},
 	fail = function (data, response) {
 		console.log("Error: " + data);
 	};
-	exec(success, fail, _ID, "audioMetaDataSetTagData", { input: input });
-	return result;
+	exec(success, fail, _ID, "audioMetaDataSetTagData", { input: input }, true);
 };
 
-_self.audioMetaDataRemoveTag = function (input) {
-	var result,
+_self.audioMetaDataRemoveTag = function (input, callback) {
 	success = function (data, response) {
-		result = data;
+		var json = JSON.parse(data);
+		callback(json);
 	},
 	fail = function (data, response) {
 		console.log("Error: " + data);
 	};
-	exec(success, fail, _ID, "audioMetaDataRemoveTag", { input: input });
-	return result;
+	exec(success, fail, _ID, "audioMetaDataRemoveTag", { input: input }, true);
 };
 
 module.exports = _self;
