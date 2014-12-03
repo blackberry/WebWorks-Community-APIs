@@ -237,6 +237,7 @@
 			app.setListeningMode(true);
 		} else {
 			app.logMessage('Listen initiation error: ' + json.desc);
+			sppHandler.stopListening();
 		}
 	},
 	

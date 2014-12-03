@@ -110,6 +110,8 @@ namespace webworks {
         , m_stop_connection_thread(true)
         , m_ssp_server_mode(false)
         , m_spp_service_uuid(SPP_SERVICE_UUID)
+        , m_rfcomm_mode(false)
+        , m_rfcomm_service_port(SPP_RFCOMM_SERVICE_PORT)
     {
         s_btController = this;
 
@@ -167,6 +169,15 @@ namespace webworks {
         m_disconnect_in_progress = false;
 
         int rc = bt_device_init(btEvent);
+
+// START *** TEMP workaround ***
+//
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
+        bt_ldev_set_filters(BT_EVT_ALL_EVENT, true); // COREOS-96977 / 825695 -- workaround for this defect in 10.3.1E
+#endif
+//
+// END  *** TEMP workaround ***
+
         if (rc == EOK) {
             LOGD("Bluetooth bt_device_init() OK");
         } else {
@@ -332,7 +343,31 @@ namespace webworks {
 
         establishPipe();
 
-        const int fd = bt_spp_open((char *) m_bluetooth_address.c_str(), (char *) m_spp_service_uuid.c_str(), false);
+        int fd = 0;
+
+        if (m_rfcomm_mode) {
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
+            fd = bt_spp_open_ex(
+                    (char *) m_bluetooth_address.c_str(),
+                    (char *) "",
+                    (char *) m_spp_service_uuid.c_str(),
+                    m_rfcomm_service_port,
+                    false,
+                    NULL,
+                    0);
+#else
+            LOGD("Unable to open SPP file descriptor - bt_spp_open_ex() not supported");
+            m_sppfd = -1;
+            root[JSON_KEY_STATUS] = JSON_VALUE_ERROR;
+            root[JSON_KEY_DESCRIPTION] = "Unable to open SPP file descriptor - bt_spp_open_ex() not supported";
+            return writer.write(root);
+#endif
+        } else {
+            fd = bt_spp_open(
+                    (char *) m_bluetooth_address.c_str(),
+                    (char *) m_spp_service_uuid.c_str(),
+                    false);
+        }
 
         if (fd >= 0) {
             m_sppfd = fd;
@@ -564,13 +599,39 @@ namespace webworks {
         m_ssp_server_mode = true;
         m_connection_callback_id = callbackId;
 
-        if (bt_spp_open_server((char *) "", (char *) m_spp_service_uuid.c_str(), 0, sppCallback, reinterpret_cast<long>(this)) == 0) {
+        if (m_rfcomm_mode) {
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
+            rc = bt_spp_open_server_ex(
+                    (char *) "",
+                    (char *) m_spp_service_uuid.c_str(),
+                    m_rfcomm_service_port,
+                    false,
+                    sppCallback,
+                    reinterpret_cast<long>(this));
+#else
+            m_ssp_server_mode = false;
+            LOGD("Bluetooth bt_spp_open_server_ex() -- API not supported");
+            root[JSON_KEY_STATUS] = JSON_VALUE_ERROR;
+            root[JSON_KEY_DESCRIPTION] = "Bluetooth bt_spp_open_server_ex() -- API not supported";
+            return writer.write(root);
+#endif
+        } else {
+            rc = bt_spp_open_server(
+                    (char *) "",
+                    (char *) m_spp_service_uuid.c_str(),
+                    false,
+                    sppCallback,
+                    reinterpret_cast<long>(this));
+        }
+
+        if (rc == EOK) {
 
             LOGD("listenForConnection() - Started listener");
             root[JSON_KEY_STATUS] = JSON_VALUE_OK;
             root[JSON_KEY_DESCRIPTION] = "Started listener";
 
         } else {
+            m_ssp_server_mode = false;
             snprintf(temp, sizeof(temp), "Bluetooth bt_spp_open_server() error=%s", strerror(errno));
             LOGD("%s", temp);
             root[JSON_KEY_STATUS] = JSON_VALUE_ERROR;
@@ -962,6 +1023,26 @@ namespace webworks {
     void SimpleBtSppPlugin_NDK::setBluetoothAddress(const std::string& inputString)
     {
         m_bluetooth_address = inputString;
+    }
+
+    bool SimpleBtSppPlugin_NDK::getRfcommMode()
+    {
+        return m_rfcomm_mode;
+    }
+
+    void SimpleBtSppPlugin_NDK::setRfcommMode(const bool rfcommMode)
+    {
+        m_rfcomm_mode = rfcommMode;
+    }
+
+    int SimpleBtSppPlugin_NDK::getRfcommServicePort()
+    {
+        return m_rfcomm_service_port;
+    }
+
+    void SimpleBtSppPlugin_NDK::setRfcommServicePort(const int rfcommServicePort)
+    {
+        m_rfcomm_service_port = rfcommServicePort;
     }
 
     bool SimpleBtSppPlugin_NDK::connectionThreadToStop()

@@ -21,6 +21,10 @@
 #include "../public/plugin.h"
 #include "simplebtsppplugin_ndk.hpp"
 #include "Logger.hpp"
+#include <sstream>
+
+#define SSTR( x ) dynamic_cast< std::ostringstream & >( \
+        ( std::ostringstream() << std::dec << x ) ).str()
 
 class SimpleBtSppPlugin_JS: public JSExt {
 
