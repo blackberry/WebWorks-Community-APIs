@@ -17,6 +17,7 @@ It comes with a sample WebWorks application in the form of a simple **Chat** app
 
 ###Release History
 
+* **V1.1.0** - Support for bt\_spp\_open\_ex() and bt\_spp\_open\_server\_ex() in **10.3.0** and above allowing access to the RFCOMM API.
 * **V1.0.1** - Minor bugs fixed in plugin
 * **V1.0.0** - Initial release
 
@@ -27,6 +28,7 @@ It comes with a sample WebWorks application in the form of a simple **Chat** app
 ###Dependencies
 
 1. BlackBerry Device Software **10.2.1** and greater for the native component.
+2. BlackBerry Device Software **10.3.0** and above is required for access to the RFCOMM API. 
 1. BlackBerry WebWorks **2.1** and greater.
 
 ###Required Plugins
@@ -45,11 +47,11 @@ There is a sample application that uses thus plugin in this repo here:
 
 Clone this repo to your local machine.
 
-If you want to build the plugin yourself then just import the project at this path:
+You have the choice of immediately using the plugin, which has been built against **10.2.1**, or, building the plugin yourself -- you may want to do this to enable access to the RFCOMM API additions that become available in **10.3.0**. In this case just import the project at this path:
 
 	<repo>/SimpleBtSppPlugin/plugin/src/blackberry10/native
 
-into Momentics and build it for **both** ***device*** and ***simulator*** targets.
+into Momentics and build it against the SDK of your choice (**10.2.1** or **10.3.0**) for **both** ***device*** and ***simulator*** targets.
 
 The sample code for this plugin and application is Open Source under 
 the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).

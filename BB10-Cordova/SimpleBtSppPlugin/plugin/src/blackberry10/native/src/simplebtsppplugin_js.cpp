@@ -135,6 +135,18 @@ string SimpleBtSppPlugin_JS::InvokeMethod(const string& command) {
         } else {
             return m_pSimpleBtSppPluginController->getSppServiceUuid();
         }
+    } else if (strCommand == "sppRfcommMode") {
+        if (arg != strCommand) {
+            m_pSimpleBtSppPluginController->setRfcommMode(((arg == "true") ? true : false));
+        } else {
+            return (m_pSimpleBtSppPluginController->getRfcommMode() ? "true" : "false");
+        }
+    } else if (strCommand == "sppRfcommServicePort") {
+        if (arg != strCommand) {
+            m_pSimpleBtSppPluginController->setRfcommServicePort((int)std::strtol(arg.c_str(), NULL, 10));
+        } else {
+            return SSTR(m_pSimpleBtSppPluginController->getRfcommServicePort());
+        }
     }
 
 	strCommand.append(";");

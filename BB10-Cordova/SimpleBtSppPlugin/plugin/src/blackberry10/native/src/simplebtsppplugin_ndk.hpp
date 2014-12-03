@@ -22,6 +22,7 @@
 #include <pthread.h>
 #include <btapi/btdevice.h>
 #include <btapi/btspp.h>
+#include <bbndk.h>
 
 #define LOGD(...) \
     do { \
@@ -69,6 +70,12 @@ public:
     std::string stopListening();
     std::string pluginVersion();
 
+    bool getRfcommMode();
+    void setRfcommMode(const bool rfcommMode);
+
+    int getRfcommServicePort();
+    void setRfcommServicePort(const int rfcommServicePort);
+
     void *scanForDevices();
     void *connectionHandler();
     void handleSppServerCallback(int fd);
@@ -112,6 +119,8 @@ private:
     bool m_stop_connection_thread;
     bool m_ssp_server_mode;
     std::string m_spp_service_uuid;
+    bool m_rfcomm_mode;
+    int m_rfcomm_service_port;
 };
 
 } // namespace webworks
