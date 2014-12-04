@@ -44,11 +44,12 @@
 				frameAvailableFn(frameData)
 			}
 			else if(receivedEvent == "community.barcodescanner.started.native") {
-				canvas = document.getElementById(canvasID);
-				canvas.style.display = "block"
+				// canvas = document.getElementById(canvasID);
+				// canvas.style.display = "block"
 			}
 			else if(receivedEvent == "community.barcodescanner.codefound.native") {
 				var codeFoundData = JSON.parse(arData[1])
+				console.log(codeFoundData);
 				succ(codeFoundData)
 			}
 			else if(receivedEvent == "community.BarcodeScanner.errorfound") {
@@ -71,7 +72,7 @@
 	};
 
 	BarcodeScanner.prototype.stopRead = function (succ, fail) {
-		canvas.style.display = "none"
+		// canvas.style.display = "none"
 		reading = false;
 
 		var success = function (data, response) {

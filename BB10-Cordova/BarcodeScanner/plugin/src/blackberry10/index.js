@@ -25,14 +25,30 @@ module.exports = {
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
 		readCallback = result.callbackId;
-		result.ok(barcodescanner.getInstance().startRead(result.callbackId), true);
-		success()
+		var views = qnx.webplatform.getWebViews();
+		var handle = null;
+		var group = null;
+		var z = -1;
+		for (var i = 0; i < views.length; i++) {
+			if (views[i].visible && views[i].zOrder > z){
+				z = views[i].zOrder;
+				group = views[i].windowGroup;
+				handle = views[i].jsScreenWindowHandle;
+			}
+		}
+		if (handle !== null) {
+			var values = { group: group, handle: handle };
+			result.ok(barcodescanner.getInstance().startRead(result.callbackId, values), true);
+			// success();
+		} else {
+			result.error("Failed to find window handle", false);
+		}
 	},
 	stopRead: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
 		result.ok(barcodescanner.getInstance().stopRead(result.callbackId), true);
-		success();
+		// success();
 	},
 	add: function (success, fail) {
 		console.log('Frame Available event listening');
@@ -94,8 +110,8 @@ JNEXT.BarcodeScanner = function () {
 	};
 
 	// Thread methods
-	self.startRead = function (callbackId) {
-		return JNEXT.invoke(self.m_id, "startRead " + callbackId);
+	self.startRead = function (callbackId, handle) {
+		return JNEXT.invoke(self.m_id, "startRead " + callbackId + " " + JSON.stringify(handle));
 	};
 	self.stopRead = function (callbackId) {
 		return JNEXT.invoke(self.m_id, "stopRead " + callbackId);

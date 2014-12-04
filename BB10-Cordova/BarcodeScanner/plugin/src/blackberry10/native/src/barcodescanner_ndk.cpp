@@ -22,6 +22,12 @@
 #include <zxing/MultiFormatReader.h>
 #include <img/img.h>
 #include <stdio.h>
+#include <bps/bps.h>
+#include <bps/event.h>
+#include <bps/navigator.h>
+#include <bps/screen.h>
+#include <screen/screen.h>
+#include <pthread.h>
 
 #include "barcodescanner_ndk.hpp"
 #include "barcodescanner_js.hpp"
@@ -34,9 +40,22 @@ using namespace zxing;
 namespace webworks {
 
 BarcodeScannerJS* eventDispatcher = NULL;
-static int filecounter = 0;
-#define TMP_PATH "tmp/"
-static uint32_t rotation = 0;
+//static int filecounter = 0;
+//#define TMP_PATH "tmp/"
+//static uint32_t rotation = 0;
+
+// Variables for native viewfinder screen
+//static screen_context_t screen_ctx = 0;
+static screen_window_t vf_win = NULL;
+//static const char vf_group[] = "viewfinder_window_group";
+static bool touch = false;
+
+
+#define MUTEX_LOCK() pthread_mutex_trylock(&m_lock)
+#define MUTEX_UNLOCK() pthread_mutex_unlock(&m_lock)
+
+static pthread_mutex_t m_lock;
+static pthread_t m_thread = 0;
 
     /*
      * getCameraErrorDesc
@@ -44,7 +63,6 @@ static uint32_t rotation = 0;
      * Returns a descriptive error message for a given camera error code
      */
     const char* getCameraErrorDesc(camera_error_t err) {
-        char* ret;
         switch (err) {
         case CAMERA_EAGAIN:
             return "The specified camera was not available. Try again.";
@@ -94,6 +112,9 @@ static uint32_t rotation = 0;
         int stride = data->stride;
         int width = data->width;
         int height = data->height;
+        if ( eventDispatcher != NULL ){
+//            eventDispatcher->getLog()->debug("Frame received");
+        }
 
         try {
             Ref<LuminanceSource> source(new GreyscaleLuminanceSource((unsigned char *)buff, stride, height, 0,0,width,height));
@@ -132,18 +153,18 @@ static uint32_t rotation = 0;
             	event.insert(0, " ");
             	event.insert(0, (char *) arg);
             	eventDispatcher->NotifyEvent(event + " " + writer.write(root));
+            	eventDispatcher->getLog()->debug("This is the detected Barcode");
+            	eventDispatcher->getLog()->debug(newBarcodeData.c_str());
             }
 
-
-#ifdef DEBUG
-            fprintf(stderr, "This is the detected Barcode : %s\n", newBarcodeData.c_str());
-#endif
         }
         catch (const std::exception& ex)
         {
-#ifdef DEBUG
-            fprintf( stderr, "error occured : \%s \n", ex.what());
-#endif
+            // Uncomment this if you need to verify scanning
+            if ( eventDispatcher != NULL ){
+//               eventDispatcher->getLog()->warn("Scan error");
+//               eventDispatcher->getLog()->warn(ex.what());
+            }
         }
     }
 
@@ -159,100 +180,411 @@ static uint32_t rotation = 0;
      * handles the burst frames from the camera, which are standard JPEG images.
      * These will be sent to the front end for display.
      */
-    void image_callback(camera_handle_t handle,camera_buffer_t* buf,void* arg) {
-
-       	if (buf->frametype == CAMERA_FRAMETYPE_JPEG) {
-			fprintf(stderr, "still image size: %lld\n", buf->framedesc.jpeg.bufsize);
-
-			Json::FastWriter writer;
-			Json::Value root;
-
-			// saving temporary files barcode0.jpg to barcode9.jpg
-			std::string tempFileName = "barcode" + convertIntToString(filecounter) + ".jpg";
-			if (++filecounter >=10) {
-				filecounter = 0;
-			}
-			// saving in the /tmp directory of the application which gets cleaned out when the app exits
-			std::string tempFilePath = std::string(getcwd(NULL, 0)) + "/" + TMP_PATH + tempFileName;
-			FILE* fp = fopen(tempFilePath.c_str(), "wb");
-			if (fp!= NULL) {
-				fwrite((const unsigned char *)buf->framebuf, buf->framedesc.jpeg.bufsize, 1, fp);
-				fclose(fp);
-			}
-
-			// QC8960 based devices create jpegs with exif orientation and need rotating
-			// We'll also scale down as much as possible to reduce file size.
-			img_lib_t ilib;
-			int rc;
-			if ((rc = img_lib_attach(&ilib)) != IMG_ERR_OK) {
-				fprintf(stderr, "img_lib_attach() failed: %d\n", rc);
-			}
-
-			img_t img;
-			if (rotation == 0 || rotation == 2) {
-				img.w = 240;
-				img.flags = IMG_W;
-			} else {
-				img.h = 240;
-				img.flags = IMG_H;
-			}
-			int resizeResult = img_load_resize_file( ilib, tempFilePath.c_str(), NULL, &img );
-			img_t dst;
-			img_fixed_t angle = 0;
-			switch (rotation) {
-			case 1:
-				angle = IMG_ANGLE_90CCW;
-				break;
-			case 2:
-				angle = IMG_ANGLE_180;
-				break;
-			case 3:
-				angle = IMG_ANGLE_90CW;
-				break;
-			default:
-				break;
-			}
-			if (angle != 0) {
-				int err = img_rotate_ortho(&img, &dst, angle);
-			} else {
-				dst = img;
-			}
-
-			// Set quality of output
-			dst.quality = 75;
-			dst.flags = dst.flags | IMG_QUALITY;
-
-			int writeResult = img_write_file( ilib, tempFilePath.c_str(), NULL, &dst );
-
-			img_lib_detach(ilib);
-
-			// Send the file path for loading in the front end since JNEXT only handles strings
-			root["frame"]  = tempFilePath;
-			if ( eventDispatcher != NULL ){
-				std::string event = "community.barcodescanner.frameavailable.native";
-				event.insert(0, " ");
-				event.insert(0, (char *) arg);
-
-				eventDispatcher->NotifyEvent(event + " " + writer.write(root));
-			}
-       	}
-
-    }
+//    void image_callback(camera_handle_t handle,camera_buffer_t* buf,void* arg) {
+//
+//       	if (buf->frametype == CAMERA_FRAMETYPE_JPEG) {
+//			fprintf(stderr, "still image size: %lld\n", buf->framedesc.jpeg.bufsize);
+//
+//			Json::FastWriter writer;
+//			Json::Value root;
+//
+//			// saving temporary files barcode0.jpg to barcode9.jpg
+//			std::string tempFileName = "barcode" + convertIntToString(filecounter) + ".jpg";
+//			if (++filecounter >=10) {
+//				filecounter = 0;
+//			}
+//			// saving in the /tmp directory of the application which gets cleaned out when the app exits
+//			std::string tempFilePath = std::string(getcwd(NULL, 0)) + "/" + TMP_PATH + tempFileName;
+//			FILE* fp = fopen(tempFilePath.c_str(), "wb");
+//			if (fp!= NULL) {
+//				fwrite((const unsigned char *)buf->framebuf, buf->framedesc.jpeg.bufsize, 1, fp);
+//				fclose(fp);
+//			}
+//
+//			// QC8960 based devices create jpegs with exif orientation and need rotating
+//			// We'll also scale down as much as possible to reduce file size.
+//			img_lib_t ilib;
+//			int rc;
+//			if ((rc = img_lib_attach(&ilib)) != IMG_ERR_OK) {
+//				fprintf(stderr, "img_lib_attach() failed: %d\n", rc);
+//			}
+//
+//			img_t img;
+//			if (rotation == 0 || rotation == 2) {
+//				img.w = 240;
+//				img.flags = IMG_W;
+//			} else {
+//				img.h = 240;
+//				img.flags = IMG_H;
+//			}
+//			int resizeResult = img_load_resize_file( ilib, tempFilePath.c_str(), NULL, &img );
+//			img_t dst;
+//			img_fixed_t angle = 0;
+//			switch (rotation) {
+//			case 1:
+//				angle = IMG_ANGLE_90CCW;
+//				break;
+//			case 2:
+//				angle = IMG_ANGLE_180;
+//				break;
+//			case 3:
+//				angle = IMG_ANGLE_90CW;
+//				break;
+//			default:
+//				break;
+//			}
+//			if (angle != 0) {
+//				int err = img_rotate_ortho(&img, &dst, angle);
+//			} else {
+//				dst = img;
+//			}
+//
+//			// Set quality of output
+//			dst.quality = 75;
+//			dst.flags = dst.flags | IMG_QUALITY;
+//
+//			int writeResult = img_write_file( ilib, tempFilePath.c_str(), NULL, &dst );
+//
+//			img_lib_detach(ilib);
+//
+//			// Send the file path for loading in the front end since JNEXT only handles strings
+//			root["frame"]  = tempFilePath;
+//			if ( eventDispatcher != NULL ){
+//				std::string event = "community.barcodescanner.frameavailable.native";
+//				event.insert(0, " ");
+//				event.insert(0, (char *) arg);
+//
+//				eventDispatcher->NotifyEvent(event + " " + writer.write(root));
+//			}
+//       	}
+//
+//    }
 
     /*
      * Constructor for Barcode Scanner NDK class
      */
-    BarcodeScannerNDK::BarcodeScannerNDK(BarcodeScannerJS *parent) {
+    BarcodeScannerNDK::BarcodeScannerNDK(BarcodeScannerJS *parent): threadHalt(false) {
     	cbId = new char[1000];
         m_pParent     = parent;
         eventDispatcher = parent;
         mCameraHandle = CAMERA_HANDLE_INVALID;
+        bps_initialize();
     }
 
     BarcodeScannerNDK::~BarcodeScannerNDK() {
     	delete[] cbId;
+    	bps_shutdown();
     }
 
+    webworks::Logger* BarcodeScannerNDK::getLog() {
+        return m_pParent->getLog();
+    }
+
+    void interrogateWindowCV(screen_window_t window, Logger* log, string description, int property) {
+            char* value = new char[256];
+            int ok = screen_get_window_property_cv(window, property, 256, value);
+            if (ok == 0) {
+                log->info(description.c_str());
+                log->info(value);
+            } else {
+                log->warn("Unable to interpret value for");
+                log->warn(description.c_str());
+            }
+        }
+
+        void interrogateWindowIV(screen_window_t window, Logger* log, string description, int property) {
+                int value = -1;
+                int ok = screen_get_window_property_iv(window, property, &value);
+                if (ok == 0) {
+                    log->info(description.c_str());
+                    log->info(convertIntToString(value).c_str());
+                } else {
+                    log->warn("Unable to interpret value for");
+                    log->warn(description.c_str());
+                }
+            }
+
+        void interrogateWindow(screen_window_t window, Logger* log) {
+            log->info("Window Details--->");
+            interrogateWindowIV(window, log, "Permissions", SCREEN_PROPERTY_PERMISSIONS);
+            interrogateWindowCV(window, log, "Window ID", SCREEN_PROPERTY_ID_STRING);
+            interrogateWindowIV(window, log, "Window Type", SCREEN_PROPERTY_TYPE);
+            interrogateWindowIV(window, log, "Window Owner PID", SCREEN_PROPERTY_OWNER_PID);
+            interrogateWindowCV(window, log, "Window Group", SCREEN_PROPERTY_GROUP);
+            interrogateWindowIV(window, log, "Window Z Order", SCREEN_PROPERTY_ZORDER);
+            interrogateWindowIV(window, log, "Window Visible", SCREEN_PROPERTY_VISIBLE);
+            log->info("Window Interrogation complete");
+        }
+
+    void *HandleEvents(void *args) {
+            BarcodeScannerNDK *parent = static_cast<BarcodeScannerNDK *>(args);
+            parent->getLog()->debug("BarcodeScannerNDK EventHandler");
+
+            /**
+             * Creating a native viewfinder screen
+             */
+            const int usage = SCREEN_USAGE_NATIVE;
+            screen_window_t screen_win;
+            screen_buffer_t screen_buf = NULL;
+            int rect[4] = { 0, 0, 0, 0 };
+
+//            if(screen_create_context(&screen_ctx, SCREEN_APPLICATION_CONTEXT) == -1) {
+//                parent->getLog()->error("screen_create_context() failed");
+//            }
+
+            if(screen_create_window_type(&screen_win, parent->windowContext, SCREEN_CHILD_WINDOW) == -1) {
+                parent->getLog()->error("screen_create_window() failed");;
+            }
+//            screen_create_window_group(screen_win, vf_group);
+//            parent->windowGroup = new char[256];
+
+//            screen_set_window_property_cv(screen_win, SCREEN_PROPERTY_GROUP, 256, parent->windowGroup);
+//            screen_get_window_property_cv(screen_win, SCREEN_PROPERTY_GROUP, 256, parent->windowGroup);
+//            parent->getLog()->info("Window Group");
+//            parent->getLog()->info(parent->windowGroup);
+            screen_join_window_group(screen_win, parent->windowGroup);
+            char * groupCheck = new char[256];
+            screen_get_window_property_cv(screen_win, SCREEN_PROPERTY_GROUP, 256, groupCheck);
+            parent->getLog()->info("Window Group Check");
+            parent->getLog()->info(groupCheck);
+            screen_set_window_property_iv(screen_win, SCREEN_PROPERTY_USAGE, &usage);
+            screen_create_window_buffers(screen_win, 1);
+            screen_get_window_property_pv(screen_win, SCREEN_PROPERTY_RENDER_BUFFERS, (void **)&screen_buf);
+            screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_BUFFER_SIZE, rect+2);
+
+            int type = -1;
+            screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_TYPE, &type);
+            parent->getLog()->debug("Window Type");
+            parent->getLog()->debug(convertIntToString(type).c_str());
+
+            // fill the window with black
+            int attribs[] = { SCREEN_BLIT_COLOR, 0x00333333, SCREEN_BLIT_END };
+            screen_fill(parent->windowContext, screen_buf, attribs);
+            screen_post_window(screen_win, screen_buf, 1, rect, 0);
+            // position the window at an arbitrary z-order
+            int i = 1;
+            screen_set_window_property_iv(screen_win, SCREEN_PROPERTY_ZORDER, &i);
+            screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_ZORDER, &i);
+            parent->getLog()->debug("Current Zorder");
+            parent->getLog()->debug(convertIntToString(i).c_str());
+            int visible = 1;
+            screen_set_window_property_iv(screen_win, SCREEN_PROPERTY_VISIBLE, &visible);
+            screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_VISIBLE, &visible);
+            parent->getLog()->debug("Visible?");
+            parent->getLog()->debug(convertIntToString(visible).c_str());
+            screen_flush_context(parent->windowContext, 0);
+
+            parent->getLog()->debug("Created Background window");
+
+//            if (screen_ctx) {
+//                screen_request_events(screen_ctx);
+//                parent->getLog()->debug("Requested Events");
+//            }
+            if (parent->windowContext) {
+                if (BPS_SUCCESS == screen_request_events(parent->windowContext)) {
+                    parent->getLog()->debug("Requested Events");
+                } else {
+                    parent->getLog()->error("Unable to request events");
+                }
+            }
+
+            screen_group_t group;
+            screen_get_window_property_pv(screen_win, SCREEN_PROPERTY_GROUP, (void **)&group);
+            char* groupName = new char[256];
+            screen_get_group_property_cv(group, SCREEN_PROPERTY_NAME, 256, groupName);
+            parent->getLog()->debug("Group Found");
+            parent->getLog()->debug(groupName);
+//            screen_context_t windowContext;
+//            int getContext = screen_get_window_property_pv(window, SCREEN_PROPERTY_CONTEXT, (void **)&windowContext);
+//            int getContext = screen_get_group_property_pv(group, SCREEN_PROPERTY_CONTEXT, (void **)&windowContext);
+
+
+
+            while(!parent->isThreadHalt()) {
+                MUTEX_LOCK();
+
+                int domain;
+                // Get the first event in the queue.
+                bps_event_t *event = NULL;
+                if (BPS_SUCCESS != bps_get_event(&event, 0)) {
+                    parent->getLog()->error("bps_get_event() failed");
+//                            return;
+                }
+
+                // Handle all events in the queue.
+                while (event) {
+                    if (event) {
+                        domain = bps_event_get_domain(event);
+                        parent->getLog()->debug("BPS Event");
+                        if (domain == screen_get_domain()) {
+                            parent->getLog()->debug("BPS Screen Event");
+                            parent->handleScreenEvent(event, parent->getLog(), parent->windowGroup);
+                        }
+                    }
+                    if (touch) {
+                        // HandleScreenEvent got a tap on the screen
+                        // Shutdown the scanning
+                        parent->stopRead(parent->cbId);
+                    }
+
+                    if (BPS_SUCCESS != bps_get_event(&event, 0)) {
+                        parent->getLog()->error("bps_get_event() failed");
+//                                return;
+                    }
+                }
+
+                MUTEX_UNLOCK();
+
+                // Poll at 10hz
+                usleep(100000);
+            }
+            screen_destroy_window(screen_win);
+            // stop screen events on this thread
+//            if(screen_stop_events(screen_ctx) == -1) {
+            if(screen_stop_events(parent->windowContext) == -1) {
+                parent->getLog()->error("screen_stop_events failed");
+            }
+            return NULL;
+    }
+
+    void BarcodeScannerNDK::handleScreenEvent(bps_event_t *event, Logger* log, const char* windowGroup) {
+        int eventType;
+
+        screen_event_t screen_event = screen_event_get_event(event);
+        screen_get_event_property_iv(screen_event, SCREEN_PROPERTY_TYPE, &eventType);
+
+        switch (eventType) {
+        case SCREEN_EVENT_MTOUCH_TOUCH:
+            log->info("Touch Event");
+            touch = true;
+            break;
+        case SCREEN_EVENT_CREATE:
+            log->info("Screen Create Event");
+            if (screen_get_event_property_pv(screen_event, SCREEN_PROPERTY_WINDOW, (void **)&vf_win) == -1) {
+                log->error("screen_get_event_property_pv(SCREEN_PROPERTY_WINDOW)");
+            } else {
+                log->info("viewfinder window found!");
+                // place viewfinder in front of the black application background window.
+                // note that a child window's ZORDER is relative to it's parent.
+                // if we wanted to draw a UI on the application window, we could place the
+                // viewfinder behind it and rely on transparency.  or alternately, another
+                // child window could be overlaid on top of the viewfinder.
+//                screen_leave_window_group(vf_win);
+//                screen_join_window_group(vf_win, windowGroup);
+                char* group = new char[256];
+                screen_get_window_property_cv(vf_win, SCREEN_PROPERTY_GROUP, 256, group);
+                log->info("VF Window Group Check");
+                log->info(group);
+                int i = 1;
+                screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_ZORDER, &i);
+                screen_get_window_property_iv(vf_win, SCREEN_PROPERTY_ZORDER, &i);
+                log->debug("Current Zorder");
+                log->debug(convertIntToString(i).c_str());
+                // make viewfinder window visible
+                i = 1;
+                screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_VISIBLE, &i);
+                screen_get_window_property_iv(vf_win, SCREEN_PROPERTY_VISIBLE, &i);
+                log->debug("Visible?");
+                log->debug(convertIntToString(i).c_str());
+                screen_flush_context(windowContext, 0);
+                // we should now have a visible viewfinder
+                // other things we could do here include rotating the viewfinder window (screen rotation),
+                // or adjusting the size & position of the window.
+                // some properties are immutable for security reasons since the window was actually created
+                // in another process.  anything related to presentation should be modifiable.
+            }
+            break;
+        case SCREEN_EVENT_IDLE:
+            log->debug("Screen Idle");
+            break;
+        case SCREEN_EVENT_POST:
+            log->debug("Screen posted first frame");
+            if (screen_get_event_property_pv(screen_event, SCREEN_PROPERTY_WINDOW, (void **)&vf_win) == -1) {
+                log->error("screen_get_event_property_pv(SCREEN_PROPERTY_WINDOW)");
+            } else {
+                interrogateWindow(vf_win, log);
+//                char* group = new char[256];
+//                screen_get_window_property_cv(vf_win, SCREEN_PROPERTY_GROUP, 256, group);
+//                log->info("VF Window Group Check");
+//                log->info(group);
+                int i = 100;
+                screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_ZORDER, &i);
+                screen_get_window_property_iv(vf_win, SCREEN_PROPERTY_ZORDER, &i);
+                log->debug("Current Zorder");
+                log->debug(convertIntToString(i).c_str());
+                // make viewfinder window visible
+                i = 1;
+                screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_VISIBLE, &i);
+                screen_get_window_property_iv(vf_win, SCREEN_PROPERTY_VISIBLE, &i);
+                log->debug("Visible?");
+                log->debug(convertIntToString(i).c_str());
+            }
+            break;
+        case SCREEN_EVENT_CLOSE:
+            log->debug("Screen closed");
+            break;
+        case SCREEN_EVENT_INPUT:
+            log->debug("Screen input event");
+            break;
+        case SCREEN_EVENT_PROPERTY:
+            log->debug("Screen property event");
+            break;
+        default:
+            log->warn("Unhandled Screen Event Type");
+            log->warn(convertIntToString(eventType).c_str());
+            break;
+        }
+    }
+
+    bool BarcodeScannerNDK::StartEvents()
+    {
+//        if(!m_eventsEnabled) {
+            if (!m_thread) {
+                threadHalt = false;
+                pthread_attr_t thread_attr;
+                pthread_attr_init(&thread_attr);
+                pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_JOINABLE);
+                int error = pthread_create(&m_thread, &thread_attr, HandleEvents, static_cast<void *>(this));
+                pthread_attr_destroy(&thread_attr);
+                if (error) {
+                    m_pParent->getLog()->error("Thread Failed to start");
+                    m_thread = 0;
+                    return false;
+                } else {
+                    m_pParent->getLog()->info("Thread Started");
+                    MUTEX_LOCK();
+                    return true;
+                }
+            }
+//        }
+
+        return false;
+    }
+
+    void BarcodeScannerNDK::StopEvents() {
+//        if(m_eventsEnabled) {
+            if (m_thread) {
+                MUTEX_LOCK();
+                threadHalt = true;
+                MUTEX_UNLOCK();
+                m_pParent->getLog()->debug("BarcodeScannerNDK joining event thread");
+                pthread_join(m_thread, NULL);
+                m_thread = 0;
+//                m_eventsEnabled = false;
+                m_pParent->getLog()->debug("BarcodeScannerNDK event thread stopped");
+            }
+//        }
+    }
+
+
+    // getter for the stop value
+    bool BarcodeScannerNDK::isThreadHalt() {
+        bool isThreadHalt;
+        MUTEX_LOCK();
+        isThreadHalt = threadHalt;
+        MUTEX_UNLOCK();
+        return isThreadHalt;
+    }
 
     /*
      * BarcodeScannerNDK::startRead
@@ -260,22 +592,67 @@ static uint32_t rotation = 0;
      * This method is called to start a QR code read. A connection is opened to the device camera
      * and the photo viewfinder is started.
      */
-    int BarcodeScannerNDK::startRead(const string &callbackId) {
+    int BarcodeScannerNDK::startRead(const string &callbackId, const string &arg) {
     	std::string errorEvent = "community.barcodescanner.errorfound.native";
         Json::FastWriter writer;
         Json::Value root;
 
+        std::string handle;
+        std::string group;
+        Json::Reader reader;
+        Json::Value input;
+        bool parse = reader.parse(arg, input);
+
+        if (!parse) {
+            m_pParent->getLog()->error("Parse Error");
+            Json::Value error;
+            root["state"] = "Parsing JSON object";
+            root["error"] = "Cannot parse JSON object";
+            root["description"] = "";
+            m_pParent->NotifyEvent(callbackId + " " + writer.write(error));
+            return EIO;
+        } else {
+            handle = input["handle"].asString();
+            group = input["group"].asString();
+        }
+
         std::copy(callbackId.begin(), callbackId.end(), this->cbId);
         this->cbId[callbackId.size()] = '\0';
+
+        this->windowHandle = handle;
+        m_pParent->getLog()->info("Window Handle");
+        m_pParent->getLog()->info(handle.c_str());
+        // the jsScreenWindowHandle of the UIWebView that we passed in
+        int windowPointer = (int) strtol(handle.c_str(), NULL, 10);
+        // As an integer is the actual window handle
+        screen_window_t window = (screen_window_t) windowPointer;
+        interrogateWindow(window, m_pParent->getLog());
+        // Create a group for the main window
+//        screen_create_window_group(window, NULL);
+        windowGroup = new char[group.length()+1];
+        std::strcpy (windowGroup, group.c_str());
+        m_pParent->getLog()->debug("Window Group using:");
+        m_pParent->getLog()->debug(windowGroup);
+
+        int getContext = screen_get_window_property_pv(window, SCREEN_PROPERTY_CONTEXT, (void **)&windowContext);
+        if (getContext == -1) {
+            m_pParent->getLog()->critical("Unable to get Context");
+            root["state"] = "Get App Window Context";
+            root["error"] = getContext;
+            root["description"] = "Unable to get application context";
+            m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
+            return EIO;
+        }
+
+        StartEvents();
 
         camera_error_t err;
         // Open the camera first before running any operations on it
         err = camera_open(CAMERA_UNIT_REAR,CAMERA_MODE_RW | CAMERA_MODE_ROLL,&mCameraHandle);
 
         if ( err != CAMERA_EOK){
-#ifdef DEBUG
-            fprintf(stderr, " Ran into an issue when initializing the camera = %d\n ", err);
-#endif
+            m_pParent->getLog()->error("Ran into an issue when initializing the camera");
+            m_pParent->getLog()->error(getCameraErrorDesc( err ));
             root["state"] = "Open Camera";
             root["error"] = err;
             root["description"] = getCameraErrorDesc( err );
@@ -291,20 +668,26 @@ static uint32_t rotation = 0;
 		err = camera_get_photo_vf_framerates(mCameraHandle, true, numRates, &numRates, camFramerates, &maxmin);
 
 		// QC8960 doesn't allow for changing the rotation, so we'll just take note of it here and rotate later.
-		uint32_t* rotations = new uint32_t[8];
-		int numRotations = 0;
-		bool nonsquare = false;
-		err = camera_get_photo_rotations(mCameraHandle, CAMERA_FRAMETYPE_JPEG, true, 8, &numRotations, rotations, &nonsquare);
-		rotation = rotations[0] / 90;
+//		uint32_t* rotations = new uint32_t[8];
+//		int numRotations = 0;
+//		bool nonsquare = false;
+//		err = camera_get_photo_rotations(mCameraHandle, CAMERA_FRAMETYPE_JPEG, true, 8, &numRotations, rotations, &nonsquare);
+//		rotation = rotations[0] / 90;
 
+		m_pParent->getLog()->debug("Camera Window Group");
+		m_pParent->getLog()->debug(windowGroup);
 		// We're going to turn on burst mode for the camera and set maximum framerate for the viewfinder
 		err = camera_set_photovf_property(mCameraHandle,
-			CAMERA_IMGPROP_BURSTMODE, 1,
-			CAMERA_IMGPROP_FRAMERATE, camFramerates[0]);
+//		    CAMERA_IMGPROP_WIN_GROUPID, vf_group,
+		    CAMERA_IMGPROP_WIN_GROUPID, windowGroup,
+		    CAMERA_IMGPROP_WIN_ID, "my_viewfinder",
+		    CAMERA_IMGPROP_CREATEWINDOW, 1,
+		    CAMERA_IMGPROP_ISEMBEDDED, 1);//,
+//			CAMERA_IMGPROP_BURSTMODE, 1,
+//			CAMERA_IMGPROP_FRAMERATE, camFramerates[0]);
 		if ( err != CAMERA_EOK){
-#ifdef DEBUG
-			fprintf(stderr, " Ran into an issue when configuring the camera viewfinder = %d\n ", err);
-#endif
+		    m_pParent->getLog()->error("Ran into an issue when configuring the camera viewfinder");
+		    m_pParent->getLog()->error(getCameraErrorDesc( err ));
 			root["state"] = "Set VF Props";
 			root["error"] = err;
 			root["description"] = getCameraErrorDesc( err );
@@ -313,18 +696,18 @@ static uint32_t rotation = 0;
 		}
 
 		// The actual camera will get frames at a slower rate than the viewfinder
-		err = camera_set_photo_property(mCameraHandle,
-			CAMERA_IMGPROP_BURSTDIVISOR, (double) 3.0);
-		if ( err != CAMERA_EOK){
-#ifdef DEBUG
-			fprintf(stderr, " Ran into an issue when configuring the camera properties = %d\n ", err);
-#endif
-			root["state"] = "Set Cam Props";
-			root["error"] = err;
-			root["description"] = getCameraErrorDesc( err );
-			m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
-			return EIO;
-		}
+//		err = camera_set_photo_property(mCameraHandle,
+//			CAMERA_IMGPROP_BURSTDIVISOR, (double) 3.0);
+//		if ( err != CAMERA_EOK){
+//#ifdef DEBUG
+//			fprintf(stderr, " Ran into an issue when configuring the camera properties = %d\n ", err);
+//#endif
+//			root["state"] = "Set Cam Props";
+//			root["error"] = err;
+//			root["description"] = getCameraErrorDesc( err );
+//			m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
+//			return EIO;
+//		}
 
 		// Starting viewfinder up which will call the viewfinder callback - this gets the NV12 images for scanning
         err = camera_start_photo_viewfinder( mCameraHandle, &viewfinder_callback, NULL, this->cbId);
@@ -353,17 +736,17 @@ static uint32_t rotation = 0;
 		}
 
 		// Now start capturing burst frames in JPEG format for sending to the front end.
-		err = camera_start_burst(mCameraHandle, NULL, NULL, NULL, &image_callback, this->cbId);
-		if ( err != CAMERA_EOK) {
-#ifdef DEBUG
-			fprintf(stderr, "Ran into an issue when starting up the camera in burst mode\n");
-#endif
-			root["state"] = "Start Camera Burst";
-			root["error"] = err;
-			root["description"] = getCameraErrorDesc( err );
-			m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
-			return EIO;
-		}
+//		err = camera_start_burst(mCameraHandle, NULL, NULL, NULL, &image_callback, this->cbId);
+//		if ( err != CAMERA_EOK) {
+//#ifdef DEBUG
+//			fprintf(stderr, "Ran into an issue when starting up the camera in burst mode\n");
+//#endif
+//			root["state"] = "Start Camera Burst";
+//			root["error"] = err;
+//			root["description"] = getCameraErrorDesc( err );
+//			m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
+//			return EIO;
+//		}
 
         std::string successEvent = "community.barcodescanner.started.native";
         root["successful"] = true;
@@ -384,17 +767,17 @@ static uint32_t rotation = 0;
 		Json::Value root;
         camera_error_t err;
 
-        err = camera_stop_burst(mCameraHandle);
-		if ( err != CAMERA_EOK)
-		{
-#ifdef DEBUG
-			fprintf(stderr, "Error with turning off the burst \n");
-#endif
-			root["error"] = err;
-			root["description"] = getCameraErrorDesc( err );
-			m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
-			return EIO;
-		}
+//        err = camera_stop_burst(mCameraHandle);
+//		if ( err != CAMERA_EOK)
+//		{
+//#ifdef DEBUG
+//			fprintf(stderr, "Error with turning off the burst \n");
+//#endif
+//			root["error"] = err;
+//			root["description"] = getCameraErrorDesc( err );
+//			m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
+//			return EIO;
+//		}
 
         err = camera_stop_photo_viewfinder(mCameraHandle);
         if ( err != CAMERA_EOK)
@@ -419,6 +802,8 @@ static uint32_t rotation = 0;
             m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
             return EIO;
         }
+
+        StopEvents();
 
         std::string successEvent = "community.barcodescanner.ended.native";
         root["successful"] = true;
