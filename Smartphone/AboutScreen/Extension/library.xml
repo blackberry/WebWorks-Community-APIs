@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library>
+	<extension id="webworks.ui.AboutScreen">
+		<entryClass>webworks.ui.AboutScreen.AboutScreenExtension</entryClass>
+	</extension>
+	<features>
+		<feature id="webworks.ui.AboutScreen" version="1.0.0">An about screen extension</feature>
+	</features>
+	<platforms>
+		<platform value="JAVA">
+	  		<target version="default" config="JAVA" />
+		</platform>
+  	</platforms>
+  	<configurations>
+		<configuration name="JAVA" version="1.0" >
+	  		<src type="text/java" path="webworks" comment="API implementation in Java" />
+		</configuration>
+  	</configurations> 
+</library>

@@ -14,5 +14,6 @@
     <rim:permissions>
         <rim:permit>access_pimdomain_contacts</rim:permit>
         <rim:permit>access_pimdomain_messages</rim:permit>
+		<rim:permit>access_shared</rim:permit>
     </rim:permissions>
 </widget>

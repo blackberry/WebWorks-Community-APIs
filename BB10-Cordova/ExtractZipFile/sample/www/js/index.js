@@ -61,14 +61,35 @@ var app = {
 						pass = status.entries == 1 && status.files == 1;
 						break;
 					case "2":
-						pass = status.entries == 12 && status.files == 7
-							&& status.directories == 5;
+						pass = status.entries == 10 && status.files == 7
+							&& status.directories == 3;
 						break;
 					case "3":
 						pass = status.result == 1;
 						break;
 					case "4":
 						pass = status.entries == 1 && status.files == 1;
+						break;
+					case "5":
+						pass = status.result == 1;
+						break;
+					case "6":
+						pass = status.result == 1;
+						break;
+					case "7":
+						pass = status.result == 1;
+						break;
+					case "8":
+						pass = status.result == 1;
+						break;
+					case "9":
+						pass = status.result == 1;
+						break;
+					case "10":
+						pass = status.result == -1;	// negative test
+						break;
+					case "11":
+						pass = status.result == 1;
 						break;
 				}
 
@@ -79,6 +100,7 @@ var app = {
 				app.writeOut("\nTest " + status.callbackToken + " " + pass_msg);
 				app.writeOut("Full Status: " + JSON.stringify(status, null, " "));
 			};
+
 			community.extractZipFile.extract(
 				{
 					zip: "./app/native/res/zip/test_single-file-no-folder.zip",
@@ -90,7 +112,7 @@ var app = {
 			community.extractZipFile.extract(
 				{
 					zip: "./app/native/res/zip/test_multi-file-multi-folder.zip",
-					destination: "./tmp/test2test2",
+					destination: "./tmp/tttttt/",
 					callbackToken: "2"
 				},
 				onReturn
@@ -111,6 +133,66 @@ var app = {
 				},
 				onReturn
 				);
+			
+			community.extractZipFile.compress( //zip 3 files, no directory
+				{ 
+					filePath: "./app/native/res/zip/aaaa.txt:./app/native/res/zip/bbbb.txt:./app/native/res/zip/cccc.txt", 
+					zipDestinationPath: "./tmp/case/folder123.zip",
+					callbackToken: "5"
+				},
+				onReturn
+				);
+			
+			community.extractZipFile.compress( //zip 1 file, 1 directory with 1 file in it
+				{ 
+					filePath: "./app/native/res/zip/aaaa.txt:./app/native/res/zip/3", 
+					zipDestinationPath: "./tmp/case/folder333.zip",
+					callbackToken: "6"
+				},
+				onReturn
+				);
+			community.extractZipFile.compress( //zip 1 file, 1 directory with 1 file and 1 directory which has a file in it 
+				{ 
+					filePath: "./app/native/res/zip/aaaa.txt:./app/native/res/zip/2", 
+					zipDestinationPath: "./tmp/case/folder444.zip",
+					callbackToken: "7"
+				},
+				onReturn
+				);
+			community.extractZipFile.compress( //zip 1 directory with 1 file and 1 directory which have a file and a directory which have a file and a directory in it 
+				{ 
+					filePath: "./app/native/res/zip/5", 
+					zipDestinationPath: "./tmp/case/folder888.zip",
+					callbackToken: "8"
+				},
+				onReturn
+				);
+			community.extractZipFile.compress( //zip 1 directory with 2 files and 3 directories which have a file in each 
+				{ 
+					filePath: "./app/native/res/zip/4", 
+					zipDestinationPath: "./tmp/case/folder999.zip",
+					callbackToken: "9"
+				},
+				onReturn
+				);
+
+			community.extractZipFile.compress( //zip one file with incorrect path; expect fail since no zip created
+				{
+					filePath: "./app/native/res/zip/noSuchFile",
+					zipDestinationPath: "./tmp/case/floder361.zip",
+					callbackToken: "10"
+				},
+				onReturn
+				);
+			community.extractZipFile.compress( //zip multiple files with at least 1 file does not exist
+				{
+					filePath: "./app/noThisFile:./app/native/res/zip/2:./app/noThatFile",
+					zipDestinationPath: "./tmp/case/floder361.zip",
+					callbackToken: "11"
+				},
+				onReturn
+				);
+
 			// END EXAMPLE USAGE
 			// -----------------
 		} else {

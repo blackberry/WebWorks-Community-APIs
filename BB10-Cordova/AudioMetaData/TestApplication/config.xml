@@ -1,0 +1,19 @@
+<widget id="com.sample.audiometadata" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>AudioMetaData</name>
+    <description>
+        AudioMetaData test application.
+    </description>
+    <author email="dev@callback.apache.org" href="http://cordova.io">
+        Apache Cordova Team
+    </author>
+    <access origin="*" />
+    <feature id="blackberry.invoke.card" />
+    <feature id="blackberry.ui.toast" />
+    <feature id="blackberry.system" />
+    <rim:permissions>
+    	<rim:permit>access_shared</rim:permit>
+    </rim:permissions>
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="true" />
+    <content src="index.html" />
+</widget>

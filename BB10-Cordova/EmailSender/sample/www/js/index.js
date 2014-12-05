@@ -63,12 +63,14 @@ var app = {
 				statusSpan.innerHTML = "Sending...";
 				var jsonEmail = 
 				{
+					"Type": document.getElementById('emailType').value,
 					"From": document.getElementById('emailSelect').value, 
 					"To": document.getElementById('To').value,
 					"Cc": document.getElementById('Cc').value,
 					"Bcc": document.getElementById('Bcc').value,
 					"subject" : document.getElementById('Subject').value,
-					"body": document.getElementById('Body').value
+					"body": document.getElementById('Body').value,
+					"attachment": document.getElementById('attachmentType').value.split(',')
 				};
 				statusSpan.innerHTML = community.emailsenderplugin.sendEmail(jsonEmail);
 			};

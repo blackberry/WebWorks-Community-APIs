@@ -1,0 +1,24 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="com.blackberry.community.googleanalyticsplugin"
+    version="1.0.0">
+
+    <name>BlackBerry 10 Google Analytics Plugin</name>
+    <description>BlackBerry 10 Community Contributed API for Google Analytics</description>
+    <license>Apache 2.0</license>
+    <author>Andrew Wong</author>
+
+    <js-module src="www/client.js">
+        <clobbers target="community.googleanalyticsplugin" />
+    </js-module>
+
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" />
+        <!--
+        <lib-file src="src/blackberry10/native/device/libTemplate.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libTemplate.so" arch="simulator"/>
+        -->
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="com.blackberry.community.googleanalyticsplugin" value="com.blackberry.community.googleanalyticsplugin" />
+        </config-file>
+    </platform>
+</plugin>

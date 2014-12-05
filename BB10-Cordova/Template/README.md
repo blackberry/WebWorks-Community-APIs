@@ -15,8 +15,15 @@ This template includes examples for communicating in several ways:
 
 ## Building and Testing the Sample
 
+**RECENT UPDATE:**
+Manually updating the template references can be error prone and hard to debug. An Apache Ant build has been created to setup the Momentics project as well as making the necessary updates to the sample web application. You will still need to follow the process below but will no longer have to update all of the template references as the Apache Ant build will take care of that prior to importing your project into Momentics.
+
+
 The included sample is a modified version of the default Cordova Hello World application created by the __cordova create__ command. It has been altered to include a div in _index.html_ for displaying the test data, and a set of test functions in _js/index.js_ to excercise the template API and display some results. To add these changes and the plugin to a test project follow these steps:
 
+
+
+###Cordova Instructions:
 1. Create a new project using __cordova create__ and, 
 2. Copy the _www_ folder in the _sample_ directory over the default one created by that command. 
 3. Run the __bbndk-env.bat__ or __bbndk-env.sh__ script if the NDK is not on your PATH. 
@@ -31,9 +38,25 @@ Then you can call the methods with the namespace __community.templateplugin__, a
 This is a screenshot of the test data being displayed in the Hello World sample app:
 ![Screenshot](screenshot.png)
 
-## Starting a Plugin from the Template
+###Prerequisites for building with Apache Ant:
+1. [Apache Ant](http://ant.apache.org/ “Apache Ant”) version 1.9.3
+2. For the current version of Ant, you will also need a JDK installed on your system, version 1.4 or later required, 1.7 or later strongly recommended. The more up-to-date the version of Java , the more Ant tasks you get.
 
-Copy the Template folder to a location on your computer to start working with it.
+###Building The Template Project: 
+Executing the Apache Ant build will ask you answer a series of questions needed to build a project based on your input:
+- The project name input should be in the following format e.g. HelloWorld. The name should only contain letters
+- The cordova plugin id should be in the format com.blackberry.community.<your project name>. The name should only contain letters
+- The project author should be entered as the author of the plugin.
+- The build also asks to see if you would like to delete the build directory. Only delete the build directory if you no longer need the project in Momentics. The deletion is not recoverable once y for yes is entered
+
+To build the project execute the following command ***ant -f build.xml*** 
+
+
+The output of this build script will produce a build folder that contains two directories:
+
+1. plugin
+2. sample
+
 
 ### Momentics NDK setup
 
@@ -53,8 +76,13 @@ You can either import the project from the Template folder, or use the New Proje
 
 1. Open the Momentics IDE. Navigate to the workbench and from the program menu
 select File -> Import and choose "Existing Projects into Workspace".
-2. Choose "Select root directory: " and browse to the _/plugin/src/blackberry10/native_ directory where you copied the Template. Select the Template project in the Projects list and uncheck "Copy projects into workspace". Click Finish.
+2. Choose "Select root directory: " and browse to the _/plugin/src/blackberry10/native_ directory that was just built by Apache Ant. Select the project name you entered in the Apache Ant build in the Projects list and uncheck "Copy projects into workspace". Click Finish. 
+
+**PLEASE NOTE:**
+Each time the Apache Ant build is run it will ask to delete the build/<Project Name> directory and recreate a new project based on the downloaded template. Since the instructions are to import the project but not copy the contents into your Momentics workspace only answer y for yes to delete the directory if you no longer need it. 
+
 3. Follow these next steps to build the template plugin to be sure the setup is working.
+
 
 #### How to build your native Plugin
 
@@ -62,7 +90,7 @@ select File -> Import and choose "Existing Projects into Workspace".
 2. Right click your project again and select Build Configurations -> Build Selected... .
 3. A window will appear that shows all the available build configurations
 for the project. Select __device__ and __simulator__ and click ok.
-4. You should see the shared libraries (libTemplate.so files) generated in the folders for each Build Configuration that you selected.
+4. You should see the shared libraries (lib<ProjectName>.so files e.g. libMMSPlugin.so) generated in the folders for each Build Configuration that you selected.
 
 ### Using the Plugin in an Application
 
@@ -83,37 +111,8 @@ Depending on the plugin, these methods can also have return values, take argumen
 
 To remove the plugin, run __cordova plugin rm community.templateplugin__
 
-__Note:__ You will need to remove and re-add the plugin on each build cycle where you make changes. You can edit the individual files, but they get scattered across various folders. It's safer to edit them in the plugin directory and then do a quick (maybe script it?) cycle of removing and adding the plugin, so the installation process is followed.
+__PLEASE NOTE:__ You will need to remove and re-add the plugin on each build cycle where you make changes. You can edit the individual files, but they get scattered across various folders. It's safer to edit them in the plugin directory and then do a quick (maybe script it?) cycle of removing and adding the plugin, so the installation process is followed.
 
-### Modifying the Template Plugin
-
-#### Namespace
-Choose a namespace for your application that is concise and descriptive. Use community.pluginname as the general format. Change all the occurences of the name in plugin/plugin.xml. Update the _ID variable in client.js to match the namespace.
-
-#### JNEXT plugin files
-index.js and the template_js.cpp/hpp files are linked by the name of the library and the name of the class in the library. Change the Class Name from TemplateJS to something that matches the new plugin's role. Change the project name in the NDK as well. Then you will need to update the references in index.js to match the new values:
-
-Find self.init = function () {}, and change __libTemplate__ to the new project name, but keep the __lib__ prefix. Then change the reference to __TemplateJS__ to use the new Class Name.
-
-```javascript
-self.init = function () {
-	if (!JNEXT.require("libTemplate")) {
-		return false;
-	}
-
-	self.m_id = JNEXT.createObject("libTemplate.TemplateJS");
-
-	...
-};
-```
-#### Update .js files
-There are many other places where "template" is used in file names and methods in the JavaScript files. These can be changed to better reflect the new plugin API. Note carefully where index.js calls the JNEXT.Template object so that you don't break the chain.
-
-#### Change NDK files
-In the files template_ndk.hpp and template_ndk.cpp, there are plenty of uses of "Template" and "template" which can be changed to match the new plugin.
-
-#### Rebuild 
-When making changes, rebuild regularly so you don't make a really hard to find typo.
 
 Follow the steps above to:
 1. [Build the native portion](#how-to-build-your-native-plugin), and

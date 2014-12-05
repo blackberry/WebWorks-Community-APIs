@@ -21,6 +21,11 @@ The server doesn't refuse client side http request mostly.
 
 I'm really not good at C++, therefore I hope someone can make this plugin better.
 
+## Version History
+
+	1.0.0 First release
+	1.0.1 Asynchronous operation
+
 ## Including the feature in your application
 
 This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:

@@ -48,16 +48,16 @@ var app = {
 		app.testPluginCalls();
 	},
 	testPluginCalls: function() {
-		if (community && community.templateplugin) {
-			app.writeOut(community.templateplugin.test());
-			app.writeOut(community.templateplugin.testInput('My Test Data'));
-			app.writeOut('Template Property was: ' + community.templateplugin.templateProperty);
-			community.templateplugin.templateProperty = 99;
-			app.writeOut('Now: ' + community.templateplugin.templateProperty);
+		if (com && ???CORDOVA_PLUGIN_ID???) {
+			app.writeOut(???CORDOVA_PLUGIN_ID???.???PROJECT_FUNCTION_START???Test());
+			app.writeOut(???CORDOVA_PLUGIN_ID???.???PROJECT_FUNCTION_START???TestInput('My Test Data'));
+			app.writeOut('???PROJECT_FUNCTION??? Property was: ' + ???CORDOVA_PLUGIN_ID???.???PROJECT_FUNCTION_START???Property);
+			???CORDOVA_PLUGIN_ID???.???PROJECT_FUNCTION_START???Property = 99;
+			app.writeOut('Now: ' + ???CORDOVA_PLUGIN_ID???.???PROJECT_FUNCTION_START???Property);
 			app.writeOut('Sent Async Request');
 			var jsonData = {"value1":10,"value2":14};
-			community.templateplugin.testAsync(jsonData, app.aSyncCallback);
-			community.templateplugin.startThread(app.threadCallback);
+			???CORDOVA_PLUGIN_ID???.???PROJECT_FUNCTION_START???TestAsync(jsonData, app.aSyncCallback);
+			???CORDOVA_PLUGIN_ID???.???PROJECT_FUNCTION_START???StartThread(app.threadCallback);
 		} else {
 			app.writeOut("Plugin was not found");
 		}
@@ -80,7 +80,7 @@ var app = {
 			var json = JSON.parse(data);
 			app.writeOut("Thread Callback: " + json.threadCount);
 			if (json.threadCount >= 10) {
-				var end = community.templateplugin.stopThread();
+				var end = ???CORDOVA_PLUGIN_ID???.???PROJECT_FUNCTION_START???StopThread();
 				app.writeOut(end);
 				app.threadStarted = false;
 			}

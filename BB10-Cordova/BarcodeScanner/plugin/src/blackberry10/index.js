@@ -98,6 +98,12 @@ JNEXT.BarcodeScanner = function () {
 					  "community.barcodescanner.frameavailable.native",
 					  "community.barcodescanner.started.native",
 					  "community.barcodescanner.ended.native"];
+					  
+		if(arData.length > 3){
+			var i;
+			for(i=3; i<arData.length; i++)
+				data += " " + arData[i];
+		}			  
 		
 		if (events.indexOf(receivedEvent) != -1) {
 			result.callbackOk(data, true)
