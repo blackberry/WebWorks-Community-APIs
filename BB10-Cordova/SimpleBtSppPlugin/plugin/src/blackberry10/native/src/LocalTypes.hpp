@@ -19,7 +19,7 @@
 #include <string.h>
 #include <errno.h>
 
-#define PLUGIN_VERSION "1.1.0"
+#define PLUGIN_VERSION "1.1.1"
 
 #define BUFFER_SIZE (1024)
 #define DEVICE_INFO_BUFF_SIZE (256)

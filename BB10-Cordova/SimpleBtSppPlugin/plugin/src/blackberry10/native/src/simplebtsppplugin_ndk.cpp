@@ -541,9 +541,10 @@ namespace webworks {
             }
         }
 
-        char text_buffer[1024];
+        char text_buffer[BUFFER_SIZE*5+20];
         char *o = text_buffer;
-        for (int i=0; i<(int)command.size(); i++) {
+        int minLength = ((int)command.size() < (int)sizeof(text_buffer)) ? (int)command.size() : (int)sizeof(text_buffer);
+        for (int i=0; i<minLength; i++) {
             o += snprintf(o, sizeof(text_buffer)-(o-text_buffer), "0x%02X,", m_out_buffer[i]);
         }
         LOGD("Command: len=%d, data=%s", command.size(), text_buffer);
@@ -981,10 +982,11 @@ namespace webworks {
             LOGD("[B] processMessageFromRemoteDevice() - expecting file descriptor to disconnect!");
         }
 
-        char text_buffer[1024];
+        char text_buffer[BUFFER_SIZE*5+20];
         char *o = text_buffer;
+        int minLength = (m_current_buffer_location < (int)sizeof(text_buffer)) ? m_current_buffer_location : (int)sizeof(text_buffer);
         for (int i=0; i< m_current_buffer_location; i++) {
-            o += snprintf(o, sizeof(text_buffer)- (o- text_buffer), "0x%02X,", m_in_buffer[i]);
+            o += snprintf(o, minLength - (o- text_buffer), "0x%02X,", m_in_buffer[i]);
         }
 
         root[JSON_KEY_FORMAT] = MESSAGE_FORMAT_ID_RAW;
