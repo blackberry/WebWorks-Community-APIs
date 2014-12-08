@@ -21,7 +21,6 @@
 #include <json/reader.h>
 #include <json/writer.h>
 #include <pthread.h>
-#include <bb/pim/message/MessageBuilder>
 #include <QtCore/QObject>
 #include <QFileInfo>
 #include "emailSender_ndk.hpp"
@@ -44,14 +43,19 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
 	bool parse = reader.parse(inputString, input);
 	if(parse){
 		Json::Value Type = input["Type"];
+		Json::Value tags = input["tags"];
 		Json::Value From = input["From"];
 		Json::Value To = input["To"];
 		Json::Value Cc = input["Cc"];
 		Json::Value Bcc = input["Bcc"];
 		Json::Value subject = input["subject"];
 		Json::Value body = input["body"];
+		Json::Value vCard = input["vCard"];
+		Json::Value vCardLocation = input["vCardLocation"];
 		Json::Value signature = input["signature"];
+        Json::Value signatureLocation = input["signatureLocation"];
 		Json::Value attachment = input["attachment"];
+        Json::Value attachmentLocation = input["attachmentLocation"];
 
 		long id = atol(From.asString().c_str());
 		Account account;
@@ -106,47 +110,12 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
 
 		builder->subject(QString::fromStdString(subject.asString()));
 
-        std:string msgBody = body.asString();
+        std::string msgBody = body.asString();
 
-		if(signature.asString().compare("true") == 0){
-		    std::string senderName = account.settingsProperty("email_address").value<QString>().toStdString();
-		    std::string sn = senderName.substr(0, senderName.find("@"));
-
-		    std::string signat = "./app/native/res/signature/" + sn + ".vcf";
-		    QString vCard = QString::fromStdString(signat);
-            QUrl filepath(vCard);
-            QFileInfo fileinfo(vCard);
-
-            if(fileinfo.exists()){
-                QString filename = fileinfo.fileName();
-                QString filetype = fileinfo.completeSuffix();
-                Attachment msgAttach(filetype, filename, filepath);
-                builder->addAttachment(msgAttach);
-            }
-            else{
-                signat = "./app/native/res/signature/" + sn + ".txt";
-                QString eSig = QString::fromStdString(signat);
-                QUrl filepath(eSig);
-                QFileInfo fileinfo(eSig);
-
-                if(fileinfo.exists()){
-                    std::string line = "";
-                    msgBody += '\n';
-                    std::ifstream file(signat.c_str());
-                    while(getline(file, line)){
-                        msgBody += line + '\n';
-                    }
-                    file.close();
-                }
-                else{
-                    signat = "The signature file does not exist.";
-                    char * cnofile = new char[signat.length()+1];
-                    std::strcpy(cnofile, signat.c_str());
-                    m_pParent->getLog()->info(cnofile);
-                }
-            }
+		if(Type != "html" && tags.asString().compare("true") == 0){
+		    msgBody = stripHtml(msgBody); // strip tags for text messages
 		}
-		
+
 		QByteArray bodyData ;
 		bodyData.append(QString::fromStdString(msgBody));
         if(Type=="html"){
@@ -156,47 +125,42 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
             builder->body(MessageBody::PlainText, bodyData);
         }
 
-        if (!attachment.empty()){
-            foreach(Json::Value v, attachment){
-				// remove any leading or trailing spaces from a file path
-                string checkpath = v.asString();
-                char ws = ' ';
-                checkpath = checkpath.erase(0, checkpath.find_first_not_of(ws));
-                checkpath = checkpath.erase(checkpath.find_last_not_of(ws) + 1);
+        if (vCard.asString().compare("true") == 0){
+            if (!vCardLocation.empty()){
+                foreach(Json::Value v, vCardLocation){
+                    string checkpath = v.asString();
+                    QString path = checkPath(checkpath);
+                    attachFile(*builder, path);
+                }
+            }
+            else{
+                m_pParent->getLog()->info("No file path entered");
+            }
+        }
 
-                // allow for full or partial path to be entered
-				QString forChecking = QString::fromStdString(checkpath);
-				QString path;
+        if (signature.asString().compare("true") == 0){
+            if (!signatureLocation.empty()){
+                foreach(Json::Value v, signatureLocation){
+                    string checkpath = v.asString();
+                    QString path = checkPath(checkpath);
+                    attachFile(*builder, path);
+                }
+            }
+            else{
+                m_pParent->getLog()->info("No file path entered");
+            }
+        }
 
-				if(forChecking.startsWith(QString::fromStdString("file:///")) || forChecking.startsWith(QString::fromStdString("./"))){
-					path = forChecking;
-				}
-				else if(forChecking.startsWith(QString::fromStdString("/accounts/"))){
-					path = QString::fromStdString("file://") + forChecking;
-				}
-				else if(forChecking.startsWith(QString::fromStdString("/res/"))){
-					path = QString::fromStdString("./app/native/") + forChecking;;
-				}
-				else{
-					path = forChecking;
-				}
-
-                QUrl filepath(path);
-                QFileInfo fileinfo(path);
-
-				if(!fileinfo.exists()){
-					string nofile = "The file " + checkpath + " cannot be found";
-					char * cnofile = new char[nofile.length()+1];
-					std::strcpy(cnofile, nofile.c_str());
-					m_pParent->getLog()->info(cnofile);
-					continue;
-				}
-				else{
-					QString filename = fileinfo.fileName();
-					QString filetype = fileinfo.completeSuffix();
-					Attachment msgAttach(filetype, filename, filepath);
-					builder->addAttachment(msgAttach);
-				}
+        if (attachment.asString().compare("true") == 0){
+            if (!attachmentLocation.empty()){
+                foreach(Json::Value v, attachmentLocation){
+                    string checkpath = v.asString();
+                    QString path = checkPath(checkpath);
+                    attachFile(*builder, path);
+                }
+            }
+            else{
+                m_pParent->getLog()->info("No file path entered");
             }
         }
 
@@ -215,6 +179,89 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
 	}
 
 	return "An error as occurred.";
+}
+
+std::string EmailSenderNDK::stripHtml(std::string msgBody){
+    std::vector<std::string> stripped;
+    for(;;){
+        std::string::size_type startpos;
+        startpos = msgBody.find('<');
+        if(startpos == std::string::npos){
+            stripped.push_back(msgBody);
+            break;
+        }
+        if(0 != startpos){
+            stripped.push_back(msgBody.substr(0, startpos));
+            msgBody = msgBody.substr(startpos, msgBody.size() - startpos);
+            startpos = 0;
+        }
+        std::string::size_type endpos;
+        for(endpos = startpos; endpos < msgBody.size() && msgBody[endpos] != '>'; ++endpos){
+            if(msgBody[endpos] == '"'){
+                endpos++;
+                while(endpos < msgBody.size() && msgBody[endpos] != '"'){
+                    endpos++;
+                }
+            }
+        }
+        if(endpos == msgBody.size()){
+            msgBody = msgBody.substr(endpos, msgBody.size() - endpos);
+            break;
+        }
+        else{
+            endpos++;
+            msgBody = msgBody.substr(endpos, msgBody.size() - endpos);
+        }
+    }
+    msgBody="";
+    for(size_t i=0; i < stripped.size(); i++){
+        msgBody += stripped[i];
+    }
+    return msgBody;
+}
+
+QString EmailSenderNDK::checkPath(std::string checkpath){
+    // remove any leading or trailing spaces from a file path
+    char ws = ' ';
+    checkpath = checkpath.erase(0, checkpath.find_first_not_of(ws));
+    checkpath = checkpath.erase(checkpath.find_last_not_of(ws) + 1);
+
+    // allow for full or partial path to be entered
+    QString forChecking = QString::fromStdString(checkpath);
+    QString path;
+
+    if(forChecking.startsWith(QString::fromStdString("file:///")) || forChecking.startsWith(QString::fromStdString("./"))){
+        path = forChecking;
+    }
+    else if(forChecking.startsWith(QString::fromStdString("/accounts/"))){
+        path = QString::fromStdString("file://") + forChecking;
+    }
+    else if(forChecking.startsWith(QString::fromStdString("/res/"))){
+        path = QString::fromStdString("./app/native/") + forChecking;;
+    }
+    else{
+        path = forChecking;
+    }
+    return path;
+}
+
+
+void EmailSenderNDK::attachFile(MessageBuilder& builder, QString path){
+    QUrl filepath(path);
+    QFileInfo fileinfo(path);
+
+    if(!fileinfo.exists()){
+        string nofile = "The file " + path.toStdString() + " cannot be found";
+        char * cnofile = new char[nofile.length()+1];
+        std::strcpy(cnofile, nofile.c_str());
+        m_pParent->getLog()->info(cnofile);
+    }
+    else{
+        QString filename = fileinfo.fileName();
+        QString filetype = fileinfo.completeSuffix();
+        Attachment msgAttach(filetype, filename, filepath);
+        builder.addAttachment(msgAttach);
+    }
 }
 
 std::string EmailSenderNDK::getEmailAccounts(){

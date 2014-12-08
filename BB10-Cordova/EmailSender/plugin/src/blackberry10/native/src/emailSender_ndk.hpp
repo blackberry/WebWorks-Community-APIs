@@ -21,6 +21,7 @@
 #include <pthread.h>
 #include <bb/pim/account/AccountService>
 #include <bb/pim/message/MessageService>
+#include <bb/pim/message/MessageBuilder>
 
 using namespace bb::pim::account;
 using namespace bb::pim::message;
@@ -36,6 +37,9 @@ public:
 
 	// The extension methods are defined here
 	std::string sendEmail(const std::string& inputString);
+	std::string stripHtml(std::string msgBody);
+    QString checkPath(std::string checkpath);
+    void attachFile(MessageBuilder &builder, QString path);
 	std::string getEmailAccounts();
 
 private:

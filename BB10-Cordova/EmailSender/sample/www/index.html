@@ -34,15 +34,20 @@
             </div>
             <div id="results">
                 <h3>Email sender sample app</h3>
-				<label>Send as:</label><br><select id="emailType"><option value="html">HTML</option><option value="txt">Plain Text</option></select><br><br>
+				<label>Send as:</label><br><select id="emailType"><option value="html">HTML</option><option value="txt">Plain Text</option></select><br>
+				<label id='toDisplay'><input id="removeTags" type="checkbox" value="false">Remove html tags for plain text messages<br><br></label>
                 <label>Send from:</label><br><select id="emailSelect"></select>
                 <label>To:</label><br><input id="To" type="text" placeholder="To"/><br><br>
                 <label>Cc:</label><br><input id="Cc" type="text" placeholder="Cc"/><br><br>
                 <label>Bcc:</label><br><input id="Bcc" type="text" placeholder="Bcc"/><br><br>
                 <label>Subject:</label><br><input id="Subject" type="text" placeholder="Subject"/><br><br>
-                <label>Body:</label><br><textarea id="Body" placeholder="Body" rows="5"></textarea><br>
-				<label><input id="Signature" type="checkbox" value="false">Add signature</label><br><br>
-				<label>Attachment:</label><input id="attachmentType" type="text" placeholder="/accounts/1000/.../file.ext"/><br><br>
+                <label>Body:</label><br><textarea id="Body" placeholder="Body" rows="5"></textarea><br><br>
+				<label><input id="vCard" type="checkbox" value="false">Add vCard</label><br>
+				<input id="vCardLocation" type="text" placeholder="/accounts/1000/.../file.vcf" rows="2"/><br><br>
+				<label><input id="signature" type="checkbox" value="false">Add signature</label><br>
+				<input id="signatureLocation" type="text" placeholder="/accounts/1000/.../file.txt" rows="2"/><br><br>
+				<label><input id="attachment" type="checkbox" value="false">Add attachment</label><br>
+				<input id="attachmentLocation" type="text" placeholder="/accounts/1000/.../file.ext" rows="2"/><br><br>
                 <input id="send" type="button" value="send"/>
                 <p>Status: <span id="status"> - </span></p>
             </div>
