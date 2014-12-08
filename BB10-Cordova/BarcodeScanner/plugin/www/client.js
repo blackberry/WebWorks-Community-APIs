@@ -103,9 +103,7 @@
 	};
 
 	function readFile(filename) {
-		window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-
-		window.requestFileSystem(
+		window.webkitRequestFileSystem(
 			window.TEMPORARY, 
 			fsSize, 
 			function (fs) {

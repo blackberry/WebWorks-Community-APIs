@@ -19,13 +19,14 @@
 #include <string.h>
 #include <errno.h>
 
-#define PLUGIN_VERSION "1.0.1"
+#define PLUGIN_VERSION "1.1.1"
 
 #define BUFFER_SIZE (1024)
 #define DEVICE_INFO_BUFF_SIZE (256)
 #define DEVICE_INFO_ADDR_SIZE (18)
 #define DATA_INTERVAL_SECONDS (3)
 #define SPP_SERVICE_UUID "00001101-0000-1000-8000-00805F9B34FB"
+#define SPP_RFCOMM_SERVICE_PORT (0)
 #define SPP_SERVICE_CLASS_UUID "0x1101"
 #define MAX_RESYNC_COUNT (5)
 #define JSON_KEY_STATUS "status"

@@ -130,6 +130,30 @@ module.exports = {
 		} else {
 			result.ok(simpleBtSppPlugin.getInstance().sppServiceUuid(), false);
 		}
+	},
+
+	sppRfcommMode: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		var value;
+		if (args && args["value"]) {
+			value = JSON.parse(decodeURIComponent(args["value"]));
+			simpleBtSppPlugin.getInstance().sppRfcommMode(result.callbackId, value);
+			result.noResult(false);
+		} else {
+			result.ok(simpleBtSppPlugin.getInstance().sppRfcommMode(), false);
+		}
+	},
+
+	sppRfcommServicePort: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		var value;
+		if (args && args["value"]) {
+			value = JSON.parse(decodeURIComponent(args["value"]));
+			simpleBtSppPlugin.getInstance().sppRfcommServicePort(result.callbackId, value);
+			result.noResult(false);
+		} else {
+			result.ok(simpleBtSppPlugin.getInstance().sppRfcommServicePort(), false);
+		}
 	}
 };
 
@@ -213,6 +237,22 @@ JNEXT.SimpleBtSppPlugin = function () {
 			return JNEXT.invoke(self.m_id, "sppServiceUuid " + callbackId + " " + value);
 		} else {
 			return JNEXT.invoke(self.m_id, "sppServiceUuid");
+		}
+	};
+
+	self.sppRfcommMode = function (callbackId, value) {
+		if (value || value === false) {
+			return JNEXT.invoke(self.m_id, "sppRfcommMode " + callbackId + " " + value);
+		} else {
+			return JNEXT.invoke(self.m_id, "sppRfcommMode");
+		}
+	};
+
+	self.sppRfcommServicePort = function (callbackId, value) {
+		if (value || value === 0) {
+			return JNEXT.invoke(self.m_id, "sppRfcommServicePort " + callbackId + " " + value);
+		} else {
+			return JNEXT.invoke(self.m_id, "sppRfcommServicePort");
 		}
 	};
 

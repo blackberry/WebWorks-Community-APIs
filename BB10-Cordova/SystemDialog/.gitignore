@@ -1,0 +1,8 @@
+plugin/src/blackberry10/native/.settings
+plugin/src/blackberry10/native/.device
+
+plugin/src/blackberry10/native/device/*
+!plugin/src/blackberry10/native/device/libSysDialog.*
+
+plugin/src/blackberry10/native/simulator/*
+!plugin/src/blackberry10/native/simulator/libSysDialog.*

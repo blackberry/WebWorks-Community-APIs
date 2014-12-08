@@ -85,6 +85,12 @@ var app = {
 					case "9":
 						pass = status.result == 1;
 						break;
+					case "10":
+						pass = status.result == -1;	// negative test
+						break;
+					case "11":
+						pass = status.result == 1;
+						break;
 				}
 
 				var pass_msg = "failed";
@@ -169,6 +175,24 @@ var app = {
 				},
 				onReturn
 				);
+
+			community.extractZipFile.compress( //zip one file with incorrect path; expect fail since no zip created
+				{
+					filePath: "./app/native/res/zip/noSuchFile",
+					zipDestinationPath: "./tmp/case/floder361.zip",
+					callbackToken: "10"
+				},
+				onReturn
+				);
+			community.extractZipFile.compress( //zip multiple files with at least 1 file does not exist
+				{
+					filePath: "./app/noThisFile:./app/native/res/zip/2:./app/noThatFile",
+					zipDestinationPath: "./tmp/case/floder361.zip",
+					callbackToken: "11"
+				},
+				onReturn
+				);
+
 			// END EXAMPLE USAGE
 			// -----------------
 		} else {

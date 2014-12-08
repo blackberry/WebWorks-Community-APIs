@@ -65,9 +65,9 @@ var app = {
 		selectButt.addEventListener("click", this.setAttribute, false);
 	},
 	testMetaDataExtraction: function(event) {
-		if (com && com.blackberry.community.audiometadata) {
+		if (community.audiometadata) {
 			if (app.pathGlobal.length > 0) {
-				com.blackberry.community.audiometadata.audioMetaDataGetMetaData(app.pathGlobal, app.metadataCallback);
+				community.audiometadata.audioMetaDataGetMetaData(app.pathGlobal, app.metadataCallback);
 			} else {
 				alert("No file selected");
 			}
@@ -76,11 +76,10 @@ var app = {
 		}
 	},
 	testMetaDataSet: function(event) {
-		if (com && com.blackberry.community.audiometadata) {
+		if (community.audiometadata) {
 			if (app.pathGlobal.length > 0) {
 				if (Object.keys(app.attributes).length > 1 && app.attributes["path"] == app.pathGlobal) {
-					app.writeOut(app.clearApplicationLog);
-					app.writeOut(com.blackberry.community.audiometadata.audioMetaDataSetTagData(app.attributes));
+					community.audiometadata.audioMetaDataSetTagData(app.attributes, app.metadataCallback);
 				} else {
 					alert("Not enough inputs");
 				}
@@ -92,10 +91,9 @@ var app = {
 		}
 	},
 	testMetaDataRemove: function(event) {
-		if (com && com.blackberry.community.audiometadata) {
+		if (community.audiometadata) {
 			if (app.pathGlobal.length > 0) {
-				app.writeOut(app.clearApplicationLog);
-				app.writeOut(com.blackberry.community.audiometadata.audioMetaDataRemoveTag(app.pathGlobal));
+				community.audiometadata.audioMetaDataRemoveTag(app.pathGlobal, app.metadataCallback);
 			} else {
 				alert("No file selected");
 			}

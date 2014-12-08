@@ -20,8 +20,10 @@ The following describes the APIs:
 - Properties
 	- Common properties
 		- **bluetoothAddress**
-	- Bluetooth SPP specific
 		- **sppServiceUuid**
+	- SPP **RFCOMM** API ( available in **10.3.0** and above )
+		- **sppRfcommMode**
+		- **sppRfcommServicePort**
 
 that are used to interact with this Bluetooth Plugin.
 
@@ -630,6 +632,82 @@ Get the SPP Service UUID:
 ```javascript
 var serviceUuid;
 serviceUuid = com.blackberry.community.simplebtsppplugin.sppServiceUuid;
+```
+
+## sppRfcommMode ##
+
+### Name: ###
+
+com.blackberry.community.simplebtsppplugin.sppRfcommMode
+
+### Description: ###
+
+Used to set or retrieve the SPP RFCOMM Mode. Setting the RFCOMM mode means that the underlying extended APIs: **bt\_spp\_open\_server\_ex()** and **bt\_spp\_open\_ex()** will be used in preference to **bt\_spp\_open\_server()** and **bt\_spp\_open()**.
+
+The extended RFCOMM APIs are available in **10.3.0** and above and require an extra parameter: the **RFCOMM Service Port**, which is an integer and which can be set using the **com.blackberry.community.simplebtsppplugin.sppRfcommServicePort** property.
+
+### Type: ###
+
+Property
+
+### Values: ###
+
+- A boolean
+	- A value of **true** indicates that the **RFCOMM** API is to be used
+	- A value of **false** indicates that the **SPP** API is to be used (**default**)
+
+### Example Usage: ###
+
+Set the SPP RFCOMM Mode to **true**:
+
+```javascript
+com.blackberry.community.simplebtsppplugin.sppRfcommMode = true;
+```
+
+Get the SPP RFCOMM Mode setting:
+
+```javascript
+var sppRfcommMode;
+sppRfcommMode = com.blackberry.community.simplebtsppplugin.sppRfcommMode;
+```
+
+## sppRfcommServicePort ##
+
+### Name: ###
+
+com.blackberry.community.simplebtsppplugin.sppRfcommServicePort
+
+### Description: ###
+
+Used to set or retrieve the current value of the SPP RFCOMM Service Port.
+
+The SPP RFCOMM Service Port is used only by the underlying extended APIs: **bt\_spp\_open\_server\_ex()** and **bt\_spp\_open\_ex()**.
+
+In order to use the extended APIs rather than **bt\_spp\_open\_server()** and **bt\_spp\_open()** you need to set the value of the property **sppRfcommMode** to **true**. 
+
+The extended RFCOMM APIs are available in **10.3.0** and above.
+
+### Type: ###
+
+Property
+
+### Values: ###
+
+- An SPP RCOMM Service Port value is an **Integer**. If you don't set this value explicitly then it will default to a value of 0 (Zero).
+
+### Example Usage: ###
+
+Set the SPP RFCOMM Service Port to a value to 1000:
+
+```javascript
+com.blackberry.community.simplebtsppplugin.sppRfcommServicePort = 1000;
+```
+
+Get the current SPP RFCOMM Service Port value:
+
+```javascript
+var sppRfcommServicePort;
+sppRfcommServicePort = com.blackberry.community.simplebtsppplugin.sppRfcommServicePort;
 ```
 
 ## Example 1 - Plugin used as an SPP client ##
