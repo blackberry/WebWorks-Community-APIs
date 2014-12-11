@@ -147,6 +147,12 @@ string SimpleBtSppPlugin_JS::InvokeMethod(const string& command) {
         } else {
             return SSTR(m_pSimpleBtSppPluginController->getRfcommServicePort());
         }
+    } else if (strCommand == "sppBufferSize") {
+        if (arg != strCommand) {
+            m_pSimpleBtSppPluginController->setSppBufferSize((uint)std::strtol(arg.c_str(), NULL, 10));
+        } else {
+            return SSTR(m_pSimpleBtSppPluginController->getSppBufferSize());
+        }
     }
 
 	strCommand.append(";");
