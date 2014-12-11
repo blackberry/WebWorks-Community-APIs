@@ -262,4 +262,29 @@ var _self = {},
 		}
 	});
 
+	Object.defineProperty(_self, "sppBufferSize", {
+		get: function () {
+			var result,
+				success = function (data, response) {
+					result = data;
+				},
+				fail = function (data, response) {
+					console.log("Error: " + data);
+				};
+			exec(success, fail, _ID, "sppBufferSize", null);
+			return result;
+		},
+		set: function (arg) {
+			var result,
+				success = function (data, response) {
+					result = data;
+				},
+				fail = function (data, response) {
+					console.log("Error: " + data);
+				};
+			exec(success, fail, _ID, "sppBufferSize", {"value": arg });
+			return result;
+		}
+	});
+
 module.exports = _self;

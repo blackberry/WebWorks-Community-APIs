@@ -19,9 +19,9 @@
 #include <string.h>
 #include <errno.h>
 
-#define PLUGIN_VERSION "1.1.1"
+#define PLUGIN_VERSION "1.2.0"
 
-#define BUFFER_SIZE (1024)
+#define DEFAULT_BUFFER_SIZE (1024)
 #define DEVICE_INFO_BUFF_SIZE (256)
 #define DEVICE_INFO_ADDR_SIZE (18)
 #define DATA_INTERVAL_SECONDS (3)

@@ -76,6 +76,9 @@ public:
     int getRfcommServicePort();
     void setRfcommServicePort(const int rfcommServicePort);
 
+    uint getSppBufferSize();
+    void setSppBufferSize(const uint sppBufferSize);
+
     void *scanForDevices();
     void *connectionHandler();
     void handleSppServerCallback(int fd);
@@ -103,8 +106,8 @@ private:
     bool m_remote_disconnected_us;
     bool m_disconnect_in_progress;
     int m_current_buffer_location;
-    uint8_t m_in_buffer[BUFFER_SIZE];
-    uint8_t m_out_buffer[BUFFER_SIZE];
+    uint8_t *m_in_buffer;
+    uint8_t *m_out_buffer;
     pthread_cond_t m_stopthread_cond;
     std::string m_scan_callback_id;
     std::string m_connection_callback_id;
@@ -121,6 +124,7 @@ private:
     std::string m_spp_service_uuid;
     bool m_rfcomm_mode;
     int m_rfcomm_service_port;
+    uint m_buffer_size;
 };
 
 } // namespace webworks
