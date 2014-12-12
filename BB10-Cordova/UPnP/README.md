@@ -9,8 +9,8 @@ BlackBerry Z10 10.3.1.634
 
 ** Author **
 
-[Peardox] (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/325249)
-[Junjie Huang] (https://github.com/umcsdon)
+	[Peardox] (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/325249)
+	[Junjie Huang] (https://github.com/umcsdon)
 
 ## Including the feature in your application
 
@@ -27,7 +27,7 @@ Installation from source is the same but instead of the id ("com.blackberry.comm
 Note that it is also required that you give your app the disabled websecurity feature. This is as the extension needs to talk to any and all uPnP devices on your WiFi network. The websecurity feature is a bit black and white in this respect, all or nothing...
 
 ```xml
-	<perference name="websecurity" value="false" />
+	<preference name="websecurity" value="false" />
 ```
 
 ## Structure of the Plugin and Sample

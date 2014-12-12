@@ -48,8 +48,8 @@ var app = {
 		app.testPluginCalls();
 	},
 	testPluginCalls: function() {
-		if (com && com.blackberry.community.upnp) {
-			app.writeOut(com.blackberry.community.upnp.discover( 2000 ));
+		if (community && community.upnp) {
+			app.writeOut(community.upnp.discover( 2000 ));
 		} else {
 			app.writeOut("Plugin was not found");
 		}
@@ -72,7 +72,7 @@ var app = {
 			var json = JSON.parse(data);
 			app.writeOut("Thread Callback: " + json.threadCount);
 			if (json.threadCount >= 10) {
-				var end = com.blackberry.community.upnp.uPnPStopThread();
+				var end = community.upnp.uPnPStopThread();
 				app.writeOut(end);
 				app.threadStarted = false;
 			}
