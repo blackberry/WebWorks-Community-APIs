@@ -8,7 +8,7 @@
     <author>Peardox, Junjie Huang</author>
 
     <js-module src="www/client.js">
-        <clobbers target="com.blackberry.community.upnp" />
+        <clobbers target="community.upnp" />
     </js-module>
 
     <platform name="blackberry10">
