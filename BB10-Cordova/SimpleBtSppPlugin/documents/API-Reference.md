@@ -721,7 +721,7 @@ com.blackberry.community.simplebtsppplugin.sppBufferSize
 
 Used to set or retrieve the current value of the SPP Buffer Size Property.
 
-This is simply the size of the read/write buffer used internally to the plugin when it reads and write data to and from the underlying Bluetooth SPP APIs.
+This is simply the size of the read/write buffer used internally to the plugin when it reads and write data to and from the underlying Bluetooth SPP APIs. This property should be set prior to calling **initialiseBluetooth** if you want to set it some value other than the default.
 
 The default value is 1024 bytes and you might consider increasing this if the device you're communicating with over SPP or RFCOMM transfers data in chunks larger then 1024  bytes. It's more of an efficiency consideration. One interaction of, say, 4096 bytes, versus 4 of 1024 bytes. 
 

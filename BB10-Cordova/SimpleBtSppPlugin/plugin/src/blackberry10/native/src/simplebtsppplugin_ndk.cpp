@@ -133,9 +133,9 @@ namespace webworks {
         LOGI("SimpleBtSppPlugin_NDK destructor");
 
         bool need_to_stop_connection = false;
-        pthread_mutex_lock(&m_scan_mutex);
-        need_to_stop_connection = m_scan_thread_running;
-        pthread_mutex_unlock(&m_scan_mutex);
+        pthread_mutex_lock(&m_connection_mutex);
+        need_to_stop_connection = m_connection_thread_running;
+        pthread_mutex_unlock(&m_connection_mutex);
 
         if (need_to_stop_connection) {
             disconnectFromDevice();
@@ -1062,9 +1062,25 @@ namespace webworks {
     {
         uint roundedUpBufferSize = DEFAULT_BUFFER_SIZE;
 
+        if (m_bt_initialised) { // don't change buffer sizes in flight
+            return;
+        }
+
         if (sppBufferSize >  DEFAULT_BUFFER_SIZE) {
             roundedUpBufferSize = (((sppBufferSize-1) >> 6) + 1) << 6;
         }
+
+        if (m_in_buffer) {
+            free(m_in_buffer);
+        }
+
+        m_in_buffer = (uint8_t*) malloc(roundedUpBufferSize);
+
+        if (m_out_buffer) {
+            free(m_out_buffer);
+        }
+
+        m_out_buffer = (uint8_t*) malloc(roundedUpBufferSize);
 
         m_buffer_size = roundedUpBufferSize;
     }

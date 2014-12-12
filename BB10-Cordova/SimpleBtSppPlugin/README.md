@@ -17,6 +17,8 @@ It comes with a sample WebWorks application in the form of a simple **Chat** app
 
 ###Release History
 
+* **V1.2.1** - Bugfix
+	* Buffer overrun in inbound messages
 * **V1.2.0** - Addition of **sppBufferSize** API
 * **V1.1.1** - Bugfix
 	* Buffer overrun in message logging
