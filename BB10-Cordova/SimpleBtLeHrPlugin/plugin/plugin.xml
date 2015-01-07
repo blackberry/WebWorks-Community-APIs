@@ -1,0 +1,22 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="com.blackberry.community.simplebtlehrplugin"
+    version="1.0.0">
+
+    <name>SimpleBtLeHrPlugin</name>
+    <description>BlackBerry 10 Community Contributed SimpleBtLeHrPlugin API</description>
+    <license>Apache 2.0</license>
+    <author>John Murray</author>
+
+    <js-module src="www/client.js">
+        <clobbers target="com.blackberry.community.simplebtlehrplugin" />
+    </js-module>
+
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" />
+        <lib-file src="src/blackberry10/native/device/libSimpleBtLeHrPlugin.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libSimpleBtLeHrPlugin.so" arch="simulator"/>
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="com.blackberry.community.simplebtlehrplugin" value="com.blackberry.community.simplebtlehrplugin" />
+        </config-file>
+    </platform>
+</plugin>
