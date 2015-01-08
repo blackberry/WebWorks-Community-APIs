@@ -50,7 +50,9 @@ var app = {
 	},
 	testPluginCalls: function() {
 		if (community && community.mongoose) {
-			app.writeOut('Results of starting Mongoose server:\n ' + community.mongoose.start({}));
+			// app.writeOut('Results of starting Mongoose server:\n ' + community.mongoose.start({}));
+			// app.writeOut('Results of starting Mongoose server:\n ' + community.mongoose.start({ "listening_ports" : "8080" }));
+			app.writeOut('Results of starting Mongoose server:\n ' + community.mongoose.start({ "listening_ports" : 8080 }));
 			app.writeOut('Results of stopping Mongoose server:\n ' + community.mongoose.stop());
 		} else {
 			app.writeOut("Plugin was not found");
