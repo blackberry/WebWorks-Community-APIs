@@ -5,7 +5,7 @@ This Bluetooth Smart heart Rate Profile WebWorks Plugin (**SimpleBtLeHrPlugin**)
 
 There is a document in the **/documents** folder describing the plugin's API from JavaScript.
 
-It comes with a sample WebWorks application in the form of a simple **Heart Rate Monitor** application that uses the Bluetrooth Smart Heart Rate Plugin to communicate with a suitable Heart Rate monitor.
+It comes with a sample WebWorks application in the form of a simple **Heart Rate Monitor** application that uses the Bluetooth Smart Heart Rate Plugin to communicate with a suitable Heart Rate monitor.
 
 ###Applies To
 
