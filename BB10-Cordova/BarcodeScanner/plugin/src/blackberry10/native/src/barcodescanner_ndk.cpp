@@ -43,6 +43,7 @@ BarcodeScannerJS* eventDispatcher = NULL;
 //static int filecounter = 0;
 //#define TMP_PATH "tmp/"
 //static uint32_t rotation = 0;
+static uint32_t vfRotation = 0;
 
 // Variables for native viewfinder screen
 //static screen_context_t screen_ctx = 0;
@@ -518,6 +519,19 @@ static pthread_t m_thread = 0;
                 screen_get_window_property_iv(vf_win, SCREEN_PROPERTY_VISIBLE, &i);
                 log->debug("Visible?");
                 log->debug(convertIntToString(i).c_str());
+                // Rotate the window as needed
+                i = 360 - vfRotation;
+                screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_ROTATION, &i);
+                screen_get_window_property_iv(vf_win, SCREEN_PROPERTY_ROTATION, &i);
+                log->debug("Rotation");
+                log->debug(convertIntToString(i).c_str());
+                // Make full screen
+                int size[2] = { 0, 0 };
+//                screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_ROTATION, size);
+                screen_get_window_property_iv(vf_win, SCREEN_PROPERTY_SIZE, size);
+                log->debug("Size");
+                log->debug(convertIntToString(size[0]).c_str());
+                log->debug(convertIntToString(size[1]).c_str());
             }
             break;
         case SCREEN_EVENT_CLOSE:
@@ -674,13 +688,22 @@ static pthread_t m_thread = 0;
 //		err = camera_get_photo_rotations(mCameraHandle, CAMERA_FRAMETYPE_JPEG, true, 8, &numRotations, rotations, &nonsquare);
 //		rotation = rotations[0] / 90;
 
+		// do we need to rotate the viewfinder?
+
+		err = camera_get_photovf_property(mCameraHandle, CAMERA_IMGPROP_ROTATION, &vfRotation);
+		m_pParent->getLog()->debug("Viewfinder Rotation");
+		m_pParent->getLog()->debug(convertIntToString(vfRotation).c_str());
+		uint32_t vfRotationAlign = -270;
+
 		m_pParent->getLog()->debug("Camera Window Group");
 		m_pParent->getLog()->debug(windowGroup);
-		// We're going to turn on burst mode for the camera and set maximum framerate for the viewfinder
+		// We're going to have the viewfinder window join our app's window group, and start an embedded window
 		err = camera_set_photovf_property(mCameraHandle,
 //		    CAMERA_IMGPROP_WIN_GROUPID, vf_group,
 		    CAMERA_IMGPROP_WIN_GROUPID, windowGroup,
 		    CAMERA_IMGPROP_WIN_ID, "my_viewfinder",
+//		    CAMERA_IMGPROP_HEIGHT, 720,
+//		    CAMERA_IMGPROP_WIDTH, 720,
 		    CAMERA_IMGPROP_CREATEWINDOW, 1,
 		    CAMERA_IMGPROP_ISEMBEDDED, 1);//,
 //			CAMERA_IMGPROP_BURSTMODE, 1,
