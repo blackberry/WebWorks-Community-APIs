@@ -38,6 +38,7 @@ public:
     bool StartEvents();
     Logger* getLog();
     void handleScreenEvent(bps_event_t *event, Logger* log, const char* windowGroup);
+    void cancelScan();
     char* windowGroup;
     screen_context_t windowContext;
     char* cbId;

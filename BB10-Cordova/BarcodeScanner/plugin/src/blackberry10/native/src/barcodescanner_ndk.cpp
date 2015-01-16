@@ -65,6 +65,8 @@ static pthread_t m_thread = 0;
      */
     const char* getCameraErrorDesc(camera_error_t err) {
         switch (err) {
+        case CAMERA_EOK:
+            return "The function call to the camera completed successfully.";
         case CAMERA_EAGAIN:
             return "The specified camera was not available. Try again.";
         case CAMERA_EINVAL:
@@ -86,7 +88,7 @@ static pthread_t m_thread = 0;
         case CAMERA_EOPNOTSUPP:
             return "Indicates that the requested operation is not supported.";
         case CAMERA_ETIMEDOUT:
-            return "Indicates an operation on the camera is already in progress. In addition, this error can indicate that an error could not be completed because i was already completed. For example, if you called the @c camera_stop_video() function but the camera had already stopped recording video, this error code would be returned.";
+            return "The function call failed due to communication problem or time-out with the camera.";
         case CAMERA_EALREADY:
             return "Indicates an operation on the camera is already in progress. In addition,this error can indicate that an error could not be completed because it was already completed. For example, if you called the @c camera_stop_video() function but the camera had already stopped recording video, this error code would be returned.";
         case CAMERA_EUNINIT:
@@ -282,60 +284,60 @@ static pthread_t m_thread = 0;
     }
 
     void interrogateWindowCV(screen_window_t window, Logger* log, string description, int property) {
-            char* value = new char[256];
-            int ok = screen_get_window_property_cv(window, property, 256, value);
-            if (ok == 0) {
-                log->info(description.c_str());
-                log->info(value);
-            } else {
-                log->warn("Unable to interpret value for");
-                log->warn(description.c_str());
-            }
+        char* value = new char[256];
+        int ok = screen_get_window_property_cv(window, property, 256, value);
+        if (ok == 0) {
+            log->info(description.c_str());
+            log->info(value);
+        } else {
+            log->warn("Unable to interpret value for");
+            log->warn(description.c_str());
         }
+    }
 
-        void interrogateWindowIV(screen_window_t window, Logger* log, string description, int property) {
-                int value = -1;
-                int ok = screen_get_window_property_iv(window, property, &value);
-                if (ok == 0) {
-                    log->info(description.c_str());
-                    log->info(convertIntToString(value).c_str());
-                } else {
-                    log->warn("Unable to interpret value for");
-                    log->warn(description.c_str());
-                }
-            }
-
-        void interrogateWindow(screen_window_t window, Logger* log) {
-            log->info("Window Details--->");
-            interrogateWindowIV(window, log, "Permissions", SCREEN_PROPERTY_PERMISSIONS);
-            interrogateWindowCV(window, log, "Window ID", SCREEN_PROPERTY_ID_STRING);
-            interrogateWindowIV(window, log, "Window Type", SCREEN_PROPERTY_TYPE);
-            interrogateWindowIV(window, log, "Window Owner PID", SCREEN_PROPERTY_OWNER_PID);
-            interrogateWindowCV(window, log, "Window Group", SCREEN_PROPERTY_GROUP);
-            interrogateWindowIV(window, log, "Window Z Order", SCREEN_PROPERTY_ZORDER);
-            interrogateWindowIV(window, log, "Window Visible", SCREEN_PROPERTY_VISIBLE);
-            log->info("Window Interrogation complete");
+    void interrogateWindowIV(screen_window_t window, Logger* log, string description, int property) {
+        int value = -1;
+        int ok = screen_get_window_property_iv(window, property, &value);
+        if (ok == 0) {
+            log->info(description.c_str());
+            log->info(convertIntToString(value).c_str());
+        } else {
+            log->warn("Unable to interpret value for");
+            log->warn(description.c_str());
         }
+    }
+
+    void interrogateWindow(screen_window_t window, Logger* log) {
+        log->info("Window Details--->");
+//            interrogateWindowIV(window, log, "Permissions", SCREEN_PROPERTY_PERMISSIONS);
+        interrogateWindowCV(window, log, "Window ID", SCREEN_PROPERTY_ID_STRING);
+        interrogateWindowIV(window, log, "Window Type", SCREEN_PROPERTY_TYPE);
+        interrogateWindowIV(window, log, "Window Owner PID", SCREEN_PROPERTY_OWNER_PID);
+        interrogateWindowCV(window, log, "Window Group", SCREEN_PROPERTY_GROUP);
+        interrogateWindowIV(window, log, "Window Z Order", SCREEN_PROPERTY_ZORDER);
+        interrogateWindowIV(window, log, "Window Visible", SCREEN_PROPERTY_VISIBLE);
+        log->info("Window Interrogation complete");
+    }
 
     void *HandleEvents(void *args) {
-            BarcodeScannerNDK *parent = static_cast<BarcodeScannerNDK *>(args);
-            parent->getLog()->debug("BarcodeScannerNDK EventHandler");
+        BarcodeScannerNDK *parent = static_cast<BarcodeScannerNDK *>(args);
+        parent->getLog()->debug("BarcodeScannerNDK EventHandler");
 
-            /**
-             * Creating a native viewfinder screen
-             */
-            const int usage = SCREEN_USAGE_NATIVE;
-            screen_window_t screen_win;
-            screen_buffer_t screen_buf = NULL;
-            int rect[4] = { 0, 0, 0, 0 };
+        /**
+         * Creating a native viewfinder screen
+         */
+        const int usage = SCREEN_USAGE_NATIVE;
+        screen_window_t screen_win;
+        screen_buffer_t screen_buf = NULL;
+        int rect[4] = { 0, 0, 0, 0 };
 
 //            if(screen_create_context(&screen_ctx, SCREEN_APPLICATION_CONTEXT) == -1) {
 //                parent->getLog()->error("screen_create_context() failed");
 //            }
 
-            if(screen_create_window_type(&screen_win, parent->windowContext, SCREEN_CHILD_WINDOW) == -1) {
-                parent->getLog()->error("screen_create_window() failed");;
-            }
+        if(screen_create_window_type(&screen_win, parent->windowContext, SCREEN_CHILD_WINDOW) == -1) {
+            parent->getLog()->error("screen_create_window() failed");;
+        }
 //            screen_create_window_group(screen_win, vf_group);
 //            parent->windowGroup = new char[256];
 
@@ -343,109 +345,116 @@ static pthread_t m_thread = 0;
 //            screen_get_window_property_cv(screen_win, SCREEN_PROPERTY_GROUP, 256, parent->windowGroup);
 //            parent->getLog()->info("Window Group");
 //            parent->getLog()->info(parent->windowGroup);
-            screen_join_window_group(screen_win, parent->windowGroup);
-            char * groupCheck = new char[256];
-            screen_get_window_property_cv(screen_win, SCREEN_PROPERTY_GROUP, 256, groupCheck);
-            parent->getLog()->info("Window Group Check");
-            parent->getLog()->info(groupCheck);
-            screen_set_window_property_iv(screen_win, SCREEN_PROPERTY_USAGE, &usage);
-            screen_create_window_buffers(screen_win, 1);
-            screen_get_window_property_pv(screen_win, SCREEN_PROPERTY_RENDER_BUFFERS, (void **)&screen_buf);
-            screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_BUFFER_SIZE, rect+2);
+        screen_join_window_group(screen_win, parent->windowGroup);
+        char * groupCheck = new char[256];
+        screen_get_window_property_cv(screen_win, SCREEN_PROPERTY_GROUP, 256, groupCheck);
+        parent->getLog()->info("Window Group Check");
+        parent->getLog()->info(groupCheck);
+        screen_set_window_property_iv(screen_win, SCREEN_PROPERTY_USAGE, &usage);
+        screen_create_window_buffers(screen_win, 1);
+        screen_get_window_property_pv(screen_win, SCREEN_PROPERTY_RENDER_BUFFERS, (void **)&screen_buf);
+        screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_BUFFER_SIZE, rect+2);
 
-            int type = -1;
-            screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_TYPE, &type);
-            parent->getLog()->debug("Window Type");
-            parent->getLog()->debug(convertIntToString(type).c_str());
+        parent->getLog()->debug("Screen Buffer Size:");
+        parent->getLog()->debug(convertIntToString(rect[0]).c_str());
+        parent->getLog()->debug(convertIntToString(rect[1]).c_str());
+        parent->getLog()->debug(convertIntToString(rect[2]).c_str());
+        parent->getLog()->debug(convertIntToString(rect[3]).c_str());
 
-            // fill the window with black
-            int attribs[] = { SCREEN_BLIT_COLOR, 0x00333333, SCREEN_BLIT_END };
-            screen_fill(parent->windowContext, screen_buf, attribs);
-            screen_post_window(screen_win, screen_buf, 1, rect, 0);
-            // position the window at an arbitrary z-order
-            int i = 1;
-            screen_set_window_property_iv(screen_win, SCREEN_PROPERTY_ZORDER, &i);
-            screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_ZORDER, &i);
-            parent->getLog()->debug("Current Zorder");
-            parent->getLog()->debug(convertIntToString(i).c_str());
-            int visible = 1;
-            screen_set_window_property_iv(screen_win, SCREEN_PROPERTY_VISIBLE, &visible);
-            screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_VISIBLE, &visible);
-            parent->getLog()->debug("Visible?");
-            parent->getLog()->debug(convertIntToString(visible).c_str());
-            screen_flush_context(parent->windowContext, 0);
+        int type = -1;
+        screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_TYPE, &type);
+        parent->getLog()->debug("Window Type");
+        parent->getLog()->debug(convertIntToString(type).c_str());
 
-            parent->getLog()->debug("Created Background window");
+        // fill the window with black
+        int attribs[] = { SCREEN_BLIT_COLOR, 0x00333333, SCREEN_BLIT_END };
+        screen_fill(parent->windowContext, screen_buf, attribs);
+        screen_post_window(screen_win, screen_buf, 1, rect, 0);
+        // position the window at an arbitrary z-order
+        int i = 1;
+        screen_set_window_property_iv(screen_win, SCREEN_PROPERTY_ZORDER, &i);
+        screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_ZORDER, &i);
+        parent->getLog()->debug("Current Zorder");
+        parent->getLog()->debug(convertIntToString(i).c_str());
+        int visible = 1;
+        screen_set_window_property_iv(screen_win, SCREEN_PROPERTY_VISIBLE, &visible);
+        screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_VISIBLE, &visible);
+        parent->getLog()->debug("Visible?");
+        parent->getLog()->debug(convertIntToString(visible).c_str());
+        screen_flush_context(parent->windowContext, 0);
+
+        parent->getLog()->debug("Created Background window");
 
 //            if (screen_ctx) {
 //                screen_request_events(screen_ctx);
 //                parent->getLog()->debug("Requested Events");
 //            }
-            if (parent->windowContext) {
-                if (BPS_SUCCESS == screen_request_events(parent->windowContext)) {
-                    parent->getLog()->debug("Requested Events");
-                } else {
-                    parent->getLog()->error("Unable to request events");
-                }
+        if (parent->windowContext) {
+            if (BPS_SUCCESS == screen_request_events(parent->windowContext)) {
+                parent->getLog()->debug("Requested Events");
+            } else {
+                parent->getLog()->error("Unable to request events");
             }
+        }
 
-            screen_group_t group;
-            screen_get_window_property_pv(screen_win, SCREEN_PROPERTY_GROUP, (void **)&group);
-            char* groupName = new char[256];
-            screen_get_group_property_cv(group, SCREEN_PROPERTY_NAME, 256, groupName);
-            parent->getLog()->debug("Group Found");
-            parent->getLog()->debug(groupName);
+        screen_group_t group;
+        screen_get_window_property_pv(screen_win, SCREEN_PROPERTY_GROUP, (void **)&group);
+        char* groupName = new char[256];
+        screen_get_group_property_cv(group, SCREEN_PROPERTY_NAME, 256, groupName);
+        parent->getLog()->debug("Group Found");
+        parent->getLog()->debug(groupName);
 //            screen_context_t windowContext;
 //            int getContext = screen_get_window_property_pv(window, SCREEN_PROPERTY_CONTEXT, (void **)&windowContext);
 //            int getContext = screen_get_group_property_pv(group, SCREEN_PROPERTY_CONTEXT, (void **)&windowContext);
 
+        // reset Touch value before starting up listening for touch events
+        touch = false;
 
+        while(!parent->isThreadHalt()) {
+            MUTEX_LOCK();
 
-            while(!parent->isThreadHalt()) {
-                MUTEX_LOCK();
+            int domain;
+            // Get the first event in the queue.
+            bps_event_t *event = NULL;
+            if (BPS_SUCCESS != bps_get_event(&event, 0)) {
+                parent->getLog()->error("bps_get_event() failed");
+//                            return;
+            }
 
-                int domain;
-                // Get the first event in the queue.
-                bps_event_t *event = NULL;
+            // Handle all events in the queue.
+            while (event) {
+                if (touch) {
+                    // HandleScreenEvent got a tap on the screen
+                    // Shutdown the scanning
+                    parent->cancelScan();
+                    break;
+                }
+                if (event) {
+                    domain = bps_event_get_domain(event);
+                    parent->getLog()->debug("BPS Event");
+                    if (domain == screen_get_domain()) {
+                        parent->getLog()->debug("BPS Screen Event");
+                        parent->handleScreenEvent(event, parent->getLog(), parent->windowGroup);
+                    }
+                }
                 if (BPS_SUCCESS != bps_get_event(&event, 0)) {
                     parent->getLog()->error("bps_get_event() failed");
-//                            return;
-                }
-
-                // Handle all events in the queue.
-                while (event) {
-                    if (event) {
-                        domain = bps_event_get_domain(event);
-                        parent->getLog()->debug("BPS Event");
-                        if (domain == screen_get_domain()) {
-                            parent->getLog()->debug("BPS Screen Event");
-                            parent->handleScreenEvent(event, parent->getLog(), parent->windowGroup);
-                        }
-                    }
-                    if (touch) {
-                        // HandleScreenEvent got a tap on the screen
-                        // Shutdown the scanning
-                        parent->stopRead(parent->cbId);
-                    }
-
-                    if (BPS_SUCCESS != bps_get_event(&event, 0)) {
-                        parent->getLog()->error("bps_get_event() failed");
 //                                return;
-                    }
                 }
-
-                MUTEX_UNLOCK();
-
-                // Poll at 10hz
-                usleep(100000);
             }
-            screen_destroy_window(screen_win);
-            // stop screen events on this thread
+
+            MUTEX_UNLOCK();
+
+            // Poll at 10hz
+            usleep(100000);
+        }
+        screen_destroy_window(screen_win);
+        // stop screen events on this thread
 //            if(screen_stop_events(screen_ctx) == -1) {
-            if(screen_stop_events(parent->windowContext) == -1) {
-                parent->getLog()->error("screen_stop_events failed");
-            }
-            return NULL;
+        if(screen_stop_events(parent->windowContext) == -1) {
+            parent->getLog()->error("screen_stop_events failed");
+        }
+        return NULL;
     }
 
     void BarcodeScannerNDK::handleScreenEvent(bps_event_t *event, Logger* log, const char* windowGroup) {
@@ -455,7 +464,9 @@ static pthread_t m_thread = 0;
         screen_get_event_property_iv(screen_event, SCREEN_PROPERTY_TYPE, &eventType);
 
         switch (eventType) {
+        case SCREEN_EVENT_MTOUCH_RELEASE:
         case SCREEN_EVENT_MTOUCH_TOUCH:
+        case SCREEN_EVENT_MTOUCH_MOVE:
             log->info("Touch Event");
             touch = true;
             break;
@@ -472,22 +483,22 @@ static pthread_t m_thread = 0;
                 // child window could be overlaid on top of the viewfinder.
 //                screen_leave_window_group(vf_win);
 //                screen_join_window_group(vf_win, windowGroup);
-                char* group = new char[256];
-                screen_get_window_property_cv(vf_win, SCREEN_PROPERTY_GROUP, 256, group);
-                log->info("VF Window Group Check");
-                log->info(group);
-                int i = 1;
-                screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_ZORDER, &i);
-                screen_get_window_property_iv(vf_win, SCREEN_PROPERTY_ZORDER, &i);
-                log->debug("Current Zorder");
-                log->debug(convertIntToString(i).c_str());
-                // make viewfinder window visible
-                i = 1;
-                screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_VISIBLE, &i);
-                screen_get_window_property_iv(vf_win, SCREEN_PROPERTY_VISIBLE, &i);
-                log->debug("Visible?");
-                log->debug(convertIntToString(i).c_str());
-                screen_flush_context(windowContext, 0);
+//                char* group = new char[256];
+//                screen_get_window_property_cv(vf_win, SCREEN_PROPERTY_GROUP, 256, group);
+//                log->info("VF Window Group Check");
+//                log->info(group);
+//                int i = 1;
+//                screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_ZORDER, &i);
+//                screen_get_window_property_iv(vf_win, SCREEN_PROPERTY_ZORDER, &i);
+//                log->debug("Current Zorder");
+//                log->debug(convertIntToString(i).c_str());
+//                // make viewfinder window visible
+//                i = 1;
+//                screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_VISIBLE, &i);
+//                screen_get_window_property_iv(vf_win, SCREEN_PROPERTY_VISIBLE, &i);
+//                log->debug("Visible?");
+//                log->debug(convertIntToString(i).c_str());
+//                screen_flush_context(windowContext, 0);
                 // we should now have a visible viewfinder
                 // other things we could do here include rotating the viewfinder window (screen rotation),
                 // or adjusting the size & position of the window.
@@ -600,6 +611,18 @@ static pthread_t m_thread = 0;
         return isThreadHalt;
     }
 
+    void BarcodeScannerNDK::cancelScan() {
+        m_pParent->getLog()->warn("Cancel Scan");
+        std::string errorEvent = "community.barcodescanner.errorfound.native";
+        std::string callbackId = cbId;
+        Json::FastWriter writer;
+        Json::Value root;
+        root["state"] = "Scanning";
+        root["error"] = "Scan cancelled by user";
+        root["description"] = "Stopping scan because the user tapped on the screen to cancel it.";
+        m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
+    }
+
     /*
      * BarcodeScannerNDK::startRead
      *
@@ -623,7 +646,7 @@ static pthread_t m_thread = 0;
             root["state"] = "Parsing JSON object";
             root["error"] = "Cannot parse JSON object";
             root["description"] = "";
-            m_pParent->NotifyEvent(callbackId + " " + writer.write(error));
+            m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(error));
             return EIO;
         } else {
             handle = input["handle"].asString();
@@ -805,9 +828,8 @@ static pthread_t m_thread = 0;
         err = camera_stop_photo_viewfinder(mCameraHandle);
         if ( err != CAMERA_EOK)
         {
-#ifdef DEBUG
-            fprintf(stderr, "Error with turning off the photo viewfinder \n");
-#endif
+            m_pParent->getLog()->error("Error with turning off the photo viewfinder");
+            m_pParent->getLog()->error(getCameraErrorDesc( err ));
             root["error"] = err;
 		    root["description"] = getCameraErrorDesc( err );
 		    m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
@@ -817,9 +839,8 @@ static pthread_t m_thread = 0;
         //check to see if the camera is open, if it is open, then close it
         err = camera_close(mCameraHandle);
         if ( err != CAMERA_EOK){
-#ifdef DEBUG
-            fprintf(stderr, "Error with closing the camera \n");
-#endif
+            m_pParent->getLog()->error("Error with closing the camera");
+            m_pParent->getLog()->error(getCameraErrorDesc( err ));
             root["error"] = err;
             root["description"] = getCameraErrorDesc( err );
             m_pParent->NotifyEvent(callbackId + " " + errorEvent + " " + writer.write(root));
