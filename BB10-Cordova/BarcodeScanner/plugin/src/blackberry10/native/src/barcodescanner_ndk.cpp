@@ -537,12 +537,22 @@ static pthread_t m_thread = 0;
                 log->debug("Rotation");
                 log->debug(convertIntToString(i).c_str());
                 // Make full screen
-                int size[2] = { 0, 0 };
-//                screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_ROTATION, size);
-                screen_get_window_property_iv(vf_win, SCREEN_PROPERTY_SIZE, size);
-                log->debug("Size");
-                log->debug(convertIntToString(size[0]).c_str());
-                log->debug(convertIntToString(size[1]).c_str());
+                screen_display_t display = NULL;
+                screen_get_window_property_pv(vf_win, SCREEN_PROPERTY_DISPLAY, (void **)&display);
+                if (display != NULL) {
+                    log->debug("Found a Display");
+                    int size[2] = { 0, 0 };
+                    screen_get_display_property_iv(display, SCREEN_PROPERTY_SIZE, size);
+                    log->debug("Display Size");
+                    log->debug(convertIntToString(size[0]).c_str());
+                    log->debug(convertIntToString(size[1]).c_str());
+                    screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_SIZE, size);
+                    screen_get_window_property_iv(vf_win, SCREEN_PROPERTY_SIZE, size);
+                    log->debug("Window Size");
+                    log->debug(convertIntToString(size[0]).c_str());
+                    log->debug(convertIntToString(size[1]).c_str());
+                }
+
             }
             break;
         case SCREEN_EVENT_CLOSE:
