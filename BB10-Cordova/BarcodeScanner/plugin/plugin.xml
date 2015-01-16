@@ -21,6 +21,6 @@
         <config-file target="www/config.xml" parent="/widget/rim:permissions">
             <rim:permit>use_camera</rim:permit>
         </config-file>
-        <dependency id="com.blackberry.io" />
+        <dependency id="com.blackberry.app" />
     </platform>
 </plugin>
