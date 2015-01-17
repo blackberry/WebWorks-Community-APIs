@@ -591,9 +591,8 @@ static pthread_t m_thread = 0;
 		// Starting viewfinder up which will call the viewfinder callback - this gets the NV12 images for scanning
         err = camera_start_photo_viewfinder( mCameraHandle, &viewfinder_callback, NULL, this->cbId);
         if ( err != CAMERA_EOK) {
-#ifdef DEBUG
-            fprintf(stderr, "Ran into a strange issue when starting up the camera viewfinder\n");
-#endif
+            m_pParent->getLog()->error("Ran into a strange issue when starting up the camera viewfinder");
+            m_pParent->getLog()->error(getCameraErrorDesc( err ));
             root["state"] = "ViewFinder Start";
             root["error"] = err;
             root["description"] = getCameraErrorDesc( err );
@@ -604,9 +603,8 @@ static pthread_t m_thread = 0;
         // Focus mode can't be set until the viewfinder is started. We need Continuous Macro for barcodes
         err = camera_set_focus_mode(mCameraHandle, CAMERA_FOCUSMODE_CONTINUOUS_MACRO);
 		if ( err != CAMERA_EOK){
-#ifdef DEBUG
-			fprintf(stderr, " Ran into an issue when setting focus mode = %d\n ", err);
-#endif
+		    m_pParent->getLog()->error("Ran into an issue when setting focus mode");
+		    m_pParent->getLog()->error(getCameraErrorDesc( err ));
 			root["state"] = "Set Focus Mode";
 			root["error"] = err;
 			root["description"] =  getCameraErrorDesc( err );
