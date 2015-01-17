@@ -1,5 +1,5 @@
 /*
-* Copyright 2013 Research In Motion Limited.
+* Copyright 2013-2015 BlackBerry Limited.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -25,14 +25,28 @@ module.exports = {
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
 		readCallback = result.callbackId;
-		result.ok(barcodescanner.getInstance().startRead(result.callbackId), true);
-		success()
+		var views = qnx.webplatform.getWebViews();
+		var handle = null;
+		var group = null;
+		var z = -1;
+		for (var i = 0; i < views.length; i++) {
+			if (views[i].visible && views[i].zOrder > z){
+				z = views[i].zOrder;
+				group = views[i].windowGroup;
+				handle = views[i].jsScreenWindowHandle;
+			}
+		}
+		if (handle !== null) {
+			var values = { group: group, handle: handle };
+			result.ok(barcodescanner.getInstance().startRead(result.callbackId, values), true);
+		} else {
+			result.error("Failed to find window handle", false);
+		}
 	},
 	stopRead: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
 		result.ok(barcodescanner.getInstance().stopRead(result.callbackId), true);
-		success();
 	},
 	add: function (success, fail) {
 		console.log('Frame Available event listening');
@@ -79,18 +93,22 @@ JNEXT.BarcodeScanner = function () {
 			result = resultObjs[callbackId],
 			events = ["community.barcodescanner.codefound.native",
 					  "community.barcodescanner.errorfound.native",
-					  "community.barcodescanner.frameavailable.native",
 					  "community.barcodescanner.started.native",
 					  "community.barcodescanner.ended.native"];
-					  
+			
+		// Restructures results when codefound has spaces		  
 		if(arData.length > 3){
 			var i;
-			for(i=3; i<arData.length; i++)
+			for(i=3; i<arData.length; i++) {
 				data += " " + arData[i];
+			}
 		}			  
 		
 		if (events.indexOf(receivedEvent) != -1) {
-			result.callbackOk(data, true)
+			console.log(callbackId);
+			console.log(data);
+			result.callbackOk(data, true);
+
 		}
 		if(receivedEvent == "community.barcodescanner.ended.native") {
 			delete resultObjs[readCallback];
@@ -100,8 +118,8 @@ JNEXT.BarcodeScanner = function () {
 	};
 
 	// Thread methods
-	self.startRead = function (callbackId) {
-		return JNEXT.invoke(self.m_id, "startRead " + callbackId);
+	self.startRead = function (callbackId, handle) {
+		return JNEXT.invoke(self.m_id, "startRead " + callbackId + " " + JSON.stringify(handle));
 	};
 	self.stopRead = function (callbackId) {
 		return JNEXT.invoke(self.m_id, "stopRead " + callbackId);

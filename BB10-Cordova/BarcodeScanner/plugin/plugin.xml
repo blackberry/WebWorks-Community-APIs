@@ -1,6 +1,6 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     id="com.blackberry.community.barcodescanner"
-    version="1.0.4">
+    version="2.0.0">
 
     <name>Barcode Scanner</name>
     <description>BlackBerry 10 Community Contributed API to scan barcodes</description>
@@ -21,6 +21,6 @@
         <config-file target="www/config.xml" parent="/widget/rim:permissions">
             <rim:permit>use_camera</rim:permit>
         </config-file>
-        <dependency id="com.blackberry.io" />
+        <dependency id="com.blackberry.app" />
     </platform>
 </plugin>

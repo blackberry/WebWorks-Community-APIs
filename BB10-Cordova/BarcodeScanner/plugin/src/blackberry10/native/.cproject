@@ -53,6 +53,8 @@
 									<listOptionValue builtIn="false" value="zxing"/>
 									<listOptionValue builtIn="false" value="img"/>
 									<listOptionValue builtIn="false" value="slog2"/>
+									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="screen"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.warningLevel.2067914469" name="Warning Level (-w)" superClass="com.qnx.qcc.option.linker.warningLevel" value="com.qnx.qcc.option.warningLevel.9" valueType="enumerated"/>
 								<inputType id="com.qnx.qcc.inputType.linker.1028572887" superClass="com.qnx.qcc.inputType.linker">
@@ -120,6 +122,8 @@
 									<listOptionValue builtIn="false" value="camapi"/>
 									<listOptionValue builtIn="false" value="img"/>
 									<listOptionValue builtIn="false" value="slog2"/>
+									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="screen"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.167117375" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>

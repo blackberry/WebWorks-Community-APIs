@@ -21,7 +21,6 @@ var app = {
 	results: null,
 	gotCode: false,
 	appContainer: null,
-	canvasContainer: null,
 
 	// Application Constructor
 	initialize: function() {
@@ -40,38 +39,29 @@ var app = {
 	// function, we must explicity call 'app.receivedEvent(...);'
 	onDeviceReady: function() {
 		results = document.getElementById("results")
-		canvasContainer = document.getElementById('barcodeScanner_stop')
-		canvasContainer.style.display = "none"
-
-		var canvas = document.getElementById('myCanvas')
-		canvas.width = window.innerWidth
-		canvas.height = window.innerHeight
 		
 		app.barcodeScanner = window.plugins.barcodeScanner
 		appContainer = document.getElementById("appContainer")
 		document.getElementById('barcodeScanner_start').addEventListener('click', app.startRead, false)
-		canvasContainer.addEventListener('click', app.stopRead, false)
 	},
 
 	startRead: function() {
-		canvasContainer.style.display = "block"
 		gotCode = false
-		appContainer.style.display = "none"
 
-		app.barcodeScanner.startRead(app.codeFound, app.errorFound, "myCanvas")
+		app.barcodeScanner.startRead(app.codeFound, app.errorFound)
 	},
 
 	stopRead: function() {
-		canvasContainer.style.display = "none"
-		app.barcodeScanner.stopRead(app.onStopRead, app.errorFound, "myCanvas")
+		app.barcodeScanner.stopRead(app.onStopRead, app.errorFound)
 	},
 
 	onStopRead: function(data) {
-		appContainer.style.display = "block"
+		console.log("Scan Stopped");
 	},
 
 	errorFound: function(data){
 		console.log("Error : "+data.error + " description : "+ data.description);
+		app.stopRead();
 	},
 
 	writeOut: function(message) {
@@ -82,7 +72,7 @@ var app = {
 	codeFound: function(data) {
 		if(gotCode === false) {
 			gotCode = true;
-			app.writeOut(data.value)
+			app.writeOut(data.value);
 			app.stopRead();
 		}
 	}
