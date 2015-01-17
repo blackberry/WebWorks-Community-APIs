@@ -39,7 +39,6 @@ module.exports = {
 		if (handle !== null) {
 			var values = { group: group, handle: handle };
 			result.ok(barcodescanner.getInstance().startRead(result.callbackId, values), true);
-			// success();
 		} else {
 			result.error("Failed to find window handle", false);
 		}
@@ -48,7 +47,6 @@ module.exports = {
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
 		result.ok(barcodescanner.getInstance().stopRead(result.callbackId), true);
-		// success();
 	},
 	add: function (success, fail) {
 		console.log('Frame Available event listening');
@@ -95,18 +93,22 @@ JNEXT.BarcodeScanner = function () {
 			result = resultObjs[callbackId],
 			events = ["community.barcodescanner.codefound.native",
 					  "community.barcodescanner.errorfound.native",
-					  "community.barcodescanner.frameavailable.native",
 					  "community.barcodescanner.started.native",
 					  "community.barcodescanner.ended.native"];
-					  
+			
+		// Restructures results when codefound has spaces		  
 		if(arData.length > 3){
 			var i;
-			for(i=3; i<arData.length; i++)
+			for(i=3; i<arData.length; i++) {
 				data += " " + arData[i];
+			}
 		}			  
 		
 		if (events.indexOf(receivedEvent) != -1) {
-			result.callbackOk(data, true)
+			console.log(callbackId);
+			console.log(data);
+			result.callbackOk(data, true);
+
 		}
 		if(receivedEvent == "community.barcodescanner.ended.native") {
 			delete resultObjs[readCallback];

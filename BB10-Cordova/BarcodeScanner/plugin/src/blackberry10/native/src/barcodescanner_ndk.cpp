@@ -84,7 +84,7 @@ static pthread_t m_thread = 0;
         case CAMERA_ETIMEDOUT:
             return "The function call failed due to communication problem or time-out with the camera.";
         case CAMERA_EALREADY:
-            return "Indicates an operation on the camera is already in progress. In addition,this error can indicate that an error could not be completed because it was already completed. For example, if you called the @c camera_stop_video() function but the camera had already stopped recording video, this error code would be returned.";
+            return "Indicates an operation on the camera is already in progress. In addition, this error can indicate that an error could not be completed because it was already completed. For example, if you called the @c camera_stop_video() function but the camera had already stopped recording video, this error code would be returned.";
         case CAMERA_EUNINIT:
             return "Indicates that the Camera Library is not initialized.";
         case CAMERA_EREGFAULT:
@@ -248,8 +248,25 @@ static pthread_t m_thread = 0;
         parent->getLog()->info("Window Group Check");
         parent->getLog()->info(groupCheck);
         screen_set_window_property_iv(screen_win, SCREEN_PROPERTY_USAGE, &usage);
+        int r = 0;
+        screen_display_t display = NULL;
+        screen_get_window_property_pv(screen_win, SCREEN_PROPERTY_DISPLAY, (void**)&display);
+        if (display != NULL) {
+            screen_get_display_property_iv(display, SCREEN_PROPERTY_ROTATION, &r);
+            parent->getLog()->debug("Current Display Rotation");
+            parent->getLog()->debug(convertIntToString(r).c_str());
+        }
         screen_create_window_buffers(screen_win, 1);
         screen_get_window_property_pv(screen_win, SCREEN_PROPERTY_RENDER_BUFFERS, (void **)&screen_buf);
+        screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_BUFFER_SIZE, rect+2);
+        // The screen (and backing buffer) don't take into account the rotation, so we need to swap the size.
+        if (r == 90 || r == 270) {
+            int swap = rect[2];
+            rect[2] = rect[3];
+            rect[3] = swap;
+        }
+        // Set the window size and the buffer follows along
+        screen_set_window_property_iv(screen_win, SCREEN_PROPERTY_SIZE, rect+2);
         screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_BUFFER_SIZE, rect+2);
 
         parent->getLog()->debug("Screen Buffer Size:");
@@ -347,7 +364,7 @@ static pthread_t m_thread = 0;
     }
 
     void BarcodeScannerNDK::handleScreenEvent(bps_event_t *event, Logger* log, const char* windowGroup) {
-        int eventType;
+        int eventType, objectType, eventProperty;
 
         screen_event_t screen_event = screen_event_get_event(event);
         screen_get_event_property_iv(screen_event, SCREEN_PROPERTY_TYPE, &eventType);
@@ -388,6 +405,9 @@ static pthread_t m_thread = 0;
                 log->debug("Visible?");
                 log->debug(convertIntToString(i).c_str());
                 // Rotate the window as needed
+                screen_get_window_property_iv(vf_win, SCREEN_PROPERTY_ROTATION, &i);
+                log->debug("Current Rotation");
+                log->debug(convertIntToString(i).c_str());
                 i = 360 - vfRotation;
                 screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_ROTATION, &i);
                 screen_get_window_property_iv(vf_win, SCREEN_PROPERTY_ROTATION, &i);
@@ -403,6 +423,15 @@ static pthread_t m_thread = 0;
                     log->debug("Display Size");
                     log->debug(convertIntToString(size[0]).c_str());
                     log->debug(convertIntToString(size[1]).c_str());
+                    int r = 0;
+                    screen_get_display_property_iv(display, SCREEN_PROPERTY_ROTATION, &r);
+                    log->debug("Current Display Rotation");
+                    log->debug(convertIntToString(r).c_str());
+                    if (r == 90 || r == 270) {
+                        int swap = size[0];
+                        size[0] = size[1];
+                        size[1] = swap;
+                    }
                     screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_SIZE, size);
                     screen_get_window_property_iv(vf_win, SCREEN_PROPERTY_SIZE, size);
                     log->debug("Window Size");
@@ -420,6 +449,12 @@ static pthread_t m_thread = 0;
             break;
         case SCREEN_EVENT_PROPERTY:
             log->debug("Screen property event");
+            screen_get_event_property_iv(screen_event, SCREEN_PROPERTY_OBJECT_TYPE, &objectType);
+            log->debug("Object Type");
+            log->debug(convertIntToString(objectType).c_str());
+            screen_get_event_property_iv(screen_event, SCREEN_PROPERTY_NAME, &eventProperty);
+            log->debug("Property Name");
+            log->debug(convertIntToString(eventProperty).c_str());
             break;
         default:
             log->warn("Unhandled Screen Event Type");
