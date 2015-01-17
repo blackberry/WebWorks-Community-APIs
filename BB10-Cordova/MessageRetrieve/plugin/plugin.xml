@@ -1,6 +1,12 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     id="community.messageplugin"
     version="1.0.0">
+
+    <name>MessageRetrieve</name>
+    <description>BlackBerry 10 Community Contributed API retrieve Messages from invocation IDs</description>
+    <license>Apache 2.0</license>
+    <author>Pawel Gorny</author>
+
     <js-module src="www/client.js">
         <clobbers target="community.messageplugin" />
     </js-module>
