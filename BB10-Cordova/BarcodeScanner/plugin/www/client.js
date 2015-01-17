@@ -24,7 +24,7 @@
 
 	function BarcodeScanner() {	}
 
-	BarcodeScanner.prototype.startRead = function (succ, fail, args) {
+	BarcodeScanner.prototype.startRead = function (succ, fail) {
 		if (reading) return "Stop Scanning before scanning again";
 
 		blackberry.app.lockOrientation("portrait-primary");
