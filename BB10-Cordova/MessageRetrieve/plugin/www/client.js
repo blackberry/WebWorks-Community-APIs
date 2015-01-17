@@ -15,7 +15,7 @@
 */
 
 var _self = {},
-	_ID = "community.messageplugin",
+	_ID = "com.blackberry.community.messageplugin",
 	exec = cordova.require("cordova/exec");
 
 	_self.ping = function () {
