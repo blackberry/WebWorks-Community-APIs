@@ -30,6 +30,7 @@ When you start scanning, you can make the experience better for your users with 
 * 1.0.3 Fix to read codes with spaces
 * 1.0.4 Uses prefixed File API to avoid conflicts with Cordova File API
 * 2.0.0 First implementation using the native Camera Viewfinder
+* 2.0.1 Fixes issue with "VF Props" on 10.2.1
 
 ## Javascript API
 
