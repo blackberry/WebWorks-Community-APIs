@@ -1,6 +1,6 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     id="com.blackberry.community.barcodescanner"
-    version="2.0.0">
+    version="2.0.1">
 
     <name>Barcode Scanner</name>
     <description>BlackBerry 10 Community Contributed API to scan barcodes</description>

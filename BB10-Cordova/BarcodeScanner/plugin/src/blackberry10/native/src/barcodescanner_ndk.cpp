@@ -611,7 +611,6 @@ static pthread_t m_thread = 0;
 		err = camera_set_photovf_property(mCameraHandle,
 		    CAMERA_IMGPROP_WIN_GROUPID, windowGroup,
 		    CAMERA_IMGPROP_WIN_ID, "my_viewfinder",
-		    CAMERA_IMGPROP_CREATEWINDOW, 1,
 		    CAMERA_IMGPROP_ISEMBEDDED, 1);
 		if ( err != CAMERA_EOK){
 		    m_pParent->getLog()->error("Ran into an issue when configuring the camera viewfinder");
