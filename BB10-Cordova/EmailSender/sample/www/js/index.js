@@ -83,6 +83,11 @@ var app = {
 				else
 					document.getElementById('attachment').value = "false";
 
+				if(document.getElementById('nonfile').checked)
+					document.getElementById('nonfile').value = "true";
+				else
+					document.getElementById('nonfile').value = "false";
+
 				var jsonEmail =
 				{
 					"Type": document.getElementById('emailType').value,
@@ -98,7 +103,10 @@ var app = {
 					"signature": document.getElementById('signature').value,
 					"signatureLocation": document.getElementById('signatureLocation').value.split(','),
 					"attachment": document.getElementById('attachment').value,
-					"attachmentLocation": document.getElementById('attachmentLocation').value.split(',')
+					"attachmentLocation": document.getElementById('attachmentLocation').value.split(','),
+					"nonfile": document.getElementById('nonfile').value,
+					"nonfilename": document.getElementById('nonfilename').value,
+					"nonfiledata": document.getElementById('nonfiledata').value
 				};
 				statusSpan.innerHTML = community.emailsenderplugin.sendEmail(jsonEmail);
 			};

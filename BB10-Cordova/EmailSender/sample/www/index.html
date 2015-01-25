@@ -43,11 +43,14 @@
                 <label>Subject:</label><br><input id="Subject" type="text" placeholder="Subject"/><br><br>
                 <label>Body:</label><br><textarea id="Body" placeholder="Body" rows="5"></textarea><br><br>
 				<label><input id="vCard" type="checkbox" value="false">Add vCard</label><br>
-				<input id="vCardLocation" type="text" placeholder="/accounts/1000/.../file.vcf" rows="2"/><br><br>
+				<textarea id="vCardLocation" placeholder="/accounts/1000/.../file.vcf" rows="2"/></textarea><br><br>
 				<label><input id="signature" type="checkbox" value="false">Add signature</label><br>
-				<input id="signatureLocation" type="text" placeholder="/accounts/1000/.../file.txt" rows="2"/><br><br>
+				<textarea id="signatureLocation" type="text" placeholder="/accounts/1000/.../file.txt" rows="2"/></textarea><br><br>
 				<label><input id="attachment" type="checkbox" value="false">Add attachment</label><br>
-				<input id="attachmentLocation" type="text" placeholder="/accounts/1000/.../file.ext" rows="2"/><br><br>
+				<textarea id="attachmentLocation" type="text" placeholder="/accounts/1000/.../file.ext" rows="2"/></textarea><br><br>
+				<label><input id="nonfile" type="checkbox" value="false">Add non-file attachment</label><br>
+				<input id="nonfilename" type="text" placeholder="File name" /><br>
+				<textarea id="nonfiledata" type="text" placeholder="Data" /></textarea><br><br>
                 <input id="send" type="button" value="send"/>
                 <p>Status: <span id="status"> - </span></p>
             </div>

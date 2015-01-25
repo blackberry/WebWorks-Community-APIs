@@ -23,6 +23,7 @@
 #include <pthread.h>
 #include <QtCore/QObject>
 #include <QFileInfo>
+#include <QFile>
 #include "emailSender_ndk.hpp"
 #include "emailSender_js.hpp"
 
@@ -56,6 +57,9 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
         Json::Value signatureLocation = input["signatureLocation"];
 		Json::Value attachment = input["attachment"];
         Json::Value attachmentLocation = input["attachmentLocation"];
+        Json::Value nonfile = input["nonfile"];
+        Json::Value nonfilename = input["nonfilename"];
+        Json::Value nonfiledata = input["nonfiledata"];
 
 		long id = atol(From.asString().c_str());
 		Account account;
@@ -161,6 +165,30 @@ std::string EmailSenderNDK::sendEmail(const std::string& inputString) {
             }
             else{
                 m_pParent->getLog()->info("No file path entered");
+            }
+        }
+
+        if (nonfile.asString().compare("true") == 0){
+            QString nofilename;
+            QString nofiletype;
+            QByteArray nofiledata;
+            if (!nonfiledata.empty()){
+                nofiledata.append(QString::fromStdString(nonfiledata.asString()));
+                if (!nonfilename.empty()){
+                    QFile thisfilename(QString::fromStdString(nonfilename.asString()));
+                    QFileInfo thisfileinfo(thisfilename);
+                    nofilename = thisfileinfo.fileName();
+                    nofiletype = thisfileinfo.completeSuffix();
+                }
+                else{
+                    nofilename = "filename";
+                    nofiletype = "";
+                }
+                Attachment msgAttach(nofiletype, nofilename, nofiledata);
+                builder->addAttachment(msgAttach);
+            }
+            else{
+                m_pParent->getLog()->info("No data received");
             }
         }
 
