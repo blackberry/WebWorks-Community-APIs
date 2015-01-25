@@ -21,6 +21,7 @@ The following describes the APIs:
 	- Common properties
 		- **bluetoothAddress**
 		- **sppServiceUuid**
+		- **sppBufferSize**
 	- SPP **RFCOMM** API ( available in **10.3.0** and above )
 		- **sppRfcommMode**
 		- **sppRfcommServicePort**
@@ -708,6 +709,43 @@ Get the current SPP RFCOMM Service Port value:
 ```javascript
 var sppRfcommServicePort;
 sppRfcommServicePort = com.blackberry.community.simplebtsppplugin.sppRfcommServicePort;
+```
+
+## sppBufferSize ##
+
+### Name: ###
+
+com.blackberry.community.simplebtsppplugin.sppBufferSize
+
+### Description: ###
+
+Used to set or retrieve the current value of the SPP Buffer Size Property.
+
+This is simply the size of the read/write buffer used internally to the plugin when it reads and write data to and from the underlying Bluetooth SPP APIs. This property should be set prior to calling **initialiseBluetooth** if you want to set it some value other than the default.
+
+The default value is 1024 bytes and you might consider increasing this if the device you're communicating with over SPP or RFCOMM transfers data in chunks larger then 1024  bytes. It's more of an efficiency consideration. One interaction of, say, 4096 bytes, versus 4 of 1024 bytes. 
+
+### Type: ###
+
+Property
+
+### Values: ###
+
+- The SPP Buffer Size value is an **Integer**. If you don't set this value explicitly then it will default to a value of 1024. It should be positive and a multiple of 1024 bytes. Values that are not multiples of 1024 will be rounded up to the next multiple. Values <= 0 will be set to the default value of 1024.
+
+### Example Usage: ###
+
+Set the SPP Buffer SIze to a value to 4096:
+
+```javascript
+com.blackberry.community.simplebtsppplugin.sppBufferSize = 4096;
+```
+
+Get the current SPP Buffer Size value:
+
+```javascript
+var sppBufferSize;
+sppBufferSize = com.blackberry.community.simplebtsppplugin.sppBufferSize;
 ```
 
 ## Example 1 - Plugin used as an SPP client ##

@@ -86,7 +86,7 @@ string BarcodeScannerJS::InvokeMethod(const std::string& command) {
 	std::string arg = command.substr(callbackIndex + 1, command.length());
 
     if (strCommand == "startRead") {
-        m_pBarcodeScannerController->startRead(callbackId);
+        m_pBarcodeScannerController->startRead(callbackId, arg);
     }
     else if (strCommand == "stopRead") {
         m_pBarcodeScannerController->stopRead(callbackId);

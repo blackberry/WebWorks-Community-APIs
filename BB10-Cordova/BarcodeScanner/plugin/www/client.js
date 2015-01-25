@@ -1,5 +1,5 @@
 /*
-* Copyright 2013 Research In Motion Limited.
+* Copyright 2013-2015 BlackBerry Limited.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -18,22 +18,16 @@
 	var _ID = "com.blackberry.community.barcodescanner";
 	var exec = cordova.require("cordova/exec");
 
-	var reading, canvas, timeout, fs, latestFrame = null;
-	var fsSize = 1024 * 1024;
+	var reading, timeout = null;
 	var codefoundCallback, errorfoundCallback;
 	var sleepPrevented = false;
 
-	function BarcodeScanner() {
-		blackberry.io.sandbox = false;
-	}
+	function BarcodeScanner() {	}
 
-	// BarcodeScanner.prototype.startRead = function (codeFound, errorFound, canvasID, successStart) {
-	BarcodeScanner.prototype.startRead = function (succ, fail, args) {
+	BarcodeScanner.prototype.startRead = function (succ, fail) {
 		if (reading) return "Stop Scanning before scanning again";
-		var canvasID  = args;
-		var frameAvailableFn = frameAvailable;
 
-		reading = true;
+		blackberry.app.lockOrientation("portrait-primary");
 
 		var success = function (data, response) {
 			var arData = data.split(" "),
@@ -45,25 +39,21 @@
 					arData[1] += " " + arData[i];
 			}
 
-			if(receivedEvent == "community.barcodescanner.frameavailable.native") {
-				var frameData = JSON.parse(arData[1])
-				frameAvailableFn(frameData)
-			}
-			else if(receivedEvent == "community.barcodescanner.started.native") {
-				canvas = document.getElementById(canvasID);
-				canvas.style.display = "block"
+			if(receivedEvent == "community.barcodescanner.started.native") {
+				reading = true;
 			}
 			else if(receivedEvent == "community.barcodescanner.codefound.native") {
-				var codeFoundData = JSON.parse(arData[1])
-				succ(codeFoundData)
+				var codeFoundData = JSON.parse(arData[1]);
+				console.log(codeFoundData);
+				succ(codeFoundData);
 			}
-			else if(receivedEvent == "community.BarcodeScanner.errorfound") {
-				var errorData = JSON.parse(arData[1])
-				fail(errorData)
+			else if(receivedEvent == "community.barcodescanner.errorfound.native") {
+				var errorData = JSON.parse(arData[1]);
+				fail(errorData);
 			}
 		},
 		failure = function (data, response) {
-			fail(data)
+			fail(data);
 		};
 
 		// Turn on prevent sleep, if it's in the app
@@ -77,16 +67,16 @@
 	};
 
 	BarcodeScanner.prototype.stopRead = function (succ, fail) {
-		canvas.style.display = "none"
 		reading = false;
-
+		blackberry.app.unlockOrientation();
+		
 		var success = function (data, response) {
 			var arData = data.split(" "),
 				receivedEvent = arData[0]
 
 			if(receivedEvent == "community.barcodescanner.ended.native") {
-				var successData = JSON.parse(arData[1])
-				succ(successData)
+				var successData = JSON.parse(arData[1]);
+				succ(successData);
 			}
 		},
 		failure = function (data, response) {
@@ -102,71 +92,7 @@
 		exec(success, failure, _ID, "stopRead", null, false)
 	};
 
-	function readFile(filename) {
-		window.webkitRequestFileSystem(
-			window.TEMPORARY, 
-			fsSize, 
-			function (fs) {
-				fs.root.getFile(
-					filename, 
-					{create: false}, 
-					function (fileEntry) {
-						fileEntry.file(
-							function (file) {
-								var reader = new FileReader();
-								reader.onloadend = function (e) {
-									var ctx = canvas.getContext("2d");
-									var img = new Image();
-									img.onload = function() {
-										ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
-										URL.revokeObjectURL(img.src);
-										img.src = null;
-									};
-									img.src = e.target.result;
-								};
-
-								reader.readAsDataURL(file);
-							},
-							errorHandler
-						);
-					},
-					errorHandler
-				);
-			}
-		);
-	};
-
-	function errorHandler(e) {
-		var msg = '';
-
-		switch (e.code) {
-			case FileError.QUOTA_EXCEEDED_ERR:
-			msg = 'QUOTA_EXCEEDED_ERR';
-			break;
-			case FileError.NOT_FOUND_ERR:
-			msg = 'NOT_FOUND_ERR';
-			break;
-			case FileError.SECURITY_ERR:
-			msg = 'SECURITY_ERR';
-			break;
-			case FileError.INVALID_MODIFICATION_ERR:
-			msg = 'INVALID_MODIFICATION_ERR';
-			break;
-			case FileError.INVALID_STATE_ERR:
-			msg = 'INVALID_STATE_ERR';
-			break;
-			default:
-			msg = 'Unknown Error';
-			break;
-		}
-
-	}
-
-	function frameAvailable(data){
-		latestFrame = data.frame;
-		timeout = setTimeout(readFile, 4, latestFrame);
-	}
-
+	
 	cordova.addConstructor(function() {
 		if(!window.plugins) window.plugins = {};
 		window.plugins.barcodeScanner = new BarcodeScanner();

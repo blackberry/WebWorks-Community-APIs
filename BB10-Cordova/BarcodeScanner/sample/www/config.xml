@@ -11,11 +11,4 @@
     <preference name="fullscreen" value="true" />
     <preference name="webviewbounce" value="true" />
     <content src="index.html" />
-
-    <feature id="blackberry.app" />
-    <feature id="blackberry.io" />
-    <feature id="blackberry.media.camera" />
-    <rim:permissions>
-        <rim:permit>use_camera</rim:permit>
-    </rim:permissions>
 </widget>

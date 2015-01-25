@@ -1,5 +1,5 @@
 /*
-* Copyright 2013-2014 BlackBerry Limited.
+* Copyright 2013-2015 BlackBerry Limited.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@
 #define BARCODESCANNERNDK_HPP_
 
 #include <camera/camera_api.h>
+#include "Logger.hpp"
+#include <bps/event.h>
 #include <string>
 
 class BarcodeScannerJS;
@@ -29,13 +31,23 @@ public:
     explicit BarcodeScannerNDK(BarcodeScannerJS *parent = NULL);
     virtual ~BarcodeScannerNDK();
 
-    int startRead(const std::string& callbackId);
+    int startRead(const std::string& callbackId, const std::string& handle);
     int stopRead(const std::string& callbackId);
+    bool isThreadHalt();
+    void StopEvents();
+    bool StartEvents();
+    Logger* getLog();
+    void handleScreenEvent(bps_event_t *event, Logger* log, const char* windowGroup);
+    void cancelScan();
+    char* windowGroup;
+    screen_context_t windowContext;
+    char* cbId;
 
 private:
     BarcodeScannerJS *m_pParent;
     camera_handle_t mCameraHandle;
-    char* cbId;
+    bool threadHalt;
+    std::string windowHandle;
 };
 
 } // namespace webworks

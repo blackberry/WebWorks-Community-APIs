@@ -1,0 +1,14 @@
+<widget id="com.blackberry.community.upnpdemo" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>UPnP_Demo</name>
+    <description>
+        A sample Apache Cordova application that tests the upnp plugin.
+    </description>
+    <author email="@umcsdon" href="https://github.com/umcsdon">
+        Junjie Huang
+    </author>
+    <access origin="*" />
+    <preference name="fullscreen" value="true" />
+    <perference name="websecurity" value="false" />
+    <preference name="webviewbounce" value="true" />
+    <content src="index.html" />
+</widget>

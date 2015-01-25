@@ -100,6 +100,8 @@ namespace webworks {
         , m_remote_disconnected_us(false)
         , m_disconnect_in_progress(false)
         , m_current_buffer_location(0)
+        , m_in_buffer(NULL)
+        , m_out_buffer(NULL)
         , m_scan_callback_id("")
         , m_connection_callback_id("")
         , m_bluetooth_address("")
@@ -112,8 +114,12 @@ namespace webworks {
         , m_spp_service_uuid(SPP_SERVICE_UUID)
         , m_rfcomm_mode(false)
         , m_rfcomm_service_port(SPP_RFCOMM_SERVICE_PORT)
+        , m_buffer_size(DEFAULT_BUFFER_SIZE)
     {
         s_btController = this;
+
+        m_in_buffer = (uint8_t*) malloc(DEFAULT_BUFFER_SIZE);
+        m_out_buffer = (uint8_t*) malloc(DEFAULT_BUFFER_SIZE);
 
         pthread_mutex_init(&m_scan_mutex, NULL);
         pthread_mutex_init(&m_connection_mutex, NULL);
@@ -127,9 +133,9 @@ namespace webworks {
         LOGI("SimpleBtSppPlugin_NDK destructor");
 
         bool need_to_stop_connection = false;
-        pthread_mutex_lock(&m_scan_mutex);
-        need_to_stop_connection = m_scan_thread_running;
-        pthread_mutex_unlock(&m_scan_mutex);
+        pthread_mutex_lock(&m_connection_mutex);
+        need_to_stop_connection = m_connection_thread_running;
+        pthread_mutex_unlock(&m_connection_mutex);
 
         if (need_to_stop_connection) {
             disconnectFromDevice();
@@ -146,6 +152,16 @@ namespace webworks {
         pthread_mutex_destroy(&m_connection_mutex);
         pthread_cond_destroy(&m_stopthread_cond);
         s_btController = NULL;
+
+        if (m_in_buffer) {
+            free(m_in_buffer);
+            m_in_buffer = NULL;
+        }
+
+        if (m_out_buffer) {
+            free(m_out_buffer);
+            m_out_buffer = NULL;
+        }
     }
 
 
@@ -527,10 +543,10 @@ namespace webworks {
         }
         command = input_root[JSON_KEY_COMMAND];
 
-        memset(m_out_buffer, 0, sizeof(m_out_buffer));
+        memset(m_out_buffer, 0, m_buffer_size);
 
         for(unsigned int i=0; i < command.size(); i++) {
-            if (i < sizeof(m_out_buffer)) {
+            if (i < m_buffer_size) {
                 uint8_t command_byte = (((uint8_t)(command[i].asInt())) & 0xff);
                 m_out_buffer[i] = command_byte;
             } else {
@@ -541,7 +557,7 @@ namespace webworks {
             }
         }
 
-        char text_buffer[BUFFER_SIZE*5+20];
+        char text_buffer[m_buffer_size*5+20];
         char *o = text_buffer;
         int minLength = ((int)command.size() < (int)sizeof(text_buffer)) ? (int)command.size() : (int)sizeof(text_buffer);
         for (int i=0; i<minLength; i++) {
@@ -972,7 +988,7 @@ namespace webworks {
 
         ssize_t length_read = ::read(m_sppfd,
                 (m_in_buffer + m_current_buffer_location),
-                BUFFER_SIZE - m_current_buffer_location);
+                m_buffer_size - m_current_buffer_location);
 
         LOGD("[A] processMessageFromRemoteDevice() - read returned=%d", length_read);
 
@@ -982,7 +998,7 @@ namespace webworks {
             LOGD("[B] processMessageFromRemoteDevice() - expecting file descriptor to disconnect!");
         }
 
-        char text_buffer[BUFFER_SIZE*5+20];
+        char text_buffer[m_buffer_size*5+20];
         char *o = text_buffer;
         int minLength = (m_current_buffer_location < (int)sizeof(text_buffer)) ? m_current_buffer_location : (int)sizeof(text_buffer);
         for (int i=0; i< m_current_buffer_location; i++) {
@@ -1040,6 +1056,38 @@ namespace webworks {
     int SimpleBtSppPlugin_NDK::getRfcommServicePort()
     {
         return m_rfcomm_service_port;
+    }
+
+    void SimpleBtSppPlugin_NDK::setSppBufferSize(const uint sppBufferSize)
+    {
+        uint roundedUpBufferSize = DEFAULT_BUFFER_SIZE;
+
+        if (m_bt_initialised) { // don't change buffer sizes in flight
+            return;
+        }
+
+        if (sppBufferSize >  DEFAULT_BUFFER_SIZE) {
+            roundedUpBufferSize = (((sppBufferSize-1) >> 6) + 1) << 6;
+        }
+
+        if (m_in_buffer) {
+            free(m_in_buffer);
+        }
+
+        m_in_buffer = (uint8_t*) malloc(roundedUpBufferSize);
+
+        if (m_out_buffer) {
+            free(m_out_buffer);
+        }
+
+        m_out_buffer = (uint8_t*) malloc(roundedUpBufferSize);
+
+        m_buffer_size = roundedUpBufferSize;
+    }
+
+    uint SimpleBtSppPlugin_NDK::getSppBufferSize()
+    {
+        return m_buffer_size;
     }
 
     void SimpleBtSppPlugin_NDK::setRfcommServicePort(const int rfcommServicePort)

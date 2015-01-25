@@ -154,6 +154,18 @@ module.exports = {
 		} else {
 			result.ok(simpleBtSppPlugin.getInstance().sppRfcommServicePort(), false);
 		}
+	},
+
+	sppBufferSize: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		var value;
+		if (args && args["value"]) {
+			value = JSON.parse(decodeURIComponent(args["value"]));
+			simpleBtSppPlugin.getInstance().sppBufferSize(result.callbackId, value);
+			result.noResult(false);
+		} else {
+			result.ok(simpleBtSppPlugin.getInstance().sppBufferSize(), false);
+		}
 	}
 };
 
@@ -253,6 +265,14 @@ JNEXT.SimpleBtSppPlugin = function () {
 			return JNEXT.invoke(self.m_id, "sppRfcommServicePort " + callbackId + " " + value);
 		} else {
 			return JNEXT.invoke(self.m_id, "sppRfcommServicePort");
+		}
+	};
+
+	self.sppBufferSize = function (callbackId, value) {
+		if (value || value === 0) {
+			return JNEXT.invoke(self.m_id, "sppBufferSize " + callbackId + " " + value);
+		} else {
+			return JNEXT.invoke(self.m_id, "sppBufferSize");
 		}
 	};
 

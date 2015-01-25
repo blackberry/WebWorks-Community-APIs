@@ -31,6 +31,14 @@ var _self = {},
 			fail = function (data, response) {
 				console.log("Error: " + data);
 			};
+
+		// Preprocessing Input Data
+		// Credits: http://stackoverflow.com/questions/7389598/convert-all-the-integer-value-to-string-in-json
+		for (var item in input) {
+			if (input.hasOwnProperty(item))
+				input[item] = String(input[item]);
+		}
+		
 		exec(success, fail, _ID, "start", { input: input });
 		return result;
 	};

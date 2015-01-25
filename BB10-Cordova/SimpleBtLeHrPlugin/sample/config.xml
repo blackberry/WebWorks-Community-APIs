@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.sample.hrtest" version="0.0.1"
+    xmlns="http://www.w3.org/ns/widgets"
+    xmlns:cdv="http://cordova.apache.org/ns/1.0"
+    xmlns:rim="http://www.blackberry.com/ns/widgets">
+    <name>HR Test</name>
+    <author>John Murray</author>
+    <description>Test BT LE HR plugin</description>
+    <content src="index.html" />
+    <preference name="AutoHideSplashScreen" value="true" />
+    <preference name="ChildBrowser" value="enable" />
+    <preference name="DiskCache" value="disable" />
+    <preference name="HideKeyboardFormAccessoryBar" value="disable" />
+    <preference name="Orientation" value="default" />
+    <preference name="PopupBlocker" value="disable" />
+    <preference name="WebSecurity" value="enable" />
+    <platform name="blackberry10">
+        <rim:permissions>
+        </rim:permissions>
+    </platform>
+</widget>
+
