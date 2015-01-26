@@ -180,12 +180,10 @@ static pthread_t m_thread = 0;
         m_pParent     = parent;
         eventDispatcher = parent;
         mCameraHandle = CAMERA_HANDLE_INVALID;
-        bps_initialize();
     }
 
     BarcodeScannerNDK::~BarcodeScannerNDK() {
     	delete[] cbId;
-    	bps_shutdown();
     }
 
     webworks::Logger* BarcodeScannerNDK::getLog() {
@@ -355,11 +353,11 @@ static pthread_t m_thread = 0;
             // Poll at 10hz
             usleep(100000);
         }
-        screen_destroy_window(screen_win);
         // stop screen events on this thread
         if(screen_stop_events(parent->windowContext) == -1) {
             parent->getLog()->error("screen_stop_events failed");
         }
+        screen_destroy_window(screen_win);
         return NULL;
     }
 
@@ -530,6 +528,9 @@ static pthread_t m_thread = 0;
         Json::FastWriter writer;
         Json::Value root;
 
+        // Important for maintaining proper event queue support on 10.2.1
+        bps_initialize();
+
         std::string handle;
         std::string group;
         Json::Reader reader;
@@ -610,8 +611,7 @@ static pthread_t m_thread = 0;
 		// We're going to have the viewfinder window join our app's window group, and start an embedded window
 		err = camera_set_photovf_property(mCameraHandle,
 		    CAMERA_IMGPROP_WIN_GROUPID, windowGroup,
-		    CAMERA_IMGPROP_WIN_ID, "my_viewfinder",
-		    CAMERA_IMGPROP_ISEMBEDDED, 1);
+		    CAMERA_IMGPROP_WIN_ID, "my_viewfinder");
 		if ( err != CAMERA_EOK){
 		    m_pParent->getLog()->error("Ran into an issue when configuring the camera viewfinder");
 		    m_pParent->getLog()->error(getCameraErrorDesc( err ));
@@ -665,6 +665,9 @@ static pthread_t m_thread = 0;
 		Json::Value root;
         camera_error_t err;
 
+        // Stop events first so that you don't get better response from the screen
+        StopEvents();
+
         err = camera_stop_photo_viewfinder(mCameraHandle);
         if ( err != CAMERA_EOK)
         {
@@ -687,12 +690,13 @@ static pthread_t m_thread = 0;
             return EIO;
         }
 
-        StopEvents();
-
         std::string successEvent = "community.barcodescanner.ended.native";
         root["successful"] = true;
         mCameraHandle = CAMERA_HANDLE_INVALID;
         m_pParent->NotifyEvent(callbackId + " " + successEvent + " " + writer.write(root));
+
+        // Important for maintaining proper event queue support on 10.2.1
+        bps_shutdown();
 
         return EOK;
     }
