@@ -58,19 +58,55 @@ var app = {
 				accountsOptions += "<option value=\"" + id + "\">" + accounts[id] + "</option>";
 			}
 			emailSelect.innerHTML = accountsOptions;
+
 			document.getElementById('send').onclick=function(){
-				
+
 				statusSpan.innerHTML = "Sending...";
-				var jsonEmail = 
+
+				if(document.getElementById('removeTags').checked)
+					document.getElementById('removeTags').value = "true";
+				else
+					document.getElementById('removeTags').value = "false";
+
+				if(document.getElementById('vCard').checked)
+					document.getElementById('vCard').value = "true";
+				else
+					document.getElementById('vCard').value = "false";
+
+				if(document.getElementById('signature').checked)
+					document.getElementById('signature').value = "true";
+				else
+					document.getElementById('signature').value = "false";
+
+				if(document.getElementById('attachment').checked)
+					document.getElementById('attachment').value = "true";
+				else
+					document.getElementById('attachment').value = "false";
+
+				if(document.getElementById('nonfile').checked)
+					document.getElementById('nonfile').value = "true";
+				else
+					document.getElementById('nonfile').value = "false";
+
+				var jsonEmail =
 				{
 					"Type": document.getElementById('emailType').value,
+					"tags": document.getElementById('removeTags').value,
 					"From": document.getElementById('emailSelect').value, 
 					"To": document.getElementById('To').value,
 					"Cc": document.getElementById('Cc').value,
 					"Bcc": document.getElementById('Bcc').value,
 					"subject" : document.getElementById('Subject').value,
-					"body": document.getElementById('Body').value,
-					"attachment": document.getElementById('attachmentType').value.split(',')
+					"body": "<pre>" + document.getElementById('Body').value + "</pre>",
+					"vCard": document.getElementById('vCard').value,
+					"vCardLocation": document.getElementById('vCardLocation').value.split(','),
+					"signature": document.getElementById('signature').value,
+					"signatureLocation": document.getElementById('signatureLocation').value.split(','),
+					"attachment": document.getElementById('attachment').value,
+					"attachmentLocation": document.getElementById('attachmentLocation').value.split(','),
+					"nonfile": document.getElementById('nonfile').value,
+					"nonfilename": document.getElementById('nonfilename').value,
+					"nonfiledata": document.getElementById('nonfiledata').value
 				};
 				statusSpan.innerHTML = community.emailsenderplugin.sendEmail(jsonEmail);
 			};
