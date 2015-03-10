@@ -1,0 +1,25 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="com.blackberry.community.mediakeys"
+    version="1.0.0">
+
+    <name>Media Keys</name>
+    <description>BlackBerry 10 Community Contributed API to Prompt Global Notification Dialog</description>
+    <license>Apache 2.0</license>
+    <author>Thomas Fung</author>
+
+    <js-module src="www/client.js">
+        <clobbers target="community.mediakeys" />
+    </js-module>
+
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" />
+        <lib-file src="src/blackberry10/native/device/libSysDialog.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libSysDialog.so" arch="simulator"/>
+        <config-file target="www/config.xml" parent="/widget/rim:permissions">
+            <rim:permit>post_notification</rim:permit>
+        </config-file>
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="com.blackberry.community.mediakeys" value="com.blackberry.community.mediakeys" />
+        </config-file>
+    </platform>
+</plugin>
