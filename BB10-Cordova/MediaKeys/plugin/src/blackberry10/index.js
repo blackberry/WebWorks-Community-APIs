@@ -82,12 +82,12 @@ JNEXT.sysDialog = function () {
 	};
 
 	self.init = function () {
-		if (!JNEXT.require("libSysDialog")) {
+		if (!JNEXT.require("libMediaKeys")) {
 			return false;
 		}
 
 		//self.m_id = JNEXT.createObject("libSysDialog.SysDialogJS");
-		self.m_id = JNEXT.createObject("libSysDialog.MediaKeysJS");
+		self.m_id = JNEXT.createObject("libMediaKeys.MediaKeysJS");
 
 		if (self.m_id === "") {
 			return false;

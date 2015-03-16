@@ -1,4 +1,4 @@
-QMAKE_TARGET = SysDialog
+QMAKE_TARGET = MediaKeys
 PROJECT_DIR := $(dir $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST)))
 
 QMAKE = $(QNX_HOST)/usr/bin/qmake

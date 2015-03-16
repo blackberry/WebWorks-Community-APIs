@@ -1,4 +1,4 @@
-APP_NAME = SysDialog
+APP_NAME = MediaKeys
 TEMPLATE = lib
 
 CONFIG += qt warn_on

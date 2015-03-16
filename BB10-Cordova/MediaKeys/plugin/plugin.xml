@@ -13,8 +13,8 @@
 
     <platform name="blackberry10">
         <source-file src="src/blackberry10/index.js" />
-        <lib-file src="src/blackberry10/native/device/libSysDialog.so" arch="device"/>
-        <lib-file src="src/blackberry10/native/simulator/libSysDialog.so" arch="simulator"/>
+        <lib-file src="src/blackberry10/native/device/libMediaKeys.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libMediaKeys.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget/rim:permissions">
             <rim:permit>post_notification</rim:permit>
         </config-file>
