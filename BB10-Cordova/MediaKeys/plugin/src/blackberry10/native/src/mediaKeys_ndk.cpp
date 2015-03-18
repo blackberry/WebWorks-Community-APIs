@@ -156,9 +156,22 @@ namespace webworks {
         }
     }
 
-    string MediaKeysNDK::checkVolume() {
+    string MediaKeysNDK::checkVolume(string arg) {
+        if (this->success == false) {
+            this->m_pParent->getLog()->debug("Setting up KeyWatcher");
+            this->keyWatcher = new MediaKeyWatcher(MediaKey::VolumeUp);
+
+            this->success = QObject::connect(
+                    this->keyWatcher, SIGNAL(shortPress(bb::multimedia::MediaKey::Type)),
+                    this, SLOT(onShortPress(bb::multimedia::MediaKey::Type)));
+
+            this->m_pParent->getLog()->debug(this->success ? "CONNECTION SUCCESSFUL" : "CONNECTION FAILURE");
+
+            this->changed = false;
+        }
+
+
         this->m_pParent->getLog()->debug("Checking Volume");
-        this->m_pParent->getLog()->debug(this->success ? "CONNECTION SUCCESSFUL" : "CONNECTION FAILURE");
 
         if (this->changed == true) {
             this->m_pParent->getLog()->debug("changed is TRUE");
@@ -170,7 +183,7 @@ namespace webworks {
         return "Volume IS NOT changed";
     }
 
-    void MediaKeysNDK::onShortPress() {
+    void MediaKeysNDK::onShortPress(bb::multimedia::MediaKey::Type key) {
         this->m_pParent->getLog()->debug("Volume SLOT is pressed");
 
         this->changed = true;

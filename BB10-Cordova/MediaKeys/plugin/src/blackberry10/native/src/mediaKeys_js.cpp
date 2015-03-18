@@ -115,7 +115,11 @@ string MediaKeysJS::InvokeMethod(const string& command) {
 		}
 
 	} else if (command == "checkVolume") {
-		result = m_sysDialogMgr->checkVolume();
+		//result = m_sysDialogMgr->checkVolume();
+        success = QMetaObject::invokeMethod(m_sysDialogMgr, "checkVolume", Qt::BlockingQueuedConnection,
+                Q_RETURN_ARG(string, result), Q_ARG(string, arg));
+
+
 	} else {
 		result = "Invalid Method " + strCommand;
 	}

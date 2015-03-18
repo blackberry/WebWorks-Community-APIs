@@ -86,19 +86,9 @@ namespace webworks {
 
 	  public:
 
-        std::string checkVolume();
-
 		explicit MediaKeysNDK(MediaKeysJS *parent = NULL) :
-			m_pParent(parent), m_id(0) {
+			m_pParent(parent), m_id(0), success(false), changed(false) {
 
-		    this->keyWatcher = new MediaKeyWatcher(MediaKey::VolumeUp);
-		    //this->keyWatcher->setNotification(MediaKeyNotification::Clicked);
-
-	        this->success = QObject::connect(this->keyWatcher,
-	                                         SIGNAL(shortPress(bb::multimedia::MediaKey::Type)),
-	                                         this,
-	                                         SLOT(onShortPress(void)));
-	        this->changed = false;
 		}
 
 		virtual ~MediaKeysNDK() {};
@@ -106,7 +96,9 @@ namespace webworks {
 		void sendEvent( const std::string& msg);
 
 	public slots:
-	    Q_SLOT void onShortPress();
+
+	    string checkVolume(string arg);
+	    Q_SLOT void onShortPress(bb::multimedia::MediaKey::Type key);
 
 		void join( string inputString);
 
