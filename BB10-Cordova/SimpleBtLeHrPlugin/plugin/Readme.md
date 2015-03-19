@@ -9,6 +9,7 @@ This Bluetooth Smart heart Rate Profile WebWorks Plugin (**SimpleBtLeHrPlugin**)
 ###Release History
 
 * **V1.0.0** - Initial release
+* **V1.0.1** - Minor fix to accomodate Polar H7 device which seems to disregard existing notification flag settings
 
 ###Known Issues
 

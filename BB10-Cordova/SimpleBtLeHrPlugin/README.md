@@ -18,6 +18,7 @@ It comes with a sample WebWorks application in the form of a simple **Heart Rate
 ###Release History
 
 * **V1.0.0** - Initial release
+* **V1.0.1** - Minor fix to accomodate Polar H7 device which seems to disregard existing notification flag settings
 
 ###Known Issues
 
@@ -141,3 +142,4 @@ If you find a bug in a Sample, or have an enhancement request, simply file an [I
 ## Disclaimer
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
