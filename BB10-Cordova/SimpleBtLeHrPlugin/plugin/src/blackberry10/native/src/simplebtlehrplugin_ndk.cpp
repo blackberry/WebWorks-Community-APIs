@@ -560,6 +560,34 @@ namespace webworks {
                     *handle_for_service = characteristic_list[i].handle;
                     *value_handle_for_service = characteristic_list[i].value_handle;
 
+#define POLAR_H7_WORKAROUND
+#ifdef POLAR_H7_WORKAROUND
+                    // -- start workaround for Polar H7
+
+                    /*
+                     *  bt_gatt_enable_notify() first reads the descriptor field at characteristic_list[i].value_handle+1 and
+                     *  checks the current setting of the notification bit. If it is already set to the wanted value
+                     *  no write of the descriptor bit is done to the device. The H7 seems to be using the write operation
+                     *  itself to trigger on whether notifications be sent or not rather than use the current value of the
+                     *  notification bit. I.e. it doesn't seem to respect the current notification bit setting. This may be
+                     *  caused by the H7 device not resetting the notification bit when a client device disconnects.
+                     *
+                     *  This workaround switches the notification bit off before switching it on again. For devices
+                     *  that already have the bit off no write of the notification bit will occur. Devices that have
+                     *  the bit set will have it off causing a write and then again set causing another write.
+                     *
+                     *  This is a bit of a nuisance since it results in multiple unnecessary interactions with the HRM device :-(
+                     *
+                     */
+
+                    LOGD("unregistering for notifications as part of Polar H7 workaround");
+                    rc = 0;
+                    errno = 0;
+                    rc = bt_gatt_enable_notify(instance, &characteristic_list[i], 0);
+                    *service_being_monitored = false;
+
+                    // -- end workaround for Polar H7
+#endif
                     LOGD("registering for notifications. uuid, handle, value_handle=%s, %d, %d",
                             characteristic_list[i].uuid, characteristic_list[i].handle, characteristic_list[i].value_handle);
                     errno = 0;
