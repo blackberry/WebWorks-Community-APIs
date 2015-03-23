@@ -97,7 +97,10 @@ namespace webworks {
 
 	public slots:
 
+	    string bind(string arg);
+
 	    string checkVolume(string arg);
+
 	    Q_SLOT void onShortPress(bb::multimedia::MediaKey::Type key);
 
 		void join( string inputString);

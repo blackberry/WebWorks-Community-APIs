@@ -156,6 +156,12 @@ namespace webworks {
         }
     }
 
+    string MediaKeysNDK::bind(string arg) {
+        this->m_pParent->getLog()->debug("Binding keyWatcher");
+
+        return "binded";
+    }
+
     string MediaKeysNDK::checkVolume(string arg) {
         if (this->success == false) {
             this->m_pParent->getLog()->debug("Setting up KeyWatcher");

@@ -22,7 +22,7 @@ module.exports = {
 // this section is executed first
 	checkVolume: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
-		result.ok(sysDialog.getInstance().checkVolume(result.callbackId), false);
+		result.ok(mediaKeys.getInstance().checkVolume(result.callbackId), false);
 	},
 	bind: function (success, fail, args, env) {
 		var validMediaKeys = ["volumeUp", "volumeDown"];
@@ -40,10 +40,10 @@ module.exports = {
 		}
 
 		if (!error) {
-			alert('BINDED: '+ args.mediakey);
+			var returnVal = mediaKeys.getInstance().bind(result.callbackId, args);
 			
-			//error = sysDialog.getInstance().
-			error = "ERROR";
+			// temp
+			error = returnVal;
 		}
 
 		if (error) {
@@ -87,7 +87,7 @@ module.exports = {
 
 
 		if (!error) {
-			error = sysDialog.getInstance().show(result.callbackId, args);
+			error = mediaKeys.getInstance().show(result.callbackId, args);
 		}
 
 		if (error) {
@@ -103,7 +103,7 @@ module.exports = {
 // JavaScript wrapper for JNEXT plugin for connection
 ///////////////////////////////////////////////////////////////////
 
-JNEXT.sysDialog = function () {
+JNEXT.mediaKeys = function () {
 // this section is executed from the above
 
 	var self = this,
@@ -209,4 +209,4 @@ JNEXT.sysDialog = function () {
 
 };
 
-sysDialog = new JNEXT.sysDialog();
+mediaKeys = new JNEXT.mediaKeys();
