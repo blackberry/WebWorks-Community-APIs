@@ -18,6 +18,20 @@ var _self = {},
     _ID = "com.blackberry.community.mediakeys",
     exec = cordova.require("cordova/exec");
 
+    _self.bind = function (msg, button, onSuccess, onFail) {
+        var args = {"mediakey" : button};
+
+        var success = function (data, response) {
+            console.log("mediakeys.bind() successfully binded");
+        };
+        var fail = function (data, response) {
+            console.log("mediakeys.bind() failed to bind");
+        };
+
+        // for now let it be sych
+        exec(success, fail, _ID, "bind", args, false);
+    }
+
     _self.checkVolume = function () {
         var result,
             success = function (data, response) {

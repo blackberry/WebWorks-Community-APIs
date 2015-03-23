@@ -15,57 +15,87 @@
 */
 
 var resultObjs = {},
-    threadCallback = null,
-    _utils = require("../../lib/utils");
+	threadCallback = null,
+	_utils = require("../../lib/utils");
 
 module.exports = {
-
+// this section is executed first
 	checkVolume: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		result.ok(sysDialog.getInstance().checkVolume(result.callbackId), false);
 	},
-    show: function (success, fail, args, env) {
-        var result = new PluginResult(args, env);
+	bind: function (success, fail, args, env) {
+		var validMediaKeys = ["volumeUp", "volumeDown"];
+
+		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
 		threadCallback = result.callbackId;
 		var error;
 
-        // args = { message:, buttons:, [settings] };
+		args.mediakey = decodeURIComponent(args.mediakey);
+		args.mediakey = args.mediakey.replace(/^"|"$/g, "").replace(/\\"/g, '"').replace(/\\\\/g, '\\');
 
-        args.message = decodeURIComponent(args.message);
-        if (! JSON.parse(args.message) ) {
-        	// do not show message "null"/"undefined" when given null/undefined message
-        	args.message = "";
-        } else {
-	        args.message = args.message.replace(/^"|"$/g, "").replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+		if (validMediaKeys.indexOf(args.mediakey) == -1) {
+			error = "attempted to bind to invalid mediakey";
 		}
 
-        args.buttons = JSON.parse(decodeURIComponent(args.buttons));
-        if (args.buttons) {
-	        if (!Array.isArray(args.buttons)) {
-	        	error = "buttons is not an array";
-	        }
-        } else {
-        	error = "buttons is undefined";
-        }
+		if (!error) {
+			alert('BINDED: '+ args.mediakey);
+			
+			//error = sysDialog.getInstance().
+			error = "ERROR";
+		}
 
-        if (args.settings) {
-            args.settings = JSON.parse(decodeURIComponent(args.settings));
-        } else {
-        	args.settings = {};
-        }
+		if (error) {
+			alert('ERROR: '+ error);
+
+			result.error(error, false);
+			delete resultObjs[threadCallback];
+		}
+	},
+	show: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		alert(JSON.stringify(result));
+		resultObjs[result.callbackId] = result;
+		threadCallback = result.callbackId;
+		var error;
+
+		// args = { message:, buttons:, [settings] };
+
+		args.message = decodeURIComponent(args.message);
+		if (! JSON.parse(args.message) ) {
+			// do not show message "null"/"undefined" when given null/undefined message
+			args.message = "";
+		} else {
+			args.message = args.message.replace(/^"|"$/g, "").replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+		}
+
+		args.buttons = JSON.parse(decodeURIComponent(args.buttons));
+		if (args.buttons) {
+			if (!Array.isArray(args.buttons)) {
+				error = "buttons is not an array";
+			}
+		} else {
+			error = "buttons is undefined";
+		}
+
+		if (args.settings) {
+			args.settings = JSON.parse(decodeURIComponent(args.settings));
+		} else {
+			args.settings = {};
+		}
 
 
-        if (!error) {
-	        error = sysDialog.getInstance().show(result.callbackId, args);
-	    }
+		if (!error) {
+			error = sysDialog.getInstance().show(result.callbackId, args);
+		}
 
 		if (error) {
 			result.error(error, false);
 			// fail to create dialog, onEvent will not be called
 			delete resultObjs[threadCallback]
 		}
-    }
+	}
 };
 
 
@@ -74,6 +104,8 @@ module.exports = {
 ///////////////////////////////////////////////////////////////////
 
 JNEXT.sysDialog = function () {
+// this section is executed from the above
+
 	var self = this,
 		hasInstance = false;
 
@@ -86,7 +118,6 @@ JNEXT.sysDialog = function () {
 			return false;
 		}
 
-		//self.m_id = JNEXT.createObject("libSysDialog.SysDialogJS");
 		self.m_id = JNEXT.createObject("libMediaKeys.MediaKeysJS");
 
 		if (self.m_id === "") {
@@ -97,13 +128,13 @@ JNEXT.sysDialog = function () {
 
 		var views = qnx.webplatform.getWebViews()
 		var windowGroup = null;
-        var z = -1;
-        for (var i = 0; i < views.length; i++) {
-                if (views[i].visible && views[i].zOrder > z){
-                        z = views[i].zOrder;
-                        windowGroup = views[i].windowGroup;
-                }
-        }
+		var z = -1;
+		for (var i = 0; i < views.length; i++) {
+				if (views[i].visible && views[i].zOrder > z){
+						z = views[i].zOrder;
+						windowGroup = views[i].windowGroup;
+				}
+		}
 		var initResult = JNEXT.invoke(self.m_id, "join " + threadCallback + " " + JSON.stringify(windowGroup));
 		if (initResult) {
 			return initResult;
@@ -114,6 +145,12 @@ JNEXT.sysDialog = function () {
 	// ************************
 	// Enter your methods here
 	// ************************
+
+	self.bind = function (callbackId, args) {
+		var val = JNEXT.invoke(self.m_id, "bind " + callbackId + " " + JSON.stringify(args));
+
+		return val;
+	}
 
 	self.checkVolume = function (callbackId) {
 		return JNEXT.invoke(self.m_id, "checkVolume");

@@ -135,12 +135,22 @@ var app = {
 		app.writeOut(community.mediakeys.checkVolume());
 	},
 
+	testVolumeUp: function() {
+		var msg = "This button tests the volume up button";
+		var button = "volumeUp";
+		var success = function(i) { app.writeOut("testVolumeUp succeeded"); }
+		var fail = function(err) { app.writeOut("testVolumeUp failed"); }
+
+		community.mediakeys.bind(msg, button, success, fail);
+	},
+
 	testPluginCalls: function() {
 		if (community && community.mediakeys) {
 
 			app.writeOut("Plugin was found\n");
 
 			document.getElementById("checkVolume").onclick = app.checkVolume;
+			document.getElementById("volumeUp").onclick = app.testVolumeUp;
 
 			document.getElementById("testButtonsNotArray").onclick = app.testButtonsNotArray;
 			document.getElementById("testButtonsUndefined").onclick = app.testButtonsUndefined;
