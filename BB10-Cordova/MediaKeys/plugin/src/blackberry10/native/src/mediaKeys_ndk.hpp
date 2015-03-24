@@ -87,9 +87,7 @@ namespace webworks {
 	  public:
 
 		explicit MediaKeysNDK(MediaKeysJS *parent = NULL) :
-			m_pParent(parent), m_id(0), success(false), changed(false) {
-
-		}
+			m_pParent(parent), m_id(0), success(false), changed(false) {}
 
 		virtual ~MediaKeysNDK() {};
 

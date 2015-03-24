@@ -158,6 +158,23 @@ namespace webworks {
 
     string MediaKeysNDK::bind(string arg) {
         this->m_pParent->getLog()->debug("Binding keyWatcher");
+        this->m_pParent->getLog()->debug(arg.c_str());
+
+        Json::Reader reader;
+        Json::Value root, value;
+        QString context;
+
+        bool parse = reader.parse(arg, root);
+
+        if (parse == false) {
+            return "parse error";
+        }
+
+        value = root["mediakey"];
+        if (!value) {
+            context = QString::fromStdString(value.asString());
+            return context.toStdString();
+        }
 
         return "binded";
     }
