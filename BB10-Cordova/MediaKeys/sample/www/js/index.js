@@ -56,7 +56,7 @@ var app = {
 		var buttons = "buttons";
 		var settings = null;
 		var success = function(i){ app.writeOut("testButtonsNotArray fail: This test is supposed to fail but got no error\n"); }
-		var fail = function(err){ 
+		var fail = function(err){
 			if ("buttons is not an array" == err) {
 				app.writeOut("testButtonsNotArray success: got expected error [" + err + "]\n");
 			} else {
@@ -71,7 +71,7 @@ var app = {
 		var buttons = null;
 		var settings = null;
 		var success = function(i){ app.writeOut("testButtonsUndefined fail: This test is supposed to fail but got no error\n"); }
-		var fail = function(err){ 
+		var fail = function(err){
 			if ("buttons is undefined" == err) {
 				app.writeOut("testButtonsUndefined success: got expected error [" + err + "]\n");
 			} else {
@@ -138,10 +138,11 @@ var app = {
 	testVolumeUp: function() {
 		var msg = "This button tests the volume up button";
 		var button = "volumeUp";
+    var keylength = "short";
 		var success = function(i) { app.writeOut("testVolumeUp succeeded"); }
 		var fail = function(err) { app.writeOut("testVolumeUp failed"); }
 
-		community.mediakeys.bind(msg, button, success, fail);
+		community.mediakeys.bind(msg, button, keylength, success, fail);
 	},
 
 	testPluginCalls: function() {

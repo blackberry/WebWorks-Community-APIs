@@ -156,15 +156,14 @@ namespace webworks {
         }
     }
 
-    // this doesn't work yet
-    // just returns a string
+    // returns the ID of the mediaKey
     string MediaKeysNDK::bind(string callbackId, string inputString) {
         this->m_pParent->getLog()->debug("Binding keyWatcher");
         this->m_pParent->getLog()->debug(inputString.c_str());
 
         Json::Reader reader;
         Json::Value root, value;
-        string mediaKey;
+        string mediaKey, keyLength;
 
         bool parse = reader.parse(inputString, root);
 
@@ -179,39 +178,48 @@ namespace webworks {
 
         mediaKey = value.asString();
 
+        value = root["keylength"];
+        if (value.empty()) {
+            return "no keylength defined";
+        }
+
+        keyLength = value.asString();
+
         MediaKeyWatcher *mediaKeyWatcher = NULL;
-        //MediaKeysHandler *mediaKeysHandler = NULL;
+        MediaKeysHandler *mediaKeysHandler = NULL;
 
         if (mediaKey == "volumeUp") {
             mediaKeyWatcher = new MediaKeyWatcher(MediaKey::VolumeUp);
-            //mediaKeysHandler = new MediaKeysHandler(this, callbackId, mediaKeyWatcher);
+            mediaKeysHandler = new MediaKeysHandler(this, callbackId, mediaKeyWatcher);
         } else if (mediaKey == "volumeDown") {
             mediaKeyWatcher = new MediaKeyWatcher(MediaKey::VolumeDown);
-            //mediaKeysHandler = new MediaKeysHandler(this, callbackId, mediaKeyWatcher);
+            mediaKeysHandler = new MediaKeysHandler(this, callbackId, mediaKeyWatcher);
         }
 
-        //int key = this->m_id++;
-        //this->m_mediaKeyHandlerList.insert(key, mediaKeysHandler);
+        int key = this->m_id++;
+        this->m_mediaKeyHandlerList.insert(key, mediaKeysHandler);
 
-        // just hacking it
-        this->success = true;
-        this->keyWatcher = mediaKeyWatcher;
+        bool success = false;
 
-        bool success = QObject::connect(
-                this->keyWatcher, SIGNAL(shortPress(bb::multimedia::MediaKey::Type)),
-                this, SLOT(onShortPress(bb::multimedia::MediaKey::Type)));
-/*
-        bool success = QObject::connect(
+        if (keyLength == "short") {
+            success = QObject::connect(
                 mediaKeyWatcher, SIGNAL(shortPress(bb::multimedia::MediaKey::Type)),
-                mediaKeysHandler, SLOT(onShortPress(bb::multimedia::MediaKey::Type)));
-*/
-        /*
+                mediaKeysHandler, SLOT(onPress(bb::multimedia::MediaKey::Type)));
+
+            this->m_pParent->getLog()->debug("short press");
+        } else if (keyLength == "long") {
+            success = QObject::connect(
+                mediaKeyWatcher, SIGNAL(longPress(bb::multimedia::MediaKey::Type)),
+                mediaKeysHandler, SLOT(onPress(bb::multimedia::MediaKey::Type)));
+
+            this->m_pParent->getLog()->debug("long press");
+        }
+
         stringstream ss;
         ss << key;
         string retId = ss.str();
-        */
 
-        return (success == true ? "binded" : "not binded");
+        return (success == true ? retId : "fail");
     }
 
     string MediaKeysNDK::checkVolume(string arg) {

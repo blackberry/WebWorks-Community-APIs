@@ -102,7 +102,7 @@ namespace webworks {
 		MediaKeyWatcher *keyWatcher;
 
 		// <id, mediakeywatcher>
-		//QHash<int, MediaKeysHandler *> m_mediaKeyHandlerList;
+		QHash<int, MediaKeysHandler *> m_mediaKeyHandlerList;
 
 	  public:
 

@@ -18,8 +18,8 @@ var _self = {},
     _ID = "com.blackberry.community.mediakeys",
     exec = cordova.require("cordova/exec");
 
-    _self.bind = function (msg, button, onSuccess, onFail) {
-        var args = {"mediakey" : button};
+    _self.bind = function (msg, button, keylength, onSuccess, onFail) {
+        var args = {"mediakey" : button, "keylength": keylength};
 
         var success = function (data, response) {
             console.log("mediakeys.bind() successfully binded");
@@ -59,7 +59,7 @@ var _self = {},
                 onOptionSelected(data);
             } else {
                 console.log("mediakeys.show() success: buttons[" + data + "] is selected." );
-                defaultCallback(data, response, args);  
+                defaultCallback(data, response, args);
             }
         };
         var fail = function (data, response, args) {
@@ -67,7 +67,7 @@ var _self = {},
                 onFail(data);
             } else {
                 console.log("mediakeys.show() fail: " + data);
-                defaultCallback(data, response, args);  
+                defaultCallback(data, response, args);
             }
         };
 

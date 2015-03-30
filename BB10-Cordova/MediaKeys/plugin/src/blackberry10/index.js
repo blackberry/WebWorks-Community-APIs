@@ -26,6 +26,7 @@ module.exports = {
 	},
 	bind: function (success, fail, args, env) {
 		var validMediaKeys = ["volumeUp", "volumeDown"];
+		var validKeyLength = ["short", "long"];
 
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
@@ -35,7 +36,11 @@ module.exports = {
 		args.mediakey = decodeURIComponent(args.mediakey);
 		args.mediakey = args.mediakey.replace(/^"|"$/g, "").replace(/\\"/g, '"').replace(/\\\\/g, '\\');
 
-		if (validMediaKeys.indexOf(args.mediakey) == -1) {
+		args.keylength = decodeURIComponent(args.keylength);
+		args.keylength = args.keylength.replace(/^"|"$/g, "").replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+
+		if (validMediaKeys.indexOf(args.mediakey) == -1 ||
+				validKeyLength.indexOf(args.keylength) == -1) {
 			error = "attempted to bind to invalid mediakey";
 		}
 
