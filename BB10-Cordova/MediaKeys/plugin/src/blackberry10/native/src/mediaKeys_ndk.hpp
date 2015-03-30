@@ -70,6 +70,23 @@ namespace webworks {
 		Q_SLOT void onDialogFinished (bb::platform::NotificationResult::Type value);
 	};
 
+	class MediaKeysHandler : public QObject {
+
+			Q_OBJECT
+
+			MediaKeysNDK * m_parentNDK;
+
+			string m_callbackId;
+			MediaKeyWatcher *m_mediaKeyWatcher;
+
+	public:
+
+		MediaKeysHandler(MediaKeysNDK * parentNDK, string callbackId, MediaKeyWatcher *mediaKeyWatcher) :
+			m_parentNDK(parentNDK), m_callbackId(callbackId), m_mediaKeyWatcher(mediaKeyWatcher) {}
+
+	public slots:
+	    Q_SLOT void onPress(bb::multimedia::MediaKey::Type key);
+	};
 
 	class MediaKeysNDK : public QObject {
 
@@ -84,6 +101,9 @@ namespace webworks {
 
 		MediaKeyWatcher *keyWatcher;
 
+		// <id, mediakeywatcher>
+		//QHash<int, MediaKeysHandler *> m_mediaKeyHandlerList;
+
 	  public:
 
 		explicit MediaKeysNDK(MediaKeysJS *parent = NULL) :
@@ -93,13 +113,22 @@ namespace webworks {
 
 		void sendEvent( const std::string& msg);
 
+		MediaKeysJS * getParent() {
+			return this->m_pParent;
+		}
+
+		bool success;
+
+		bool changed;
+
 	public slots:
 
-	    string bind(string arg);
+		//string bind(string inputString);
+		string bind(string callbackId, string inputString);
 
-	    string checkVolume(string arg);
+		string checkVolume(string arg);
 
-	    Q_SLOT void onShortPress(bb::multimedia::MediaKey::Type key);
+		Q_SLOT void onShortPress(bb::multimedia::MediaKey::Type key);
 
 		void join( string inputString);
 
@@ -107,11 +136,6 @@ namespace webworks {
 		string show(string id);
 
 		void cleanup();
-
-	private:
-		bool success;
-
-		bool changed;
 	};
 
 

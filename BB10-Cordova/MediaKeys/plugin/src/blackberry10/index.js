@@ -41,7 +41,7 @@ module.exports = {
 
 		if (!error) {
 			var returnVal = mediaKeys.getInstance().bind(result.callbackId, args);
-			
+
 			// temp
 			error = returnVal;
 		}
@@ -148,7 +148,7 @@ JNEXT.mediaKeys = function () {
 
 	self.bind = function (callbackId, args) {
 		var val = JNEXT.invoke(self.m_id, "bind " + callbackId + " " + JSON.stringify(args));
-
+		//var val = 'bind';
 		return val;
 	}
 

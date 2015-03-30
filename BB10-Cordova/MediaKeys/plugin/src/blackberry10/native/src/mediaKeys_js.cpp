@@ -122,7 +122,7 @@ string MediaKeysJS::InvokeMethod(const string& command) {
 
 	} else if (strCommand == "bind") {
         success = QMetaObject::invokeMethod(m_sysDialogMgr, "bind", Qt::BlockingQueuedConnection,
-                Q_RETURN_ARG(string, result), Q_ARG(string, arg));
+                Q_RETURN_ARG(string, result), Q_ARG(string, callbackId), Q_ARG(string, arg));
 	} else {
 		result = "Invalid Method " + strCommand;
 	}
