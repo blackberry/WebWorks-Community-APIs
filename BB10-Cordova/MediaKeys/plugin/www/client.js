@@ -28,7 +28,7 @@ var _self = {},
             console.log("mediakeys.bind() failed to bind");
         };
 
-        // for now let it be sych
+        // asynchronous bind
         exec(success, fail, _ID, "bind", args, false);
     }
 

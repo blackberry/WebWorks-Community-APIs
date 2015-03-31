@@ -177,8 +177,6 @@ var app = {
 
 			app.writeOut("Plugin was found\n");
 
-			document.getElementById("checkVolume").onclick = app.checkVolume;
-
 			document.getElementById("shortVolumeUp").onclick = app.bindShortVolumeUp;
       document.getElementById("shortVolumeDown").onclick = app.bindShortVolumeDown;
       document.getElementById("longVolumeUp").onclick = app.bindLongVolumeUp;

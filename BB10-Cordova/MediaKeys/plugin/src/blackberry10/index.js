@@ -18,8 +18,6 @@ var resultObjs = {},
 	threadCallback = null,
 	_utils = require("../../lib/utils");
 
-var o = {};
-
 module.exports = {
 // this section is executed first
 	checkVolume: function (success, fail, args, env) {
@@ -47,7 +45,8 @@ module.exports = {
 		}
 
 		if (!error) {
-			error = mediaKeys.getInstance().bind(result.callbackId, args);
+			args.id = mediaKeys.getInstance().bind(result.callbackId, args);
+			//error = mediaKeys.getInstance().bind(result.callbackId, args);
 		}
 
 		if (error) {
@@ -55,6 +54,23 @@ module.exports = {
 
 			result.error(error, false);
 			delete resultObjs[threadCallback];
+		} else {
+			alert('start poll');
+
+			console.log('start poll');
+
+			(function poll() {
+			   setTimeout(function() {
+						var retVal = mediaKeys.getInstance().check(result.callbackId, args);
+
+						if (retVal == "triggered") {
+							// call callback
+							alert("Media Key: "+args.mediakey + ", Length: "+args.keylength);
+						}
+
+						poll();
+			    }, 1000);
+			})();
 		}
 	},
 	show: function (success, fail, args, env) {
@@ -155,6 +171,12 @@ JNEXT.mediaKeys = function () {
 		// need to check for errors
 
 		return id;
+	}
+
+	self.check = function (callbackId, args) {
+		var retVal = JNEXT.invoke(self.m_id, "check " + callbackId + " " + JSON.stringify(args));
+
+		return retVal;
 	}
 
 	self.checkVolume = function (callbackId) {

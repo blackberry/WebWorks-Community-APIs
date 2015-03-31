@@ -83,7 +83,9 @@ namespace webworks {
 	public:
 
 		MediaKeysHandler(MediaKeysNDK * parentNDK, string callbackId, MediaKeyWatcher *mediaKeyWatcher) :
-				m_parentNDK(parentNDK), m_callbackId(callbackId), m_mediaKeyWatcher(mediaKeyWatcher) {}
+				m_parentNDK(parentNDK), m_callbackId(callbackId), m_mediaKeyWatcher(mediaKeyWatcher), triggered(false) {}
+
+		bool checkTriggered();
 
 	public slots:
 		Q_SLOT void onPress(bb::multimedia::MediaKey::Type key);
@@ -103,15 +105,13 @@ namespace webworks {
 		// multiply dialogs can be invoked simultaneously
 		QHash<int, DialogHandler*> m_dialogHandlerList;
 
-		MediaKeyWatcher *keyWatcher;
-
 		// <id, mediakeywatcher>
 		QHash<int, MediaKeysHandler *> m_mediaKeyHandlerList;
 
 	  public:
 
 		explicit MediaKeysNDK(MediaKeysJS *parent = NULL) :
-			m_pParent(parent), m_id(0), success(false), changed(false) {}
+			m_pParent(parent), m_id(0) {}
 
 		virtual ~MediaKeysNDK() {};
 
@@ -121,18 +121,10 @@ namespace webworks {
 			return this->m_pParent;
 		}
 
-		bool success;
-
-		bool changed;
-
 	public slots:
 
-		//string bind(string inputString);
 		string bind(string callbackId, string inputString);
-
-		string checkVolume(string arg);
-
-		Q_SLOT void onShortPress(bb::multimedia::MediaKey::Type key);
+		string check(string arg);
 
 		void join( string inputString);
 

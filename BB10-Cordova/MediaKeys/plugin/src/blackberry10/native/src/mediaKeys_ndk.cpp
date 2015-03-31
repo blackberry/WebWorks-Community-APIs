@@ -222,44 +222,46 @@ namespace webworks {
         return (success == true ? retId : "fail");
     }
 
-    string MediaKeysNDK::checkVolume(string arg) {
-        if (this->success == false) {
-            this->m_pParent->getLog()->debug("Setting up KeyWatcher");
-            this->keyWatcher = new MediaKeyWatcher(MediaKey::VolumeUp);
+    string MediaKeysNDK::check(string arg) {
+      Json::Reader reader;
+      Json::Value root, value;
+      string id;
 
-            this->success = QObject::connect(
-                    this->keyWatcher, SIGNAL(shortPress(bb::multimedia::MediaKey::Type)),
-                    this, SLOT(onShortPress(bb::multimedia::MediaKey::Type)));
+      bool parse = reader.parse(arg, root);
 
-            this->m_pParent->getLog()->debug(this->success ? "CONNECTION SUCCESSFUL" : "CONNECTION FAILURE");
+      if (parse == false) {
+          return "parse error";
+      }
 
-            this->changed = false;
-        }
+      value = root["id"];
+      if (value.empty()) {
+          return "no id defined";
+      }
 
-        this->m_pParent->getLog()->debug("Checking Volume");
+      id = value.asString();
 
-        if (this->changed == true) {
-            this->m_pParent->getLog()->debug("changed is TRUE");
-            this->changed = false;
+      MediaKeysHandler *mediaKeysHandler = this->m_mediaKeyHandlerList.value(atoi(id.c_str()));
 
-            return "Volume IS changed";
-        }
+      this->m_pParent->getLog()->debug(("checking trigger: "+id).c_str());
 
-        return "Volume IS NOT changed";
+      return (mediaKeysHandler->checkTriggered() ? "triggered" : "");
     }
 
-    void MediaKeysNDK::onShortPress(bb::multimedia::MediaKey::Type key) {
-        this->m_pParent->getLog()->debug("Volume SLOT is pressed");
-
-        this->changed = true;
-    }
-
-// MediaKeyHandler Functions
     void MediaKeysHandler::onPress(bb::multimedia::MediaKey::Type key) {
         this->m_parentNDK->getParent()->getLog()->debug("Volume SLOT is pressed");
 
-        // this should set the ID of a hash table to true instead
         this->triggered = true;
+    }
+
+    bool MediaKeysHandler::checkTriggered() {
+        bool retVal = false;
+
+        if (this->triggered) {
+            this->triggered = false;
+            retVal = true;
+        }
+
+        return retVal;
     }
 
     void DialogHandler::onDialogFinished(bb::platform::NotificationResult::Type value) {
