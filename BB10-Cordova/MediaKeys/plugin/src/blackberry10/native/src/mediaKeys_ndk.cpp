@@ -224,7 +224,7 @@ namespace webworks {
         Json::FastWriter writer;
         Json::Value root;
 
-        this->m_parentNDK->getParent()->getLog()->debug("Volume SLOT is pressed");
+        this->m_parentNDK->getParent()->getLog()->debug(("["+this->m_callbackId+"]: Volume SLOT is pressed").c_str());
 
         root["result"] = "triggered";
 

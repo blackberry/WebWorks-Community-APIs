@@ -39,9 +39,8 @@ namespace webworks {
 
 	using namespace bb::platform;
 	using namespace bb::system;
-	using namespace std;
-
 	using namespace bb::multimedia;
+	using namespace std;
 
 	class MediaKeysNDK;
 

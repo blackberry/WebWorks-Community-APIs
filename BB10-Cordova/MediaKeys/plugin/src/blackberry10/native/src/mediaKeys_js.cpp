@@ -26,16 +26,16 @@ using namespace std;
  */
 MediaKeysJS::MediaKeysJS(const std::string& id) : m_id(id) {
 	m_thread = new bb::webworks::extensions::ApplicationThread(QThread::LowPriority);
-	m_sysDialogMgr = new webworks::MediaKeysNDK(this);
+	m_mediaKeysMgr = new webworks::MediaKeysNDK(this);
 	m_pLogger = new webworks::Logger("MediaKeysJS", this);
-	m_sysDialogMgr->moveToThread(m_thread);
+	m_mediaKeysMgr->moveToThread(m_thread);
 }
 
 /**
  * destructor.
  */
 MediaKeysJS::~MediaKeysJS() {
-	QMetaObject::invokeMethod(m_sysDialogMgr, "cleanup", Qt::BlockingQueuedConnection);
+	QMetaObject::invokeMethod(m_mediaKeysMgr, "cleanup", Qt::BlockingQueuedConnection);
 	m_thread->wait(50);
 
 	delete m_thread;
@@ -96,17 +96,17 @@ string MediaKeysJS::InvokeMethod(const string& command) {
 	// based on the command given, run the appropriate method in sysDialog_ndk.cpp
 	if (strCommand == "create") {
 
-		success = QMetaObject::invokeMethod(m_sysDialogMgr, "create", Qt::BlockingQueuedConnection,
+		success = QMetaObject::invokeMethod(m_mediaKeysMgr, "create", Qt::BlockingQueuedConnection,
 				Q_RETURN_ARG(string, result), Q_ARG(string, callbackId), Q_ARG(string, arg));
 
 	} else if (strCommand == "show") {
 
-		success = QMetaObject::invokeMethod(m_sysDialogMgr, "show", Qt::BlockingQueuedConnection,
+		success = QMetaObject::invokeMethod(m_mediaKeysMgr, "show", Qt::BlockingQueuedConnection,
 				Q_RETURN_ARG(string, result), Q_ARG(string, arg));
 
 	} else if (command == "join") {
 
-		success = QMetaObject::invokeMethod(m_sysDialogMgr, "join", Qt::BlockingQueuedConnection,
+		success = QMetaObject::invokeMethod(m_mediaKeysMgr, "join", Qt::BlockingQueuedConnection,
 				Q_ARG(string, arg));
 
 		if ( success) {
@@ -114,17 +114,11 @@ string MediaKeysJS::InvokeMethod(const string& command) {
 			result = "";
 		}
 
-	} else if (command == "checkVolume") {
-		//result = m_sysDialogMgr->checkVolume();
-        success = QMetaObject::invokeMethod(m_sysDialogMgr, "checkVolume", Qt::BlockingQueuedConnection,
-                Q_RETURN_ARG(string, result), Q_ARG(string, arg));
-
-
 	} else if (strCommand == "bind") {
-        success = QMetaObject::invokeMethod(m_sysDialogMgr, "bind", Qt::BlockingQueuedConnection,
+        success = QMetaObject::invokeMethod(m_mediaKeysMgr, "bind", Qt::BlockingQueuedConnection,
                 Q_RETURN_ARG(string, result), Q_ARG(string, callbackId), Q_ARG(string, arg));
 	} else if (strCommand == "check") {
-		success = QMetaObject::invokeMethod(m_sysDialogMgr, "check", Qt::BlockingQueuedConnection,
+		success = QMetaObject::invokeMethod(m_mediaKeysMgr, "check", Qt::BlockingQueuedConnection,
 						Q_RETURN_ARG(string, result), Q_ARG(string, arg));
 	}
 	else {

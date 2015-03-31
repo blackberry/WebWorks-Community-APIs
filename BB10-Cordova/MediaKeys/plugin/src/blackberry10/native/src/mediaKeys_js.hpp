@@ -41,7 +41,7 @@ private:
 	bb::webworks::extensions::ApplicationThread *m_thread;
 
     // Definition of a pointer to the actual native extension code
-    webworks::MediaKeysNDK *m_sysDialogMgr;
+    webworks::MediaKeysNDK *m_mediaKeysMgr;
     webworks::Logger *m_pLogger;
 };
 
