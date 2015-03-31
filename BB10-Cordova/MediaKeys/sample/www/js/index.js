@@ -135,12 +135,39 @@ var app = {
 		app.writeOut(community.mediakeys.checkVolume());
 	},
 
-	testVolumeUp: function() {
+  bindShortVolumeUp: function() {
 		var msg = "This button tests the volume up button";
 		var button = "volumeUp";
     var keylength = "short";
-		var success = function(i) { app.writeOut("testVolumeUp succeeded"); }
-		var fail = function(err) { app.writeOut("testVolumeUp failed"); }
+		var success = function(i) { app.writeOut("bind volume up (short) succeeded"); }
+		var fail = function(err) { app.writeOut("bind volume up (short) failed"); }
+
+		community.mediakeys.bind(msg, button, keylength, success, fail);
+	},
+  bindLongVolumeUp: function() {
+		var msg = "This button tests the volume up button";
+		var button = "volumeUp";
+    var keylength = "long";
+		var success = function(i) { app.writeOut("bind volume up (long) succeeded"); }
+		var fail = function(err) { app.writeOut("bind volume up (long) failed"); }
+
+		community.mediakeys.bind(msg, button, keylength, success, fail);
+	},
+  bindShortVolumeDown: function() {
+		var msg = "This button tests the volume up button";
+		var button = "volumeDown";
+    var keylength = "short";
+		var success = function(i) { app.writeOut("bind volume down (short) succeeded"); }
+		var fail = function(err) { app.writeOut("bind volume down (short) failed"); }
+
+		community.mediakeys.bind(msg, button, keylength, success, fail);
+	},
+  bindLongVolumeDown: function() {
+		var msg = "This button tests the volume up button";
+		var button = "volumeDown";
+    var keylength = "long";
+		var success = function(i) { app.writeOut("bind volume down (long) succeeded"); }
+		var fail = function(err) { app.writeOut("bind volume down (long) failed"); }
 
 		community.mediakeys.bind(msg, button, keylength, success, fail);
 	},
@@ -151,7 +178,11 @@ var app = {
 			app.writeOut("Plugin was found\n");
 
 			document.getElementById("checkVolume").onclick = app.checkVolume;
-			document.getElementById("volumeUp").onclick = app.testVolumeUp;
+
+			document.getElementById("shortVolumeUp").onclick = app.bindShortVolumeUp;
+      document.getElementById("shortVolumeDown").onclick = app.bindShortVolumeDown;
+      document.getElementById("longVolumeUp").onclick = app.bindLongVolumeUp;
+      document.getElementById("longVolumeDown").onclick = app.bindLongVolumeDown;
 
 			document.getElementById("testButtonsNotArray").onclick = app.testButtonsNotArray;
 			document.getElementById("testButtonsUndefined").onclick = app.testButtonsUndefined;

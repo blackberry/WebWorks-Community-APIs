@@ -18,6 +18,8 @@ var resultObjs = {},
 	threadCallback = null,
 	_utils = require("../../lib/utils");
 
+var o = {};
+
 module.exports = {
 // this section is executed first
 	checkVolume: function (success, fail, args, env) {
@@ -45,10 +47,7 @@ module.exports = {
 		}
 
 		if (!error) {
-			var returnVal = mediaKeys.getInstance().bind(result.callbackId, args);
-
-			// temp
-			error = returnVal;
+			error = mediaKeys.getInstance().bind(result.callbackId, args);
 		}
 
 		if (error) {
@@ -152,9 +151,10 @@ JNEXT.mediaKeys = function () {
 	// ************************
 
 	self.bind = function (callbackId, args) {
-		var val = JNEXT.invoke(self.m_id, "bind " + callbackId + " " + JSON.stringify(args));
-		//var val = 'bind';
-		return val;
+		var id = JNEXT.invoke(self.m_id, "bind " + callbackId + " " + JSON.stringify(args));
+		// need to check for errors
+
+		return id;
 	}
 
 	self.checkVolume = function (callbackId) {

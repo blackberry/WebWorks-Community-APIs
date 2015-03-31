@@ -72,25 +72,29 @@ namespace webworks {
 
 	class MediaKeysHandler : public QObject {
 
-			Q_OBJECT
+		Q_OBJECT
 
-			MediaKeysNDK * m_parentNDK;
+		MediaKeysNDK * m_parentNDK;
 
-			string m_callbackId;
-			MediaKeyWatcher *m_mediaKeyWatcher;
+		string m_callbackId;
+
+		MediaKeyWatcher *m_mediaKeyWatcher;
 
 	public:
 
 		MediaKeysHandler(MediaKeysNDK * parentNDK, string callbackId, MediaKeyWatcher *mediaKeyWatcher) :
-			m_parentNDK(parentNDK), m_callbackId(callbackId), m_mediaKeyWatcher(mediaKeyWatcher) {}
+				m_parentNDK(parentNDK), m_callbackId(callbackId), m_mediaKeyWatcher(mediaKeyWatcher) {}
 
 	public slots:
-	    Q_SLOT void onPress(bb::multimedia::MediaKey::Type key);
+		Q_SLOT void onPress(bb::multimedia::MediaKey::Type key);
+
+	private:
+		bool triggered;
 	};
 
 	class MediaKeysNDK : public QObject {
 
-	    Q_OBJECT
+		Q_OBJECT
 
 		MediaKeysJS *m_pParent;
 

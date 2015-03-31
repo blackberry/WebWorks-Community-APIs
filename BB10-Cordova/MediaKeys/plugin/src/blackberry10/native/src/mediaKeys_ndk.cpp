@@ -257,7 +257,9 @@ namespace webworks {
 // MediaKeyHandler Functions
     void MediaKeysHandler::onPress(bb::multimedia::MediaKey::Type key) {
         this->m_parentNDK->getParent()->getLog()->debug("Volume SLOT is pressed");
-        this->m_parentNDK->changed = true;
+
+        // this should set the ID of a hash table to true instead
+        this->triggered = true;
     }
 
     void DialogHandler::onDialogFinished(bb::platform::NotificationResult::Type value) {
