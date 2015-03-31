@@ -131,45 +131,45 @@ var app = {
 	    setTimeout(showDialog, 5000);
 	},
 
-	checkVolume: function() {
-		app.writeOut(community.mediakeys.checkVolume());
-	},
-
-  bindShortVolumeUp: function() {
+	bindShortVolumeUp: function() {
 		var msg = "This button tests the volume up button";
 		var button = "volumeUp";
-    var keylength = "short";
+		var keylength = "short";
 		var success = function(i) { app.writeOut("bind volume up (short) succeeded"); }
 		var fail = function(err) { app.writeOut("bind volume up (short) failed"); }
+		var slotCallBack = function() { alert(button+", "+keylength) }
 
-		community.mediakeys.bind(msg, button, keylength, success, fail);
+		community.mediakeys.bind(msg, button, keylength, slotCallBack, success, fail);
 	},
-  bindLongVolumeUp: function() {
+	bindLongVolumeUp: function() {
 		var msg = "This button tests the volume up button";
 		var button = "volumeUp";
-    var keylength = "long";
+		var keylength = "long";
 		var success = function(i) { app.writeOut("bind volume up (long) succeeded"); }
 		var fail = function(err) { app.writeOut("bind volume up (long) failed"); }
+		var slotCallBack = function() { alert(button+", "+keylength) }
 
-		community.mediakeys.bind(msg, button, keylength, success, fail);
+		community.mediakeys.bind(msg, button, keylength, slotCallBack, success, fail);
 	},
-  bindShortVolumeDown: function() {
+	bindShortVolumeDown: function() {
 		var msg = "This button tests the volume up button";
 		var button = "volumeDown";
-    var keylength = "short";
+		var keylength = "short";
 		var success = function(i) { app.writeOut("bind volume down (short) succeeded"); }
 		var fail = function(err) { app.writeOut("bind volume down (short) failed"); }
+		var slotCallBack = function() { alert(button+", "+keylength) }
 
-		community.mediakeys.bind(msg, button, keylength, success, fail);
+		community.mediakeys.bind(msg, button, keylength, slotCallBack, success, fail);
 	},
-  bindLongVolumeDown: function() {
+	bindLongVolumeDown: function() {
 		var msg = "This button tests the volume up button";
 		var button = "volumeDown";
-    var keylength = "long";
+		var keylength = "long";
 		var success = function(i) { app.writeOut("bind volume down (long) succeeded"); }
 		var fail = function(err) { app.writeOut("bind volume down (long) failed"); }
+		var slotCallBack = function() { alert(button+", "+keylength) }
 
-		community.mediakeys.bind(msg, button, keylength, success, fail);
+		community.mediakeys.bind(msg, button, keylength, slotCallBack, success, fail);
 	},
 
 	testPluginCalls: function() {
@@ -178,9 +178,9 @@ var app = {
 			app.writeOut("Plugin was found\n");
 
 			document.getElementById("shortVolumeUp").onclick = app.bindShortVolumeUp;
-      document.getElementById("shortVolumeDown").onclick = app.bindShortVolumeDown;
-      document.getElementById("longVolumeUp").onclick = app.bindLongVolumeUp;
-      document.getElementById("longVolumeDown").onclick = app.bindLongVolumeDown;
+			document.getElementById("shortVolumeDown").onclick = app.bindShortVolumeDown;
+			document.getElementById("longVolumeUp").onclick = app.bindLongVolumeUp;
+			document.getElementById("longVolumeDown").onclick = app.bindLongVolumeDown;
 
 			document.getElementById("testButtonsNotArray").onclick = app.testButtonsNotArray;
 			document.getElementById("testButtonsUndefined").onclick = app.testButtonsUndefined;

@@ -85,8 +85,6 @@ namespace webworks {
 		MediaKeysHandler(MediaKeysNDK * parentNDK, string callbackId, MediaKeyWatcher *mediaKeyWatcher) :
 				m_parentNDK(parentNDK), m_callbackId(callbackId), m_mediaKeyWatcher(mediaKeyWatcher), triggered(false) {}
 
-		bool checkTriggered();
-
 	public slots:
 		Q_SLOT void onPress(bb::multimedia::MediaKey::Type key);
 
@@ -124,7 +122,6 @@ namespace webworks {
 	public slots:
 
 		string bind(string callbackId, string inputString);
-		string check(string arg);
 
 		void join( string inputString);
 

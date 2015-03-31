@@ -215,53 +215,20 @@ namespace webworks {
             this->m_pParent->getLog()->debug("long press");
         }
 
-        stringstream ss;
-        ss << key;
-        string retId = ss.str();
+        string error = "Unable to bind "+mediaKey+" with "+keyLength+" key";
 
-        return (success == true ? retId : "fail");
-    }
-
-    string MediaKeysNDK::check(string arg) {
-      Json::Reader reader;
-      Json::Value root, value;
-      string id;
-
-      bool parse = reader.parse(arg, root);
-
-      if (parse == false) {
-          return "parse error";
-      }
-
-      value = root["id"];
-      if (value.empty()) {
-          return "no id defined";
-      }
-
-      id = value.asString();
-
-      MediaKeysHandler *mediaKeysHandler = this->m_mediaKeyHandlerList.value(atoi(id.c_str()));
-
-      this->m_pParent->getLog()->debug(("checking trigger: "+id).c_str());
-
-      return (mediaKeysHandler->checkTriggered() ? "triggered" : "");
+        return (success == true ? "" : error);
     }
 
     void MediaKeysHandler::onPress(bb::multimedia::MediaKey::Type key) {
+        Json::FastWriter writer;
+        Json::Value root;
+
         this->m_parentNDK->getParent()->getLog()->debug("Volume SLOT is pressed");
 
-        this->triggered = true;
-    }
+        root["result"] = "triggered";
 
-    bool MediaKeysHandler::checkTriggered() {
-        bool retVal = false;
-
-        if (this->triggered) {
-            this->triggered = false;
-            retVal = true;
-        }
-
-        return retVal;
+        m_parentNDK->sendEvent(this->m_callbackId + " " + writer.write(root));
     }
 
     void DialogHandler::onDialogFinished(bb::platform::NotificationResult::Type value) {

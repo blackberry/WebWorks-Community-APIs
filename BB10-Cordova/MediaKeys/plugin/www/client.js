@@ -18,31 +18,20 @@ var _self = {},
     _ID = "com.blackberry.community.mediakeys",
     exec = cordova.require("cordova/exec");
 
-    _self.bind = function (msg, button, keylength, onSuccess, onFail) {
+    _self.bind = function (msg, button, keylength, slotCallBack, onSuccess, onFail) {
         var args = {"mediakey" : button, "keylength": keylength};
 
-        var success = function (data, response) {
+        var success = function (data, response, args) {
+            slotCallBack();
             console.log("mediakeys.bind() successfully binded");
         };
-        var fail = function (data, response) {
+        var fail = function (data, response, args) {
             console.log("mediakeys.bind() failed to bind");
         };
 
         // asynchronous bind
         exec(success, fail, _ID, "bind", args, false);
     }
-
-    _self.checkVolume = function () {
-        var result,
-            success = function (data, response) {
-                result = data;
-            },
-            fail = function (data, response) {
-                console.log("Error: " + data);
-            };
-        exec(success, fail, _ID, "checkVolume", null);
-        return result;
-    };
 
     _self.show = function(message, buttons, settings, onOptionSelected, onFail) {
         var args = {"message" : message, "buttons" : buttons };
@@ -55,6 +44,7 @@ var _self = {},
             console.log("input: " + args);
         };
         var success = function (data, response, args) {
+            alert('success');
             if (typeof onOptionSelected === 'function') {
                 onOptionSelected(data);
             } else {

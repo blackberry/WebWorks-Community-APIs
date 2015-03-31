@@ -19,19 +19,14 @@ var resultObjs = {},
 	_utils = require("../../lib/utils");
 
 module.exports = {
-// this section is executed first
-	checkVolume: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		result.ok(mediaKeys.getInstance().checkVolume(result.callbackId), false);
-	},
 	bind: function (success, fail, args, env) {
-		var validMediaKeys = ["volumeUp", "volumeDown"];
-		var validKeyLength = ["short", "long"];
-
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
 		threadCallback = result.callbackId;
 		var error;
+
+		var validMediaKeys = ["volumeUp", "volumeDown"];
+		var validKeyLength = ["short", "long"];
 
 		args.mediakey = decodeURIComponent(args.mediakey);
 		args.mediakey = args.mediakey.replace(/^"|"$/g, "").replace(/\\"/g, '"').replace(/\\\\/g, '\\');
@@ -45,8 +40,7 @@ module.exports = {
 		}
 
 		if (!error) {
-			args.id = mediaKeys.getInstance().bind(result.callbackId, args);
-			//error = mediaKeys.getInstance().bind(result.callbackId, args);
+			error = mediaKeys.getInstance().bind(result.callbackId, args);
 		}
 
 		if (error) {
@@ -54,28 +48,12 @@ module.exports = {
 
 			result.error(error, false);
 			delete resultObjs[threadCallback];
-		} else {
-			alert('start poll');
-
-			console.log('start poll');
-
-			(function poll() {
-			   setTimeout(function() {
-						var retVal = mediaKeys.getInstance().check(result.callbackId, args);
-
-						if (retVal == "triggered") {
-							// call callback
-							alert("Media Key: "+args.mediakey + ", Length: "+args.keylength);
-						}
-
-						poll();
-			    }, 1000);
-			})();
 		}
+
+		alert("binded: "+args.mediakey + ", " + args.keylength);
 	},
 	show: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
-		alert(JSON.stringify(result));
 		resultObjs[result.callbackId] = result;
 		threadCallback = result.callbackId;
 		var error;
@@ -115,6 +93,8 @@ module.exports = {
 			// fail to create dialog, onEvent will not be called
 			delete resultObjs[threadCallback]
 		}
+
+		alert(JSON.stringify(result));
 	}
 };
 
@@ -159,7 +139,6 @@ JNEXT.mediaKeys = function () {
 		if (initResult) {
 			return initResult;
 		}
-
 	};
 
 	// ************************
@@ -172,16 +151,6 @@ JNEXT.mediaKeys = function () {
 
 		return id;
 	}
-
-	self.check = function (callbackId, args) {
-		var retVal = JNEXT.invoke(self.m_id, "check " + callbackId + " " + JSON.stringify(args));
-
-		return retVal;
-	}
-
-	self.checkVolume = function (callbackId) {
-		return JNEXT.invoke(self.m_id, "checkVolume");
-	};
 
 	self.show = function(callbackId, args){
 
@@ -198,11 +167,13 @@ JNEXT.mediaKeys = function () {
 			return e;
 		}
 
+		alert(error);
+
 		return error;
 	};
 
+	// Fired by the Event framework (used by asynchronous callbacks)
 	self.onEvent = function (strData) {
-
 		var arData = strData.split(" "),
 			callbackId = arData[0],
 			result = resultObjs[callbackId],
@@ -211,13 +182,17 @@ JNEXT.mediaKeys = function () {
 
 		var isThread = (callbackId == threadCallback);
 
-		if (data.result == "ButtonSelection") {
+		if (data.result == "triggered") {
+			result.callbackOk(data.select, isThread);
+		} else if (data.result == "ButtonSelection") {
 			result.callbackOk(data.select, isThread);
 		} else {
 			result.callbackError(data.error, isThread);
 		}
 		// dialog finished, don't need the resultObj
-		delete resultObjs[callbackId];
+		if (data.result != "triggered") {
+			delete resultObjs[callbackId];
+		}
 	};
 
 	// ************************
