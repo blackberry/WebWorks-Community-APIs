@@ -81,14 +81,16 @@ namespace webworks {
 
 	public:
 
-		MediaKeysHandler(MediaKeysNDK * parentNDK, string callbackId, MediaKeyWatcher *mediaKeyWatcher) :
-				m_parentNDK(parentNDK), m_callbackId(callbackId), m_mediaKeyWatcher(mediaKeyWatcher), triggered(false) {}
+		MediaKeysHandler(MediaKeysNDK * parentNDK, string callbackId, MediaKeyWatcher *mediaKeyWatcher, string mediaKey, string keyLength) :
+				m_parentNDK(parentNDK), m_callbackId(callbackId), m_mediaKeyWatcher(mediaKeyWatcher), m_mediaKey(mediaKey), m_keyLength(keyLength) {}
 
 	public slots:
 		Q_SLOT void onPress(bb::multimedia::MediaKey::Type key);
 
 	private:
-		bool triggered;
+		string m_mediaKey;
+
+		string m_keyLength;
 	};
 
 	class MediaKeysNDK : public QObject {
@@ -117,6 +119,8 @@ namespace webworks {
 		MediaKeysJS * getParent() {
 			return this->m_pParent;
 		}
+
+		MediaKey::Type getMediaKey(string mediaKeyStr);
 
 	public slots:
 

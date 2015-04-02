@@ -25,32 +25,38 @@ module.exports = {
 		threadCallback = result.callbackId;
 		var error;
 
-		var validMediaKeys = ["volumeUp", "volumeDown"];
+		var validMediaKeys = ["fastForward", "pause", "play", "playPause", "rewind", "stop", "volumeDown", "volumeUp", "previous", "next"];
 		var validKeyLength = ["short", "long"];
 
-		args.mediakey = decodeURIComponent(args.mediakey);
-		args.mediakey = args.mediakey.replace(/^"|"$/g, "").replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+		args.mediakeys = decodeURIComponent(args.mediakeys);
+		args.mediakeys = JSON.parse(args.mediakeys);
 
-		args.keylength = decodeURIComponent(args.keylength);
-		args.keylength = args.keylength.replace(/^"|"$/g, "").replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+		// check that all keys are bindable
+		args.mediakeys.some(function (mediaKeyObj) {
+			var invalidKey = false;
 
-		if (validMediaKeys.indexOf(args.mediakey) == -1 ||
-				validKeyLength.indexOf(args.keylength) == -1) {
-			error = "attempted to bind to invalid mediakey";
-		}
+			if (validMediaKeys.indexOf(mediaKeyObj.mediakey) == -1 && 
+				validKeyLength.indexOf(mediaKeyObj.keylength) == -1) {
+				invalidKey = true;
+
+				error = "unable to bind mediakey '"+ mediaKeyObj.mediakey+"' of keylength '"+mediaKeyObj.keylength+"'";
+			}
+
+			return invalidKey;
+		});
 
 		if (!error) {
-			error = mediaKeys.getInstance().bind(result.callbackId, args);
+			args.mediakeys.some(function (mediaKeyObj) {
+				error = mediaKeys.getInstance().bind(result.callbackId, mediaKeyObj);
+
+				return error;
+			});
 		}
 
 		if (error) {
-			alert('ERROR: '+ error);
-
 			result.error(error, false);
 			delete resultObjs[threadCallback];
 		}
-
-		alert("binded: "+args.mediakey + ", " + args.keylength);
 	},
 	show: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
@@ -146,10 +152,10 @@ JNEXT.mediaKeys = function () {
 	// ************************
 
 	self.bind = function (callbackId, args) {
-		var id = JNEXT.invoke(self.m_id, "bind " + callbackId + " " + JSON.stringify(args));
+		var error = JNEXT.invoke(self.m_id, "bind " + callbackId + " " + JSON.stringify(args));
 		// need to check for errors
 
-		return id;
+		return error;
 	}
 
 	self.show = function(callbackId, args){
@@ -182,15 +188,15 @@ JNEXT.mediaKeys = function () {
 
 		var isThread = (callbackId == threadCallback);
 
-		if (data.result == "triggered") {
-			result.callbackOk(data.select, isThread);
+		if (data.result == "mediaKeyPressed") {
+			result.callbackOk(data, isThread);
 		} else if (data.result == "ButtonSelection") {
 			result.callbackOk(data.select, isThread);
 		} else {
 			result.callbackError(data.error, isThread);
 		}
 		// dialog finished, don't need the resultObj
-		if (data.result != "triggered") {
+		if (data.result != "mediaKeyPressed") {
 			delete resultObjs[callbackId];
 		}
 	};

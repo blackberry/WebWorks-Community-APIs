@@ -132,44 +132,108 @@ var app = {
 	},
 
 	bindShortVolumeUp: function() {
-		var msg = "This button tests the volume up button";
-		var button = "volumeUp";
-		var keylength = "short";
-		var success = function(i) { app.writeOut("bind volume up (short) succeeded"); }
-		var fail = function(err) { app.writeOut("bind volume up (short) failed"); }
-		var slotCallBack = function() { alert(button+", "+keylength) }
+		var mediaKeyObj = {
+			mediakey: "volumeUp",
+			keylength: "short",
+			success: function(i) { app.writeOut("bind volume up (short) succeeded"); },
+			fail: function() { app.writeOut("bind volume up (short) failed"); }
+		};
 
-		community.mediakeys.bind(msg, button, keylength, slotCallBack, success, fail);
+		community.mediakeys.bind(mediaKeyObj);
 	},
 	bindLongVolumeUp: function() {
-		var msg = "This button tests the volume up button";
-		var button = "volumeUp";
-		var keylength = "long";
-		var success = function(i) { app.writeOut("bind volume up (long) succeeded"); }
-		var fail = function(err) { app.writeOut("bind volume up (long) failed"); }
-		var slotCallBack = function() { alert(button+", "+keylength) }
+		var mediaKeyObj = {
+			mediakey: "volumeUp",
+			keylength: "long",
+			success: function(i) { app.writeOut("bind volume up (long) succeeded"); },
+			fail: function() { app.writeOut("bind volume up (long) failed"); }
+		};
 
-		community.mediakeys.bind(msg, button, keylength, slotCallBack, success, fail);
+		community.mediakeys.bind(mediaKeyObj);
 	},
 	bindShortVolumeDown: function() {
-		var msg = "This button tests the volume up button";
-		var button = "volumeDown";
-		var keylength = "short";
-		var success = function(i) { app.writeOut("bind volume down (short) succeeded"); }
-		var fail = function(err) { app.writeOut("bind volume down (short) failed"); }
-		var slotCallBack = function() { alert(button+", "+keylength) }
+		var mediaKeyObj = {
+			mediakey: "volumeDown",
+			keylength: "short",
+			success: function(i) { app.writeOut("bind volume down (short) succeeded"); },
+			fail: function() { app.writeOut("bind volume down (short) failed"); }
+		};
 
-		community.mediakeys.bind(msg, button, keylength, slotCallBack, success, fail);
+		community.mediakeys.bind(mediaKeyObj);
 	},
 	bindLongVolumeDown: function() {
 		var msg = "This button tests the volume up button";
-		var button = "volumeDown";
-		var keylength = "long";
-		var success = function(i) { app.writeOut("bind volume down (long) succeeded"); }
-		var fail = function(err) { app.writeOut("bind volume down (long) failed"); }
-		var slotCallBack = function() { alert(button+", "+keylength) }
 
-		community.mediakeys.bind(msg, button, keylength, slotCallBack, success, fail);
+		var mediaKeyObj = {
+			mediakey: "volumeDown",
+			keylength: "long",
+			success: function(i) { app.writeOut("bind volume down (long) succeeded"); },
+			fail: function() { app.writeOut("bind volume down (long) failed"); }
+		};
+
+		community.mediakeys.bind(mediaKeyObj);
+	},
+	bindShortPlayPause: function() {
+		var mediaKeyObj = {
+			mediakey: "playPause",
+			keylength: "short",
+			success: function(i) { app.writeOut("bind play pause (short) succeeded"); },
+			fail: function() { app.writeOut("bind play pause (short) failed"); }
+		};
+
+		community.mediakeys.bind(mediaKeyObj);
+	},
+	bindLongPlayPause: function() {
+		var mediaKeyObj = {
+			mediakey: "playPause",
+			keylength: "long",
+			success: function(i) { app.writeOut("bind play pause (long) succeeded"); },
+			fail: function() { app.writeOut("bind play pause (long) failed"); }
+		};
+
+		community.mediakeys.bind(mediaKeyObj);
+	},
+	bindMultiple: function() {
+		var mediaKeyUpShort = {
+			mediakey: "volumeUp",
+			keylength: "short",
+			success: function() { app.writeOut("bind volume up (short) succeeded"); },
+			fail: function() { app.writeOut("bind volume up (short) failed"); }
+		};
+		var mediaKeyDownShort = {
+			mediakey: "volumeDown",
+			keylength: "short",
+			success: function() { app.writeOut("bind volume down (short) succeeded"); },
+			fail: function() { app.writeOut("bind volume down (short) failed"); }
+		};
+		var mediaKeyUpLong = {
+			mediakey: "volumeUp",
+			keylength: "long",
+			success: function() { app.writeOut("bind volume up (long) succeeded"); },
+			fail: function() { app.writeOut("bind volume up (long) failed"); }
+		};
+		var mediaKeyDownLong = {
+			mediakey: "volumeDown",
+			keylength: "long",
+			success: function() { app.writeOut("bind volume down (long) succeeded"); },
+			fail: function() { app.writeOut("bind volume down (long) failed"); }
+		};
+		var mediaKeyPlayPauseShort = {
+			mediakey: "playPause",
+			keylength: "short",
+			success: function(i) { app.writeOut("bind play pause (short) succeeded"); },
+			fail: function() { app.writeOut("bind play pause (short) failed"); }
+		};
+		var mediaKeyPlayPauseLong = {
+			mediakey: "playPause",
+			keylength: "long",
+			success: function(i) { app.writeOut("bind play pause (long) succeeded"); },
+			fail: function() { app.writeOut("bind play pause (long) failed"); }
+		};
+
+		var keyBindings = [mediaKeyUpShort, mediaKeyDownShort,mediaKeyUpLong, mediaKeyDownLong, mediaKeyPlayPauseShort, mediaKeyPlayPauseLong];
+
+		community.mediakeys.bind(keyBindings);
 	},
 
 	testPluginCalls: function() {
@@ -179,8 +243,11 @@ var app = {
 
 			document.getElementById("shortVolumeUp").onclick = app.bindShortVolumeUp;
 			document.getElementById("shortVolumeDown").onclick = app.bindShortVolumeDown;
+			document.getElementById("shortPlayPause").onclick = app.bindShortPlayPause;
 			document.getElementById("longVolumeUp").onclick = app.bindLongVolumeUp;
 			document.getElementById("longVolumeDown").onclick = app.bindLongVolumeDown;
+			document.getElementById("longPlayPause").onclick = app.bindLongPlayPause;
+			document.getElementById("bindMultiple").onclick = app.bindMultiple;
 
 			document.getElementById("testButtonsNotArray").onclick = app.testButtonsNotArray;
 			document.getElementById("testButtonsUndefined").onclick = app.testButtonsUndefined;

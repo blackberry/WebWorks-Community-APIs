@@ -156,6 +156,36 @@ namespace webworks {
         }
     }
 
+    // All Enum media key types can be found at:
+    // http://developer.blackberry.com/native/reference/cascades/bb__multimedia__mediakey.html#enum-type
+    MediaKey::Type MediaKeysNDK::getMediaKey(string mediaKeyStr) {
+        MediaKey::Type mediaKey = MediaKey::None;
+
+        if (mediaKeyStr == "fastForward") {
+            mediaKey = MediaKey::FastForward;
+        } else if (mediaKeyStr == "pause") {
+            mediaKey = MediaKey::Pause;
+        } else if (mediaKeyStr == "play") {
+            mediaKey = MediaKey::Play;
+        } else if (mediaKeyStr == "playPause") {
+            mediaKey = MediaKey::PlayPause;
+        } else if (mediaKeyStr == "rewind") {
+            mediaKey = MediaKey::Rewind;
+        } else if (mediaKeyStr == "stop") {
+            mediaKey = MediaKey::Stop;
+        } else if (mediaKeyStr == "volumeDown") {
+            mediaKey = MediaKey::VolumeDown;
+        } else if (mediaKeyStr == "volumeUp") {
+            mediaKey = MediaKey::VolumeUp;
+        } else if (mediaKeyStr == "previous") {
+            mediaKey = MediaKey::Previous;
+        } else if (mediaKeyStr == "next") {
+            mediaKey = MediaKey::Next;
+        }
+
+        return mediaKey;
+    }
+
     // returns the ID of the mediaKey
     string MediaKeysNDK::bind(string callbackId, string inputString) {
         this->m_pParent->getLog()->debug("Binding keyWatcher");
@@ -188,13 +218,13 @@ namespace webworks {
         MediaKeyWatcher *mediaKeyWatcher = NULL;
         MediaKeysHandler *mediaKeysHandler = NULL;
 
-        if (mediaKey == "volumeUp") {
-            mediaKeyWatcher = new MediaKeyWatcher(MediaKey::VolumeUp);
-            mediaKeysHandler = new MediaKeysHandler(this, callbackId, mediaKeyWatcher);
-        } else if (mediaKey == "volumeDown") {
-            mediaKeyWatcher = new MediaKeyWatcher(MediaKey::VolumeDown);
-            mediaKeysHandler = new MediaKeysHandler(this, callbackId, mediaKeyWatcher);
+        MediaKey::Type keyType = getMediaKey(mediaKey);
+        if (keyType == MediaKey::None) {
+            return "invalid media";
         }
+
+        mediaKeyWatcher = new MediaKeyWatcher(keyType);
+        mediaKeysHandler = new MediaKeysHandler(this, callbackId, mediaKeyWatcher, mediaKey, keyLength);
 
         int key = this->m_id++;
         this->m_mediaKeyHandlerList.insert(key, mediaKeysHandler);
@@ -205,14 +235,10 @@ namespace webworks {
             success = QObject::connect(
                 mediaKeyWatcher, SIGNAL(shortPress(bb::multimedia::MediaKey::Type)),
                 mediaKeysHandler, SLOT(onPress(bb::multimedia::MediaKey::Type)));
-
-            this->m_pParent->getLog()->debug("short press");
         } else if (keyLength == "long") {
             success = QObject::connect(
                 mediaKeyWatcher, SIGNAL(longPress(bb::multimedia::MediaKey::Type)),
                 mediaKeysHandler, SLOT(onPress(bb::multimedia::MediaKey::Type)));
-
-            this->m_pParent->getLog()->debug("long press");
         }
 
         string error = "Unable to bind "+mediaKey+" with "+keyLength+" key";
@@ -224,9 +250,9 @@ namespace webworks {
         Json::FastWriter writer;
         Json::Value root;
 
-        this->m_parentNDK->getParent()->getLog()->debug(("["+this->m_callbackId+"]: Volume SLOT is pressed").c_str());
-
-        root["result"] = "triggered";
+        root["result"] = "mediaKeyPressed";
+        root["mediakey"] = this->m_mediaKey;
+        root["keylength"] = this->m_keyLength;
 
         m_parentNDK->sendEvent(this->m_callbackId + " " + writer.write(root));
     }

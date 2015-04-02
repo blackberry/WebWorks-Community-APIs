@@ -18,19 +18,42 @@ var _self = {},
     _ID = "com.blackberry.community.mediakeys",
     exec = cordova.require("cordova/exec");
 
-    _self.bind = function (msg, button, keylength, slotCallBack, onSuccess, onFail) {
-        var args = {"mediakey" : button, "keylength": keylength};
+    _self.bind = function (mediaKeysObj) {
 
-        var success = function (data, response, args) {
-            slotCallBack();
-            console.log("mediakeys.bind() successfully binded");
-        };
-        var fail = function (data, response, args) {
-            console.log("mediakeys.bind() failed to bind");
-        };
+        // if it is an list, then it is a list of media key JSON objects
+        // otherwise its just an individual JSON object
+        //
+        // if it is an individual JSON object, convert it to a one element list
+        if (!Array.isArray(mediaKeysObj)) {
+            mediaKeysObj = [mediaKeysObj];
+        }
+
+        var success = function (data) {
+          for(var i=0; i<mediaKeysObj.length; i++) {
+            if (mediaKeysObj[i].mediakey == data.mediakey && mediaKeysObj[i].keylength == data.keylength)  {
+              mediaKeysObj[i].success();
+              break;
+            }
+          }
+        }
+
+        // need to catch errors better
+        var fail = function (data) {
+          for(var i=0; i<mediaKeysObj.length; i++) {
+            if (mediaKeysObj[i].mediakey == data.mediakey && mediaKeysObj[i].keylength == data.keylength)  {
+              mediaKeysObj[i].fail();
+              break;
+            }
+          }
+          alert('error');
+        }
+
+        var formattedMediaKeyObject = {
+          'mediakeys': mediaKeysObj
+        }
 
         // asynchronous bind
-        exec(success, fail, _ID, "bind", args, false);
+        exec(success, fail, _ID, "bind", formattedMediaKeyObject, false);
     }
 
     _self.show = function(message, buttons, settings, onOptionSelected, onFail) {
