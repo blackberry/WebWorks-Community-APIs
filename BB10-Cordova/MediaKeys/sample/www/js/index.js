@@ -54,7 +54,7 @@ var app = {
 		var mediaKeyObj = {
 			mediakey: "volumeUp",
 			keylength: "short",
-			onPressed: function() { app.writeOut("bind volume up (short) succeeded"); }
+			onPressed: function() { app.writeOut("button volume up (short) pressed"); }
 		};
 
 		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
@@ -65,7 +65,7 @@ var app = {
 		var mediaKeyObj = {
 			mediakey: "volumeUp",
 			keylength: "long",
-			onPressed: function() { app.writeOut("bind volume up (long) succeeded"); }
+			onPressed: function() { app.writeOut("button volume up (long) pressed"); }
 		};
 
 		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
@@ -76,7 +76,7 @@ var app = {
 		var mediaKeyObj = {
 			mediakey: "volumeDown",
 			keylength: "short",
-			onPressed: function() { app.writeOut("bind volume down (short) succeeded"); }
+			onPressed: function() { app.writeOut("button volume down (short) pressed"); }
 		};
 
 		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
@@ -87,7 +87,7 @@ var app = {
 		var mediaKeyObj = {
 			mediakey: "volumeDown",
 			keylength: "long",
-			onPressed: function() { app.writeOut("bind volume down (long) succeeded"); }
+			onPressed: function() { app.writeOut("button volume down (long) pressed"); }
 		};
 
 		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
@@ -98,7 +98,7 @@ var app = {
 		var mediaKeyObj = {
 			mediakey: "playPause",
 			keylength: "short",
-			onPressed: function() { app.writeOut("bind play pause (short) succeeded"); }
+			onPressed: function() { app.writeOut("button play pause (short) pressed"); }
 		};
 		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
 
@@ -108,7 +108,7 @@ var app = {
 		var mediaKeyObj = {
 			mediakey: "playPause",
 			keylength: "long",
-			onPressed: function() { app.writeOut("bind play pause (long) succeeded"); }
+			onPressed: function() { app.writeOut("button play pause (long) pressed"); }
 		};
 
 		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
@@ -119,7 +119,7 @@ var app = {
 		var mediaKeyObj = {
 			mediakey: "volumeUp",
 			keylength: "short",
-			onPressed: function() { app.writeOut("bind volume up (short) succeeded"); }
+			onPressed: function() { app.writeOut("button volume up (short) pressed"); }
 		};
 
 		community.mediakeys.bind(mediaKeyObj);
@@ -130,32 +130,32 @@ var app = {
 		var mediaKeyUpShort = {
 			mediakey: "volumeUp",
 			keylength: "short",
-			onPressed: function() { app.writeOut("bind volume up (short) succeeded"); }
+			onPressed: function() { app.writeOut("button volume up (short) pressed"); }
 		};
 		var mediaKeyDownShort = {
 			mediakey: "volumeDown",
 			keylength: "short",
-			onPressed: function() { app.writeOut("bind volume down (short) succeeded"); }
+			onPressed: function() { app.writeOut("button volume down (short) pressed"); }
 		};
 		var mediaKeyUpLong = {
 			mediakey: "volumeUp",
 			keylength: "long",
-			onPressed: function() { app.writeOut("bind volume up (long) succeeded"); }
+			onPressed: function() { app.writeOut("button volume up (long) pressed"); }
 		};
 		var mediaKeyDownLong = {
 			mediakey: "volumeDown",
 			keylength: "long",
-			onPressed: function() { app.writeOut("bind volume down (long) succeeded"); }
+			onPressed: function() { app.writeOut("button volume down (long) pressed"); }
 		};
 		var mediaKeyPlayPauseShort = {
 			mediakey: "playPause",
 			keylength: "short",
-			onPressed: function() { app.writeOut("bind play pause (short) succeeded"); }
+			onPressed: function() { app.writeOut("button play pause (short) pressed"); }
 		};
 		var mediaKeyPlayPauseLong = {
 			mediakey: "playPause",
 			keylength: "long",
-			onPressed: function() { app.writeOut("bind play pause (long) succeeded"); }
+			onPressed: function() { app.writeOut("button play pause (long) pressed"); }
 		};
 
 		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
@@ -165,12 +165,84 @@ var app = {
 		community.mediakeys.bind(keyBindings, generalFailure);
 	},
 
+	// binding all keys with short keylength
+	// binded keys: fastForward, pause, play, playPause, rewind, stop, volumeDown, volumeUp, previous, next
+	bindAllShort: function() {
+		var mediaKeyFastForwardShort = {
+			mediakey: "fastForward",
+			keylength: "short",
+			onPressed: function() { app.writeOut("button fastForward (short) pressed"); }
+		};
+		var mediaKeyPauseShort = {
+			mediakey: "pause",
+			keylength: "short",
+			onPressed: function() { app.writeOut("button pause (short) pressed"); }
+		};
+		var mediaKeyPlayShort = {
+			mediakey: "play",
+			keylength: "short",
+			onPressed: function() { app.writeOut("button play (short) pressed"); }
+		};
+		var mediaKeyPlayPauseShort = {
+			mediakey: "playPause",
+			keylength: "short",
+			onPressed: function() { app.writeOut("button playPause (short) pressed"); }
+		};
+		var mediaKeyRewindShort = {
+			mediakey: "rewind",
+			keylength: "short",
+			onPressed: function() { app.writeOut("button rewind (short) pressed"); }
+		};
+		var mediaKeyStopShort = {
+			mediakey: "stop",
+			keylength: "short",
+			onPressed: function() { app.writeOut("button stop (short) pressed"); }
+		};
+		var mediaKeyVolumeDownShort = {
+			mediakey: "volumeDown",
+			keylength: "short",
+			onPressed: function() { app.writeOut("button volumeDown (short) pressed"); }
+		};
+		var mediaKeyVolumeUpShort = {
+			mediakey: "volumeUp",
+			keylength: "short",
+			onPressed: function() { app.writeOut("button volumeUp (short) pressed"); }
+		};
+		var mediaKeyPreviousShort = {
+			mediakey: "previous",
+			keylength: "short",
+			onPressed: function() { app.writeOut("button previous (short) pressed"); }
+		};
+		var mediaKeyNextShort = {
+			mediakey: "next",
+			keylength: "short",
+			onPressed: function() { app.writeOut("button next (short) pressed"); }
+		};
+
+		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
+
+		var keyBindings = [
+			mediaKeyFastForwardShort,
+			mediaKeyPauseShort,
+			mediaKeyPlayShort,
+			mediaKeyPlayPauseShort,
+			mediaKeyRewindShort,
+			mediaKeyStopShort,
+			mediaKeyVolumeDownShort,
+			mediaKeyVolumeUpShort,
+			mediaKeyPreviousShort,
+			mediaKeyNextShort
+		];
+
+		community.mediakeys.bind(keyBindings, generalFailure);
+	},
+
 	// test potential errors
 	bindInvalidKey: function() {
 		var mediaKeyObj = {
 			mediakey: "invalid",
 			keylength: "long",
-			onPressed: function() { app.writeOut("bind invalid key (long) succeeded"); }
+			onPressed: function() { app.writeOut("button invalid key (long) pressed"); }
 		};
 
 		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
@@ -181,7 +253,7 @@ var app = {
 		var mediaKeyObj = {
 			mediakey: "volumeUp",
 			keylength: "invalid",
-			onPressed: function() { app.writeOut("bind volume up (invalid length) succeeded"); }
+			onPressed: function() { app.writeOut("button volume up (invalid length) pressed"); }
 		};
 
 		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
@@ -192,7 +264,7 @@ var app = {
 		var mediaKeyObj = {
 			invalidfield1: "volumeUp",
 			invalidfield2: "short",
-			onPressed: function() { app.writeOut("bind volume up (short) succeeded"); }
+			onPressed: function() { app.writeOut("button volume up (short) pressed"); }
 		};
 
 		var generalFailure = function (error) { app.writeOut("unable to bind invalid media keys: "+error); };
@@ -232,7 +304,11 @@ var app = {
 			document.getElementById("longVolumeUp").onclick = app.bindLongVolumeUp;
 			document.getElementById("longVolumeDown").onclick = app.bindLongVolumeDown;
 			document.getElementById("longPlayPause").onclick = app.bindLongPlayPause;
+			document.getElementById("bindVolumeUpDefaultFailure").onclick = app.bindVolumeUpDefaultFailure;
+
+			// bind multiple
 			document.getElementById("bindMultiple").onclick = app.bindMultiple;
+			document.getElementById("bindAllShort").onclick = app.bindAllShort;
 
 			// error testing
 			document.getElementById("bindInvalidKey").onclick = app.bindInvalidKey;
@@ -240,7 +316,7 @@ var app = {
 			document.getElementById("bindInvalidMediaKeyObj").onclick = app.bindInvalidMediaKeyObj;
 			document.getElementById("bindInvalidOnPressedCallback").onclick = app.bindInvalidOnPressedCallback;
 			document.getElementById("bindNoOnPressedCallback").onclick = app.bindNoOnPressedCallback;
-			document.getElementById("bindVolumeUpDefaultFailure").onclick = app.bindVolumeUpDefaultFailure;
+			
 
 		} else {
 			app.writeOut("Plugin was not found");
