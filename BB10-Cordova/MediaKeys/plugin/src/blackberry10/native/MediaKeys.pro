@@ -8,7 +8,7 @@ QT -= gui
 
 include(config.pri)
 
-LIBS += -lcpp  -lbb -lbbdata -lbbdevice -lbbcascades -lscreen -lbbplatform -lbbsystem -lQtCore -lbbmultimedia
+LIBS += -lcpp  -lbb -lQtCore -lbbmultimedia
 
 QMAKE_CFLAGS   += -Wno-psabi
 QMAKE_CXXFLAGS += -Wno-psabi

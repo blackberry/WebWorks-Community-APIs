@@ -26,8 +26,6 @@
 #include "mediaKeys_js.hpp"
 #include "ApplicationThread.hpp"
 
-#include "Logger.hpp"
-
 namespace webworks {
 
     using namespace std;
@@ -46,8 +44,8 @@ namespace webworks {
         m_pParent->NotifyEvent(msg);
     }
 
-    // All Enum media key types can be found at:
-    // http://developer.blackberry.com/native/reference/cascades/bb__multimedia__mediakey.html#enum-type
+    // returns the correct MediaKey::Type based on the corresponding input string
+    // otherwise MediaKey::None if nothing matches
     MediaKey::Type MediaKeysNDK::getMediaKey(string mediaKeyStr) {
         MediaKey::Type mediaKey = MediaKey::None;
 
@@ -76,11 +74,8 @@ namespace webworks {
         return mediaKey;
     }
 
-    // returns the ID of the mediaKey
+    // returns empty string upon success otherwise an error
     string MediaKeysNDK::bind(string callbackId, string inputString) {
-        this->m_pParent->getLog()->debug("Binding keyWatcher");
-        this->m_pParent->getLog()->debug(inputString.c_str());
-
         Json::Reader reader;
         Json::Value root, value;
         string mediaKey, keyLength;
@@ -136,6 +131,7 @@ namespace webworks {
         return (success == true ? "" : error);
     }
 
+    // the slot function that is to be called when a long or a short signal is emitted
     void MediaKeysHandler::onPress(bb::multimedia::MediaKey::Type key) {
         Json::FastWriter writer;
         Json::Value root;

@@ -27,7 +27,6 @@ using namespace std;
 MediaKeysJS::MediaKeysJS(const std::string& id) : m_id(id) {
 	m_thread = new bb::webworks::extensions::ApplicationThread(QThread::LowPriority);
 	m_mediaKeysMgr = new webworks::MediaKeysNDK(this);
-	m_pLogger = new webworks::Logger("MediaKeysJS", this);
 	m_mediaKeysMgr->moveToThread(m_thread);
 }
 
@@ -39,11 +38,6 @@ MediaKeysJS::~MediaKeysJS() {
 	m_thread->wait(50);
 
 	delete m_thread;
-	delete m_pLogger;
-}
-
-webworks::Logger* MediaKeysJS::getLog() {
-    return m_pLogger;
 }
 
 /**
@@ -99,7 +93,7 @@ string MediaKeysJS::InvokeMethod(const string& command) {
 		success = QMetaObject::invokeMethod(m_mediaKeysMgr, "join", Qt::BlockingQueuedConnection,
 				Q_ARG(string, arg));
 
-		if ( success) {
+		if (success) {
 			// join() no return, reset
 			result = "";
 		}
@@ -107,8 +101,7 @@ string MediaKeysJS::InvokeMethod(const string& command) {
 	} else if (strCommand == "bind") {
         success = QMetaObject::invokeMethod(m_mediaKeysMgr, "bind", Qt::BlockingQueuedConnection,
                 Q_RETURN_ARG(string, result), Q_ARG(string, callbackId), Q_ARG(string, arg));
-	}
-	else {
+	} else {
 		result = "Invalid Method " + strCommand;
 	}
 

@@ -2,80 +2,18 @@
 BASEDIR = $$quote($$_PRO_FILE_PWD_)
 
 device {
-    CONFIG(debug, debug|release) {
-        profile {
-            INCLUDEPATH += $$quote(${QNX_TARGET}/usr/include/bb/platform) \
-                $$quote($$BASEDIR/../native/public) \
-                $$quote(${QNX_TARGET}/usr/include/qt4/QtCore) \
-                $$quote(${QNX_TARGET}/usr/include/bb) \
-                $$quote(${QNX_TARGET}/usr/include/bb/system) \
-                $$quote(${QNX_TARGET}/usr/include/qt4/QtDeclarative)
-
-            DEPENDPATH += $$quote(${QNX_TARGET}/usr/include/bb/platform) \
-                $$quote($$BASEDIR/../native/public) \
-                $$quote(${QNX_TARGET}/usr/include/qt4/QtCore) \
-                $$quote(${QNX_TARGET}/usr/include/bb) \
-                $$quote(${QNX_TARGET}/usr/include/bb/system) \
-                $$quote(${QNX_TARGET}/usr/include/qt4/QtDeclarative)
-
-            LIBS += -lQtCore \
-                -lQtDeclarative \
-                -lbb \
-                -lbbsystem \
-                -lbbplatform \
-                -lbbmultimedia
-
-            CONFIG += \
-                config_pri_source_group1
-        } else {
-            INCLUDEPATH += $$quote(${QNX_TARGET}/usr/include/bb/platform) \
-                $$quote($$BASEDIR/../native/public) \
-                $$quote(${QNX_TARGET}/usr/include/qt4/QtCore) \
-                $$quote(${QNX_TARGET}/usr/include/bb) \
-                $$quote(${QNX_TARGET}/usr/include/bb/system) \
-                $$quote(${QNX_TARGET}/usr/include/qt4/QtDeclarative)
-
-            DEPENDPATH += $$quote(${QNX_TARGET}/usr/include/bb/platform) \
-                $$quote($$BASEDIR/../native/public) \
-                $$quote(${QNX_TARGET}/usr/include/qt4/QtCore) \
-                $$quote(${QNX_TARGET}/usr/include/bb) \
-                $$quote(${QNX_TARGET}/usr/include/bb/system) \
-                $$quote(${QNX_TARGET}/usr/include/qt4/QtDeclarative)
-
-            LIBS += -lQtCore \
-                -lQtDeclarative \
-                -lbb \
-                -lbbsystem \
-                -lbbplatform \
-                -lbbmultimedia
-
-            CONFIG += \
-                config_pri_source_group1
-        }
-
-    }
-
     CONFIG(release, debug|release) {
         !profile {
-            INCLUDEPATH += $$quote(${QNX_TARGET}/usr/include/bb/platform) \
-                $$quote($$BASEDIR/../native/public) \
+            INCLUDEPATH += $$quote($$BASEDIR/../native/public) \
                 $$quote(${QNX_TARGET}/usr/include/qt4/QtCore) \
-                $$quote(${QNX_TARGET}/usr/include/bb) \
-                $$quote(${QNX_TARGET}/usr/include/bb/system) \
-                $$quote(${QNX_TARGET}/usr/include/qt4/QtDeclarative)
+                $$quote(${QNX_TARGET}/usr/include/bb)
 
-            DEPENDPATH += $$quote(${QNX_TARGET}/usr/include/bb/platform) \
-                $$quote($$BASEDIR/../native/public) \
+            DEPENDPATH += $$quote($$BASEDIR/../native/public) \
                 $$quote(${QNX_TARGET}/usr/include/qt4/QtCore) \
-                $$quote(${QNX_TARGET}/usr/include/bb) \
-                $$quote(${QNX_TARGET}/usr/include/bb/system) \
-                $$quote(${QNX_TARGET}/usr/include/qt4/QtDeclarative)
+                $$quote(${QNX_TARGET}/usr/include/bb)
 
             LIBS += -lQtCore \
-                -lQtDeclarative \
                 -lbb \
-                -lbbsystem \
-                -lbbplatform \
                 -lbbmultimedia
 
             CONFIG += \
@@ -87,25 +25,16 @@ device {
 simulator {
     CONFIG(debug, debug|release) {
         !profile {
-            INCLUDEPATH += $$quote(${QNX_TARGET}/usr/include/bb/platform) \
-                $$quote($$BASEDIR/../native/public) \
+            INCLUDEPATH += $$quote($$BASEDIR/../native/public) \
                 $$quote(${QNX_TARGET}/usr/include/qt4/QtCore) \
-                $$quote(${QNX_TARGET}/usr/include/bb) \
-                $$quote(${QNX_TARGET}/usr/include/bb/system) \
-                $$quote(${QNX_TARGET}/usr/include/qt4/QtDeclarative)
+                $$quote(${QNX_TARGET}/usr/include/bb)
 
-            DEPENDPATH += $$quote(${QNX_TARGET}/usr/include/bb/platform) \
-                $$quote($$BASEDIR/../native/public) \
+            DEPENDPATH += $$quote($$BASEDIR/../native/public) \
                 $$quote(${QNX_TARGET}/usr/include/qt4/QtCore) \
-                $$quote(${QNX_TARGET}/usr/include/bb) \
-                $$quote(${QNX_TARGET}/usr/include/bb/system) \
-                $$quote(${QNX_TARGET}/usr/include/qt4/QtDeclarative)
+                $$quote(${QNX_TARGET}/usr/include/bb)
 
             LIBS += -lQtCore \
-                -lQtDeclarative \
                 -lbb \
-                -lbbsystem \
-                -lbbplatform \
                 -lbbmultimedia
 
             CONFIG += \
@@ -123,14 +52,12 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/plugin.cpp) \
         $$quote($$BASEDIR/src/mediaKeys_js.cpp) \
         $$quote($$BASEDIR/src/mediaKeys_ndk.cpp) \
-        $$quote($$BASEDIR/src/tokenizer.cpp) \
-        $$quote($$BASEDIR/src/Logger.cpp)
+        $$quote($$BASEDIR/src/tokenizer.cpp)
 
     HEADERS += \
         $$quote($$BASEDIR/src/ApplicationThread.hpp) \
         $$quote($$BASEDIR/src/mediaKeys_js.hpp) \
-        $$quote($$BASEDIR/src/mediaKeys_ndk.hpp) \
-        $$quote($$BASEDIR/src/Logger.hpp)
+        $$quote($$BASEDIR/src/mediaKeys_ndk.hpp)
 }
 
 INCLUDEPATH += $$quote($$BASEDIR/src)

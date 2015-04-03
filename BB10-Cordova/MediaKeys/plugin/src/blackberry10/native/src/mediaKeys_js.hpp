@@ -20,7 +20,6 @@
 #include <string>
 #include <QThread>
 #include "../public/plugin.h"
-#include "Logger.hpp"
 #include "mediaKeys_ndk.hpp"
 #include "ApplicationThread.hpp"
 
@@ -34,7 +33,6 @@ public:
     virtual std::string InvokeMethod(const std::string& command);
     void NotifyEvent(const std::string& event);
     bb::webworks::extensions::ApplicationThread* applicationThread() const { return m_thread; };
-    webworks::Logger* getLog();
 
 private:
     std::string m_id;
@@ -42,7 +40,6 @@ private:
 
     // Definition of a pointer to the actual native extension code
     webworks::MediaKeysNDK *m_mediaKeysMgr;
-    webworks::Logger *m_pLogger;
 };
 
 #endif // __MEDIAKEYS_JS_HPP__

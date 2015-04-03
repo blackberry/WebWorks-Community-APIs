@@ -23,7 +23,6 @@
 #include <QString>
 #include <QByteArray>
 #include <QtCore>
-#include "Logger.hpp"
 
 #include <bb/multimedia/MediaKey>
 #include <bb/multimedia/MediaKeyWatcher>
@@ -70,10 +69,10 @@ namespace webworks {
 
 		int m_id;
 
-		// <id, mediakeywatcher>
+		// List of MediaKeyHandler's binded
 		QHash<int, MediaKeysHandler *> m_mediaKeyHandlerList;
 
-	  public:
+	public:
 
 		explicit MediaKeysNDK(MediaKeysJS *parent = NULL) :
 			m_pParent(parent), m_id(0) {}
@@ -81,10 +80,6 @@ namespace webworks {
 		virtual ~MediaKeysNDK() {};
 
 		void sendEvent( const std::string& msg);
-
-		MediaKeysJS * getParent() {
-			return this->m_pParent;
-		}
 
 		MediaKey::Type getMediaKey(string mediaKeyStr);
 
