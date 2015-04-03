@@ -68,8 +68,7 @@ module.exports = {
 ///////////////////////////////////////////////////////////////////
 
 JNEXT.mediaKeys = function () {
-// this section is executed from the above
-
+	
 	var self = this,
 		hasInstance = false;
 
