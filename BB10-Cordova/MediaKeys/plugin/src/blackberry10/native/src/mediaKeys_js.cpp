@@ -93,18 +93,8 @@ string MediaKeysJS::InvokeMethod(const string& command) {
 	string result = "Fail to invoke method " + strCommand;
 	bool success = false;
 
-	// based on the command given, run the appropriate method in sysDialog_ndk.cpp
-	if (strCommand == "create") {
-
-		success = QMetaObject::invokeMethod(m_mediaKeysMgr, "create", Qt::BlockingQueuedConnection,
-				Q_RETURN_ARG(string, result), Q_ARG(string, callbackId), Q_ARG(string, arg));
-
-	} else if (strCommand == "show") {
-
-		success = QMetaObject::invokeMethod(m_mediaKeysMgr, "show", Qt::BlockingQueuedConnection,
-				Q_RETURN_ARG(string, result), Q_ARG(string, arg));
-
-	} else if (command == "join") {
+	// based on the command given, run the appropriate method in mediaKeys_ndk.cpp
+	if (command == "join") {
 
 		success = QMetaObject::invokeMethod(m_mediaKeysMgr, "join", Qt::BlockingQueuedConnection,
 				Q_ARG(string, arg));

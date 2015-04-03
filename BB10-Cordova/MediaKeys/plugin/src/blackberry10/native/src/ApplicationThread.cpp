@@ -28,7 +28,7 @@
 #include <screen/screen.h>
 #include <bps/bps.h>
 
-#ifdef DEBUG_SysDialog
+#ifdef DEBUG_MediaKeys
 #define DEBUG_ApplicationThread
 #endif
 
@@ -46,7 +46,7 @@ ApplicationThread::ApplicationThread(QThread::Priority priority,
 		QObject *parent) :
 		QThread(parent), app(NULL) {
 	int argc = 1;
-	char* argv[] = { (char*) "SysDialog", };
+	char* argv[] = { (char*) "MediaKeys", };
 
 	app = new bb::Application(argc, argv);
 #ifdef APPLICATION_STRATEGY_2

@@ -3,7 +3,7 @@
     version="1.0.0">
 
     <name>Media Keys</name>
-    <description>BlackBerry 10 Community Contributed API to Prompt Global Notification Dialog</description>
+    <description>BlackBerry 10 Community Contributed API for Custom Configuration of Media Keys</description>
     <license>Apache 2.0</license>
     <author>Thomas Fung</author>
 

@@ -25,10 +25,6 @@
 #include <QtCore>
 #include "Logger.hpp"
 
-#include <bb/system/SystemUiButton>
-#include <bb/platform/NotificationDialog>
-#include <bb/platform/NotificationResult>
-
 #include <bb/multimedia/MediaKey>
 #include <bb/multimedia/MediaKeyWatcher>
 #include <bb/multimedia/MediaKeyNotification>
@@ -37,37 +33,10 @@ class MediaKeysJS;
 
 namespace webworks {
 
-	using namespace bb::platform;
-	using namespace bb::system;
 	using namespace bb::multimedia;
 	using namespace std;
 
 	class MediaKeysNDK;
-
-	class DialogHandler : public QObject {
-
-		Q_OBJECT
-		MediaKeysNDK * m_parentNDK;
-
-		string m_callbackId;
-		NotificationDialog * m_notificationDialog;
-
-	  public:
-
-		DialogHandler( MediaKeysNDK * parentNDK, string callbackId, NotificationDialog * dialog) :
-		m_parentNDK(parentNDK), m_callbackId(callbackId), m_notificationDialog(dialog) { }
-
-	  public slots:
-
-  		// return m_notificationDialog->error as string
-		string getError();
-
-		// call m_notificationDialog->show() and return error
-		string show();
-
-		// slot for finished(); have to be class member; have to include the complete namespace
-		Q_SLOT void onDialogFinished (bb::platform::NotificationResult::Type value);
-	};
 
 	class MediaKeysHandler : public QObject {
 
@@ -101,9 +70,6 @@ namespace webworks {
 
 		int m_id;
 
-		// multiply dialogs can be invoked simultaneously
-		QHash<int, DialogHandler*> m_dialogHandlerList;
-
 		// <id, mediakeywatcher>
 		QHash<int, MediaKeysHandler *> m_mediaKeyHandlerList;
 
@@ -128,13 +94,8 @@ namespace webworks {
 
 		void join( string inputString);
 
-		string create(string callbackId, string inputString);
-		string show(string id);
-
 		void cleanup();
 	};
-
-
 
 } // namespace webworks
 

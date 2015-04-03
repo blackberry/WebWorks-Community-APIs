@@ -17,8 +17,6 @@
  * under the License.
  */
 
- dialog = null;
-
 var app = {
 	// Application Constructor
 	initialize: function() {
