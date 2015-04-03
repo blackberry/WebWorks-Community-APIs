@@ -18,43 +18,45 @@ var _self = {},
     _ID = "com.blackberry.community.mediakeys",
     exec = cordova.require("cordova/exec");
 
-    _self.bind = function (mediaKeysObj) {
+    _self.bind = function (mediaKeysObj, fail) {
 
         // if it is an list, then it is a list of media key JSON objects
         // otherwise its just an individual JSON object
         //
         // if it is an individual JSON object, convert it to a one element list
-        if (!Array.isArray(mediaKeysObj)) {
+        if (typeof mediaKeysObj === 'object' && !Array.isArray(mediaKeysObj)) {
             mediaKeysObj = [mediaKeysObj];
         }
 
-        var success = function (data) {
-          for(var i=0; i<mediaKeysObj.length; i++) {
-            if (mediaKeysObj[i].mediakey == data.mediakey && mediaKeysObj[i].keylength == data.keylength)  {
-              mediaKeysObj[i].success();
-              break;
-            }
-          }
+        if (fail === null || typeof fail !== 'function') {
+            fail = function(error) { console.log("Failed to bind media keys: "+error); };
         }
 
-        // need to catch errors better
-        var fail = function (data) {
-          for(var i=0; i<mediaKeysObj.length; i++) {
-            if (mediaKeysObj[i].mediakey == data.mediakey && mediaKeysObj[i].keylength == data.keylength)  {
-              mediaKeysObj[i].fail();
-              break;
+        var success = function (data, response, args) {
+            var mediaKeyObj = null;
+
+            mediaKeysObj.some(function (obj) {
+                if (obj.mediakey == data.mediakey && obj.keylength == data.keylength) {
+                    mediaKeyObj = obj;
+                }
+
+                return mediaKeyObj;
+            });
+
+            if (mediaKeyObj.onPressed === null || typeof mediaKeyObj.onPressed !== 'function') {
+                fail('Invalid onPressed callback');
+            } else {
+                mediaKeyObj.onPressed();
             }
-          }
-          alert('error');
-        }
+        };
 
         var formattedMediaKeyObject = {
-          'mediakeys': mediaKeysObj
-        }
+            'mediakeys': mediaKeysObj
+        };
 
-        // asynchronous bind
+        // asynchronously bind keys
         exec(success, fail, _ID, "bind", formattedMediaKeyObject, false);
-    }
+    };
 
     _self.show = function(message, buttons, settings, onOptionSelected, onFail) {
         var args = {"message" : message, "buttons" : buttons };
@@ -67,7 +69,6 @@ var _self = {},
             console.log("input: " + args);
         };
         var success = function (data, response, args) {
-            alert('success');
             if (typeof onOptionSelected === 'function') {
                 onOptionSelected(data);
             } else {

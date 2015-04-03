@@ -51,194 +51,181 @@ var app = {
 		app.testPluginCalls();
 	},
 
-	testButtonsNotArray:function(){
-		var msg = "This is a negative test and this dialog is not supposed to show!";
-		var buttons = "buttons";
-		var settings = null;
-		var success = function(i){ app.writeOut("testButtonsNotArray fail: This test is supposed to fail but got no error\n"); }
-		var fail = function(err){
-			if ("buttons is not an array" == err) {
-				app.writeOut("testButtonsNotArray success: got expected error [" + err + "]\n");
-			} else {
-				app.writeOut("testButtonsNotArray fail: expected error [buttons is not an array], but got[" + err + "]\n" );
-			}
-		};
-		community.mediakeys.show(msg, buttons, settings, success, fail);
-	},
-
-	testButtonsUndefined:function(){
-		var msg = "This is a negative test and this dialog is not supposed to show!";
-		var buttons = null;
-		var settings = null;
-		var success = function(i){ app.writeOut("testButtonsUndefined fail: This test is supposed to fail but got no error\n"); }
-		var fail = function(err){
-			if ("buttons is undefined" == err) {
-				app.writeOut("testButtonsUndefined success: got expected error [" + err + "]\n");
-			} else {
-				app.writeOut("testButtonsUndefined fail: expected error [buttons is undefined], but got[" + err + "]\n" );
-			}
-		};
-		community.mediakeys.show(msg, buttons, settings, success, fail);
-	},
-
-	testMultiDialog:function(){
-		var showDialog = function( count ){
-			var msg = "This test invokes 5 dialogs simultaneously; this is dialog " + count ;
-			var buttons = ["button1", "but ton 2", "\"button3\""];
-			var settings = null;
-			var success = function(i){ app.writeOut("testMultiDialog " + count + " success: [" + buttons[i] + "] selected\n"); }
-			var fail = function(err){ app.writeOut("testMultiDialog " + count + " fail: " + err + "\n"); }
-			community.mediakeys.show(msg, buttons, settings, success, fail);
-		};
-
-		for (var i = 0; i < 5; ++i) {
-			showDialog(i);
-		}
-	},
-
-	testRepeat:function(){
-		var msg = "This button test the dialog repeat setting. Effects of the notification (LED flash & vibrate) should repeat ";
-		var buttons = ["button1", "but ton 2", "\"button3\""];
-		var settings = {repeat: true};
-		var success = function(i){ app.writeOut("testRepeat success: [" + buttons[i] + "] selected\n"); }
-		var fail = function(err){ app.writeOut("testRepeat fail: " + err + "\n" ); }
-		community.mediakeys.show(msg, buttons, settings, success, fail);
-	},
-
-	testTitle: function(){
-		var msg = "This button test the dialog title setting. Dialog should have title [test \"setTitle\" success] ";
-		var buttons = ["button1", "but ton 2", "\"button3\""];
-		var settings = {title: "test \"setTitle\" success"};
-		var success = function(i){ app.writeOut("testTitle success: [" + buttons[i] + "] selected\n"); }
-		var fail = function(err){ app.writeOut("testTitle fail: " + err + "\n"); }
-		community.mediakeys.show(msg, buttons, settings, success, fail);
-	},
-
-	verifyGlobal: function () {
-
-		var showDialog = function(){
-			var msg = "This button verify that dialog is global. Dialog will show 5 sec after click button; Minimize the app after click, the dialog will show on homescreen";
-			var buttons = ["button1", "but ton 2", "\"button3\""];
-			var settings = {};
-			var success = function(i){ app.writeOut("verifyGlobal success: [" + buttons[i] + "] selected\n"); }
-			var fail = function(err){ app.writeOut("verifyGlobal fail: " + err + "\n"); }
-			community.mediakeys.show(msg, buttons, settings, success, fail);
-
-		};
-
-		// confirm clicked
-		document.getElementById("verifyGlobal").innerHTML += " (clicked)";
-	    setTimeout(showDialog, 5000);
-	},
-
+	// binding just one key
 	bindShortVolumeUp: function() {
 		var mediaKeyObj = {
 			mediakey: "volumeUp",
 			keylength: "short",
-			success: function(i) { app.writeOut("bind volume up (short) succeeded"); },
-			fail: function() { app.writeOut("bind volume up (short) failed"); }
+			onPressed: function() { app.writeOut("bind volume up (short) succeeded"); }
 		};
 
-		community.mediakeys.bind(mediaKeyObj);
+		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
+
+		community.mediakeys.bind(mediaKeyObj, generalFailure);
 	},
 	bindLongVolumeUp: function() {
 		var mediaKeyObj = {
 			mediakey: "volumeUp",
 			keylength: "long",
-			success: function(i) { app.writeOut("bind volume up (long) succeeded"); },
-			fail: function() { app.writeOut("bind volume up (long) failed"); }
+			onPressed: function() { app.writeOut("bind volume up (long) succeeded"); }
 		};
 
-		community.mediakeys.bind(mediaKeyObj);
+		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
+
+		community.mediakeys.bind(mediaKeyObj, generalFailure);
 	},
 	bindShortVolumeDown: function() {
 		var mediaKeyObj = {
 			mediakey: "volumeDown",
 			keylength: "short",
-			success: function(i) { app.writeOut("bind volume down (short) succeeded"); },
-			fail: function() { app.writeOut("bind volume down (short) failed"); }
+			onPressed: function() { app.writeOut("bind volume down (short) succeeded"); }
 		};
 
-		community.mediakeys.bind(mediaKeyObj);
+		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
+
+		community.mediakeys.bind(mediaKeyObj, generalFailure);
 	},
 	bindLongVolumeDown: function() {
-		var msg = "This button tests the volume up button";
-
 		var mediaKeyObj = {
 			mediakey: "volumeDown",
 			keylength: "long",
-			success: function(i) { app.writeOut("bind volume down (long) succeeded"); },
-			fail: function() { app.writeOut("bind volume down (long) failed"); }
+			onPressed: function() { app.writeOut("bind volume down (long) succeeded"); }
 		};
 
-		community.mediakeys.bind(mediaKeyObj);
+		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
+
+		community.mediakeys.bind(mediaKeyObj, generalFailure);
 	},
 	bindShortPlayPause: function() {
 		var mediaKeyObj = {
 			mediakey: "playPause",
 			keylength: "short",
-			success: function(i) { app.writeOut("bind play pause (short) succeeded"); },
-			fail: function() { app.writeOut("bind play pause (short) failed"); }
+			onPressed: function() { app.writeOut("bind play pause (short) succeeded"); }
 		};
+		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
 
-		community.mediakeys.bind(mediaKeyObj);
+		community.mediakeys.bind(mediaKeyObj, generalFailure);
 	},
 	bindLongPlayPause: function() {
 		var mediaKeyObj = {
 			mediakey: "playPause",
 			keylength: "long",
-			success: function(i) { app.writeOut("bind play pause (long) succeeded"); },
-			fail: function() { app.writeOut("bind play pause (long) failed"); }
+			onPressed: function() { app.writeOut("bind play pause (long) succeeded"); }
+		};
+
+		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
+
+		community.mediakeys.bind(mediaKeyObj, generalFailure);
+	},
+	bindVolumeUpDefaultFailure: function() {
+		var mediaKeyObj = {
+			mediakey: "volumeUp",
+			keylength: "short",
+			onPressed: function() { app.writeOut("bind volume up (short) succeeded"); }
 		};
 
 		community.mediakeys.bind(mediaKeyObj);
 	},
+
+	// binding more than one key
 	bindMultiple: function() {
 		var mediaKeyUpShort = {
 			mediakey: "volumeUp",
 			keylength: "short",
-			success: function() { app.writeOut("bind volume up (short) succeeded"); },
-			fail: function() { app.writeOut("bind volume up (short) failed"); }
+			onPressed: function() { app.writeOut("bind volume up (short) succeeded"); }
 		};
 		var mediaKeyDownShort = {
 			mediakey: "volumeDown",
 			keylength: "short",
-			success: function() { app.writeOut("bind volume down (short) succeeded"); },
-			fail: function() { app.writeOut("bind volume down (short) failed"); }
+			onPressed: function() { app.writeOut("bind volume down (short) succeeded"); }
 		};
 		var mediaKeyUpLong = {
 			mediakey: "volumeUp",
 			keylength: "long",
-			success: function() { app.writeOut("bind volume up (long) succeeded"); },
-			fail: function() { app.writeOut("bind volume up (long) failed"); }
+			onPressed: function() { app.writeOut("bind volume up (long) succeeded"); }
 		};
 		var mediaKeyDownLong = {
 			mediakey: "volumeDown",
 			keylength: "long",
-			success: function() { app.writeOut("bind volume down (long) succeeded"); },
-			fail: function() { app.writeOut("bind volume down (long) failed"); }
+			onPressed: function() { app.writeOut("bind volume down (long) succeeded"); }
 		};
 		var mediaKeyPlayPauseShort = {
 			mediakey: "playPause",
 			keylength: "short",
-			success: function(i) { app.writeOut("bind play pause (short) succeeded"); },
-			fail: function() { app.writeOut("bind play pause (short) failed"); }
+			onPressed: function() { app.writeOut("bind play pause (short) succeeded"); }
 		};
 		var mediaKeyPlayPauseLong = {
 			mediakey: "playPause",
 			keylength: "long",
-			success: function(i) { app.writeOut("bind play pause (long) succeeded"); },
-			fail: function() { app.writeOut("bind play pause (long) failed"); }
+			onPressed: function() { app.writeOut("bind play pause (long) succeeded"); }
 		};
+
+		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
 
 		var keyBindings = [mediaKeyUpShort, mediaKeyDownShort,mediaKeyUpLong, mediaKeyDownLong, mediaKeyPlayPauseShort, mediaKeyPlayPauseLong];
 
-		community.mediakeys.bind(keyBindings);
+		community.mediakeys.bind(keyBindings, generalFailure);
 	},
+
+	// test potential errors
+	bindInvalidKey: function() {
+		var mediaKeyObj = {
+			mediakey: "invalid",
+			keylength: "long",
+			onPressed: function() { app.writeOut("bind invalid key (long) succeeded"); }
+		};
+
+		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
+
+		community.mediakeys.bind(mediaKeyObj, generalFailure);
+	},
+	bindInvalidLength: function() {
+		var mediaKeyObj = {
+			mediakey: "volumeUp",
+			keylength: "invalid",
+			onPressed: function() { app.writeOut("bind volume up (invalid length) succeeded"); }
+		};
+
+		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
+
+		community.mediakeys.bind(mediaKeyObj, generalFailure);
+	},
+	bindInvalidMediaKeyObj: function() {
+		var mediaKeyObj = {
+			invalidfield1: "volumeUp",
+			invalidfield2: "short",
+			onPressed: function() { app.writeOut("bind volume up (short) succeeded"); }
+		};
+
+		var generalFailure = function (error) { app.writeOut("unable to bind invalid media keys: "+error); };
+
+		community.mediakeys.bind(mediaKeyObj, generalFailure);
+	},
+	bindInvalidOnPressedCallback: function() {
+		var mediaKeyObj = {
+			mediakey: "volumeUp",
+			keylength: "short",
+			onPressed: "string"
+		};
+
+		var generalFailure = function (error) { app.writeOut("unable to call onPressed callback: "+error); };
+
+		community.mediakeys.bind(mediaKeyObj, generalFailure);
+	},
+	bindNoOnPressedCallback: function() {
+		var mediaKeyObj = {
+			mediakey: "volumeUp",
+			keylength: "short",
+		};
+
+		var generalFailure = function (error) { app.writeOut("unable to call onPressed callback: "+error); };
+
+		community.mediakeys.bind(mediaKeyObj, generalFailure);
+	},
+
 
 	testPluginCalls: function() {
 		if (community && community.mediakeys) {
-
 			app.writeOut("Plugin was found\n");
 
 			document.getElementById("shortVolumeUp").onclick = app.bindShortVolumeUp;
@@ -249,12 +236,14 @@ var app = {
 			document.getElementById("longPlayPause").onclick = app.bindLongPlayPause;
 			document.getElementById("bindMultiple").onclick = app.bindMultiple;
 
-			document.getElementById("testButtonsNotArray").onclick = app.testButtonsNotArray;
-			document.getElementById("testButtonsUndefined").onclick = app.testButtonsUndefined;
-			document.getElementById("testMultiDialog").onclick = app.testMultiDialog;
-			document.getElementById("testRepeat").onclick = app.testRepeat;
-			document.getElementById("testTitle").onclick = app.testTitle;
-			document.getElementById("verifyGlobal").onclick = app.verifyGlobal;
+			// error testing
+			document.getElementById("bindInvalidKey").onclick = app.bindInvalidKey;
+			document.getElementById("bindInvalidLength").onclick = app.bindInvalidLength;
+			document.getElementById("bindInvalidMediaKeyObj").onclick = app.bindInvalidMediaKeyObj;
+			document.getElementById("bindInvalidOnPressedCallback").onclick = app.bindInvalidOnPressedCallback;
+			document.getElementById("bindNoOnPressedCallback").onclick = app.bindNoOnPressedCallback;
+			document.getElementById("bindVolumeUpDefaultFailure").onclick = app.bindVolumeUpDefaultFailure;
+
 		} else {
 			app.writeOut("Plugin was not found");
 		}

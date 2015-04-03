@@ -23,7 +23,7 @@
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Hello World</title>
+        <title>MediaKeys Sample App</title>
     </head>
     <body>
         <div class="app">
@@ -40,16 +40,21 @@
             <button id="longVolumeDown" type="button">Bind Volume Down (long)</button>
             <button id="shortPlayPause" type="button">Bind Play Pause (short)</button>
             <button id="longPlayPause" type="button">Bind Play Pause (long)</button>
+            <button id="bindVolumeUpDefaultFailure" type="button">bind Volume Up (short) without failure callback</button>
+
+            <br/><br/>
+
             <button id="bindMultiple" type="button">Bind Multiple</button>
 
             <br/><br/>
 
-            <button id="testButtonsNotArray" type="button">test buttons not array error</button>
-            <button id="testButtonsUndefined" type="button">test buttons undefined error</button>
-            <button id="verifyGlobal" type="button">show dialog after 5 sec</button>
-            <button id="testMultiDialog" type="button">invoke 5 dialogs simultaneously</button>
-            <button id="testRepeat" type="button">show dialog with effects repeat</button>
-            <button id="testTitle" type="button">show dialog with title</button>
+            <button id="bindInvalidKey" type="button">Test bind - invalid media key</button>
+            <button id="bindInvalidLength" type="button">Test bind - invalid key length</button>
+            <button id="bindInvalidMediaKeyObj" type="button">Test bind - invalid media key object</button>
+            <button id="bindInvalidOnPressedCallback" type="button">Test bind - invalid onPressed callback</button>
+            <button id="bindNoOnPressedCallback" type="button">Test bind - no onPressed callback declared</button>
+
+
         </div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>

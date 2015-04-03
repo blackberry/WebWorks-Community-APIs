@@ -32,22 +32,24 @@ module.exports = {
 		args.mediakeys = JSON.parse(args.mediakeys);
 
 		// check that all keys are bindable
-		args.mediakeys.some(function (mediaKeyObj) {
-			var invalidKey = false;
-
-			if (validMediaKeys.indexOf(mediaKeyObj.mediakey) == -1 && 
-				validKeyLength.indexOf(mediaKeyObj.keylength) == -1) {
-				invalidKey = true;
-
-				error = "unable to bind mediakey '"+ mediaKeyObj.mediakey+"' of keylength '"+mediaKeyObj.keylength+"'";
+		args.mediakeys.some(function (obj) {
+			if (typeof obj.mediakey !== 'string' || typeof obj.keylength !== 'string') {
+				error = "Mediakey object has invalid fields";
 			}
 
-			return invalidKey;
+			if (!error &&
+				validMediaKeys.indexOf(obj.mediakey) === -1 && 
+				validKeyLength.indexOf(obj.keylength) === -1) {
+
+				error = "Unable to bind mediakey '"+ obj.mediakey+"' of keylength '"+obj.keylength+"'";
+			}
+
+			return error;
 		});
 
 		if (!error) {
-			args.mediakeys.some(function (mediaKeyObj) {
-				error = mediaKeys.getInstance().bind(result.callbackId, mediaKeyObj);
+			args.mediakeys.some(function (obj) {
+				error = mediaKeys.getInstance().bind(result.callbackId, obj);
 
 				return error;
 			});
@@ -57,50 +59,6 @@ module.exports = {
 			result.error(error, false);
 			delete resultObjs[threadCallback];
 		}
-	},
-	show: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		resultObjs[result.callbackId] = result;
-		threadCallback = result.callbackId;
-		var error;
-
-		// args = { message:, buttons:, [settings] };
-
-		args.message = decodeURIComponent(args.message);
-		if (! JSON.parse(args.message) ) {
-			// do not show message "null"/"undefined" when given null/undefined message
-			args.message = "";
-		} else {
-			args.message = args.message.replace(/^"|"$/g, "").replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-		}
-
-		args.buttons = JSON.parse(decodeURIComponent(args.buttons));
-		if (args.buttons) {
-			if (!Array.isArray(args.buttons)) {
-				error = "buttons is not an array";
-			}
-		} else {
-			error = "buttons is undefined";
-		}
-
-		if (args.settings) {
-			args.settings = JSON.parse(decodeURIComponent(args.settings));
-		} else {
-			args.settings = {};
-		}
-
-
-		if (!error) {
-			error = mediaKeys.getInstance().show(result.callbackId, args);
-		}
-
-		if (error) {
-			result.error(error, false);
-			// fail to create dialog, onEvent will not be called
-			delete resultObjs[threadCallback]
-		}
-
-		alert(JSON.stringify(result));
 	}
 };
 
@@ -132,7 +90,7 @@ JNEXT.mediaKeys = function () {
 
 		JNEXT.registerEvents(self);
 
-		var views = qnx.webplatform.getWebViews()
+		var views = qnx.webplatform.getWebViews();
 		var windowGroup = null;
 		var z = -1;
 		for (var i = 0; i < views.length; i++) {
@@ -153,27 +111,6 @@ JNEXT.mediaKeys = function () {
 
 	self.bind = function (callbackId, args) {
 		var error = JNEXT.invoke(self.m_id, "bind " + callbackId + " " + JSON.stringify(args));
-		// need to check for errors
-
-		return error;
-	}
-
-	self.show = function(callbackId, args){
-
-		var error;
-		try {
-			var id = JNEXT.invoke(self.m_id, "create " + callbackId + " " + JSON.stringify(args));
-			if (id.indexOf(' ') >= 0) {
-				// it's an error instead of real id
-				return id;
-			}
-
-			error = JNEXT.invoke(self.m_id, "show " + callbackId + " " + id);
-		} catch (e) {
-			return e;
-		}
-
-		alert(error);
 
 		return error;
 	};
@@ -190,13 +127,8 @@ JNEXT.mediaKeys = function () {
 
 		if (data.result == "mediaKeyPressed") {
 			result.callbackOk(data, isThread);
-		} else if (data.result == "ButtonSelection") {
-			result.callbackOk(data.select, isThread);
 		} else {
-			result.callbackError(data.error, isThread);
-		}
-		// dialog finished, don't need the resultObj
-		if (data.result != "mediaKeyPressed") {
+			result.callbackError(data, isThread);
 			delete resultObjs[callbackId];
 		}
 	};

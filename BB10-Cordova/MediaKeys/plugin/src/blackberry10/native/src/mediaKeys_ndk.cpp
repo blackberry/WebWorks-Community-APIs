@@ -220,7 +220,7 @@ namespace webworks {
 
         MediaKey::Type keyType = getMediaKey(mediaKey);
         if (keyType == MediaKey::None) {
-            return "invalid media";
+            return "invalid mediakey type";
         }
 
         mediaKeyWatcher = new MediaKeyWatcher(keyType);
