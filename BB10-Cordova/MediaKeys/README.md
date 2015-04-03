@@ -41,43 +41,40 @@ parameters:
 	generalFailure {Function}
 	A general failure function that will be invoked whenever a error occurs in the process of binding with media keys.
 
-Example:
+## Examples
 
-	Binding One Media Key:
+Binding One Media Key:
 
-		var mediaKeyObj = {
-			mediakey: "volumeUp",
-			keylength: "short",
-			onPressed: function() { app.writeOut("bind volume up (short) succeeded"); }
-		};
+	var mediaKeyObj = {
+		mediakey: "volumeUp",
+		keylength: "short",
+		onPressed: function() { app.writeOut("bind volume up (short) succeeded"); }
+	};
 
-		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
+	var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
+	community.mediakeys.bind(mediaKeyObj, generalFailure);
 
-		community.mediakeys.bind(mediaKeyObj, generalFailure);
+Binding Multiple Media Keys:
 
-	Binding Multiple Media Keys:
+	var mediaKeyUpShort = {
+		mediakey: "volumeUp",
+		keylength: "short",
+		onPressed: function() { app.writeOut("bind volume up (short) succeeded"); }
+	};
+	var mediaKeyDownShort = {
+		mediakey: "volumeDown",
+		keylength: "short",
+		onPressed: function() { app.writeOut("bind volume down (short) succeeded"); }
+	};
+	var mediaKeyUpLong = {
+		mediakey: "volumeUp",
+		keylength: "long",
+		onPressed: function() { app.writeOut("bind volume up (long) succeeded"); }
+	};
 
-		var mediaKeyUpShort = {
-			mediakey: "volumeUp",
-			keylength: "short",
-			onPressed: function() { app.writeOut("bind volume up (short) succeeded"); }
-		};
-		var mediaKeyDownShort = {
-			mediakey: "volumeDown",
-			keylength: "short",
-			onPressed: function() { app.writeOut("bind volume down (short) succeeded"); }
-		};
-		var mediaKeyUpLong = {
-			mediakey: "volumeUp",
-			keylength: "long",
-			onPressed: function() { app.writeOut("bind volume up (long) succeeded"); }
-		};
-
-		var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
-
-		var keyBindings = [mediaKeyUpShort, mediaKeyDownShort,mediaKeyUpLong];
-
-		community.mediakeys.bind(keyBindings, generalFailure);
+	var generalFailure = function (error) { app.writeOut("unable to bind media keys: "+error); };
+	var keyBindings = [mediaKeyUpShort, mediaKeyDownShort,mediaKeyUpLong];
+	community.mediakeys.bind(keyBindings, generalFailure);
 
 ## Disclaimer
 
