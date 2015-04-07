@@ -1,0 +1,32 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "www/config.xml": {
+                "parents": {
+                    "/widget/rim:permissions": [
+                        {
+                            "xml": "<rim:permit>post_notification</rim:permit>",
+                            "count": 1
+                        }
+                    ],
+                    "/widget": [
+                        {
+                            "xml": "<feature name=\"com.blackberry.community.nowplaying\" value=\"com.blackberry.community.nowplaying\" />",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "com.blackberry.community.nowplaying": {
+            "PACKAGE_NAME": "io.cordova.hellocordova"
+        }
+    },
+    "dependent_plugins": {}
+}
