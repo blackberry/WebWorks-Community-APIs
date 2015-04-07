@@ -49,7 +49,7 @@ Get the url for the source of music. If there's no music, return the address of 
 Example:
 	com.blackberry.community.nowplaying.NowPlayingGetSourceAddress();
 
-#### NowPlayingGetDuration() #### 
+#### NowPlayingGetDuration() ####
 Get the duration of the current music. On default return the default music's duration.
 
 Example:
@@ -82,13 +82,13 @@ Example:
 ## Using the Plugin in an Application
 The following commands are from nowplaying_build.sh
 
-rm -rf debug1
-webworks create debug1
-cd debug1
-webworks plugin add ../plugin
-rm -rf www/
-cp -r ../sample/* ./
-webworks run
+1. rm -rf debug1
+2. webworks create debug1
+3. cd debug1
+4. webworks plugin add ../plugin
+5. rm -rf www/
+6. cp -r ../sample/* ./
+7. webworks run
 
 Or, ./nowplaying_build.sh if using linux.
 
