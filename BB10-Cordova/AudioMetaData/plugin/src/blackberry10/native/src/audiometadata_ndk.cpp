@@ -115,13 +115,14 @@ void AudioMetaData_NDK::audioMetaDataSetTagData(const std::string& callbackId, c
     bool parsed = reader.parse(inputString, root);
 
     if (parsed) {
-        const char* path = "";
+        std::string path;
         Json::Value pathVal = root["path"];
         if (pathVal.isArray()) {
-            path = (*pathVal.begin()).asString().c_str();
+            path = (*pathVal.begin()).asString();
         } else {
-            path = pathVal.asString().c_str();
+            path = pathVal.asString();
         }
+
         setTagData(path, root);
         res["result"] = "metadata set";
     } else {
@@ -253,12 +254,13 @@ string AudioMetaData_NDK::getProperString(char* strArray, int size, char encodin
     return result;
 }
 
-void AudioMetaData_NDK::setTagData(const char* path, const Json::Value &data) {
+void AudioMetaData_NDK::setTagData(const std::string& path, const Json::Value &data) {
     Json::Value res;
     Json::FastWriter writer;
-
+    const char* file_path = path.c_str();
     // check if tag already exists on the file
-    ID3v2_tag *tag = load_tag(path);
+
+    ID3v2_tag *tag = load_tag(file_path);
     if (tag == NULL) {
         tag = new_tag();
     }
@@ -297,7 +299,7 @@ void AudioMetaData_NDK::setTagData(const char* path, const Json::Value &data) {
             tag_set_track(buff, ISO_ENCODING, tag);
         }
     }
-    set_tag(path, tag);
+    set_tag(file_path, tag);
     free(tag);
 }
 
