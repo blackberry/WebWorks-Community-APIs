@@ -67,6 +67,21 @@ Stop the current music and set the music to the given url.
 Example:
 	com.blackberry.community.nowplaying.NowPlayingSwitchMusic('http://www.w3schools.com/html/horse.ogg');
 
+#### NowPlayingSetMetadata ####
+Set the meta data of the current playing music by passing json object to native side
+
+Example:
+	var jsonData = {"Title":"MyTitle","Artist":"MyArtist","Album":"MyAlbum"};
+	com.blackberry.community.nowplaying.NowPlayingSetMetadata(jsonData, app.aSyncCallback);
+
+where "app.aSyncCallback" is some callback function defined below:	
+	aSyncCallback: function(data) {
+		if (data) {
+			console.log(data);
+			app.writeOut(data.result);
+		}
+	}
+
 ## How to build your native Plugin
 
 1.  Clone this repo to your local machine
