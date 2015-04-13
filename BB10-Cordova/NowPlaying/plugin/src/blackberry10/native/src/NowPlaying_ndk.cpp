@@ -29,6 +29,7 @@
 
 #include <bb/multimedia/MediaPlayer>
 #include <bb/multimedia/NowPlayingConnection>
+#include <bb/multimedia/MetaData>
 
 namespace webworks {
 
@@ -58,6 +59,7 @@ namespace webworks {
         emit playSignal();
         return "Player started.";
    }
+
 
    string NowPlayingNDK::NowPlayingSwitchMusic(const string &src){
 
@@ -112,20 +114,26 @@ namespace webworks {
      }
 
 
-   // Below is just for testing purpose
-      void NowPlayingNDK::testAsync(const std::string& callbackId, const std::string& inputString){
+   void NowPlayingNDK::NowPlayingSetMetadata(const std::string& callbackId, const std::string& data){
               // Parse the arg string as JSON
               Json::FastWriter writer;
               Json::Reader reader;
               Json::Value root;
-              bool parse = reader.parse(inputString, root);
+              bool parse = reader.parse(data, root);
 
               if (!parse) {
                   Json::Value error;
                   error["result"] = "Cannot parse JSON object";
                   sendEvent(callbackId + " " + writer.write(error));
               } else {
-                  root["result"] = root["value1"].asInt() + root["value2"].asInt();
+                  QVariantMap metadata;
+
+                  metadata[MetaData::Title] = QString::fromStdString(root["Title"].asString());
+                  metadata[MetaData::Artist] = QString::fromStdString(root["Artist"].asString());
+                  metadata[MetaData::Album] = QString::fromStdString(root["Album"].asString());
+
+
+                  root["result"] = "SetMetadata Succeed.";
                   sendEvent(callbackId + " " + writer.write(root));
               }
 

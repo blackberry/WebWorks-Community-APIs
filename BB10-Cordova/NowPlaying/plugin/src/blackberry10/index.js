@@ -61,11 +61,11 @@ module.exports = {
 		result.ok(nowPlaying.getInstance().NowPlayingSwitchMusic(result.callbackId, args), false);
 	},
 
-	testAsync:  function (success, fail, args, env) {
+	NowPlayingSetMetadata:  function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
 		args = JSON.parse(decodeURIComponent(args["input"]));
-		nowPlaying.getInstance().testAsync(result.callbackId, args);
+		nowPlaying.getInstance().NowPlayingSetMetadata(result.callbackId, args);
 		result.noResult(true);
 	}
 };
@@ -134,8 +134,8 @@ JNEXT.NowPlaying = function(){
 		return JNEXT.invoke(self.m_id, "NowPlayingSwitchMusic " + callbackId + " " + input);
 	};
 
-	self.testAsync = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "testAsync " + callbackId + " " + JSON.stringify(input));
+	self.NowPlayingSetMetadata = function (callbackId, input) {
+		return JNEXT.invoke(self.m_id, "NowPlayingSetMetadata " + callbackId + " " + JSON.stringify(input));
 	};
 
 	// Fired by the Event framework (used by asynchronous callbacks)

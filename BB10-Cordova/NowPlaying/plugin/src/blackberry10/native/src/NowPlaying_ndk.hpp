@@ -55,7 +55,6 @@ namespace webworks {
                     mp->setSourceUrl(QUrl("http://www.pch.gc.ca/DAMAssetPub/DAM-hymChs-antSgn/STAGING/audio-audio/o-canada_1359474460106_eng.MP3"));
 
 
-
                    QObject::connect(this, SIGNAL(playSignal()),
                                     this, SLOT(play()));
 
@@ -93,7 +92,7 @@ namespace webworks {
             std::string NowPlayingGetSourceAddress();
             std::string NowPlayingGetDuration();
             std::string NowPlayingGetPosition();
-            void testAsync(const std::string& callbackId, const std::string& inputString);
+            void NowPlayingSetMetadata(const std::string& callbackId, const std::string& data);
 
         };
 

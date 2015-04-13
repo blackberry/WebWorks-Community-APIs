@@ -86,8 +86,8 @@ string NowPlayingJS::InvokeMethod(const string& command) {
     if(strCommand=="NowPlayingConnectionTest"){
         result = m_NowPlayingMgr->NowPlayingConnectionTest();
         return result;
-    }else if(strCommand=="testAsync"){
-        m_NowPlayingMgr->testAsync(callbackId,arg);
+    }else if(strCommand=="NowPlayingSetMetadata"){
+        m_NowPlayingMgr->NowPlayingSetMetadata(callbackId,arg);
         return "";
     }else if(strCommand=="NowPlayingStop"){
         result = m_NowPlayingMgr->NowPlayingStop();

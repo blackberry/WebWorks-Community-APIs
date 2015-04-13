@@ -84,9 +84,19 @@ var app = {
 	aSyncCallback: function(data) {
 		if (data) {
 			console.log(data);
-			app.writeOut(data.value1 + " + " + data.value2 + " = " + data.result);
+			app.writeOut(data.result);
 		}
 	},
+
+	setMetaButtonClick: function(){
+
+		var jsonData = {"Title":"MyTitle",
+				"Artist":"MyArtist",
+				"Album":"MyAlbum"};
+		com.blackberry.community.nowplaying.NowPlayingSetMetadata(jsonData, app.aSyncCallback);
+
+	},
+
 
 	testPluginCalls: function() {
 		if (com && com.blackberry.community.nowplaying) {
@@ -99,10 +109,8 @@ var app = {
 			document.getElementById("srcButton").onclick = app.srcButtonClick;
 			document.getElementById("durationButton").onclick = app.durationButtonClick;
 			document.getElementById("positionButton").onclick = app.positionButtonClick;
-
-			//var jsonData = {"value1":10,"value2":14};
-			//com.blackberry.community.nowplaying.testAsync(jsonData, app.aSyncCallback);
-
+			document.getElementById("setMetaButton").onclick = app.setMetaButtonClick;
+			
 		} else {
 			app.writeOut("Plugin was not found");
 		}

@@ -117,8 +117,7 @@ var _self = {},
 
 
 
-	// Below are just for testing purpose
-	_self.testAsync = function (input, callback) {
+	_self.NowPlayingSetMetadata = function (input, callback) {
 			var success = function (data, response) {
 				var json = JSON.parse(data);
 				callback(json);
@@ -126,7 +125,7 @@ var _self = {},
 			fail = function (data, response) {
 				console.log("Error: " + data);
 			};
-		exec(success, fail, _ID, "testAsync", { input: input });
+		exec(success, fail, _ID, "NowPlayingSetMetadata", { input: input });
 	};
 
 
