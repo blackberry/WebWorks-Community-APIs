@@ -1,0 +1,22 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="com.blackberry.community.simplebeaconplugin"
+    version="1.0.0">
+
+    <name>SimpleBeaconPlugin</name>
+    <description>BlackBerry 10 Community Contributed SimpleBeaconPlugin API</description>
+    <license>Apache 2.0</license>
+    <author>John Murray</author>
+
+    <js-module src="www/client.js">
+        <clobbers target="com.blackberry.community.simplebeaconplugin" />
+    </js-module>
+
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" />
+        <lib-file src="src/blackberry10/native/device/libSimpleBeaconPlugin.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libSimpleBeaconPlugin.so" arch="simulator"/>
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="com.blackberry.community.simplebeaconplugin" value="com.blackberry.community.simplebeaconplugin" />
+        </config-file>
+    </platform>
+</plugin>
