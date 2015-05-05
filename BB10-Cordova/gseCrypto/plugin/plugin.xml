@@ -6,6 +6,9 @@
     <description>BlackBerry 10 Community Contributed API for cryptographic functions (hash, PRNG, AES block cipher)</description>
     <license>Apache 2.0</license>
     <author>Rob Williams, Jim Wood</author>
+    <keywords>blackberry,crypto,encrypt,decrypt,hash,SHA,prng,AES,cipher,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <js-module src="www/client.js">
         <clobbers target="community.gsecrypto" />

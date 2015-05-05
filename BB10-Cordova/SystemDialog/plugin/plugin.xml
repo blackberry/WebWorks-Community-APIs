@@ -6,6 +6,9 @@
     <description>BlackBerry 10 Community Contributed API to Prompt Global Notification Dialog</description>
     <license>Apache 2.0</license>
     <author>Yifan Ren</author>
+    <keywords>blackberry,dialog,system,notification,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <js-module src="www/client.js">
         <clobbers target="community.sysdialog" />

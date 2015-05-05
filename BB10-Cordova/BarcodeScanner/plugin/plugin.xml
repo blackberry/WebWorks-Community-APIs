@@ -6,6 +6,9 @@
     <description>BlackBerry 10 Community Contributed API to scan barcodes</description>
     <license>Apache 2.0</license>
     <author>Alex Kwan, Mike Delong, Jasmin Auger, Alex Tough, Tim Tung, and Tim Windsor</author>
+    <keywords>blackberry,barcode,qr,scanner,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <js-module src="www/client.js">
         <clobbers target="community.barcodescanner" />

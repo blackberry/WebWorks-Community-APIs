@@ -6,6 +6,9 @@
     <description>BlackBerry 10 Community Contributed SimpleBtLeHrPlugin API</description>
     <license>Apache 2.0</license>
     <author>John Murray</author>
+    <keywords>blackberry,bluetooth,heartrate,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <js-module src="www/client.js">
         <clobbers target="com.blackberry.community.simplebtlehrplugin" />

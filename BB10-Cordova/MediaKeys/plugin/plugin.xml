@@ -6,6 +6,9 @@
     <description>BlackBerry 10 Community Contributed API for Custom Configuration of Media Keys</description>
     <license>Apache 2.0</license>
     <author>Thomas Fung</author>
+    <keywords>blackberry,media,hardware,keys,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <js-module src="www/client.js">
         <clobbers target="community.mediakeys" />

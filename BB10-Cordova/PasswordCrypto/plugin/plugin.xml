@@ -6,6 +6,9 @@
     <description>BlackBerry 10 Community Contributed API to fast encrypt passwords with PBKDF2</description>
     <license>Apache 2.0</license>
     <author>Shikhir Singh</author>
+    <keywords>blackberry,crypto,password,pbkdf2,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <js-module src="www/client.js">
         <clobbers target="community.PasswordCrypto" />

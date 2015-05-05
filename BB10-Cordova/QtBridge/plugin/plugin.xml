@@ -24,6 +24,9 @@
     <description>BlackBerry 10 Community Contributed API to access QML objects directly through JavaScript</description>
     <license>Apache 2.0</license>
     <author>Isaac Gordezky</author>
+    <keywords>blackberry,qt,qml,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <js-module src="www/client.js">
         <clobbers target="blackberry.qt" />

@@ -5,6 +5,9 @@
     <name>Email Sender</name>
     <description>BlackBerry 10 Community Contributed API to send email accounts on the device</description>
     <license>Apache 2.0</license>
+    <keywords>blackberry,email,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <author>Alexandre Huot, Stefan Schielke</author>
 

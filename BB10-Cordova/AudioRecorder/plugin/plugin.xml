@@ -6,6 +6,9 @@
     <description>BlackBerry 10 Community Contributed API to record audio to the filesystem</description>
     <license>Apache 2.0</license>
     <author>James Grisdale</author>
+    <keywords>blackberry,audio,record,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <js-module src="www/client.js">
         <clobbers target="community.audiorecorder" />

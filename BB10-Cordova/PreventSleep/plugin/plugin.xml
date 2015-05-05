@@ -6,6 +6,9 @@
     <description>BlackBerry 10 Community Contributed API to keep the screen on</description>
     <license>Apache 2.0</license>
     <author>Tim Windsor</author>
+    <keywords>blackberry,prevent,sleep,keep-awake,screen,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <js-module src="www/client.js">
         <clobbers target="community.preventsleep" />

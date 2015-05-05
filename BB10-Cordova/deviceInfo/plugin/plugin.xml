@@ -6,6 +6,9 @@
     <description>BlackBerry 10 Community Contributed API to get hardware and network information from the device</description>
     <license>Apache 2.0</license>
     <author>Anzor Bashkhaz, Simon Booth, Alexandre Huot</author>
+    <keywords>blackberry,device,info,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <js-module src="www/client.js">
         <clobbers target="community.deviceInfo" />

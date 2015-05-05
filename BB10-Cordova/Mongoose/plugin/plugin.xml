@@ -6,6 +6,9 @@
     <description>BlackBerry 10 Community Contributed API to run a Mongoose embedded Web Server</description>
     <license>Apache 2.0</license>
     <author>Simon Booth, Deric Cheng</author>
+    <keywords>blackberry,mongoose,webserver,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <js-module src="www/client.js">
         <clobbers target="community.mongoose" />
