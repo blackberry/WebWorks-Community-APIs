@@ -1,5 +1,5 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.preventsleep"
+    id="cordova-plugin-preventsleep"
     version="1.0.0">
 
     <name>Prevent Sleep</name>
@@ -10,6 +10,10 @@
     <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
     <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
+    <engines>
+        <engine name="cordova" version=">=3.0" />
+    </engines>
+    
     <js-module src="www/client.js">
         <clobbers target="community.preventsleep" />
     </js-module>
