@@ -16,15 +16,15 @@ Date: 2/9/2014
 
 ## Including the feature in your application
 
-This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+This API can be installed from source or from NPM. Installation from NPM is done through the following:
 
-	cordova plugin add com.blackberry.community.led
+	cordova plugin add cordova-plugin-led
 
 or,
 	
-	webworks plugin add com.blackberry.community.led
+	webworks plugin add cordova-plugin-led
 
-Installation from source is the same but instead of the id ("com.blackberry.community.led"), use the file system path to the source plugin folder.
+Installation from source is the same but instead of the id ("cordova-plugin-led"), use the file system path to the source plugin folder.
 
 
 ## Structure of the Plugin and Sample

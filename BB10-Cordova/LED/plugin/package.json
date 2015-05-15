@@ -1,0 +1,34 @@
+{
+  "name": "cordova-plugin-led",
+  "version": "1.0.1",
+  "description": "BlackBerry 10 Community Contributed API to flash the LED with RGB colors",
+  "cordova": {
+    "id": "cordova-plugin-led",
+    "platforms": [
+      "blackberry10"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackberry/WebWorks-Community-APIs.git"
+  },
+  "keywords": [
+    "blackberry",
+    "LED",
+    "cordova",
+    "ecosystem:cordova",
+    "cordova-blackberry10"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0"
+    }
+  ],
+  "author": "Andy Wu and Deric Chen",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/blackberry/WebWorks-Community-APIs/issues"
+  },
+  "homepage": "https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/LED#readme"
+}
