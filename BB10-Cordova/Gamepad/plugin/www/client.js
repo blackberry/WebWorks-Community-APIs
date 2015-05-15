@@ -15,7 +15,7 @@
 */
 
 var _self = {},
-	_ID = "com.blackberry.community.joypad",
+	_ID = "cordova-plugin-gamepad",
 	exec = cordova.require("cordova/exec");
 
 	

@@ -1,5 +1,5 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.joypad"
+    id="cordova-plugin-gamepad"
     version="1.0.0">
 
     <name>BlackBerry 10 Gamepad API</name>
@@ -10,8 +10,12 @@
     <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
     <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
+    <engines>
+        <engine name="cordova" version=">=3.0" />
+    </engines>
+
     <js-module src="www/client.js">
-        <clobbers target="community.joypad" />
+        <clobbers target="community.gamepad" />
     </js-module>
 
     <platform name="blackberry10">
@@ -19,7 +23,7 @@
         <lib-file src="src/blackberry10/native/device/libGamepad.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libGamepad.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.joypad" value="com.blackberry.community.joypad" />
+            <feature name="cordova-plugin-gamepad" value="cordova-plugin-gamepad" />
         </config-file>
         <config-file target="www/config.xml" parent="/widget/rim:permissions">
             <rim:permit>use_gamepad</rim:permit>

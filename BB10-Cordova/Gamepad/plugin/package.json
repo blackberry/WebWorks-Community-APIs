@@ -1,0 +1,35 @@
+{
+  "name": "cordova-plugin-gamepad",
+  "version": "1.0.0",
+  "description": "BlackBerry 10 Community Contributed API shim for the HTML5 Gamepad API",
+  "cordova": {
+    "id": "cordova-plugin-gamepad",
+    "platforms": [
+      "blackberry10"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackberry/WebWorks-Community-APIs.git"
+  },
+  "keywords": [
+    "blackberry",
+    "gamepad",
+    "bluetooth",
+    "cordova",
+    "ecosystem:cordova",
+    "cordova-blackberry10"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0"
+    }
+  ],
+  "author": "Tim Windsor",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/blackberry/WebWorks-Community-APIs/issues"
+  },
+  "homepage": "https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/Gamepad#readme"
+}
