@@ -19,6 +19,7 @@
 
 #include <string>
 #include <vector>
+#include <unistd.h>
 #include <QObject>
 #include <QString>
 #include <QByteArray>
@@ -27,8 +28,6 @@
 #include <bb/multimedia/NowPlayingConnection>
 
 class NowPlayingJS;
-
-
 
 namespace webworks {
 
@@ -53,7 +52,6 @@ namespace webworks {
                     mp = new bb::multimedia::MediaPlayer(this);
                     npc = new bb::multimedia::NowPlayingConnection(this);
                     mp->setSourceUrl(QUrl("http://www.pch.gc.ca/DAMAssetPub/DAM-hymChs-antSgn/STAGING/audio-audio/o-canada_1359474460106_eng.MP3"));
-
 
                    QObject::connect(this, SIGNAL(playSignal()),
                                     this, SLOT(play()));

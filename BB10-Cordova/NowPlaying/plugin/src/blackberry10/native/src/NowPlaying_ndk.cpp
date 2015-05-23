@@ -65,7 +65,22 @@ namespace webworks {
 
          emit stopSignal();
          QString str = QString::fromUtf8(src.c_str());
+
+         if (! str.startsWith("http", Qt::CaseInsensitive)) {
+
+             char cwd[PATH_MAX];
+             getcwd(cwd, PATH_MAX);
+             str.prepend(QString(cwd).append("/app/native/"));
+
+         }
          QUrl url(str);
+
+         //----------------------------------------------------------------
+         // char cwd[PATH_MAX];
+         // getcwd(cwd, PATH_MAX);
+         // mp->setSourceUrl(QString(cwd).append("/app/native/sounds/highhat.mp3"));
+         //----------------------------------------------------------------
+
          if(url.isValid()){
                mp->setSourceUrl(url);
                return "Music switch to " + src;
