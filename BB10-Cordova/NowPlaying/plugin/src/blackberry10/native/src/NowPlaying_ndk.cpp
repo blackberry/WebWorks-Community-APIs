@@ -75,12 +75,6 @@ namespace webworks {
          }
          QUrl url(str);
 
-         //----------------------------------------------------------------
-         // char cwd[PATH_MAX];
-         // getcwd(cwd, PATH_MAX);
-         // mp->setSourceUrl(QString(cwd).append("/app/native/sounds/highhat.mp3"));
-         //----------------------------------------------------------------
-
          if(url.isValid()){
                mp->setSourceUrl(url);
                return "Music switch to " + src;
