@@ -30,8 +30,8 @@ namespace webworks {
 	???PROJECT_FUNCTION_START???ThreadCount(1),
 	threadHalt(true),
 	m_thread(0) {
-		pthread_cond_t cond  = PTHREAD_COND_INITIALIZER;
-		pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+		cond  = PTHREAD_COND_INITIALIZER;
+		mutex = PTHREAD_MUTEX_INITIALIZER;
 		m_pParent->getLog()->info("???PROJECT_NAME??? Created");
 }
 
