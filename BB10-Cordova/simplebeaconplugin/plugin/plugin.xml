@@ -1,5 +1,5 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.simplebeaconplugin"
+    id="cordova-plugin-bluetoothibeacon"
     version="1.0.0">
 
     <name>SimpleBeaconPlugin</name>
@@ -10,6 +10,10 @@
     <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
     <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>
+
     <js-module src="www/client.js">
         <clobbers target="com.blackberry.community.simplebeaconplugin" />
     </js-module>
@@ -19,7 +23,7 @@
         <lib-file src="src/blackberry10/native/device/libSimpleBeaconPlugin.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libSimpleBeaconPlugin.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.simplebeaconplugin" value="com.blackberry.community.simplebeaconplugin" />
+            <feature name="cordova-plugin-bluetoothibeacon" value="cordova-plugin-bluetoothibeacon" />
         </config-file>
     </platform>
 </plugin>
