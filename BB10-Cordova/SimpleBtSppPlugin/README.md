@@ -126,7 +126,7 @@ Open a command prompt (windows) or terminal (mac) in a folder of your choosing a
 - If you change the plugin you will need to remove it and add it again using:
 
 	```
-	webworks plugin remove com.blackberry.community.simplebtspplugin
+	webworks plugin remove cordova-plugin-bluetoothspp
 	```
 	```
 	webworks plugin add <repo>/SimpleBtSppPlugin/plugin
