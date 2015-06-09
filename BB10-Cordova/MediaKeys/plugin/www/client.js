@@ -15,7 +15,7 @@
 */
 
 var _self = {},
-    _ID = "com.blackberry.community.mediakeys",
+    _ID = "cordova-plugin-mediakeys",
     exec = cordova.require("cordova/exec");
 
     _self.bind = function (mediaKeysObj, fail) {

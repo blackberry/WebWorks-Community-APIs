@@ -1,5 +1,5 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.mediakeys"
+    id="cordova-plugin-mediakeys"
     version="1.0.0">
 
     <name>Media Keys</name>
@@ -9,6 +9,10 @@
     <keywords>blackberry,media,hardware,keys,cordova</keywords>
     <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
     <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
+
+    <engines>
+        <engine name="cordova" version=">=3.0" />
+    </engines>
 
     <js-module src="www/client.js">
         <clobbers target="community.mediakeys" />
@@ -22,7 +26,7 @@
             <rim:permit>post_notification</rim:permit>
         </config-file>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.mediakeys" value="com.blackberry.community.mediakeys" />
+            <feature name="cordova-plugin-mediakeys" value="cordova-plugin-mediakeys" />
         </config-file>
     </platform>
 </plugin>
