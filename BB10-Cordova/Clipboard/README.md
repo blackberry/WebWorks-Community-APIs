@@ -15,15 +15,11 @@ BlackBerry Dev Alpha C / 10.2.0.429
 
 ## Including the feature in your application
 
-This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+This API can be installed from source or from the NPM. Installation from NPM is done through the following:
 
-	cordova plugin add com.blackberry.community.clipboard
+	cordova plugin add cordova-plugin-clipboard
 
-or,
-	
-	webworks plugin add com.blackberry.community.clipboard
-
-Installation from source is the same but instead of the id ("com.blackberry.community.clipboard"), use the file system path to the source plugin folder.
+Installation from source is the same but instead of the id ("cordova-plugin-clipboard"), use the file system path to the source plugin folder.
 
 ## Structure of the Plugin and Sample
 
@@ -105,5 +101,3 @@ Follow the steps above to:
 ## Disclaimer
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-[![Analytics](https://ga-beacon.appspot.com/UA-46817652-1/WebWorks-Community-APIs/BB10-Cordova/Clipboard?pixel)](https://github.com/igrigorik/ga-beacon)

@@ -1,5 +1,5 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.clipboard"
+    id="cordova-plugin-clipboard"
     version="1.0.0">
 
     <name>Clipboard</name>
@@ -10,6 +10,10 @@
     <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
     <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
+    <engines>
+        <engine name="cordova" version=">=3.0" />
+    </engines>
+
     <js-module src="www/client.js">
         <clobbers target="community.clipboard" />
     </js-module>
@@ -19,7 +23,7 @@
         <lib-file src="src/blackberry10/native/device/libclipboard3.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libclipboard3.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.clipboard" value="com.blackberry.community.clipboard" />
+            <feature name="cordova-plugin-clipboard" value="cordova-plugin-clipboard" />
         </config-file>
     </platform>
 </plugin>
