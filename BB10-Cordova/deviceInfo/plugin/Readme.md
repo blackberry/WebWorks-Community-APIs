@@ -7,10 +7,6 @@ This extension provides additional APIs to identify the device.
     1.0.0 Initial Release
     1.0.1 Bug fix for getNetwork() on 10.3.0+
 
-**Applies To**
-
-* [BlackBerry 10 WebWorks SDK](https://developer.blackberry.com/html5/download/sdk) 
-
 **Author(s)** 
 
 * Anzor Bashkhaz (http://www.twitter.com/anzor_b)
@@ -20,15 +16,11 @@ This extension provides additional APIs to identify the device.
 
 ## How To Install The Plugin
 
-This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+This API can be installed from source or from NPM. Installation from NPM is done through the following:
 
-    cordova plugin add com.blackberry.community.deviceinfoplugin
+    cordova plugin add cordova-plugin-deviceinfo
 
-or,
-    
-    webworks plugin add com.blackberry.community.deviceinfoplugin
-
-Installation from source is the same but instead of the id ("com.blackberry.community.deviceinfo"), use the file system path to the source plugin folder.
+Installation from source is the same but instead of the id ("cordova-plugin-deviceinfo"), use the file system path to the source plugin folder.
 
 ## Use
 
@@ -109,18 +101,6 @@ iplist			- Array of ifipcount object
 
 </pre> 
 
-
-## Contributing Changes
-
-Please see the [README](https://github.com/blackberry/WebWorks-Community-APIs) of the WebWorks-Community-APIs repository for instructions on how to add new Samples or make modifications to existing Samples.
-
-
-## Bug Reporting and Feature Requests
-
-If you find a bug in a Sample, or have an enhancement request, simply file an [Issue](https://github.com/blackberry/WebWorks-Community-APIs//issues) for the Sample and send a message (via github messages) to the Sample Author(s) to let them know that you have filed an [Issue](https://github.com/blackberry/WebWorks-Community-APIs//issues).
-
 ## Disclaimer
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-[![Analytics](https://ga-beacon.appspot.com/UA-46817652-1/WebWorks-Community-APIs/BB10/DeviceInfo?pixel)](https://github.com/igrigorik/ga-beacon)
