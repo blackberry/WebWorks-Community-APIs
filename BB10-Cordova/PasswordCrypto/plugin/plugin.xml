@@ -1,5 +1,5 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.PasswordCrypto"
+    id="cordova-plugin-password-crypto"
     version="1.0.0">
 
     <name>Password Crypto</name>
@@ -10,6 +10,10 @@
     <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
     <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
+    <engines>
+        <engine name="cordova" version=">=3.0" />
+    </engines>
+    
     <js-module src="www/client.js">
         <clobbers target="community.PasswordCrypto" />
     </js-module>
@@ -19,7 +23,7 @@
         <lib-file src="src/blackberry10/native/device/libPasswordCryptoPlugin.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libPasswordCryptoPlugin.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.PasswordCrypto" value="com.blackberry.community.PasswordCrypto" />
+            <feature name="cordova-plugin-password-crypto" value="cordova-plugin-password-crypto" />
         </config-file>
     </platform>
 </plugin>
