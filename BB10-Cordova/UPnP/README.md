@@ -9,20 +9,16 @@ BlackBerry Z10 10.3.1.634
 
 ** Author **
 
-	[Peardox] (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/325249)
-	[Junjie Huang] (https://github.com/umcsdon)
+- [Peardox] (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/325249)
+- [Junjie Huang] (https://github.com/umcsdon)
 
 ## Including the feature in your application
 
-This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+This API can be installed from source or from NPM. Installation from NPM is done through the following:
 
-	cordova plugin add com.blackberry.community.upnp
+	cordova plugin add cordova-plugin-upnp
 
-or,
-	
-	webworks plugin add com.blackberry.community.upnp
-
-Installation from source is the same but instead of the id ("com.blackberry.community.upnp"), use the file system path to the source plugin folder.
+Installation from source is the same but instead of the id ("cordova-plugin-upnp"), use the file system path to the source plugin folder.
 
 Note that it is also required that you give your app the disabled websecurity feature. This is as the extension needs to talk to any and all uPnP devices on your WiFi network. The websecurity feature is a bit black and white in this respect, all or nothing...
 
@@ -44,7 +40,7 @@ The included sample app is the _www_ directory of the default Cordova Hello Worl
 
 To use the plugin in another project, that's been created with Cordova, run __cordova plugin add ../plugin__
 
-Then you can call the methods with the namespace __com.blackberry.community.upnp__, and that should appear in WebInspector as an Object so you can see what APIs are available.
+Then you can call the methods with the namespace __cordova-plugin-upnp__, and that should appear in WebInspector as an Object so you can see what APIs are available.
 
 
 ## The Extension API
@@ -101,7 +97,7 @@ To use the plugin in another project, that's been created with Cordova, run __co
 All the methods in the plugin will be prefixed by that feature name, so a method called _discover()_ supplied in the _community.upnp_ plugin will be called in JavaScript like so:
 
 ```javascript
-	com.blackberry.community.upnp.discover(\[timeout\], \[devtype\]); 
+	cordova-plugin-upnp.discover(\[timeout\], \[devtype\]); 
 ```
 
 ### Modifying the Plugin
