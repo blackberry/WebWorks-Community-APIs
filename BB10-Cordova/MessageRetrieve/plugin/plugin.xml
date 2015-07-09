@@ -1,5 +1,5 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.messageplugin"
+    id="cordova-plugin-bb-messageretrieve"
     version="1.0.0">
 
     <name>MessageRetrieve</name>
@@ -19,7 +19,7 @@
         <lib-file src="src/blackberry10/native/device/libMessageplugin.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libMessageplugin.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.messageplugin" value="com.blackberry.community.messageplugin" />
+            <feature name="cordova-plugin-bb-messageretrieve" value="cordova-plugin-bb-messageretrieve" />
         </config-file>
     </platform>
 </plugin>
