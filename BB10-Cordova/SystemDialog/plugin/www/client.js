@@ -15,7 +15,7 @@
 */
 
 var _self = {},
-    _ID = "com.blackberry.community.sysdialog",
+    _ID = "cordova-plugin-bb-sysdialog",
     exec = cordova.require("cordova/exec");
 
     _self.show = function(message, buttons, settings, onOptionSelected, onFail) {

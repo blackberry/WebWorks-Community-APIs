@@ -9,15 +9,11 @@ This BlackBerry 10 Cordova Plugin prompts a global notification dialog. The noti
 
 ## Including the feature in your application
 
-This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+This API can be installed from source or from NPM. Installation from NPM is done through the following:
 
-	cordova plugin add com.blackberry.community.sysdialog
+	cordova plugin add cordova-plugin-bb-sysdialog
 
-or,
-	
-	webworks plugin add com.blackberry.community.sysdialog
-
-Installation from source is the same but instead of the id ("com.blackberry.community.sysdialog"), use the file system path to the source plugin folder.
+Installation from source is the same but instead of the id ("cordova-plugin-bb-sysdialog"), use the file system path to the source plugin folder.
 
 ## Javascript API ##
 
