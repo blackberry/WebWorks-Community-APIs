@@ -20,15 +20,11 @@ BlackBerry 10 Dev Alpha C 10.2.1.1927
 
 ## Including the feature in your application
 
-This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+This API can be installed from source or from NPM. Installation from NPM is done through the following:
 
-	cordova plugin add com.blackberry.community.screendisplay
+	cordova plugin add cordova-plugin-screendisplay
 
-or,
-	
-	webworks plugin add com.blackberry.community.screendisplay
-
-Installation from source is the same but instead of the id ("com.blackberry.community.screendisplay"), use the file system path to the source plugin folder.
+Installation from source is the same but instead of the id ("cordova-plugin-screendisplay"), use the file system path to the source plugin folder.
 
 ## The Extension API
 The Screen Display Extension provides the following API:
