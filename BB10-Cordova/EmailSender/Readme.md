@@ -23,11 +23,7 @@ This extension provides additional APIs to send emails from an app.
 From registry
 Use the command:
 
-    cordova plugin add com.blackberry.community.emailsenderplugin
-
-or
-    
-    webworks plugin add com.blackberry.community.emailsenderplugin
+    cordova plugin add cordova-plugin-emailsender
 
 From source
 
