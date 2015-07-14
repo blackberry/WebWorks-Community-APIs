@@ -1,4 +1,4 @@
-Audio Recorder Plugin for Webworks 2.0
+Audio Recorder Plugin for Cordova
 ==================
 
 Author: James Grisdale
@@ -8,15 +8,11 @@ It includes all of the features necessary to make an audio recording, although t
 
 ## Including the feature in your application
 
-This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+This API can be installed from source or NPM. Installation from NPM is done through the following:
 
-	cordova plugin add com.blackberry.community.audiorecorder
+	cordova plugin add cordova-plugin-audiorecorder
 
-or,
-	
-	webworks plugin add com.blackberry.community.audiorecorder
-
-Installation from source is the same but instead of the id ("com.blackberry.community.audiorecorder"), use the file system path to the source plugin folder.
+Installation from source is the same but instead of the id ("cordova-plugin-audiorecorder"), use the file system path to the source plugin folder.
 
 ## Functions Involved in This Plugin (currently)
 
@@ -60,15 +56,15 @@ are required to be added to the audiorec_ndk.hpp
 - Click OK and that should fix the errors.
 
 
-When attempting to add the AudioRecorder plugin to your webworks project two things need to be added to your config.xml file.
-	
+### Permissions
+
+The record_audio permission will be added when the plugin is installed. You will likely also want to add the access_shared permission if you intend to save the files to a shared location on the filesystem. This permission is not added for you, since it may not be necessary for all applications.
+
+```xml
 	<rim:permissions>
-		<rim:permit>record_audio</rim:permit>
 		<rim:permit>access_shared</rim:permit>
 	</rim:permissions>
-
-These two permissions are important so the program can access the microphone and so that it can save the file for the recording.
-
+```
 
 ### Using the Extension in an Application
 

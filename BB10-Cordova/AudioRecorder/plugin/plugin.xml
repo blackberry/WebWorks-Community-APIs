@@ -1,5 +1,5 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.audiorecorder"
+    id="cordova-plugin-audiorecorder"
     version="1.0.0">
 
     <name>AudioRecorder</name>
@@ -19,7 +19,10 @@
         <lib-file src="src/blackberry10/native/device/libAudio.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libAudio.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.audiorecorder" value="com.blackberry.community.audiorecorder" />
+            <feature name="cordova-plugin-audiorecorder" value="cordova-plugin-audiorecorder" />
+        </config-file>
+        <config-file target="www/config.xml" parent="/widget/rim:permissions">
+            <rim:permit>record_audio</rim:permit>
         </config-file>
     </platform>
 </plugin>
