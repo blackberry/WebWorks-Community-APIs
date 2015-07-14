@@ -7,15 +7,11 @@ This vibration extension allows for more comprehensive control over device vibra
 
 ## How To Install The Plugin
 
-This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+This API can be installed from source or from NPM. Installation from NPM is done through the following:
 
-	cordova plugin add com.blackberry.community.vibration
+	cordova plugin add cordova-plugin-vibrate-intense
 
-or,
-	
-	webworks plugin add com.blackberry.community.vibration
-
-Installation from source is the same but instead of the id ("com.blackberry.community.vibration"), use the file system path to the source plugin folder.
+Installation from source is the same but instead of the id ("cordova-plugin-vibrate-intense"), use the file system path to the source plugin folder.
 
 ### Using the Extension in an Application</a>
 
@@ -24,8 +20,8 @@ var data = { "duration" : [int: duration], "intensity" : [int: intensity]}
 community.vibration.vibration_request(data, [function: callback])
 ```
 Parameters:  
-duration : length of vibration ( 0 - 5000)
-intensity : level of vibration ( 1 , 10 , 100 )
+duration : length of vibration in ms ( 0 - 5000)
+intensity : level of vibration ( 1 - 100 )
 
 Example:
 

@@ -1,5 +1,5 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.vibration"
+    id="cordova-plugin-vibrate-intense"
     version="1.0.1">
 
     <name>Vibration</name>
@@ -19,7 +19,7 @@
         <lib-file src="src/blackberry10/native/device/libVibration.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libVibration.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.vibration" value="com.blackberry.community.vibration" />
+            <feature name="cordova-plugin-vibrate-intense" value="cordova-plugin-vibrate-intense" />
         </config-file>
     </platform>
 </plugin>
