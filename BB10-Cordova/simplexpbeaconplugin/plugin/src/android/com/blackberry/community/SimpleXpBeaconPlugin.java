@@ -31,19 +31,26 @@ import org.apache.cordova.PluginResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.util.Log;
+
+import java.lang.IllegalArgumentException;
+import java.lang.String;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class SimpleXpBeaconPlugin extends CordovaPlugin {
 
     private static final String TAG = "SimpleXpBeaconPlugin";
 
-    private static final String PLUGIN_VERSION = "1.0.0";
+    private static final String PLUGIN_VERSION = "1.1.0";
 
     private static final String ACTION_INITIALISE_BLUETOOTH = "initialiseBluetooth";
     private static final String ACTION_TERMINATE_BLUETOOTH = "terminateBluetooth";
     private static final String ACTION_PLUGIN_VERSION = "pluginVersion";
     private static final String ACTION_START_MONITORING = "startMonitoring";
     private static final String ACTION_STOP_MONITORING = "stopMonitoring";
+    private static final String ACTION_ADD_BEACON_UUID_TO_MONITOR = "addBeaconUuidToMonitor";
+    private static final String ACTION_REMOVE_BEACON_UUID_TO_MONITOR = "removeBeaconUuidToMonitor";
 
     private static final String JSON_KEY_STATUS = "status";
     private static final String JSON_KEY_DESCRIPTION = "desc";
@@ -76,12 +83,18 @@ public class SimpleXpBeaconPlugin extends CordovaPlugin {
     private static final String JSON_VALUE_STOPPED_MONITORING = "Stopped Monitoring for iBeacons OK";
     private static final String JSON_VALUE_REQUESTED_MONITORING = "Requested iBeacon Monitoring OK";
     private static final String JSON_VALUE_IBEACON_EVENT = "iBeacon event";
+    private static final String JSON_VALUE_UUID_WAS_IMPROPER_FORMAT = "UUID was improper format";
+    private static final String JSON_VALUE_UUID_WAS_NULL = "UUID was null";
+    private static final String JSON_VALUE_UUID_ADDED = "UUID added";
+    private static final String JSON_VALUE_IBEACON_ALREADY_BEING_MONITORED = "iBeacon already being monitored";
+    private static final String JSON_VALUE_BEACON_REMOVED = "iBeacon UUID removed successfully";
+    private static final String JSON_VALUE_NO_MATCH_TO_BEACON_UUID = "iBeacon UUID did not match any being monitored";
 
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mBtInitialised = false;
     private boolean mMonitoring = false;
     private CallbackContext mMonitoringCallbackContext;
-
+    private List<UUID> mBeaconRegionsToMonitor;
     private boolean mSupressMonitorCallback = false;
 
     private BluetoothAdapter.LeScanCallback mLeScanCallback =
@@ -91,14 +104,28 @@ public class SimpleXpBeaconPlugin extends CordovaPlugin {
                     cordova.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Log.d(TAG, "XXXX Device Address: " + device.getAddress().toString());
-                            Log.d(TAG, "XXXX RSSI: " + rssi);
+
+                            Log.d(TAG, "Device Address: " + device.getAddress().toString());
+                            Log.d(TAG, "RSSI: " + rssi);
                             BeaconData beaconData = new BeaconData(scanRecord);
                             if (beaconData.hasIBeaconData()) {
-                                Log.d(TAG, "XXXX TxPowerLevel: " + beaconData.txPowerLevel());
-                                Log.d(TAG, "XXXX Major: " + beaconData.major());
-                                Log.d(TAG, "XXXX Minor: " + beaconData.minor());
-                                Log.d(TAG, "XXXX UUID: " + beaconData.uuid().toString());
+
+                                boolean isEmpty = true;
+                                boolean containsUuid = true;
+
+                                synchronized(SimpleXpBeaconPlugin.this) {
+                                    isEmpty = mBeaconRegionsToMonitor.isEmpty();
+                                    containsUuid = mBeaconRegionsToMonitor.contains(beaconData.uuid());
+                                }
+                                if (!isEmpty && !containsUuid) {
+                                    Log.d(TAG, "Skipping notification of UUID: " + beaconData.uuid().toString());
+                                    return;
+                                }
+
+                                Log.d(TAG, "TxPowerLevel: " + beaconData.txPowerLevel());
+                                Log.d(TAG, "Major: " + beaconData.major());
+                                Log.d(TAG, "Minor: " + beaconData.minor());
+                                Log.d(TAG, "UUID: " + beaconData.uuid().toString());
 
                                 JSONObject response = new JSONObject();
                                 JSONObject data = new JSONObject();
@@ -122,7 +149,7 @@ public class SimpleXpBeaconPlugin extends CordovaPlugin {
                                     }
 
                                 } catch (JSONException e) {
-                                    Log.d(TAG, "XXXX JSON Error: " + e.getMessage());
+                                    Log.d(TAG, "JSON Error: " + e.getMessage());
                                 }
                             }
                         }
@@ -133,18 +160,20 @@ public class SimpleXpBeaconPlugin extends CordovaPlugin {
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
-        LOG.d(TAG, "XXXX in initialize");
+        LOG.d(TAG, "in initialize");
+        mBeaconRegionsToMonitor =  new ArrayList<UUID>();
     }
+
     @Override
     public boolean execute(String action, CordovaArgs args, CallbackContext callbackContext) throws JSONException {
 
-        LOG.d(TAG, "XXXX requested action = " + action);
+        LOG.d(TAG, "requested action = " + action);
 
         boolean validAction = false;
 
         if (action.equals(ACTION_INITIALISE_BLUETOOTH)) {
 
-            LOG.d(TAG, "XXXX Processing Initialise Bluetooth request");
+            LOG.d(TAG, "Processing Initialise Bluetooth request");
 
             validAction = true;
 
@@ -173,8 +202,8 @@ public class SimpleXpBeaconPlugin extends CordovaPlugin {
             return validAction;
 
         } else if (action.equals(ACTION_TERMINATE_BLUETOOTH)) {
-            
-            LOG.d(TAG, "XXXX Processing Terminate Bluetooth request");
+
+            LOG.d(TAG, "Processing Terminate Bluetooth request");
 
             validAction = true;
 
@@ -192,7 +221,7 @@ public class SimpleXpBeaconPlugin extends CordovaPlugin {
 
         } else if (action.equals(ACTION_PLUGIN_VERSION)) {
 
-            LOG.d(TAG, "XXXX Processing Plugin Version request");
+            LOG.d(TAG, "Processing Plugin Version request");
 
             validAction = true;
 
@@ -200,8 +229,8 @@ public class SimpleXpBeaconPlugin extends CordovaPlugin {
             return validAction;
 
         } else if (action.equals(ACTION_START_MONITORING)) {
-            
-            LOG.d(TAG, "XXXX Processing Start Monitoring request");
+
+            LOG.d(TAG, "Processing Start Monitoring request");
             validAction = true;
 
             if (!isBtInitialised()) {
@@ -225,7 +254,7 @@ public class SimpleXpBeaconPlugin extends CordovaPlugin {
 
         } else if (action.equals(ACTION_STOP_MONITORING)) {
 
-            LOG.d(TAG, "XXXX Processing Stop Monitoring request");
+            LOG.d(TAG, "Processing Stop Monitoring request");
             validAction = true;
 
             if (!isBtInitialised()) {
@@ -246,9 +275,67 @@ public class SimpleXpBeaconPlugin extends CordovaPlugin {
             successResponse(callbackContext, JSON_VALUE_STOPPED_MONITORING);
             return validAction;
 
+        } else if (action.equals(ACTION_ADD_BEACON_UUID_TO_MONITOR)) {
+
+            LOG.d(TAG, "Processing Add Beacon to Monitor request");
+            validAction = true;
+            UUID beaconRegionUuid;
+
+            try {
+                beaconRegionUuid = UUID.fromString(args.getString(0));
+
+                if (!mBeaconRegionsToMonitor.contains(beaconRegionUuid)) {
+                    synchronized(SimpleXpBeaconPlugin.this) {
+                        mBeaconRegionsToMonitor.add(beaconRegionUuid);
+                    }
+                    successResponse(callbackContext, JSON_VALUE_UUID_ADDED);
+                } else {
+                    errorResponse(callbackContext, JSON_VALUE_IBEACON_ALREADY_BEING_MONITORED);
+                }
+
+            } catch (NullPointerException e) {
+                LOG.d(TAG, "" + JSON_VALUE_UUID_WAS_NULL);
+                errorResponse(callbackContext, JSON_VALUE_UUID_WAS_NULL);
+
+            } catch (IllegalArgumentException e) {
+                LOG.d(TAG, "" + JSON_VALUE_UUID_WAS_IMPROPER_FORMAT);
+                errorResponse(callbackContext, JSON_VALUE_UUID_WAS_IMPROPER_FORMAT);
+            }
+            return validAction;
+
+        } else if (action.equals(ACTION_REMOVE_BEACON_UUID_TO_MONITOR)) {
+
+            LOG.d(TAG, "Processing Remove Beacon to Monitor request");
+            validAction = true;
+            UUID beaconRegionUuid;
+            boolean removed = false;
+
+            try {
+                beaconRegionUuid = UUID.fromString(args.getString(0));
+
+                synchronized(SimpleXpBeaconPlugin.this) {;
+                    removed = mBeaconRegionsToMonitor.remove(beaconRegionUuid);
+                }
+
+                if (removed) {
+                    successResponse(callbackContext, JSON_VALUE_BEACON_REMOVED);
+                } else {
+                    errorResponse(callbackContext, JSON_VALUE_NO_MATCH_TO_BEACON_UUID);
+                }
+
+            } catch (NullPointerException e) {
+                LOG.d(TAG, "" + JSON_VALUE_UUID_WAS_NULL);
+                errorResponse(callbackContext, JSON_VALUE_UUID_WAS_NULL);
+
+            } catch (IllegalArgumentException e) {
+                LOG.d(TAG, "" + JSON_VALUE_UUID_WAS_IMPROPER_FORMAT);
+                errorResponse(callbackContext, JSON_VALUE_UUID_WAS_IMPROPER_FORMAT);
+            }
+            return validAction;
+
         } else {
 
-            LOG.d(TAG, "XXXX Unmatched action" + action);
+            LOG.d(TAG, "Unmatched action" + action);
             validAction = false;
         }
 
@@ -352,7 +439,7 @@ public class SimpleXpBeaconPlugin extends CordovaPlugin {
     public void onDestroy() {
         super.onDestroy();
 
-        LOG.d(TAG, "XXXX In onDestroy()");
+        LOG.d(TAG, "In onDestroy()");
 
         if (isMonitoring()) {
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
@@ -368,14 +455,14 @@ public class SimpleXpBeaconPlugin extends CordovaPlugin {
     @Override
     public void onPause(boolean multitasking) {
         super.onPause(multitasking);
-        LOG.d(TAG, "XXXX In onPause()");
+        LOG.d(TAG, "In onPause()");
         pauseMonitoring();
     }
 
     @Override
     public void onResume(boolean multitasking) {
         super.onResume(multitasking);
-        LOG.d(TAG, "XXXX In onResume()");
+        LOG.d(TAG, "In onResume()");
         resumeMonitoring();
     }
 

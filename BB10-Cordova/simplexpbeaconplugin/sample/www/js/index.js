@@ -22,7 +22,13 @@ var beaconStream = new Bacon.Bus();
 var discoveredBeacons = beaconStream.flatMap(function(beacon){
 	var secondsNow = Math.floor(new Date().getTime() / 1000);
 	var beaconHash = btLeHandler.hashFromBeacon(beacon.uuid, beacon.major, beacon.minor);
-	var currentRange = btLeHandler.getRange(beacon.txpower, beacon.rssi);
+	var currentRange = 0;
+
+	if (beacon.proximity && beacon.accuracy) {
+		currentRange = Math.floor(beacon.accuracy*100)/100;
+	} else {
+		currentRange = btLeHandler.getRange(beacon.txpower, beacon.rssi);
+	}
 	if (!(beaconHash in beaconList)) {
 	    beaconList[beaconHash] = { "time" : secondsNow, "currentRange": currentRange,
 	                               "previousRange": currentRange, "event" : beacon};
@@ -54,15 +60,24 @@ var lostBeacons = Bacon.fromBinder(function(sink) {
 var movedBeacons = beaconStream.flatMap(function(beacon) {
     var beaconHash = btLeHandler.hashFromBeacon(beacon.uuid, beacon.major, beacon.minor);
     if (beaconHash in beaconList) {
-            if (btLeHandler.proximity(btLeHandler.getRange(beacon.txpower, beacon.rssi)) !== btLeHandler.proximity(beaconList[beaconHash].previousRange)) {
-                    return new Bacon.Next(beacon);
-            }
+    	var range = btLeHandler.getRange(beacon.txpower, beacon.rssi);
+		if (beacon.proximity && beacon.accuracy) {
+			range = Math.floor(beacon.accuracy*100)/100;
+
+		}
+        if (btLeHandler.proximity(range) !== btLeHandler.proximity(beaconList[beaconHash].previousRange)) {
+                return new Bacon.Next(beacon);
+        }
     }
     return Bacon.never();
 });
 
 beaconStream.onValue(function(beacon) {
-	app.updateInfo(beacon.uuid, beacon.major, beacon.minor, beacon.rssi, beacon.rssi - beacon.txpower);
+	if (beacon.accuracy && beacon.proximity) {
+		app.updateInfoIos(beacon.uuid, beacon.major, beacon.minor, beacon.rssi, Math.floor(beacon.accuracy*100)/100, beacon.proximity);
+	} else if (beacon.rssi && beacon.txpower) {
+		app.updateInfo(beacon.uuid, beacon.major, beacon.minor, beacon.rssi, beacon.rssi - beacon.txpower);
+	}
 });
 
 discoveredBeacons.onValue(function(beacon){
@@ -74,10 +89,16 @@ lostBeacons.onValue(function(beacon){
 });
 
 movedBeacons.onValue(function(beacon){
+
+	var range = btLeHandler.getRange(beacon.txpower, beacon.rssi);
+	if (beacon.proximity && beacon.accuracy) {
+		range = Math.floor(beacon.accuracy*100)/100;
+	}
+
 	var beaconHash = btLeHandler.hashFromBeacon(beacon.uuid, beacon.major, beacon.minor);
 	app.logMessage("Move: " + beacon.uuid + " / "  + beacon.major + " / "  + beacon.minor);
 	app.logMessage("From: " + btLeHandler.proximity(beaconList[beaconHash].previousRange) +
-		           " -> " + btLeHandler.proximity(btLeHandler.getRange(beacon.txpower, beacon.rssi)));
+		           " -> " + btLeHandler.proximity(range));
 });
 
 var btLeHandler = {
@@ -117,6 +138,23 @@ var btLeHandler = {
 					}
 				}
 			);
+
+			com.blackberry.community.simplexpbeaconplugin.addBeaconUuidToMonitor(
+				"8AEFB031-6C32-486F-825B-E26FA193487D",
+				function(data){
+
+					console.log('XXXX DATA: ' + data);
+					var json = JSON.parse(data);
+					console.log('XXXX json.status: ' + json.status);				
+
+					if (json.status === 'OK') {
+						app.logMessage('Beacon added');
+						bluetoothInitialised = true;
+					} else {
+						app.logMessage('Failed to add beacon: ' + json.desc);
+					}
+				}
+			);
 		} else {
 			app.logMessage('SimplexpXpBeaconPlugin was not found');
 		}
@@ -125,6 +163,23 @@ var btLeHandler = {
     // BT LE HR Plugin terminate Bluetooth
     //
     terminate: function() {
+		com.blackberry.community.simplexpbeaconplugin.removeBeaconUuidToMonitor(
+			"8AEFB031-6C32-486F-825B-E26FA193487D",
+			function(data){
+
+				console.log('XXXX DATA: ' + data);
+				var json = JSON.parse(data);
+				console.log('XXXX json.status: ' + json.status);				
+
+				if (json.status === 'OK') {
+					app.logMessage('Beacon removed');
+					bluetoothInitialised = true;
+				} else {
+					app.logMessage('Failed to remove beacon: ' + json.desc);
+				}
+			}
+		);
+
 		com.blackberry.community.simplexpbeaconplugin.terminateBluetooth(
 			function(data){
 
@@ -153,6 +208,8 @@ var btLeHandler = {
 		var json = JSON.parse(data);
 		if (json.status === 'OK') {
 			if(json.event === 'IBEACON') {
+				beaconStream.push(json.data);
+			} else if(json.event === 'IBEACON_PROXIMITY') {
 				beaconStream.push(json.data);
 			} else if(json.event === 'STARTED') {
 				app.logMessage('Monitoring started ...');
@@ -274,6 +331,14 @@ var btLeHandler = {
 		                  .append("Minor: ").append(minor).append(" ")
 		                  .append("RSSI: ").append(rssi).append(" dBm ")
 		                  .append("Loss: ").append(loss).append(" dB");
+	},
+
+    updateInfoIos: function(uuid, major, minor, rssi, accuracy, proximity) {
+		$("#beacon-uuid").text("UUID: ").append(uuid);
+		$("#beacon-details").text("Major: ").append(major).append(" ")
+		                  .append("Minor: ").append(minor).append(" ")
+		                  .append("RSSI: ").append(rssi).append(" dBm ")
+		                  .append("Accuracy: ").append(accuracy).append(" m");
 	},
 
     // Log to screen

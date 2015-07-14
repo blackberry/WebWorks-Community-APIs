@@ -21,6 +21,8 @@ var simpleXpBeaconPlugin,
 	initialiseBluetoothCallbackId = null,
 	terminateBluetoothCallbackId = null,
 	stopMonitoringCallbackId = null,
+	removeBeaconUuidToMonitorCallbackId = null,
+	addBeaconUuidToMonitorCallbackId = null,
    _utils = require("../../lib/utils");
 
 module.exports = {
@@ -85,6 +87,30 @@ module.exports = {
 		} else {
 			result.error("Stop Monitoring failure", false);
 		}
+	},
+
+	addBeaconUuidToMonitor: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+	    uuid = JSON.parse(decodeURIComponent(args[0]));
+		if (!addBeaconUuidToMonitorCallbackId) {
+			addBeaconUuidToMonitorCallbackId = result.callbackId;
+			resultObjs[result.callbackId] = result;
+			result.ok(simpleXpBeaconPlugin.getInstance().addBeaconUuidToMonitor(result.callbackId, uuid), true);
+		} else {
+			result.error("Add Beacon UUID failure", false);
+		}
+	},
+
+	removeBeaconUuidToMonitor: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+	    uuid = JSON.parse(decodeURIComponent(args[0]));
+		if (!removeBeaconUuidToMonitorCallbackId) {
+			removeBeaconUuidToMonitorCallbackId = result.callbackId;
+			resultObjs[result.callbackId] = result;
+			result.ok(simpleXpBeaconPlugin.getInstance().removeBeaconUuidToMonitor(result.callbackId, uuid), true);
+		} else {
+			result.error("Add Beacon UUID failure", false);
+		}
 	}
 };
 
@@ -142,6 +168,14 @@ JNEXT.SimpleXpBeaconPlugin = function () {
 		return JNEXT.invoke(self.m_id, "stopMonitoring " + callbackId);
 	};
 
+	self.addBeaconUuidToMonitor = function (callbackId, uuid) {
+		return JNEXT.invoke(self.m_id, "addBeaconUuidToMonitor " + callbackId + " " + uuid);
+	};
+	
+	self.removeBeaconUuidToMonitor = function (callbackId, uuid) {
+		return JNEXT.invoke(self.m_id, "removeBeaconUuidToMonitor " + callbackId + " " + uuid);
+	};
+
 	// end of SimpleXpBeaconPlugin apis
 
 
@@ -174,6 +208,14 @@ JNEXT.SimpleXpBeaconPlugin = function () {
 				resultObjs[beaconCallbackId].callbackOk("", false)
 				delete resultObjs[beaconCallbackId];
 				beaconCallbackId = null;
+			} else if (callbackId == addBeaconUuidToMonitorCallbackId) {
+				result.callbackOk(data, false);
+				delete resultObjs[callbackId];
+				addBeaconUuidToMonitorCallbackId = null;
+			} else if (callbackId == removeBeaconUuidToMonitorCallbackId) {
+				result.callbackOk(data, false);
+				delete resultObjs[callbackId];
+				removeBeaconUuidToMonitorCallbackId = null;
 			} else {
 				result.callbackOk(data, false);
 				delete resultObjs[callbackId];

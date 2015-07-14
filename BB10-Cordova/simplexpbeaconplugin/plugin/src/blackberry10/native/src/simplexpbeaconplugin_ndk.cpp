@@ -67,6 +67,7 @@ SimpleXpBeaconPlugin_NDK::SimpleXpBeaconPlugin_NDK(SimpleXpBeaconPlugin_JS *pare
     , m_monitoring_callback_id("")
 {
     s_btController = this;
+    m_beacon_regions_to_monitor.clear();
 }
 
 SimpleXpBeaconPlugin_NDK::~SimpleXpBeaconPlugin_NDK()
@@ -78,6 +79,7 @@ SimpleXpBeaconPlugin_NDK::~SimpleXpBeaconPlugin_NDK()
     m_bt_initialised = false;
     bt_device_deinit();
     s_btController = NULL;
+    m_beacon_regions_to_monitor.clear();
 }
 
 // These methods are the true native code we intend to reach from WebWorks
@@ -247,6 +249,56 @@ std::string SimpleXpBeaconPlugin_NDK::stopMonitoring(const std::string& callback
     RETURN_VIA_CALLBACK(callbackId, writer.write(root));
 }
 
+std::string SimpleXpBeaconPlugin_NDK::addBeaconUuidToMonitor(const std::string& callbackId, const std::string& uuid)
+{
+    LOGD("In addBeaconUuidToMonitor()");
+
+    Json::FastWriter writer;
+    Json::Value root;
+    char temp[500];
+    int rc = 0;
+
+    LOGD("In addBeaconUuidToMonitor() - UUID = %s", uuid.c_str());
+
+    std::list<std::string>::iterator iter = std::find (m_beacon_regions_to_monitor.begin(), m_beacon_regions_to_monitor.end(), toUpper(uuid));
+    if (iter != m_beacon_regions_to_monitor.end()) {
+        root[JSON_KEY_STATUS] = JSON_VALUE_ERROR;
+        root[JSON_KEY_DESCRIPTION] = "iBeacon already being monitored";
+        RETURN_VIA_CALLBACK(callbackId, writer.write(root));
+    }
+
+    m_beacon_regions_to_monitor.push_back(toUpper(uuid));
+
+    root[JSON_KEY_STATUS] = JSON_VALUE_OK;
+    root[JSON_KEY_DESCRIPTION] = "UUID added";
+    RETURN_VIA_CALLBACK(callbackId, writer.write(root));
+}
+
+std::string SimpleXpBeaconPlugin_NDK::removeBeaconUuidToMonitor(const std::string& callbackId, const std::string& uuid)
+{
+    LOGD("In removeBeaconUuidToMonitor()");
+
+    Json::FastWriter writer;
+    Json::Value root;
+    char temp[500];
+    int rc = 0;
+
+    LOGD("In removeBeaconUuidToMonitor() - UUID = %s", uuid.c_str());
+
+    std::list<std::string>::iterator iter = std::find (m_beacon_regions_to_monitor.begin(), m_beacon_regions_to_monitor.end(), toUpper(uuid));
+    if (iter == m_beacon_regions_to_monitor.end()) {
+        root[JSON_KEY_STATUS] = JSON_VALUE_ERROR;
+        root[JSON_KEY_DESCRIPTION] = "iBeacon UUID did not match any being monitored";
+        RETURN_VIA_CALLBACK(callbackId, writer.write(root));
+    }
+
+    m_beacon_regions_to_monitor.remove(toUpper(uuid));
+
+    root[JSON_KEY_STATUS] = JSON_VALUE_OK;
+    root[JSON_KEY_DESCRIPTION] = "iBeacon UUID removed successfully";
+    RETURN_VIA_CALLBACK(callbackId, writer.write(root));
+}
+
 void SimpleXpBeaconPlugin_NDK::parseBeaconData(const char *data, int len, int8_t rssi, const char *bdaddr)
 {
     bool hasIBeaconData = false;
@@ -308,10 +360,20 @@ void SimpleXpBeaconPlugin_NDK::parseBeaconData(const char *data, int len, int8_t
         return;
     }
 
-    char temp[2*sizeof(beaconUuid)+1];
+    //8AEFB031-6C32-486F-825B-E26FA193487D
+
+    char temp[2*sizeof(beaconUuid)+1+4];
     char *o = temp;
     for (size_t i=0; i< sizeof(beaconUuid); i++) {
         o += snprintf(o, sizeof(temp)-(o-temp), "%02X", (uint8_t)(beaconUuid[i] & 0x0ff));
+        if (i == 3)
+            o += snprintf(o, sizeof(temp)-(o-temp), "-");
+        if (i == 5)
+            o += snprintf(o, sizeof(temp)-(o-temp), "-");
+        if (i == 7)
+            o += snprintf(o, sizeof(temp)-(o-temp), "-");
+        if (i == 9)
+            o += snprintf(o, sizeof(temp)-(o-temp), "-");
     }
 
     ib[JSON_KEY_IBEACON_UUID] = temp;
@@ -322,7 +384,21 @@ void SimpleXpBeaconPlugin_NDK::parseBeaconData(const char *data, int len, int8_t
 
     root[JSON_KEY_DATA] = ib;
 
-    m_pParent->NotifyEvent(m_monitoring_callback_id + " " + writer.write(root));
+    if (m_beacon_regions_to_monitor.empty()) {
+        m_pParent->NotifyEvent(m_monitoring_callback_id + " " + writer.write(root));
+    } else {
+        std::list<std::string>::iterator iter = std::find (m_beacon_regions_to_monitor.begin(), m_beacon_regions_to_monitor.end(), temp);
+        if (iter != m_beacon_regions_to_monitor.end()) {
+            m_pParent->NotifyEvent(m_monitoring_callback_id + " " + writer.write(root));
+        }
+    }
+}
+
+std::string SimpleXpBeaconPlugin_NDK::toUpper(std::string sourceString)
+{
+    std::transform(sourceString.begin(), sourceString.end(), sourceString.begin(), std::toupper);
+
+    return sourceString;
 }
 
 } /* namespace webworks */
