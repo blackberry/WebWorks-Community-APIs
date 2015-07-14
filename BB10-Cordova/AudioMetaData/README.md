@@ -6,7 +6,7 @@ This plugin is designed to be able to retrive the ID3 tag of a MP3 file. This ta
 
 ####Building the Plugin
 ```
-Open momentic and import the plugin/src/blackberry10/native directory.
+Open Momentics and import the plugin/src/blackberry10/native directory.
 Build the project.
 ```
 
@@ -25,7 +25,7 @@ Navigate to Tool Settings tab and choose Libraries under QCC Linker
 Simply open up a terminal and perform the following commands while in your application path:
 
 ````
-webworks plugin add path/to/AudioMetaData plugin/plugin
+cordova plugin add path/to/AudioMetaData plugin/plugin
 ```
 
 #####However the following permissions must be applied to config.xml of you application
@@ -33,25 +33,23 @@ webworks plugin add path/to/AudioMetaData plugin/plugin
 ```
 <rim:permissions>
  <rim:permit>access_shared</rim:permit>
-</rim:permissions></pre>
+</rim:permissions>
 ```
 
 ####Running the TestApplication
 
-Connect your blackberry 10 to your computer and with Developement Mode enabled on your BB then input the following commands.
+Connect your BlackBerry 10 to your computer and with Development Mode enabled, then input the following commands.
 
 ````
 cd path/to/your/application
-webworks platform add blackberry10
-webworks plugin add path/to/AudioMetaData plugin/plugin
-webworks plugin add com.blackberry.invoke.card
-webworks run
+cordova platform add blackberry10
+cordova plugin add path/to/AudioMetaData plugin/plugin
+cordova plugin add cordova-plugin-bb-card
+cordova run
 ```
 
 
 ##Calling The Extraction Functions
-
-Currently the only function to call in the plugin is
 
 ````
 audioMetaDataGetMetaData(path, callBack);
@@ -91,7 +89,8 @@ path: The path to your mp3 file
 
 ###Tested on
 
-Z10 running v10.2
+	Z10 running v10.2
+	Passport running 10.3.1/10.3.2
 
 Note: Some error occurring in reading some mp3 files, this could be the problem with the library it self. This needs more investigation.
 
@@ -99,10 +98,6 @@ Note: Some error occurring in reading some mp3 files, this could be the problem 
 ##Final Notes
 
 The same code used for the test application falls under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache 2.0 License</a>.
-
-Contributing Changes
-
-Please see the README of the BB10-WebWorks-Community-Samples repository for instructions on how to add new Samples or make modifications to existing Samples.
 
 Disclaimer
 

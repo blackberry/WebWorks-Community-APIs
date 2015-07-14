@@ -5,21 +5,20 @@ This plugin is designed to be able to retrive the ID3 tag of a MP3 file. This ta
 ## Version History
 
 	1.0.0 Initial Release
+	1.1.0 Ability to set Metadata tags
 
 ##Loading the plugin
 
 Simply open up a terminal and perform the following commands while in your application path:
 
 ````
-webworks plugin add com.blackberry.community.audiometadata
+cordova plugin add cordova-plugin-audiometadata
 ```
 
 ##Calling The Extraction Functions
 
-Currently the only function to call in the plugin is
-
 ````
-community.audiometadata.audioMetaDataGetMetaData(path, callBack);
+audioMetaDataGetMetaData(path, callBack);
 ````
 where:
 ````
@@ -27,10 +26,37 @@ path: The path to your mp3 file
 callBack: The callback function to handle the data returned. eg: retrievedData(data)
 ````
 
+````
+audioMetaDataSetTagData(input);
+````
+where:
+````
+input: a json object containing the following information
+  "path": path to the file
+  "title": changing title
+  "genre": changing genre
+  "track": changing track number
+  "year": changing year of the production of the song
+  "album": changing album of the song
+  "artist": changing the artist of the song
+
+Follow is an example to change the songs title and artist
+
+var data = { "path":"path/to/my/file.mp3", "title":"very nice", "artist":"yours truly" }
+````
+
+````
+audioMetaDataRemoveTag(path);
+````
+where:
+````
+path: The path to your mp3 file
+````
+
 ###Tested on
 
-Z10 running v10.2
-Passport running 10.3.1
+	Z10 running v10.2
+	Passport running 10.3.1/10.3.2
 
 Note: Some error occurring in reading some mp3 files, this could be the problem with the library it self. This needs more investigation.
 
