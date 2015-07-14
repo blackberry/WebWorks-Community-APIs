@@ -25,12 +25,13 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 
 **How to install this extension**
 
-1. In command prompt while in your project directory, type: cordova plugin add <path to the /plugin/ directory>
-2. Copy the bbSMS.js file into your project (file is located at SMSPlugin-DemoApp/www/js/)
-3. Make sure you remember to include it in your index.html file for your app
-4. In the config.xml of your project add the following permissions (see the config.xml in www for an example)
+In command prompt while in your project directory, type: cordova plugin add <path to the /plugin/ directory>
 
-```
+**Permissions**
+
+In the config.xml of your project the following permissions will be added on installation of the plugin.
+
+```xml
 	<rim:permissions>
 	    <rim:permit>access_pimdomain_messages</rim:permit>
 	    <rim:permit>access_sms_mms</rim:permit>
@@ -40,25 +41,55 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 
 **Usage**
 
-bbSMS.send(phonenumber, message, person<optional>);
-
-
-Example:
-```
- 
-var result=bbSMS.send("2124537535", "What's up Barack?", "Barack Obama" );
-if(result===false){
-	console.log('SMS Plugin is not installed. You need to run the command : cordova plugin add ../plugin');
-}
-else{
-	if(result.success==false){
-	// did you forget a parameter?
-		console.log(result.result);
+Sync Example:
+```javascript
+	var param = {
+		"destination": "2124537535",  
+		"message": "What's up Barack?",
+		"personName": "Barack Obama" // can be any string 
+	};
+	
+	var result = community.SMSPlugin.udSMS_Sync(param);
+	
+	if(result===false){
+		console.log('SMS Plugin is not installed. You need to run the command : cordova plugin add ../plugin');
 	}
 	else{
-		console.log('SMS has been sent!');
+		if(result.success==false){
+		// did you forget a parameter?
+			console.log(result.result);
+		}
+		else{
+			console.log('SMS has been sent!');
+		}
 	}
-}
+```
+
+Async Example:
+```javascript
+	var param = {
+		"destination": "2124537535",  
+		"message": "What's up Barack?",
+		"personName": "Barack Obama" // can be any string 
+	};
+
+	var callback = function(result) {
+		if(result===false){
+			console.log('SMS Plugin is not installed. You need to run the command : cordova plugin add ../plugin');
+		}
+		else{
+			if(result.success==false){
+			// did you forget a parameter?
+				console.log(result.result);
+			}
+			else{
+				console.log('SMS has been sent!');
+			}
+		}
+
+	}
+
+	community.SMSPlugin.udSMS_Async(param, callback);
 ```
  
 **How to Build the SMS Plugin for BB10 Cordova**
@@ -115,13 +146,6 @@ Apache 2.0
 **Known Issues**
 
 None! 
-
-
-## Contributing Changes
-
-Please see the [README](https://github.com/blackberry/BB10-WebWorks-Community-Samples) of the BB10-WebWorks-Community-Samples repository for instructions on how to add new Samples or make modifications to existing Samples.
-
-
 
 ## Disclaimer
 
