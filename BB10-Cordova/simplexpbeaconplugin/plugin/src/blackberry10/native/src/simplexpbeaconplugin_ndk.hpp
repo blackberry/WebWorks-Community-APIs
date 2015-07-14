@@ -23,6 +23,8 @@
 #include <btapi/btdevice.h>
 #include <btapi/btle.h>
 #include <bbndk.h>
+#include <list>
+#include <algorithm>
 
 #define LOGD(...) \
     do { \
@@ -75,12 +77,17 @@ public:
     std::string startMonitoring(const std::string& callbackId);
     std::string stopMonitoring(const std::string& callbackId);
 
+    std::string addBeaconUuidToMonitor(const std::string& callbackId, const std::string& uuid);
+    std::string removeBeaconUuidToMonitor(const std::string& callbackId, const std::string& uuid);
+
     void parseBeaconData(const char *data, int len, int8_t rssi, const char *bdaddr);
 
 private:
+    std::string toUpper(std::string sourceString);
     bool m_bt_initialised;
     bool m_monitoring;
     std::string m_monitoring_callback_id;
+    std::list<std::string> m_beacon_regions_to_monitor;
 };
 
 } // namespace webworks

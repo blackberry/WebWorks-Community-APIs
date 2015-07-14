@@ -19,7 +19,7 @@
 #include <string>
 #include <errno.h>
 
-#define PLUGIN_VERSION "1.0.0"
+#define PLUGIN_VERSION "1.1.0"
 
 #define DEVICE_INFO_BUFF_SIZE (256)
 #define DEVICE_INFO_ADDR_SIZE (18)

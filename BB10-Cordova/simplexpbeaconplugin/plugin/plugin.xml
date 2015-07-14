@@ -36,4 +36,16 @@
         </config-file>
 
     </platform>
+
+    <platform name="ios">
+        <config-file target="config.xml" parent="/widget">
+            <feature name="com.blackberry.community.simplexpbeaconplugin">
+                <param name="ios-package" value="SimpleXpBeaconPlugin" />
+            </feature>
+        </config-file>
+
+        <header-file src="src/ios/SimpleXpBeaconPlugin.h" target-dir="SimpleXpBeaconPlugin"/>
+        <source-file src="src/ios/SimpleXpBeaconPlugin.m" target-dir="SimpleXpBeaconPlugin"/>
+    </platform>
+
 </plugin>

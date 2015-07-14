@@ -24,6 +24,40 @@ var _self = {},
 
 	// start of Bluetooth apis
 
+	_self.addBeaconUuidToMonitor = function (uuid, successCallback, errorCallback) {
+		var	success = function (data, response) {
+				if (successCallback  && typeof successCallback === 'function') {
+					if (data && data.length > 0) {
+						successCallback(data);
+					}
+				}
+			},
+			fail = function (data, response) {
+				console.log("Error: " + data);
+				if (errorCallback  && typeof errorCallback === 'function') {
+					errorCallback(data);
+				}
+			};
+		exec(success, fail, _ID, "addBeaconUuidToMonitor", [uuid]);
+	};
+
+	_self.removeBeaconUuidToMonitor = function (uuid, successCallback, errorCallback) {
+		var	success = function (data, response) {
+				if (successCallback  && typeof successCallback === 'function') {
+					if (data && data.length > 0) {
+						successCallback(data);
+					}
+				}
+			},
+			fail = function (data, response) {
+				console.log("Error: " + data);
+				if (errorCallback  && typeof errorCallback === 'function') {
+					errorCallback(data);
+				}
+			};
+		exec(success, fail, _ID, "removeBeaconUuidToMonitor", [uuid]);
+	};
+
 	_self.initialiseBluetooth = function (successCallback, errorCallback) {
 		var	success = function (data, response) {
 				if (successCallback  && typeof successCallback === 'function') {

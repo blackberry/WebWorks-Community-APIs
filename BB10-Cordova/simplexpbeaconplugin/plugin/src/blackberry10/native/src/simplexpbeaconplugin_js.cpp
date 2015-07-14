@@ -107,6 +107,12 @@ string SimpleXpBeaconPlugin_JS::InvokeMethod(const string& command) {
 
     } else if (strCommand == "stopMonitoring") {
         return m_pSimpleXpBeaconPluginController->stopMonitoring(callbackId);
+
+    } else if (strCommand == "addBeaconUuidToMonitor") {
+        return m_pSimpleXpBeaconPluginController->addBeaconUuidToMonitor(callbackId, arg);
+
+    } else if (strCommand == "removeBeaconUuidToMonitor") {
+        return m_pSimpleXpBeaconPluginController->removeBeaconUuidToMonitor(callbackId, arg);
     }
 
 	strCommand.append(";");
