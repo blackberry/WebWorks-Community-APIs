@@ -105,10 +105,10 @@ You'll need to re-create the project using the latest templates and plugins and 
 
 Ensure the [BlackBerry 10 WebWorks SDK 2.2](https://developer.blackberry.com/html5/download/sdk) is correctly installed. I used this version of WebWorks but you may be using a newer version when you build this project: 
 
-	```
-	$ webworks -v
-	v2.2.0.15
-	```
+```
+$ webworks -v
+v2.2.0.15
+```
 
 Open a command prompt (windows) or terminal (mac) in a folder of your choosing and follow the following instructions:
 
@@ -135,7 +135,6 @@ Open a command prompt (windows) or terminal (mac) in a folder of your choosing a
 
 	```
 	$ webworks platform add android
-
 	```
 	
 	You can check what platforms have been added like this:
@@ -143,7 +142,8 @@ Open a command prompt (windows) or terminal (mac) in a folder of your choosing a
 	```
 	$ webworks platform list
 	Installed platforms: android 3.5.0, blackberry10 3.6.0
-	Available platforms: amazon-fireos, firefoxos, ios	```
+	Available platforms: amazon-fireos, firefoxos, ios
+	```
 
 - Add the Bluetooth plugin using this command: 
 
@@ -172,7 +172,7 @@ Open a command prompt (windows) or terminal (mac) in a folder of your choosing a
 		$ webworks run android
 		```	
 	
-	- For iOS you need to add a coupe of extra steps:
+	- For iOS you need to add a couple of extra steps:
 	
 		```
 		$ webworks build ios
@@ -184,7 +184,7 @@ Open a command prompt (windows) or terminal (mac) in a folder of your choosing a
 		$ open ./platforms/ios/My\ Test.xcodeproj
 		```	
 
-		You then need to make the follwoing changes to the project:
+		You then need to make the following changes to the project:
 		
 		- Add the **CoreBluetooth.framework** to the project to allow access to Bluetooth Low Enery APIs.
 		- Add the following **Capabilities** to the project:
@@ -200,7 +200,7 @@ Open a command prompt (windows) or terminal (mac) in a folder of your choosing a
     		<string>Testing iBeacon service</string>
     		...
     		```
-			You can change the strings: **"Testing iBeacon service"** to something more suitable since these represent the prompts that the user wull see when the application is installed regarding these specific authorisations. It's always a good idea to explain to the user precisely why specific authorisations are needed.
+		You can change the strings: **"Testing iBeacon service"** to something more suitable since these represent the prompts that the user wull see when the application is installed regarding these specific authorisations. It's always a good idea to explain to the user precisely why specific authorisations are needed.
 
 - If you change the plugin you will need to remove it and add it again using:
 
