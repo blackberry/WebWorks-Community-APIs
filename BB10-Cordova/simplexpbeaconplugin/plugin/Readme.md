@@ -1,3 +1,48 @@
+# Bluetooth iBeacon Cross Platform Cordova Plugin #
+
+This Bluetooth Smart iBeacon WebWorks Cordova Cross Platform Plugin (**SimpleXpBeaconPlugin**) is intended to allow  WebWorks applications to monitor and detect devices using the Apple de-facto iBeacon standard. It supports all the following platforms:
+
+- **BlackBerry 10**
+- **Android**
+- **iOS**
+
+in this release.
+
+### Applies To
+
+* [Apache Cordova for BlackBerry 10](https://github.com/blackberry/cordova-blackberry/tree/master/blackberry10)
+
+### Author
+
+* [John Murray](https://github.com/jcmurray)
+
+### Release History
+
+* **V1.0.0** - Initial release
+* **V1.1.0** - Added iOS support
+
+### Known Issues
+
+* None
+
+### Dependencies
+
+#### BlackBerry 10
+
+1. BlackBerry Device Software **10.2.1** and greater for the BlackBerry 10 native component.
+2. The native component of the BlackBerry 10 plugin in GitHub has been built against BlackBerry Device Software **10.3.1** as this was the most recent version of BlackBerry 10 at the time of posting to GitHub.
+3. If you want to run it on an earlier version of BlackBerry 10 Device Software you should follow the instructions below to rebuild it yourself.
+
+#### Android
+
+1. Android **API Level 18** is necessary for this plugin to operate correctly since the plugin makes use of Bluetooth Low Enery APIs that became available in this level.
+2. The Android device must support the **PackageManager.FEATURE_BLUETOOTH_LE** Bluetooth Low Energy feature to allow the plugin to listen to iBeacon Advertisements.
+
+#### iOS
+
+1. I've tested the sample application and plugin on iOS **8.1** and **8.4** where it builds and executes correctly.
+2. The iOS device must suport Bluetooth Low Energy ( determined via **CBCentralManager** state).
+
 # API Reference #
 
 The following describes the APIs:
@@ -519,6 +564,6 @@ var foo = cordova.plugins.simplexpbeacon.removeBeaconUuidToMonitor(
 );
 ```
 
-		
-		
+## Disclaimer
 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

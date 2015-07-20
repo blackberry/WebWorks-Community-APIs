@@ -1,0 +1,32 @@
+{
+  "name": "cordova-plugin-beacon",
+  "version": "1.1.0",
+  "description": "BlackBerry 10 Community Contributed SimpleXpBeaconPlugin API",
+  "cordova": {
+    "id": "cordova-plugin-beacon",
+    "platforms": [
+      "blackberry10",
+      "android",
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackberry/WebWorks-Community-APIs.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-blackberry10",
+    "cordova-android",
+    "cordova-ios",
+    "beacon",
+    "ibeacon",
+    "bluetooth"
+  ],
+  "author": "John Murray",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/blackberry/WebWorks-Community-APIs/issues"
+  },
+  "homepage": "https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/simplexpbeaconplugin#readme"
+}

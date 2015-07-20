@@ -205,7 +205,7 @@ Open a command prompt (windows) or terminal (mac) in a folder of your choosing a
 - If you change the plugin you will need to remove it and add it again using:
 
 	```
-	$ webworks plugin remove com.blackberry.community.simpleXpbeaconplugin
+	$ webworks plugin remove cordova-plugin-beacon
 	$ webworks plugin add <repo>/SimpleXpBeaconPlugin/plugin
 	```	
 
