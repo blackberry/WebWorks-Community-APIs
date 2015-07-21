@@ -27,15 +27,11 @@ ExtractZIPFile
 
 ## Including the feature in your application
 
-This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+This API can be installed from source or from NPM. Installation from NPM is done through the following:
 
-	cordova plugin add com.blackberry.community.extractZipFile
+	cordova plugin add cordova-plugin-bb-zip
 
-or,
-	
-	webworks plugin add com.blackberry.community.extractZipFile
-
-Installation from source is the same but instead of the id ("com.blackberry.community.extractZipFile"), use the file system path to the source plugin folder.
+Installation from source is the same but instead of the id ("cordova-plugin-bb-zip"), use the file system path to the source plugin folder.
 
 
 Extraction API Examples
@@ -166,5 +162,3 @@ callbackToken will contain a copy of the zipDestinationPath argument. Use this a
 concurrent zip compression to differentiate between callbacks.
 
 Default: duplicate of zipDestinationPath argument.
-
-[![Analytics](https://ga-beacon.appspot.com/UA-46817652-1/WebWorks-Community-APIs/BB10-Cordova/ExtractZipFile?pixel)](https://github.com/igrigorik/ga-beacon)

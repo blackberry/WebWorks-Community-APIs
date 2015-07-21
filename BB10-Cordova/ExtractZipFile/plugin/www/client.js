@@ -16,7 +16,7 @@
 
 // Raw API
 var _self = {},
-	_ID = "com.blackberry.community.extractZipFile",
+	_ID = "cordova-plugin-bb-zip",
 	exec = cordova.require("cordova/exec");
 
 

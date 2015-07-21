@@ -1,5 +1,5 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.extractZipFile"
+    id="cordova-plugin-bb-zip"
     version="1.1.2">
 
     <name>ExtractZipFile</name>
@@ -19,7 +19,7 @@
         <lib-file src="src/blackberry10/native/device/libExtractZipFile.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libExtractZipFile.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.extractZipFile" value="com.blackberry.community.extractZipFile" />
+            <feature name="cordova-plugin-bb-zip" value="cordova-plugin-bb-zip" />
         </config-file>
     </platform>
 </plugin>
