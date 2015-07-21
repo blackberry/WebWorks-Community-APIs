@@ -97,6 +97,9 @@ var app = {
 
 	},
 
+	switchLocalButtonClick: function() {
+		app.writeOut(com.blackberry.community.nowplaying.NowPlayingSwitchMusic('sounds/highhat.mp3'));
+	},
 
 	testPluginCalls: function() {
 		if (com && com.blackberry.community.nowplaying) {
@@ -110,7 +113,7 @@ var app = {
 			document.getElementById("durationButton").onclick = app.durationButtonClick;
 			document.getElementById("positionButton").onclick = app.positionButtonClick;
 			document.getElementById("setMetaButton").onclick = app.setMetaButtonClick;
-			
+			document.getElementById("switchLocalButton").onclick = app.switchLocalButtonClick;
 		} else {
 			app.writeOut("Plugin was not found");
 		}
