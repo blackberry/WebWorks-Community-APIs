@@ -16,7 +16,7 @@
 */
 -->
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.LowLatencyAudio"
+    id="cordova-plugin-bb-nativeaudio"
     version="1.0.1">
 
     <name>Low Latency Audio</name>
@@ -35,7 +35,7 @@
         <lib-file src="src/blackberry10/native/device/libpgaudio.so" arch="device" />
         <lib-file src="src/blackberry10/native/simulator/libpgaudio.so" arch="simulator" />
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.LowLatencyAudio" value="com.blackberry.community.LowLatencyAudio" />
+            <feature name="cordova-plugin-bb-nativeaudio" value="cordova-plugin-bb-nativeaudio" />
         </config-file>
     </platform>
 </plugin>

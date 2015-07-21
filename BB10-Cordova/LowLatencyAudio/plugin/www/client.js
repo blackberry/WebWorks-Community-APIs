@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-var service = "com.blackberry.community.LowLatencyAudio",
+var service = "cordova-plugin-bb-nativeaudio",
     exec = cordova.require("cordova/exec");
 
 module.exports = {
