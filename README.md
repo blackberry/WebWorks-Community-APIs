@@ -39,15 +39,9 @@ The README for the API should be updated to indicate the new Author.
 
 **Repository Committers**
 
-* [Jeffrey Heifetz](https://github.com/jeffheifetz)
-* [Alex Babut](https://github.com/ababut)
-* [Adam Stanley](https://github.com/adamstanley)
 * [Anzor Bashkhaz](https://github.com/anzorb)
 * [Ken Wallis](https://github.com/kwallis)
-* [Chris DelCol](https://github.com/cdelcol)
-* [Tim Neil](https://github.com/tneil)
 * [Tim Windsor](https://github.com/timwindsor)
-* [Nukul Bhasin](https://github.com/nukulb)
 
 ## Bug Reporting and Feature Requests
 
@@ -56,5 +50,3 @@ If you find a bug in a Community API, or have an enhancement request, simply fil
 ## Disclaimer
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-[![Analytics](https://ga-beacon.appspot.com/UA-46817652-1/WebWorks-Community-APIs/home?pixel)](https://github.com/igrigorik/ga-beacon)
