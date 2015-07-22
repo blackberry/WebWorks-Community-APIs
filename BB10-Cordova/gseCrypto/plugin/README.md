@@ -20,15 +20,11 @@ Use this cryptographic library at your own risk. While native functions are FIPS
 
 ## How To Install The Plugin
 
-This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+This API can be installed from source or from NPM. Installation from NPM is done through the following:
 
-    cordova plugin add com.blackberry.community.gsecrypto
+    cordova plugin add cordova-plugin-bb-crypto
 
-or,
-    
-    webworks plugin add com.blackberry.community.gsecrypto
-
-Installation from source is the same but instead of the id ("com.blackberry.community.gsecrypto"), use the file system path to the source plugin folder.
+Installation from source is the same but instead of the id ("cordova-plugin-bb-crypto"), use the file system path to the source plugin folder.
 
 ## Data
 
@@ -234,5 +230,5 @@ Security Builder GSE does not implement padding algorithms for block ciphers. Al
 There are many ways to pad data, but keep in mind that padding itself does not increase security. See [wikipedia](http://en.wikipedia.org/wiki/Padding_%28cryptography%29) for an overview of existing padding schemes.
 
 # Usage Examples
-See gseCrypto/sample/www/js/index.js for examples of all operations in use.
+See [the sample app](https://github.com/blackberry/WebWorks-Community-APIs/blob/master/BB10-Cordova/gseCrypto/sample/www/js/index.js) for examples of all operations in use.
 

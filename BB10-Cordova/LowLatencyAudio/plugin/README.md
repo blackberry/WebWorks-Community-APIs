@@ -11,11 +11,11 @@ For a sample application demonstrating the use of this API, please see the [LowL
 
 ## Installation
 
-The plugin can be installed from source or the [Cordova Plugin Registry](http://plugins.cordova.io) using one of the following commands in your Cordova project location:
+The plugin can be installed from source or NPM using one of the following commands in your Cordova project location:
 
-Registry: 
+NPM: 
 
-	cordova plugin add com.blackberry.community.lowlatencyaudio
+	cordova plugin add cordova-plugin-bb-nativeaudio
 
 Source:
 

@@ -15,7 +15,7 @@
 */
 
 var _self = {},
-	_ID = "com.blackberry.community.vibration",
+	_ID = "cordova-plugin-vibrate-intense",
 	exec = cordova.require("cordova/exec");
 
 	// These methods are called by your App's JavaScript

@@ -108,7 +108,7 @@ Open a command prompt (windows) or terminal (mac) in a folder of your choosing a
 - If you change the plugin you will need to remove it and add it again using:
 
 	```
-	webworks plugin remove com.blackberry.community.simplebeaconplugin
+	webworks plugin remove cordova-plugin-bluetoothibeacon
 	```
 	```
 	webworks plugin add <repo>/SimpleBeaconPlugin/plugin

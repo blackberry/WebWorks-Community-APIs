@@ -19,7 +19,7 @@ that are used to interact with this Bluetooth Plugin. The plugin will operate wi
 
 ### Name: ###
 
-com.blackberry.community.simplexpbeaconplugin.initialiseBluetooth
+cordova.plugins.simplexpbeacon.initialiseBluetooth
 
 ### Description: ###
 
@@ -27,7 +27,7 @@ Used to instruct the plugin to connect to the Bluetooth Services on the BlackBer
 
 You must do this before using any of the other APIs for this plugin.
 
-Once you are finished using Bluetooth in your application you should call the corresponding `com.blackberry.community.simplexpbeaconplugin.terminateBluetooth` function before exiting your application.
+Once you are finished using Bluetooth in your application you should call the corresponding `cordova.plugins.simplexpbeacon.terminateBluetooth` function before exiting your application.
 
 ### Type: ###
 
@@ -36,7 +36,7 @@ Asynchronous Function
 ### Usage: ###
 
 ```javascript
-com.blackberry.community.simplexpbeaconplugin.initialiseBluetooth(initialiseCallback)
+cordova.plugins.simplexpbeacon.initialiseBluetooth(initialiseCallback)
 ```
 
 ### Arguments: ###
@@ -75,7 +75,7 @@ On failure:
 Call the function:
 
 ```javascript
-com.blackberry.community.simplexpbeaconplugin.initialiseBluetooth(
+cordova.plugins.simplexpbeacon.initialiseBluetooth(
 	function(data) {
 		var json = JSON.parse(data);
 		if (json.status === 'OK') {
@@ -89,7 +89,7 @@ com.blackberry.community.simplexpbeaconplugin.initialiseBluetooth(
 
 ### Name: ###
 
-com.blackberry.community.simplexpbeaconplugin.terminateBluetooth
+cordova.plugins.simplexpbeacon.terminateBluetooth
 
 ### Description: ###
 
@@ -97,7 +97,7 @@ Used to instruct the plugin to disconnect from the Bluetooth Services on the Bla
 
 After you do this you cannot use any of the other APIs for this plugin other than 
 
-`com.blackberry.community.simplexpbeaconplugin.initialiseBluetooth()`.
+`cordova.plugins.simplexpbeacon.initialiseBluetooth()`.
 
 You should always call this function when you are finished using the Bluetooth services of the plugin in your application.
 
@@ -108,7 +108,7 @@ Asynchronous Function
 ### Usage: ###
 
 ```javascript
-com.blackberry.community.simplexpbeaconplugin.terminateBluetooth(terminateCallback)
+cordova.plugins.simplexpbeacon.terminateBluetooth(terminateCallback)
 ```
 
 ### Arguments: ###
@@ -147,7 +147,7 @@ On failure:
 Call the function:
 
 ```javascript
-com.blackberry.community.simplexpbeaconplugin.terminateBluetooth(
+cordova.plugins.simplexpbeacon.terminateBluetooth(
 	function(data) {
 		var json = JSON.parse(data);
 		if (json.status === 'OK') {
@@ -161,7 +161,7 @@ com.blackberry.community.simplexpbeaconplugin.terminateBluetooth(
 
 ### Name: ###
 
-com.blackberry.community.simplexpbeaconplugin.pluginVersion
+cordova.plugins.simplexpbeacon.pluginVersion
 
 ### Description: ###
 
@@ -174,7 +174,7 @@ Asynchronous Function
 ### Usage: ###
 
 ```javascript
-com.blackberry.community.simplexpbeaconplugin.pluginVersion(versionCallback)
+cordova.plugins.simplexpbeacon.pluginVersion(versionCallback)
 ```
 
 ### Arguments: ###
@@ -202,7 +202,7 @@ None.
 Call the function:
 
 ```javascript
-var version = com.blackberry.community.simplexpbeaconplugin.pluginVersion(
+var version = cordova.plugins.simplexpbeacon.pluginVersion(
 	function(data) {
 		var json = JSON.parse(data);
 		if (json.status === 'OK') {
@@ -216,13 +216,13 @@ var version = com.blackberry.community.simplexpbeaconplugin.pluginVersion(
 
 ### Name: ###
 
-com.blackberry.community.simplexpbeaconplugin.startMonitoring
+cordova.plugins.simplexpbeacon.startMonitoring
 
 ### Description: ###
 
 Used to start monitoring for iBeacon advertisement packes and to return any such events via a callback.
 
-Once you are finished monitoring and wish to stop receiving events, you should use the `com.blackberry.community.simplexpbeaconplugin.stopMonitoring()` function.
+Once you are finished monitoring and wish to stop receiving events, you should use the `cordova.plugins.simplexpbeacon.stopMonitoring()` function.
 
 ### Type: ###
 
@@ -231,7 +231,7 @@ Asynchronous Function
 ### Usage: ###
 
 ```javascript
-com.blackberry.community.simplexpbeaconplugin.startMonitoring(beaconCallback)
+cordova.plugins.simplexpbeacon.startMonitoring(beaconCallback)
 ```
 
 ### Arguments: ###
@@ -315,7 +315,7 @@ Following the convention notifications that are associated with an error conditi
 Call the function:
 
 ```javascript
-var foo = com.blackberry.community.simplexpbeaconplugin.startMonitoring(
+var foo = cordova.plugins.simplexpbeacon.startMonitoring(
 	function(data) {
 		var json = JSON.parse(data);
 		if (json.status === 'OK') {
@@ -329,7 +329,7 @@ var foo = com.blackberry.community.simplexpbeaconplugin.startMonitoring(
 
 ### Name: ###
 
-com.blackberry.community.simplexpbeaconplugin.stopMonitoring
+cordova.plugins.simplexpbeacon.stopMonitoring
 
 ### Description: ###
 
@@ -342,7 +342,7 @@ Asynchronous Function
 ### Usage: ###
 
 ```javascript
-com.blackberry.community.simplexpbeaconplugin.stopMonitoring(stopMonitoringCallback)
+cordova.plugins.simplexpbeacon.stopMonitoring(stopMonitoringCallback)
 ```
 
 ### Arguments: ###
@@ -375,7 +375,7 @@ On failure:
 Call the function:
 
 ```javascript
-var foo = com.blackberry.community.simplexpbeaconplugin.stopMonitoring(
+var foo = cordova.plugins.simplexpbeacon.stopMonitoring(
 	function(data) {
 		var json = JSON.parse(data);
 		if (json.status === 'OK') {
@@ -389,7 +389,7 @@ var foo = com.blackberry.community.simplexpbeaconplugin.stopMonitoring(
 
 ### Name: ###
 
-com.blackberry.community.simplexpbeaconplugin.addBeaconUuidToMonitor
+cordova.plugins.simplexpbeacon.addBeaconUuidToMonitor
 
 ### Description: ###
 
@@ -410,7 +410,7 @@ Asynchronous Function
 ### Usage: ###
 
 ```javascript
-com.blackberry.community.simplexpbeaconplugin.addBeaconUuidToMonitor(uuid, addBeaconUuidToMonitorCallback)
+cordova.plugins.simplexpbeacon.addBeaconUuidToMonitor(uuid, addBeaconUuidToMonitorCallback)
 ```
 
 ### Arguments: ###
@@ -444,7 +444,7 @@ On failure:
 Call the function:
 
 ```javascript
-var foo = com.blackberry.community.simplexpbeaconplugin.addBeaconUuidToMonitor(
+var foo = cordova.plugins.simplexpbeacon.addBeaconUuidToMonitor(
 	"8AEFB031-6C32-486F-825B-E26FA193487D",
 	function(data) {
 		var json = JSON.parse(data);
@@ -459,7 +459,7 @@ var foo = com.blackberry.community.simplexpbeaconplugin.addBeaconUuidToMonitor(
 
 ### Name: ###
 
-com.blackberry.community.simplexpbeaconplugin.removeBeaconUuidToMonitor
+cordova.plugins.simplexpbeacon.removeBeaconUuidToMonitor
 
 ### Description: ###
 
@@ -474,7 +474,7 @@ Asynchronous Function
 ### Usage: ###
 
 ```javascript
-com.blackberry.community.simplexpbeaconplugin.removeBeaconUuidToMonitor(uuid, removeBeaconUuidToMonitorCallback)
+cordova.plugins.simplexpbeacon.removeBeaconUuidToMonitor(uuid, removeBeaconUuidToMonitorCallback)
 ```
 
 ### Arguments: ###
@@ -508,7 +508,7 @@ On failure:
 Call the function:
 
 ```javascript
-var foo = com.blackberry.community.simplexpbeaconplugin.removeBeaconUuidToMonitor(
+var foo = cordova.plugins.simplexpbeacon.removeBeaconUuidToMonitor(
 	"8AEFB031-6C32-486F-825B-E26FA193487D",
 	function(data) {
 		var json = JSON.parse(data);

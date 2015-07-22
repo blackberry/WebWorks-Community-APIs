@@ -1,0 +1,36 @@
+{
+  "name": "cordova-plugin-clipboard",
+  "version": "1.0.0",
+  "description": "BlackBerry 10 Community Contributed API to access the system clipboard",
+  "cordova": {
+    "id": "cordova-plugin-clipboard",
+    "platforms": [
+      "blackberry10"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackberry/WebWorks-Community-APIs.git"
+  },
+  "keywords": [
+    "blackberry",
+    "clipboard",
+    "copy",
+    "paste",
+    "cordova",
+    "ecosystem:cordova",
+    "cordova-blackberry10"
+  ],
+  "author": "Merrick Zhang",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/blackberry/WebWorks-Community-APIs/issues"
+  },
+  "homepage": "https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/Clipboard#readme",
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0"
+    }
+  ]
+}

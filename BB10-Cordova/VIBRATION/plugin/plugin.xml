@@ -1,11 +1,14 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.vibration"
+    id="cordova-plugin-vibrate-intense"
     version="1.0.1">
 
     <name>Vibration</name>
     <description>BlackBerry 10 Community Contributed API to use the Vibration control</description>
     <license>Apache 2.0</license>
     <author>Alex Kwan, James Grisdale</author>
+    <keywords>blackberry,vibration,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <js-module src="www/client.js">
         <clobbers target="community.vibration" />
@@ -16,7 +19,7 @@
         <lib-file src="src/blackberry10/native/device/libVibration.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libVibration.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.vibration" value="com.blackberry.community.vibration" />
+            <feature name="cordova-plugin-vibrate-intense" value="cordova-plugin-vibrate-intense" />
         </config-file>
     </platform>
 </plugin>

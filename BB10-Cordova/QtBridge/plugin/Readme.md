@@ -1,20 +1,9 @@
 # QtBridge #
 QtBridge is a WebWorks 2.0/Cordova native extension that provides a dynamic bridge between Qt and JavaScript allowing you to leverage Qt APIs directly from javascript, including the use of Qt signals and slots. With QtBridge you can easily create a custom qt class and expose it directly to javascript (see Custom Qt Classes below).
 
-**Applies To**
-
-* [BlackBerry 10 Native SDK](https://developer.blackberry.com/native/download/sdk)
-* [BlackBerry 10 WebWorks SDK](https://developer.blackberry.com/html5/download/sdk)
-* [Apache Cordova for BlackBerry 10](https://github.com/blackberry/cordova-blackberry/tree/master/blackberry10)
-
 **Author**
 
 * [Isaac Gordezky](http://www.twitter.com/igordezky)
-
-## Contents ##
-
-* [Native Extension](plugin/src/blackberry10/native) - BlackBerry 10 Native SDK Project
-* [Sample Application](SampleApp) - WebWorks 2.0/Cordova Project
 
 # Javascript API #
 
@@ -32,7 +21,7 @@ A simple example is shown here:
         console.log(“Could not initialize QtBridge.”);
     }
 
-See the [Sample Application](SampleApp) for an full example of how to use the API.
+See the [Sample Application](https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/QtBridge/SampleApp) for an full example of how to use the API.
 
 ## Object Methods ##
 
@@ -191,68 +180,9 @@ To expose your custom C++ class to javascript through QtBridge, you will need to
 	    }
 
 
-### Sample Class ###
-* A very simple sample class is available in the [native extension Readme](plugin/src/blackberry10/native) and as a sample class in the [native extension CustomModules folder](plugin/src/blackberry10/native/src/CustomModules)
-
-
-# How To Build #
-
-### The Extension ###
-
-1.  Clone this repo to your local machine>
-
-2.  Ensure the [BlackBerry 10 **Native** SDK](https://developer.blackberry.com/native/download/sdk) is correctly installed
-
-3.  Import the native extension project into momentics. It is located at `/plugin/src/blackberry10/native` within **this project**
-
-4.  Build the native extension project for all architectures: Right click on the project and choose "Build Configurations" > "Build All".
-
-
-### The App ###
-
-1. Clone this repo to your local machine.
-
-2. Ensure the [BlackBerry 10 WebWorks SDK 2.0](https://developer.blackberry.com/html5/download/sdk) is correctly installed.
-
-3. Open a command prompt (windows) or terminal (mac/linux) and run the following command:
-
-		webworks create <your source folder>\QtBridgeSample
-
-4. **Replace** the default \QtBridgeSample\www folder with the \SampleApp\www folder from **this** project
-
-5. **Replace** the default \QtBridgeSample\config.xml with the \SampleApp\config.xml from **this** project
-
-6. From the command prompt (Windows) or terminal (mac), navigate to the QtBridgeSample folder
-
-		cd <your source folder>\QtBridgeSample
-
-7. Run the following commands to configure plugins used by **this app**
-
-		webworks plugin add <path to this project>/plugin
-
-8. Run the following command to build and deploy the app to a device connected via USB
-
-		webworks run
-
-
 ### Notes ###
 
 Linux users: replace webworks with cordova in all of the above commands
-
-## More Info
-
-* [QObject propertis, signals and slots documentation](http://developer.blackberry.com/native/documentation/cascades/dev/qt_fundamentals/index.html#qobjecttheqtbaseclass)
-* [BlackBerry Native API Reference](http://developer.blackberry.com/native/reference/cascades/)
-* [BlackBerry WebWorks Community Forums](http://supportforums.blackberry.com/t5/Web-and-WebWorks-Development/bd-p/browser_dev)
-* [BlackBerry Open Source WebWorks Contributions Forums](http://supportforums.blackberry.com/t5/BlackBerry-WebWorks/bd-p/ww_con)
-
-## Contributing Changes
-
-Please see the [README](https://github.com/blackberry/WebWorks-Community-APIs) of the Webworks-Community-APIs repository for instructions on how to add new Samples or make modifications to existing Samples.
-
-## Bug Reporting and Feature Requests
-
-If you find a bug in a Sample, or have an enhancement request, simply file an [Issue](https://github.com/blackberry/BB10-WebWorks-Samples/issues) for the Sample.
 
 ## Disclaimer
 

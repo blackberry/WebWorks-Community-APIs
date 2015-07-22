@@ -1,0 +1,30 @@
+{
+  "name": "cordova-plugin-bb-sysdialog",
+  "version": "1.0.1",
+  "description": "BlackBerry 10 Community Contributed API to Prompt Global Notification Dialog",
+  "cordova": {
+    "id": "com.blackberry.community.sysdialog",
+    "platforms": [
+      "blackberry10"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackberry/WebWorks-Community-APIs.git"
+  },
+  "keywords": [
+    "blackberry",
+    "dialog",
+    "system",
+    "notification",
+    "cordova",
+    "ecosystem:cordova",
+    "cordova-blackberry10"
+  ],
+  "author": "Yifan Ren",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/blackberry/WebWorks-Community-APIs/issues"
+  },
+  "homepage": "https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/SystemDialog#readme"
+}

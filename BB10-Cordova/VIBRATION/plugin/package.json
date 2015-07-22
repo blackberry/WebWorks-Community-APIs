@@ -1,0 +1,28 @@
+{
+  "name": "cordova-plugin-vibrate-intense",
+  "version": "1.0.1",
+  "description": "BlackBerry 10 Community Contributed API to use the Vibration control",
+  "cordova": {
+    "id": "cordova-plugin-vibrate-intense",
+    "platforms": [
+      "blackberry10"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackberry/WebWorks-Community-APIs.git"
+  },
+  "keywords": [
+    "blackberry",
+    "vibration",
+    "cordova",
+    "ecosystem:cordova",
+    "cordova-blackberry10"
+  ],
+  "author": "Alex Kwan, James Grisdale",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/blackberry/WebWorks-Community-APIs/issues"
+  },
+  "homepage": "https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/VIBRATION#readme"
+}

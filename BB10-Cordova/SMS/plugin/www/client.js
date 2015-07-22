@@ -15,7 +15,7 @@
 */
 
 var _self = {},
-	_ID = "com.blackberry.community.SMSPlugin",
+	_ID = "cordova-plugin-bb-sms",
 	exec = cordova.require("cordova/exec");
 
 	// These methods are called by your App's JavaScript

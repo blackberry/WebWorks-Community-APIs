@@ -1,11 +1,18 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.thumbnail"
+    id="cordova-plugin-thumbnail"
     version="1.0.0">
 
     <name>Thumbnail</name>
     <description>BlackBerry 10 Community Contributed API to resize images</description>
     <license>Apache 2.0</license>
     <author>Andy Wu, Morgram Parlee</author>
+    <keywords>blackberry,image,resize,scale,thumbnail,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
+
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>
 
     <js-module src="www/client.js">
         <clobbers target="community.thumbnail" />
@@ -16,7 +23,7 @@
         <lib-file src="src/blackberry10/native/device/libThumbnail.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libThumbnail.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.thumbnail" value="com.blackberry.community.thumbnail" />
+            <feature name="cordova-plugin-thumbnail" value="cordova-plugin-thumbnail" />
         </config-file>
     </platform>
 </plugin>

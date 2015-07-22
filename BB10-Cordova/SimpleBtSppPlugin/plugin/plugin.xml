@@ -1,11 +1,18 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.simplebtsppplugin"
-    version="1.0.0">
+    id="cordova-plugin-bluetoothspp"
+    version="1.2.1">
 
     <name>SimpleBtSppPlugin</name>
     <description>BlackBerry 10 Community Contributed SimpleBtSppPlugin API</description>
     <license>Apache 2.0</license>
     <author>John Murray</author>
+    <keywords>blackberry,bluetooth,spp,serial,port,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
+
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>
 
     <js-module src="www/client.js">
         <clobbers target="com.blackberry.community.simplebtsppplugin" />
@@ -16,7 +23,7 @@
         <lib-file src="src/blackberry10/native/device/libSimpleBtSppPlugin.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libSimpleBtSppPlugin.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.simplebtsppplugin" value="com.blackberry.community.simplebtsppplugin" />
+            <feature name="cordova-plugin-bluetoothspp" value="cordova-plugin-bluetoothspp" />
         </config-file>
     </platform>
 </plugin>

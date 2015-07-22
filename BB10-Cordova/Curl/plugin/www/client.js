@@ -15,7 +15,7 @@
 */
 
 var _self = {},
-    _ID = "com.blackberry.community.curl",
+    _ID = "cordova-plugin-curl",
     exec = cordova.require("cordova/exec");
 
     // These methods are called by your App's JavaScript

@@ -1,11 +1,15 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.audiometadata"
-    version="1.0.0">
+    id="cordova-plugin-audiometadata"
+    version="1.1.0">
 
     <name>AudioMetaData</name>
     <description>BlackBerry 10 Community Contributed AudioMetaData API</description>
     <license>Apache 2.0</license>
     <author>jim wen</author>
+    <keywords>blackberry,audio,metadata,id3,mp3,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
+
 
     <js-module src="www/client.js">
         <clobbers target="community.audiometadata" />
@@ -16,7 +20,7 @@
         <lib-file src="src/blackberry10/native/device/libAudioMetaData.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libAudioMetaData.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.audiometadata" value="com.blackberry.community.audiometadata" />
+            <feature name="cordova-plugin-audiometadata" value="cordova-plugin-audiometadata" />
         </config-file>
     </platform>
 </plugin>

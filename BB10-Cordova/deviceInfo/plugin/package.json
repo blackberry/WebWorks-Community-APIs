@@ -1,0 +1,35 @@
+{
+  "name": "cordova-plugin-deviceinfo",
+  "version": "1.0.1",
+  "description": "BlackBerry 10 Community Contributed API to get hardware and network information from the device",
+  "cordova": {
+    "id": "cordova-plugin-deviceinfo",
+    "platforms": [
+      "blackberry10"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackberry/WebWorks-Community-APIs.git"
+  },
+  "keywords": [
+    "blackberry",
+    "device",
+    "info",
+    "cordova",
+    "ecosystem:cordova",
+    "cordova-blackberry10"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0"
+    }
+  ],
+  "author": "Anzor Bashkhaz, Simon Booth, Alexandre Huot",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/blackberry/WebWorks-Community-APIs/issues"
+  },
+  "homepage": "https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/deviceInfo#readme"
+}

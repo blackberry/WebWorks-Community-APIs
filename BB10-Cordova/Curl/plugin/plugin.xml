@@ -1,11 +1,18 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.curl"
+    id="cordova-plugin-curl"
     version="1.0.1">
 
     <name>Curl</name>
     <description>BlackBerry 10 Community Contributed API to make network calls with CURL</description>
     <license>Apache 2.0</license>
     <author>Merrick Zhang</author>
+    <keywords>blackberry,curl,network,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
+
+    <engines>
+        <engine name="cordova" version=">=3.0" />
+    </engines>
 
     <js-module src="www/client.js">
         <clobbers target="community.curl" />
@@ -16,7 +23,7 @@
         <lib-file src="src/blackberry10/native/device/libcurl.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libcurl.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.curl" value="com.blackberry.community.curl" />
+            <feature name="cordova-plugin-curl" value="cordova-plugin-curl" />
         </config-file>
     </platform>
 </plugin>

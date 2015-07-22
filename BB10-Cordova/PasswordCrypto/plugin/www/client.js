@@ -15,7 +15,7 @@
 */
 
 var _self = {},
-	_ID = "com.blackberry.community.PasswordCrypto",
+	_ID = "cordova-plugin-password-crypto",
 	exec = cordova.require("cordova/exec");
 
 

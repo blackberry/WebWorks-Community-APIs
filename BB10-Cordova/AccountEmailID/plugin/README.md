@@ -29,13 +29,13 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 
 **How to install this extension**
 
-* In command prompt while in your project directory, type: webworks plugin add <path to the /plugin/ directory>
+* In command prompt while in your project directory, type: cordova plugin add cordova-plugin-deviceemails
 
 Example
 ```
-webworks plugin add ../plugin
+cordova plugin add cordova-plugin-deviceemails
 ```
-* In the config.xml of your project add the following permissions (see the config.xml in /AccountEmailID-AppDemo/www for an example)
+* In the config.xml of your project, the following permission will be added for you. It is required to access the email accounts.
 
 ```
 <rim:permissions>
@@ -64,42 +64,9 @@ else if(pluginDefaultEmail.success==false){
 * community.deviceemails.getEmailAddresses(); // this returns an object which contains all email addresses in that space(Personal or work)
 
  
-**How to Build Device Emails for BB10 Webworks 2.0 **
-
-Note: It is not necessary to build this project if you do not intend to modify the extension. The plugin folder already has a built copy of the
-extension, simply install it. 
-
-Assumption: You have installed the BlackBerry Native SDK 2.0+, and BlackBerry Webworks 2.0+
-
-1. Simply import the plugin/src/blackberry10/native directory into a workspace into Momentics. Build the project. 
-2. Go to the your WebWorks/Cordova App directory, then add the plugin using the following command: cordova plugin add ../plugin/
-3. Now you can build the project using : webworks build --release  
-
-**How can I know that this plugin actually works without building it all myself!**
-
-If you don't want to build this sample application yourself we've included a pre-built and signed BAR file. 
-You can find it in the folder /build folder. 
-
-
 **Tested on**
 
 1. Z30 running v10.2
-
-
-**Known Issues**
-Cordova 3.4 now keeps it config.xml in a different location than the previous version(3.3).
-WebWorks 2.0 Gold now keeps it's config.xml like version 3.4 of Cordova in the /www
-folder. The sample project AccountEmailID-AppDemo has it's config.xml outside the /www folder so it will
-work with WebWorks 2.0. The plugin will work with Cordova 3+ or WebWorks 2.0+ but 
-to package the sample project the config.xml will need to be moved into the AccountEmailID-AppDemo folder for it to work with Cordova 3.3 and below. 
-This does not effect the plugin, and is only in reference to the sample project.  
-
-
-## Contributing Changes
-
-Please see the [README](https://github.com/blackberry/BB10-WebWorks-Community-Samples) of the BB10-WebWorks-Community-Samples repository for instructions on how to add new Samples or make modifications to existing Samples.
-
-
 
 ## Disclaimer
 

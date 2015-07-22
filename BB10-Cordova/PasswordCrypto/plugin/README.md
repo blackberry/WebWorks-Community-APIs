@@ -18,25 +18,12 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 
 * **V1.0.0** - Initial release
 
-**Dependencies**
-
-1. Minimal requirement for BlackBerry 10 Device Software is **10.0.9**
-2. Minimal requirement for BlackBerry 10 Native SDK is **10.0.9**
-3. Minimal requirement for BlackBerry 10 Webworks is **2.0**
-
-
 **How to install this extension**
 
 In command prompt while in your Cordova/WebWorks project directory, type: 
 ```
-cordova plugin add <path to the /plugin/ directory>
+cordova plugin add cordova-plugin-password-crypto
 ```
-
-**How to Build SMS for BB10 Cordova**
-
-Assumption: You have installed the BlackBerry Native SDK 2.0+, and BlackBerry Webworks 2.0+
-
-- Simply import the plugin/src/blackberry10/native directory into a workspace in your NDK. Build the project.
 
 **Usage**
 
@@ -55,24 +42,9 @@ Iterations as well as the keylength determine the speed of the algorithm. You wa
 enough to irratate the user. A minimum iterations count of around 30,000 at a key length of 32 bytes is recommended. 
 
  
-**Sample App**
-
-A sample app has been included only so that you may compare the speed of the algorithm with a JavaScript implementation vs the C++ implementation. JavaScript implementation of the algorithm is [here](http://anandam.name/pbkdf2/) under BSD license. 
-
-If you don't want to build this sample application yourself we've included a pre-built and signed BAR file. 
-You can find it in the folder /build/ folder. 
-
-
 **Known Issues**
 
 None! 
-
-
-## Contributing Changes
-
-Please see the [README](https://github.com/blackberry/BB10-WebWorks-Community-Samples) of the BB10-WebWorks-Community-Samples repository for instructions on how to add new Samples or make modifications to existing Samples.
-
-
 
 ## Disclaimer
 

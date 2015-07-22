@@ -6,6 +6,9 @@
     <description>BlackBerry 10 Community Contributed ???PROJECT_NAME??? API</description>
     <license>Apache 2.0</license>
     <author>???PROJECT_AUTHOR???</author>
+    <keywords>blackberry,???PROJECT_NAME???,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <js-module src="www/client.js">
         <clobbers target="???CORDOVA_PLUGIN_ID???" />

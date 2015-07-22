@@ -1,4 +1,4 @@
-Audio Recorder Plugin for Webworks 2.0
+Audio Recorder Plugin for Cordova
 ==================
 
 Author: James Grisdale
@@ -8,15 +8,11 @@ It includes all of the features necessary to make an audio recording, although t
 
 ## Including the feature in your application
 
-This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+This API can be installed from source or NPM. Installation from NPM is done through the following:
 
-	cordova plugin add com.blackberry.community.audiorecorder
+	cordova plugin add cordova-plugin-audiorecorder
 
-or,
-	
-	webworks plugin add com.blackberry.community.audiorecorder
-
-Installation from source is the same but instead of the id ("com.blackberry.community.audiorecorder"), use the file system path to the source plugin folder.
+Installation from source is the same but instead of the id ("cordova-plugin-audiorecorder"), use the file system path to the source plugin folder.
 
 ## Functions Involved in This Plugin (currently)
 
@@ -39,40 +35,18 @@ mediaState() - Returns the state of the recorder
 	
 duration() - The current duration of the recording (returns 0 if in an unprepared or stopped state). values are returned as a string
 
-## Notes on Compiling Native Source and Adding to a Webworks Project
 
-When compiling the source, to use the audiorecorder api
+### Permissions
 
-	#include <bb/multimedia/AudioRecorder>
-	#include <QtCore>
+The record_audio permission will be added when the plugin is installed. You will likely also want to add the access_shared permission if you intend to save the files to a shared location on the filesystem. This permission is not added for you, since it may not be necessary for all applications.
 	
-are required to be added to the audiorec_ndk.hpp
-
-	#include <QtCore> could cause some errors, to fix this follow the steps below:
-
-- Right click on your project in project explorer/choose properties
-- Expand C/C++ General, then click on Paths and Symbols
-- Change Configuration to All configurations
-- Then click Includes, select GNU C in languages
-- Click Add, and add the following two lines:
-- ${QNX_TARGET}/usr/include/qt4
-- ${QNX_TARGET}/usr/include/qt4/QtCore
-- Click OK and that should fix the errors.
-
-
-When attempting to add the AudioRecorder plugin to your webworks project two things need to be added to your config.xml file.
-	
+```xml	
 	<rim:permissions>
-		<rim:permit>record_audio</rim:permit>
 		<rim:permit>access_shared</rim:permit>
 	</rim:permissions>
-
-These two permissions are important so the program can access the microphone and so that it can save the file for the recording.
-
+```
 
 ### Using the Extension in an Application
-
-After the above has been completed the functions for the plugin are pretty basic.
 
 Before attempting to record, a file path for the recording must be set, this is easy:
 ```javascript

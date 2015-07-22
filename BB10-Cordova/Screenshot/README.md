@@ -1,6 +1,8 @@
 webworks-bb10-screenshot
 ========================
 
+__Note: This plugin has been incorporated into the [core SDK](https://developer.blackberry.com/html5/apis/v2_2/blackberry.screenshot.html) now.__
+
 A screenshot extension for BlackBerry 10 Webworks. Features:
 
 * save to file, or return a data-URL

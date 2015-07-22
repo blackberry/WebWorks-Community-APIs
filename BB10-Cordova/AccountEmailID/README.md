@@ -29,13 +29,13 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 
 **How to install this extension**
 
-* In command prompt while in your project directory, type: webworks plugin add <path to the /plugin/ directory>
+* In command prompt while in your project directory, type: cordova plugin add <path to the /plugin/ directory>
 
 Example
 ```
-webworks plugin add ../plugin
+cordova plugin add ../plugin
 ```
-* In the config.xml of your project add the following permissions (see the config.xml in /AccountEmailID-AppDemo/www for an example)
+* In the config.xml of your project, the following permission will be added for you. It is required to access the email accounts.
 
 ```
 <rim:permissions>
@@ -93,13 +93,6 @@ folder. The sample project AccountEmailID-AppDemo has it's config.xml outside th
 work with WebWorks 2.0. The plugin will work with Cordova 3+ or WebWorks 2.0+ but 
 to package the sample project the config.xml will need to be moved into the AccountEmailID-AppDemo folder for it to work with Cordova 3.3 and below. 
 This does not effect the plugin, and is only in reference to the sample project.  
-
-
-## Contributing Changes
-
-Please see the [README](https://github.com/blackberry/BB10-WebWorks-Community-Samples) of the BB10-WebWorks-Community-Samples repository for instructions on how to add new Samples or make modifications to existing Samples.
-
-
 
 ## Disclaimer
 

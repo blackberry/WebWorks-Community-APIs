@@ -1,0 +1,29 @@
+{
+  "name": "cordova-plugin-audiorecorder",
+  "version": "1.0.0",
+  "description": "BlackBerry 10 Community Contributed API to record audio to the filesystem",
+  "cordova": {
+    "id": "cordova-plugin-audiorecorder",
+    "platforms": [
+      "blackberry10"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackberry/WebWorks-Community-APIs.git"
+  },
+  "keywords": [
+    "blackberry",
+    "audio",
+    "record",
+    "cordova",
+    "ecosystem:cordova",
+    "cordova-blackberry10"
+  ],
+  "author": "James Grisdale",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/blackberry/WebWorks-Community-APIs/issues"
+  },
+  "homepage": "https://github.com/blackberry/WebWorks-Community-APIs#readme"
+}

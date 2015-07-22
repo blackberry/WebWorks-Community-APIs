@@ -15,7 +15,7 @@
  */
  
 var _self = {},
-    _ID = "com.blackberry.community.thumbnail",
+    _ID = "cordova-plugin-thumbnail",
 	exec = cordova.require("cordova/exec");
 
 _self.createThumbNail = function (path, options) {

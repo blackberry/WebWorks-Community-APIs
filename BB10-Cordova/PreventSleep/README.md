@@ -13,15 +13,15 @@ BlackBerry Q5 10.2.0.1157
 
 ## Including the feature in your application
 
-This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+This API can be installed from source or from NPM. Installation from NPM is done through the following:
 
-	cordova plugin add com.blackberry.community.preventsleep
+	cordova plugin add cordova-plugin-preventsleep
 
 or,
 	
-	webworks plugin add com.blackberry.community.preventsleep
+	webworks plugin add cordova-plugin-preventsleep
 
-Installation from source is the same but instead of the id ("com.blackberry.community.preventsleep"), use the file system path to the source plugin folder.
+Installation from source is the same but instead of the id ("cordova-plugin-preventsleep"), use the file system path to the source plugin folder.
 
 
 ## Structure of the Plugin and Sample
@@ -107,5 +107,3 @@ Follow the steps above to:
 ## Disclaimer
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-[![Analytics](https://ga-beacon.appspot.com/UA-46817652-1/WebWorks-Community-APIs/BB10-Cordova/PreventSleep?pixel)](https://github.com/igrigorik/ga-beacon)

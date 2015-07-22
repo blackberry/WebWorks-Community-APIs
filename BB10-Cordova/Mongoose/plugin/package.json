@@ -1,0 +1,35 @@
+{
+  "name": "cordova-plugin-mongoose",
+  "version": "1.0.0",
+  "description": "BlackBerry 10 Community Contributed API to run a Mongoose embedded Web Server",
+  "cordova": {
+    "id": "cordova-plugin-mongoose",
+    "platforms": [
+      "blackberry10"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackberry/WebWorks-Community-APIs.git"
+  },
+  "keywords": [
+    "blackberry",
+    "mongoose",
+    "webserver",
+    "cordova",
+    "ecosystem:cordova",
+    "cordova-blackberry10"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0"
+    }
+  ],
+  "author": "Simon Booth, Deric Cheng",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/blackberry/WebWorks-Community-APIs/issues"
+  },
+  "homepage": "https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/Mongoose#readme"
+}

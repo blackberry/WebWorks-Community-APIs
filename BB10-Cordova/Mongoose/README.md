@@ -19,16 +19,11 @@ Port - Deric Cheng (https://github.com/dericc)
 
 ## Including the feature in your application
 
-This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+This API can be installed from source or from NPM. Installation from NPM is done through the following:
 
-	cordova plugin add com.blackberry.community.mongoose
+	cordova plugin add cordova-plugin-mongoose
 
-or,
-	
-	webworks plugin add com.blackberry.community.mongoose
-
-Installation from source is the same but instead of the id ("com.blackberry.community.mongoose"), use the file system path to the source plugin folder.
-
+Installation from source is the same but instead of the id ("cordova-plugin-mongoose"), use the file system path to the source plugin folder.
 
 ## Structure of the Plugin and Sample
 
@@ -50,19 +45,73 @@ Then you can call the methods with the namespace __community.mongoose__, and tha
 The Mongoose plugin provides the following API:
 
 ```javascript
-community.mongoose.start(options); 
+var result = community.mongoose.start(options); // Start the server using the defined options (see below)
+
+/*
+Result is a javascript object with the following properties - status and error are always returned the rest depend on circumstances
+
+status,          // Did the server start - true or false
+error,           // false or an error message
+command_errors   // Number of passed options that were invalid
+listening_ports, // Port the web server is running on
+document_root,   // Base path documents are being served from
+mongoose_version // Version of Mongoose in this release
+
+*/
 ```
-This function creates a Mongoose embedded web server, passing along the options to create the web server with. The object "options" is a JSON object that can be generally initialized to null, as following: 
 
 ```javascript
-community.mongoose.start({}); 
-```
-It returns a Javascript object with information such as status, error, listening_ports, and document_root. The options and Javascript return objects are documented extensively at the page (https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10/mongoose).  
 
-```javascript
-community.mongoose.stop(); 
+community.mongoose.stop();  // Stop the server
+
 ```
-This function stops the Mongoose server. It returns a Javascript object with the status set to true or false, depending on whether the stop() function was successfully executed. 
+
+This function stops the Mongoose server. It returns a Javascript object with the status set to true or false, depending on whether the stop() function was successfully executed.
+
+```
+## Options passed to community.mongoose.start();
+
+"cgi_pattern"               "**.cgi$|**.pl$|**.php$"
+"cgi_environment"           NULL
+"put_delete_auth_file"      NULL
+"cgi_interpreter"           NULL
+"protect_uri"               NULL
+"authentication_domain"     "mydomain.com"
+"ssi_pattern"               "**.shtml$|**.shtm$"
+"throttle"                  NULL
+"access_log_file"           NULL
+"enable_directory_listing"  "yes"
+"error_log_file"            NULL
+"global_auth_file"          NULL
+"index_files"               "index.html,index.htm,index.cgi,index.shtml,index.php"
+"enable_keep_alive"         "no"
+"access_control_list"       NULL
+"extra_mime_types"          NULL
+"listening_ports"           "8080"
+"document_root"             "."
+"ssl_certificate"           NULL
+"num_threads"               "20"
+"run_as_user"               NULL
+"url_rewrite_patterns"      NULL
+"hide_files_patterns"       NULL
+"request_timeout_ms"        "30000"
+
+Note that the extension overrides the default for document_root and enable_directory_listing with $HOME/data and no respectively
+
+```
+
+Detailed descriptions of what all options do is available at ...
+
+https://github.com/valenok/mongoose/blob/master/UserManual.md
+
+These options should be passed as a JSON object with document_root being the VITAL one to set
+
+e.g.
+
+var options = { 'document_root' : 'shared/images' };
+
+If supplied with an empty object the extension defaults to {home}/data
+
 
 ## Building the plugin from source
 

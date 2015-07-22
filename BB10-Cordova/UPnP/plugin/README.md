@@ -9,8 +9,8 @@ BlackBerry Z10 10.3.1.634
 
 ** Author **
 
-	[Peardox] (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/325249)
-	[Junjie Huang] (https://github.com/umcsdon)
+- [Peardox] (http://supportforums.blackberry.com/t5/user/viewprofilepage/user-id/325249)
+- [Junjie Huang] (https://github.com/umcsdon)
 
 ## Version History
 
@@ -18,15 +18,11 @@ BlackBerry Z10 10.3.1.634
 
 ## Including the feature in your application
 
-This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
+This API can be installed from source or from NPM. Installation from NPM is done through the following:
 
-	cordova plugin add com.blackberry.community.upnp
+	cordova plugin add cordova-plugin-upnp
 
-or,
-	
-	webworks plugin add com.blackberry.community.upnp
-
-Installation from source is the same but instead of the id ("com.blackberry.community.upnp"), use the file system path to the source plugin folder.
+Installation from source is the same but instead of the id ("cordova-plugin-upnp"), use the file system path to the source plugin folder.
 
 Note that it is also required that you give your app the disabled websecurity feature. This is as the extension needs to talk to any and all uPnP devices on your WiFi network. The websecurity feature is a bit black and white in this respect, all or nothing...
 

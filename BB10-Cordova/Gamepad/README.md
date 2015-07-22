@@ -17,13 +17,13 @@ BlackBerry Z10 10.2.1.2943
 
 This API can be installed from source or from the [Cordova Plugin Registry](http://plugins.cordova.io/). Installation from the registry is done through the following:
 
-	cordova plugin add com.blackberry.community.joypad
+	cordova plugin add cordova-plugin-gamepad
 
 or,
 	
-	webworks plugin add com.blackberry.community.joypad
+	webworks plugin add cordova-plugin-gamepad
 
-Installation from source is the same but instead of the id ("com.blackberry.community.preventsleep"), use the file system path to the source plugin folder.
+Installation from source is the same but instead of the id ("cordova-plugin-gamepad"), use the file system path to the source plugin folder.
 
 When the application runs the screen pictured below will appear. Joypad button presses and movements will be reflected in the demo.
 
@@ -43,12 +43,12 @@ The sample code is included in the _sample_ folder. The code here is meant to be
 
 The included sample app is the _www_ directory of the test application created by the __webworks create__ command. Create a new WebWorks 2 project using the create command, and replace the _www_ folder with the one from this sample. Then add the plugin to your project with the command __webworks plugin add <path to the Gamepad folder>/plugin__. Then use __webworks run__ to build and run the application.
 
-To use the plugin in another project, that's been created with WebWorks, run __webworks plugin add <path to the Gamepad folder>/plugin__
+To use the plugin in another project, that's been created with Cordova, run __webworks plugin add <path to the Gamepad folder>/plugin__
 
 ## The Extension API
 The Joypad Extension works as a shim for the [HTML5 Gamepad API](http://www.w3.org/TR/2014/WD-gamepad-20140225/).
 
-You will need to wait for the "webworksready" event as it depends on WebWorks being loaded, but after that, follow the standard for getting Gamepad data.
+You will need to wait for the "deviceready" event as it depends on Cordova being loaded, but after that, follow the standard for getting Gamepad data.
 
 Listen to the window for "gamepadconnected" and "gamepaddisconnected" events:
 

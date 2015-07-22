@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-var _ID = "com.blackberry.community.qt",
+var _ID = "cordova-plugin-qtbridge",
 	exec = cordova.require("cordova/exec");
 
 var getArgs = function(args) {

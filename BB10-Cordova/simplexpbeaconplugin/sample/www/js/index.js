@@ -106,9 +106,9 @@ var btLeHandler = {
     // BT LE Beacon Plugin Initialise Bluetooth
     //
     initialise: function() {
-		if (com && com.blackberry.community.simplexpbeaconplugin) {
+		if (cordova.plugins && cordova.plugins.simplexpbeacon) {
 
-        	com.blackberry.community.simplexpbeaconplugin.pluginVersion(
+        	cordova.plugins.simplexpbeacon.pluginVersion(
         		function(data){
 
 					console.log('XXXX DATA: ' + data);
@@ -123,7 +123,7 @@ var btLeHandler = {
 	        	}
 	        );
 
-			com.blackberry.community.simplexpbeaconplugin.initialiseBluetooth(
+			cordova.plugins.simplexpbeacon.initialiseBluetooth(
 				function(data){
 
 					console.log('XXXX DATA: ' + data);
@@ -139,7 +139,7 @@ var btLeHandler = {
 				}
 			);
 
-			com.blackberry.community.simplexpbeaconplugin.addBeaconUuidToMonitor(
+			cordova.plugins.simplexpbeacon.addBeaconUuidToMonitor(
 				"8AEFB031-6C32-486F-825B-E26FA193487D",
 				function(data){
 
@@ -163,7 +163,7 @@ var btLeHandler = {
     // BT LE HR Plugin terminate Bluetooth
     //
     terminate: function() {
-		com.blackberry.community.simplexpbeaconplugin.removeBeaconUuidToMonitor(
+		cordova.plugins.simplexpbeacon.removeBeaconUuidToMonitor(
 			"8AEFB031-6C32-486F-825B-E26FA193487D",
 			function(data){
 
@@ -180,7 +180,7 @@ var btLeHandler = {
 			}
 		);
 
-		com.blackberry.community.simplexpbeaconplugin.terminateBluetooth(
+		cordova.plugins.simplexpbeacon.terminateBluetooth(
 			function(data){
 
 				console.log('XXXX DATA: ' + data);
@@ -200,7 +200,7 @@ var btLeHandler = {
 	startMonitoring: function() {
 		app.logMessage('Requesting to start monitoring');
 		beaconList = {};
-		com.blackberry.community.simplexpbeaconplugin.startMonitoring(btLeHandler.monitorCallback);
+		cordova.plugins.simplexpbeacon.startMonitoring(btLeHandler.monitorCallback);
 	},
 
 	monitorCallback: function(data) {
@@ -232,7 +232,7 @@ var btLeHandler = {
 
 	stopMonitoring: function() {
 		app.logMessage('Requesting to stop monitoring');
-		com.blackberry.community.simplexpbeaconplugin.stopMonitoring(
+		cordova.plugins.simplexpbeacon.stopMonitoring(
 			function(data){
 
 				console.log('XXXX DATA: ' + data);

@@ -1,10 +1,13 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.emailsenderplugin"
+    id="cordova-plugin-emailsender"
     version="1.0.4">
 
     <name>Email Sender</name>
     <description>BlackBerry 10 Community Contributed API to send email accounts on the device</description>
     <license>Apache 2.0</license>
+    <keywords>blackberry,email,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <author>Alexandre Huot, Stefan Schielke</author>
 
@@ -17,7 +20,7 @@
         <lib-file src="src/blackberry10/native/device/libEmailSender.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libEmailSender.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.emailsenderplugin" value="com.blackberry.community.emailsenderplugin" />
+            <feature name="cordova-plugin-emailsender" value="cordova-plugin-emailsender" />
 			<feature name="File">
 				<param name="blackberry-package" value="org.apache.cordova.file.FileManager" />
 			</feature>

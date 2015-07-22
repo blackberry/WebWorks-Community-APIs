@@ -1,0 +1,37 @@
+{
+  "name": "cordova-plugin-bluetoothspp",
+  "version": "1.2.1",
+  "description": "BlackBerry 10 Community Contributed SimpleBtSppPlugin API",
+  "cordova": {
+    "id": "cordova-plugin-bluetoothspp",
+    "platforms": [
+      "blackberry10"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackberry/WebWorks-Community-APIs.git"
+  },
+  "keywords": [
+    "blackberry",
+    "bluetooth",
+    "spp",
+    "serial",
+    "port",
+    "cordova",
+    "ecosystem:cordova",
+    "cordova-blackberry10"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "author": "John Murray",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/blackberry/WebWorks-Community-APIs/issues"
+  },
+  "homepage": "https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/SimpleBtSppPlugin#readme"
+}

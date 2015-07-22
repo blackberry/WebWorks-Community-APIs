@@ -1,0 +1,30 @@
+{
+  "name": "cordova-plugin-screendisplay",
+  "version": "1.0.0",
+  "description": "BlackBerry 10 Community Contributed API to get Screen Hardware information",
+  "cordova": {
+    "id": "cordova-plugin-screendisplay",
+    "platforms": [
+      "blackberry10"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackberry/WebWorks-Community-APIs.git"
+  },
+  "keywords": [
+    "blackberry",
+    "screen",
+    "hardware",
+    "dimensions",
+    "cordova",
+    "ecosystem:cordova",
+    "cordova-blackberry10"
+  ],
+  "author": "Simon Booth, Alexandre Huot",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/blackberry/WebWorks-Community-APIs/issues"
+  },
+  "homepage": "https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/ScreenDisplay#readme"
+}

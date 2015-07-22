@@ -1,11 +1,14 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.SMSPlugin"
+    id="cordova-plugin-bb-sms"
     version="1.0.0">
 
     <name>SMS</name>
     <description>BlackBerry 10 Community Contributed API to send SMS messages directly</description>
     <license>Apache 2.0</license>
     <author>Shikhir Singh</author>
+    <keywords>blackberry,sms,send,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <js-module src="www/client.js">
         <clobbers target="community.SMSPlugin" />
@@ -16,7 +19,12 @@
         <lib-file src="src/blackberry10/native/device/libSMSPlugin.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libSMSPlugin.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.SMSPlugin" value="com.blackberry.community.SMSPlugin" />
+            <feature name="cordova-plugin-bb-sms" value="cordova-plugin-bb-sms" />
+        </config-file>
+        <config-file target="www/config.xml" parent="/widget/rim:permissions">
+            <rim:permit>access_pimdomain_messages</rim:permit>
+            <rim:permit>access_sms_mms</rim:permit>
+            <rim:permit>access_phone</rim:permit>
         </config-file>
     </platform>
 </plugin>

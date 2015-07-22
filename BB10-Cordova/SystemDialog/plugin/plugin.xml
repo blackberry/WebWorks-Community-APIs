@@ -1,11 +1,14 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="com.blackberry.community.sysdialog"
-    version="1.0.0">
+    id="cordova-plugin-bb-sysdialog"
+    version="1.0.1">
 
     <name>System Dialog</name>
     <description>BlackBerry 10 Community Contributed API to Prompt Global Notification Dialog</description>
     <license>Apache 2.0</license>
     <author>Yifan Ren</author>
+    <keywords>blackberry,dialog,system,notification,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
 
     <js-module src="www/client.js">
         <clobbers target="community.sysdialog" />
@@ -19,7 +22,7 @@
             <rim:permit>post_notification</rim:permit>
         </config-file>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="com.blackberry.community.sysdialog" value="com.blackberry.community.sysdialog" />
+            <feature name="cordova-plugin-bb-sysdialog" value="cordova-plugin-bb-sysdialog" />
         </config-file>
     </platform>
 </plugin>
