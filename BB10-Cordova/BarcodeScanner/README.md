@@ -1,7 +1,7 @@
 Cordova BarcodeScanner Plugin For Blackberry 10
 ===============================================
 
-__This plugin has been moved to [phonegap-plugin-barcodescanner](https://github.com/blackberry/phonegap-plugin-barcodescanner). Please use that repository for future development, as we work on getting it upstreamed into a fully cross platform plugin.__
+__This plugin has been moved to [phonegap-plugin-barcodescanner](https://github.com/blackberry/phonegap-plugin-barcodescanner). Please use that repository for future development. Starting from version 4.0.0, it is a cross platform plugin with support for BlackBerry 10__
 
 This plugin scans all types of barcodes supported by the [ZXing](https://github.com/blackberry/zxing) library. 
 The Rear Camera is used and it shows the camera's viewfinder for the user to target the barcode.
