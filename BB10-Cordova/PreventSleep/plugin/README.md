@@ -17,10 +17,6 @@ This API can be installed from source or from NPM. Installation from NPM is done
 
 	cordova plugin add cordova-plugin-preventsleep
 
-or,
-	
-	webworks plugin add cordova-plugin-preventsleep
-
 Installation from source is the same but instead of the id ("cordova-plugin-preventsleep"), use the file system path to the source plugin folder.
 
 
@@ -48,11 +44,11 @@ The Prevent Sleep plugin provides the following API:
 
 ```javascript
 var setting = true; // boolean
-var result = community.preventsleep.setPreventSleep(setting);
-// Result is a string value for debugging
+community.preventsleep.setPreventSleep(setting, onSuccess, onError));
+// Callback functions will get String result for debugging
 
-var currentSetting = community.preventsleep.isSleepPrevented;
-// boolean value for the state of the screen
+community.preventsleep.getPreventSleepStatus(onSuccess, onError);
+// onSuccess will get a boolean value for the state of the screen
 ```
 
 ## Building the plugin from source

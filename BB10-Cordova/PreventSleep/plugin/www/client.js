@@ -16,39 +16,29 @@
 
 var _self = {},
 	_ID = "cordova-plugin-preventsleep",
-	exec = cordova.require("cordova/exec");
+  	_isAwake = false,
+    exec = cordova.require("cordova/exec");
 
-	// These methods are called by your App's JavaScript
-	// They make WebWorks function calls to the methods
-	// in the index.js of the Extension
+function invokeCallback(callback, args) {
+    if (callback && typeof callback === "function") {
+        callback(args);
+    }
+}
 
-	_self.setPreventSleep = function (input) {
-		var result,
-			success = function (data, response) {
-				result = data;
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "setPreventSleep", { input: input });
-		return result;
-	};
+_self.setPreventSleep = function (option, onSuccess, onFail) {
+    exec(function (result) {
+        invokeCallback(onSuccess, result);
+    }, function (error) {
+        invokeCallback(onFail, error);
+    }, _ID, "setPreventSleep", {input: option});
+};
 
-	
-	// Define a property on the extension object
-	// Omit the getter or setter as needed to restrict the property
-	Object.defineProperty(_self, "isSleepPrevented", {
-		get: function () {
-			var result,
-				success = function (data, response) {
-					result = data;
-				},
-				fail = function (data, response) {
-					console.log("Error: " + data);
-				};
-			exec(success, fail, _ID, "isSleepPrevented", null);
-			return result;
-		}
-	});
+_self.getPreventSleepStatus = function (onSuccess, onFail) {
+    exec(function (result) {
+        invokeCallback(onSuccess, result);
+    }, function (error) {
+        invokeCallback(onFail, error);
+    }, _ID, "isSleepPrevented", null);
+};
 
 module.exports = _self;
