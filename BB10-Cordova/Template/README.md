@@ -1,6 +1,13 @@
 Template for BlackBerry 10 Cordova Plugins
 ==========================================
 
+# This Template is now available in an improved Yeoman Generator
+
+See: [generator-cordova-plugin-bb10](https://www.npmjs.com/package/generator-cordova-plugin-bb10)
+
+
+
+
 BlackBerry 10 Cordova Plugins create a bridge between JavaScript code in an HTML5 application and C/C++ and/or Qt code in the plugin, allowing access to native libraries, which are not part of the HTML5 specification. The BlackBerry 10 Plugins included with the Cordova SDK also follow the same or similar format as shown in this template.
 
 Plugins offer a JavaScript API which communicates through an interface to native methods. This interface can send and receive data through strings, or data that can be represented as a string such as JSON and Base64.
