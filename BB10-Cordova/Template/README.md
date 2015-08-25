@@ -1,3 +1,10 @@
+## This Template is now available in an improved Yeoman Generator
+
+See: [generator-cordova-plugin-bb10](https://www.npmjs.com/package/generator-cordova-plugin-bb10)
+
+----
+
+
 Template for BlackBerry 10 Cordova Plugins
 ==========================================
 
