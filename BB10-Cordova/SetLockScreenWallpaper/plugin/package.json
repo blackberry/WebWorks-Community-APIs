@@ -1,0 +1,25 @@
+{
+  "name": "cordova-plugin-setlockscreenwallpaper",
+  "version": "1.0.0",
+  "description": "BlackBerry 10 Community Contributed Setlockscreenwallpaper API",
+  "cordova": {
+    "id": "cordova-plugin-setlockscreenwallpaper",
+    "platforms": [
+      "blackberry10",
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackberry/WebWorks-Community-APIs.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-blackberry10"
+  ],
+  "author": "TMC Devs",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/blackberry/WebWorks-Community-APIs/issues"
+  },
+  "homepage": "https://github.com/blackberry/WebWorks-Community-APIs/tree/master/BB10-Cordova/Setlockscreenwallpaper#readme"
+}
