@@ -41,6 +41,9 @@ var result = cordova.plugins.setlockscreenwallpaper.setlockscreenwallpaper(image
 console.log(result); // "success" or "error"
 
 ```
+## Notes
+
+Be sure to have sufficient rights, to read the Image-File.
 
 ## Disclaimer
 
