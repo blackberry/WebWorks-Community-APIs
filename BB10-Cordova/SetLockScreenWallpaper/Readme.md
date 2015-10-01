@@ -20,7 +20,7 @@ This Plugin allows you to set the **LockScreen Wallpaper** for BlackBerry 10 Dev
 
 ### Including the feature in your application
 
-This API can be installed from source or from NPM. Installation from NPM is done through the following:
+This API can be installed from source:
 
 	cordova plugin add c:\path\to\plugin
 
