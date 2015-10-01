@@ -32,7 +32,7 @@ This API can be installed from source:
 
 ```javascript
 
-//Set the imagepath
+//Set the imagepath (be sure to have sufficient rights, to read the Image-File)
 var imagepath = "/accounts/1000/appdata/xxxxxxxxxxxxxxx/data/someImageFile.jpg"; //Start NOT with 'file://....''
 
 //Change the LockScreen Wallpaper
