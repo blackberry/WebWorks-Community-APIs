@@ -1,6 +1,6 @@
 # SetLockScreenWallpaper BB10 Cordova Plugin
 
-This Plugin allows you to Set the (**LockScreenWallpaper**) for BlackBerry 10 Devices (10.3+).
+This Plugin allows you to Set the **LockScreenWallpaper** for BlackBerry 10 Devices (10.3+).
 
 ### Applies To
 
