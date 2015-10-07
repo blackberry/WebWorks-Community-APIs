@@ -18,7 +18,7 @@ var _self = {},
     _ID = "com.blackberry.community.nowplaying",
     exec = cordova.require("cordova/exec");
 
-	_self.NowPlayingConnectionTest = function () {
+	_self.NowPlayingSetMusic = function (input) {
 		var result,
 			success = function (data, response) {
 				result = data;
@@ -26,12 +26,11 @@ var _self = {},
 			fail = function (data, response) {
 				console.log("Error: " + data);
 			};
-		exec(success, fail, _ID, "NowPlayingConnectionTest", null);
+		exec(success, fail, _ID, "NowPlayingSetMusic", { input: input });
 		return result;
 	};
 
-
-	_self.NowPlayingPlay = function () {
+	_self.NowPlayingSetMetadata = function (input) {
 		var result,
 			success = function (data, response) {
 				result = data;
@@ -39,11 +38,11 @@ var _self = {},
 			fail = function (data, response) {
 				console.log("Error: " + data);
 			};
-		exec(success, fail, _ID, "NowPlayingPlay", null);
+		exec(success, fail, _ID, "NowPlayingSetMetadata", { input: input });
 		return result;
 	};
 
-	_self.NowPlayingStop = function () {
+	_self.NowPlayingSetIcon = function (input) {
 		var result,
 			success = function (data, response) {
 				result = data;
@@ -51,14 +50,70 @@ var _self = {},
 			fail = function (data, response) {
 				console.log("Error: " + data);
 			};
-		exec(success, fail, _ID, "NowPlayingStop", null);
+		exec(success, fail, _ID, "NowPlayingSetIcon", { input: input });
 		return result;
 	};
 
-	_self.NowPlayingPause = function () {
+
+	_self.NowPlayingChangeTrack = function (callback, input) {
 		var result,
 			success = function (data, response) {
 				result = data;
+				//var json = JSON.parse(data);
+				//callback(json);
+			},
+			fail = function (data, response) {
+				console.log("Error: " + data);
+			};
+		exec(success, fail, _ID, "NowPlayingChangeTrack", { input: input });
+		return result;
+	};
+
+
+	_self.NowPlayingEnableNextPrevious = function () {
+		var result,
+			success = function (data, response) {
+				result = data;
+			},
+			fail = function (data, response) {
+				console.log("Error: " + data);
+			};
+		exec(success, fail, _ID, "NowPlayingEnableNextPrevious", null);
+		return result;
+	};
+
+	_self.NowPlayingDisableNextPrevious = function () {
+		var result,
+			success = function (data, response) {
+				result = data;
+			},
+			fail = function (data, response) {
+				console.log("Error: " + data);
+			};
+		exec(success, fail, _ID, "NowPlayingDisableNextPrevious", null);
+		return result;
+	};
+
+
+	_self.NowPlayingPlay = function (callback, input) {
+		var result,
+			success = function (data, response) {
+				result = data;
+				//var json = JSON.parse(data);
+				//callback(json);
+			},
+			fail = function (data, response) {
+				console.log("Error: " + data);
+			};
+		exec(success, fail, _ID, "NowPlayingPlay", { input: input });
+		return result;
+	};
+
+	_self.NowPlayingPause = function (callback) {
+		var result,
+			success = function (data, response) {
+				result = data;
+				//callback();
 			},
 			fail = function (data, response) {
 				console.log("Error: " + data);
@@ -67,7 +122,34 @@ var _self = {},
 		return result;
 	};
 
-	_self.NowPlayingGetSourceAddress = function () {
+	_self.NowPlayingResume = function (callback) {
+		var result,
+			success = function (data, response) {
+				result = data;
+				//callback();
+			},
+			fail = function (data, response) {
+				console.log("Error: " + data);
+			};
+		exec(success, fail, _ID, "NowPlayingResume", null);
+		return result;
+	};
+
+	_self.NowPlayingStop = function (callback) {
+		var result,
+			success = function (data, response) {
+				result = data;
+				//callback();
+			},
+			fail = function (data, response) {
+				console.log("Error: " + data);
+			};
+		exec(success, fail, _ID, "NowPlayingStop", null);
+		return result;
+	};
+
+
+	_self.NowPlayingGetState = function () {
 		var result,
 			success = function (data, response) {
 				result = data;
@@ -75,60 +157,8 @@ var _self = {},
 			fail = function (data, response) {
 				console.log("Error: " + data);
 			};
-		exec(success, fail, _ID, "NowPlayingGetSourceAddress", null);
+		exec(success, fail, _ID, "NowPlayingGetState", null);
 		return result;
 	};
-
-	_self.NowPlayingGetDuration = function () {
-		var result,
-			success = function (data, response) {
-				result = data;
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "NowPlayingGetDuration", null);
-		return result;
-	};
-
-	_self.NowPlayingGetPosition = function () {
-		var result,
-			success = function (data, response) {
-				result = data;
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "NowPlayingGetPosition", null);
-		return result;
-	};
-
-	_self.NowPlayingSwitchMusic = function (input) {
-		var result,
-			success = function (data, response) {
-				result = data;
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "NowPlayingSwitchMusic", { input: input });
-		return result;
-	};
-
-
-
-	_self.NowPlayingSetMetadata = function (input, callback) {
-			var success = function (data, response) {
-				var json = JSON.parse(data);
-				callback(json);
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "NowPlayingSetMetadata", { input: input });
-	};
-
-
-
 
 module.exports = _self;

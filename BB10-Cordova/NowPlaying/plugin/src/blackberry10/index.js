@@ -20,54 +20,75 @@ var resultObjs = {},
 
 module.exports = {
 
-	NowPlayingConnectionTest: function (success, fail, args, env) {
+	NowPlayingSetMusic: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
-		result.ok(nowPlaying.getInstance().NowPlayingConnectionTest(), false);
+		args = JSON.parse(decodeURIComponent(args["input"]));
+		result.ok(nowPlaying.getInstance().NowPlayingSetMusic(args), false);
 	},
+
+	NowPlayingSetMetadata: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		args = JSON.parse(decodeURIComponent(args["input"]));
+		result.ok(nowPlaying.getInstance().NowPlayingSetMetadata(args), false);
+	},
+
+	NowPlayingSetIcon: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		args = JSON.parse(decodeURIComponent(args["input"]));
+		result.ok(nowPlaying.getInstance().NowPlayingSetIcon(args), false);
+	},
+
+
+	NowPlayingChangeTrack: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		resultObjs[result.callbackId] = result;
+		args = JSON.parse(decodeURIComponent(args["input"]));
+		result.ok(nowPlaying.getInstance().NowPlayingChangeTrack(result.callbackId, args), false);
+	},
+
+
+	NowPlayingEnableNextPrevious: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		result.ok(nowPlaying.getInstance().NowPlayingEnableNextPrevious(), false);
+	},
+
+	NowPlayingDisableNextPrevious: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		result.ok(nowPlaying.getInstance().NowPlayingDisableNextPrevious(), false);
+	},
+
 
 	NowPlayingPlay: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
-		result.ok(nowPlaying.getInstance().NowPlayingPlay(), false);
-	},
-
-	NowPlayingStop: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		result.ok(nowPlaying.getInstance().NowPlayingStop(), false);
+		resultObjs[result.callbackId] = result;
+		args = JSON.parse(decodeURIComponent(args["input"]));
+		result.ok(nowPlaying.getInstance().NowPlayingPlay(result.callbackId, args), false);
 	},
 
 	NowPlayingPause: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
-		result.ok(nowPlaying.getInstance().NowPlayingPause(), false);
+		resultObjs[result.callbackId] = result;
+		result.ok(nowPlaying.getInstance().NowPlayingPause(result.callbackId), false);
 	},
 
-	NowPlayingGetSourceAddress: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		result.ok(nowPlaying.getInstance().NowPlayingGetSourceAddress(), false);
-	},
-
-	NowPlayingGetDuration: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		result.ok(nowPlaying.getInstance().NowPlayingGetDuration(), false);
-	},
-
-	NowPlayingGetPosition: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		result.ok(nowPlaying.getInstance().NowPlayingGetPosition(), false);
-	},
-
-	NowPlayingSwitchMusic: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		args = JSON.parse(decodeURIComponent(args["input"]));
-		result.ok(nowPlaying.getInstance().NowPlayingSwitchMusic(result.callbackId, args), false);
-	},
-
-	NowPlayingSetMetadata:  function (success, fail, args, env) {
+	NowPlayingResume: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		resultObjs[result.callbackId] = result;
-		args = JSON.parse(decodeURIComponent(args["input"]));
-		nowPlaying.getInstance().NowPlayingSetMetadata(result.callbackId, args);
-		result.noResult(true);
+		result.ok(nowPlaying.getInstance().NowPlayingResume(result.callbackId), false);
+	},
+
+	NowPlayingStop: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		resultObjs[result.callbackId] = result;
+		result.ok(nowPlaying.getInstance().NowPlayingStop(result.callbackId), false);
+	},
+
+
+	NowPlayingGetState: function (success, fail, args, env) {
+		var result = new PluginResult(args, env);
+		result.ok(nowPlaying.getInstance().NowPlayingGetState(), false);
 	}
+
 };
 
 
@@ -102,41 +123,55 @@ JNEXT.NowPlaying = function(){
 	// ************************
 
 	// calls into InvokeMethod(string command) in nowplaying_js.cpp
-	self.NowPlayingConnectionTest = function () {
-		return JNEXT.invoke(self.m_id, "NowPlayingConnectionTest");
-	};
-	
-	self.NowPlayingPlay = function () {
-		return JNEXT.invoke(self.m_id, "NowPlayingPlay");
+
+	self.NowPlayingSetMusic = function (input) {
+		return JNEXT.invoke(self.m_id, "NowPlayingSetMusic " + "{}" + " " + input);
 	};
 
-	self.NowPlayingStop = function () {
-		return JNEXT.invoke(self.m_id, "NowPlayingStop");
+	self.NowPlayingSetMetadata = function (input) {
+		return JNEXT.invoke(self.m_id, "NowPlayingSetMetadata " + "{}" + " " + JSON.stringify(input));
 	};
 
-	self.NowPlayingPause = function () {
-		return JNEXT.invoke(self.m_id, "NowPlayingPause");
+	self.NowPlayingSetIcon = function (input) {
+		return JNEXT.invoke(self.m_id, "NowPlayingSetIcon " + "{}" + " " + JSON.stringify(input));
 	};
 
-	self.NowPlayingGetSourceAddress = function () {
-		return JNEXT.invoke(self.m_id, "NowPlayingGetSourceAddress");
+
+	self.NowPlayingChangeTrack = function (callbackId, input) {
+		return JNEXT.invoke(self.m_id, "NowPlayingChangeTrack " + callbackId + " " + JSON.stringify(input));
 	};
 
-	self.NowPlayingGetDuration = function () {
-		return JNEXT.invoke(self.m_id, "NowPlayingGetDuration");
+
+	self.NowPlayingEnableNextPrevious = function () {
+		return JNEXT.invoke(self.m_id, "NowPlayingEnableNextPrevious");
 	};
 
-	self.NowPlayingGetPosition = function () {
-		return JNEXT.invoke(self.m_id, "NowPlayingGetPosition");
+	self.NowPlayingDisableNextPrevious = function () {
+		return JNEXT.invoke(self.m_id, "NowPlayingDisableNextPrevious");
 	};
 
-	self.NowPlayingSwitchMusic = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "NowPlayingSwitchMusic " + callbackId + " " + input);
+
+	self.NowPlayingPlay = function (callbackId, input) {
+		return JNEXT.invoke(self.m_id, "NowPlayingPlay " + callbackId + " " + JSON.stringify(input));
 	};
 
-	self.NowPlayingSetMetadata = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "NowPlayingSetMetadata " + callbackId + " " + JSON.stringify(input));
+	self.NowPlayingPause = function (callbackId) {
+		return JNEXT.invoke(self.m_id, "NowPlayingPause " + callbackId);
 	};
+
+	self.NowPlayingResume = function (callbackId) {
+		return JNEXT.invoke(self.m_id, "NowPlayingResume " + callbackId);
+	};
+
+	self.NowPlayingStop = function (callbackId) {
+		return JNEXT.invoke(self.m_id, "NowPlayingStop " + callbackId);
+	};
+
+
+	self.NowPlayingGetState = function () {
+		return JNEXT.invoke(self.m_id, "NowPlayingGetState");
+	};
+
 
 	// Fired by the Event framework (used by asynchronous callbacks)
 	self.onEvent = function (strData) {
@@ -154,9 +189,6 @@ JNEXT.NowPlaying = function(){
 			}
 		}
 	};
-
-
-
 
 	// ************************
 	// End of methods to edit
