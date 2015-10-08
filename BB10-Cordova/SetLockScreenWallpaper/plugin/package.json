@@ -14,7 +14,9 @@
   },
   "keywords": [
     "ecosystem:cordova",
-    "cordova-blackberry10"
+    "cordova-blackberry10",
+    "lockscreen",
+    "wallpaper"
   ],
   "author": "TMC Devs",
   "license": "Apache 2.0",
