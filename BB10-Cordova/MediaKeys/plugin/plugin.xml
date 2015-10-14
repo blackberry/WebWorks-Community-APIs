@@ -1,6 +1,6 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     id="cordova-plugin-mediakeys"
-    version="1.0.0">
+    version="1.0.1">
 
     <name>Media Keys</name>
     <description>BlackBerry 10 Community Contributed API for Custom Configuration of Media Keys</description>

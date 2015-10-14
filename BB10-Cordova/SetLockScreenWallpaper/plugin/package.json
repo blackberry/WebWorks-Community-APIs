@@ -5,7 +5,7 @@
   "cordova": {
     "id": "cordova-plugin-setlockscreenwallpaper",
     "platforms": [
-      "blackberry10",
+      "blackberry10"
     ]
   },
   "repository": {
