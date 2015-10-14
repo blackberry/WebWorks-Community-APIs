@@ -28,9 +28,9 @@ class NowPlayingJS: public JSExt {
 public:
     explicit NowPlayingJS(const std::string& id);
     virtual ~NowPlayingJS();
-    virtual bool CanDelete();
-    virtual std::string InvokeMethod(const std::string& command);
+    virtual bool CanDelete() { return true; };
     void NotifyEvent(const std::string& event);
+    virtual std::string InvokeMethod(const std::string& command);
     bb::webworks::extensions::ApplicationThread* applicationThread() const { return m_thread; };
 
 private:

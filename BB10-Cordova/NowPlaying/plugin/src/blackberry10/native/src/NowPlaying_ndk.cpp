@@ -36,115 +36,123 @@ namespace webworks {
     using namespace std;
     using namespace bb::multimedia;
 
-   void NowPlayingNDK::sendEvent(const string& msg){
-       m_pParent->NotifyEvent(msg);
-   }
-
-   string NowPlayingNDK::NowPlayingConnectionTest(){
-       return "NowPlayingConnectionTest finished, everything looks good.";
-   }
-
-   string NowPlayingNDK::NowPlayingStop(){
-       emit stopSignal();
-       return "Player Stopped.";
-   }
-
-   string NowPlayingNDK::NowPlayingPause(){
-         emit pauseSignal();
-         return "Player Paused.";
-   }
-
-
-   string NowPlayingNDK::NowPlayingPlay(){
-        emit playSignal();
-        return "Player started.";
-   }
-
-
-   string NowPlayingNDK::NowPlayingSwitchMusic(const string &src){
-
-         emit stopSignal();
-         QString str = QString::fromUtf8(src.c_str());
-
-         if (! str.startsWith("http", Qt::CaseInsensitive)) {
-
-             char cwd[PATH_MAX];
-             getcwd(cwd, PATH_MAX);
-             str.prepend(QString(cwd).append("/app/native/"));
-
-         }
-         QUrl url(str);
-
-         if(url.isValid()){
-               mp->setSourceUrl(url);
-               return "Music switch to " + src;
-          }else{
-               return "Sorry, but the url is not valid";
-          }
-
+    void NowPlayingNDK::sendEvent(const string& msg) {
+        m_pParent->NotifyEvent(msg);
     }
 
-   string NowPlayingNDK::NowPlayingGetSourceAddress(){
-       return mp->sourceUrl().toString().toUtf8().constData();
-   }
+    string NowPlayingNDK::NowPlayingSetMusic(const std::string& data) {
+        // Ensure media player is stopped.
+        emit stopSignal();
 
-   string NowPlayingNDK::NowPlayingGetDuration(){
-       int duration = mp->duration();
-       QString s = QString::number(duration);
-       return s.toUtf8().constData();
-   }
+        QString str = QString::fromUtf8(data.c_str());
 
-   string NowPlayingNDK::NowPlayingGetPosition(){
-       int position = mp->position();
-       QString s = QString::number(position);
-       return s.toUtf8().constData();
-   }
+        if (! str.startsWith("http", Qt::CaseInsensitive)) {
+            char cwd[PATH_MAX];
+            getcwd(cwd, PATH_MAX);
+            str.prepend(QString(cwd).append("/app/native/"));
+        }
+
+        QUrl url(str);
+
+        if (url.isValid()){
+          mp->setSourceUrl(url);
+          return "Music set to " + data + ".";
+        } else {
+          return "Music couldn't be set to argument because it is invalid.";
+        }
+    }
+
+    string NowPlayingNDK::NowPlayingSetMetadata(const std::string& data) {
+        return "Metadata set.";
+    }
+
+    string NowPlayingNDK::NowPlayingSetIcon(const std::string& data) {
+        return "Icon set.";
+    }
+
+    string NowPlayingNDK::NowPlayingChangeTrack(const std::string& callbackId, const std::string& data) {
+        return "Changed track.";
+    }
+
+    string NowPlayingNDK::NowPlayingEnableNextPrevious() {
+        return "Enabled Next Previous.";
+    }
+
+    string NowPlayingNDK::NowPlayingDisableNextPrevious() {
+        return "Disabled Next Previous.";
+    }
+
+    string NowPlayingNDK::NowPlayingPlay(const std::string& callbackId, const std::string& data) {
+        emit playSignal();
+        return "Player started.";
+    }
+
+    string NowPlayingNDK::NowPlayingPause(const std::string& callbackId) {
+        emit pauseSignal();
+        return "Player Paused.";
+    }
+
+    string NowPlayingNDK::NowPlayingResume(const std::string& callbackId) {
+        emit resumeSignal();
+        return "Player Resumed.";
+    }
+
+    string NowPlayingNDK::NowPlayingStop(const std::string& callbackId) {
+        emit stopSignal();
+        return "Player Stopped.";
+    }
+
+    string NowPlayingNDK::NowPlayingGetState() {
+        std::string state = "State: ";
+
+        switch (mp->mediaState()) {
+            case bb::multimedia::MediaState::Unprepared:
+                state += "Unprepared";
+                break;
+            case bb::multimedia::MediaState::Prepared:
+                state += "Prepared";
+                break;
+            case bb::multimedia::MediaState::Started:
+                state += "Started";
+                break;
+            case bb::multimedia::MediaState::Paused:
+                state += "Paused";
+                break;
+            case bb::multimedia::MediaState::Stopped:
+                state += "Stopped";
+                break;
+        }
+
+        return state.c_str();
+    }
 
 
+    void NowPlayingNDK::play() {
+        //npc->acquire();
 
+        mp->play();
 
-   void NowPlayingNDK::play(){
-      mp->play();
+        //npc->setMediaState(mp->mediaState());
+    }
 
-      npc->setDuration(mp->duration());
-      npc->setPosition(mp->position());
+    void NowPlayingNDK::resume() {
+        mp->play();
 
-      npc->setMediaState(bb::multimedia::MediaState::Started);
-      npc->setMetaData(mp->metaData());
-   }
+        //npc->setMediaState(mp->mediaState());
+    }
 
-   void NowPlayingNDK::stop(){
-       mp->stop();
-   }
+    void NowPlayingNDK::pause() {
+        mp->pause();
 
-   void NowPlayingNDK::pause(){
-         mp->pause();
+        //npc->setMediaState(mp->mediaState());
+    }
 
-     }
+    void NowPlayingNDK::stop() {
+        //npc->revoke();
 
+        mp->stop();
 
-   void NowPlayingNDK::NowPlayingSetMetadata(const std::string& callbackId, const std::string& data){
-              // Parse the arg string as JSON
-              Json::FastWriter writer;
-              Json::Reader reader;
-              Json::Value root;
-              bool parse = reader.parse(data, root);
+        //npc->setMediaState(mp->mediaState());
+    }
 
-              if (!parse) {
-                  Json::Value error;
-                  error["result"] = "Cannot parse JSON object";
-                  sendEvent(callbackId + " " + writer.write(error));
-              } else {
-                  QVariantMap metadata;
-
-                  metadata[MetaData::Title] = QString::fromStdString(root["Title"].asString());
-                  metadata[MetaData::Artist] = QString::fromStdString(root["Artist"].asString());
-                  metadata[MetaData::Album] = QString::fromStdString(root["Album"].asString());
-
-
-                  root["result"] = "SetMetadata Succeed.";
-                  sendEvent(callbackId + " " + writer.write(root));
-              }
-
-      }
 } /* namespace webworks */
