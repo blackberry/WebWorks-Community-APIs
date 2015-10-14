@@ -63,7 +63,27 @@ namespace webworks {
     }
 
     string NowPlayingNDK::NowPlayingSetMetadata(const string& data) {
-        return "Metadata set.";
+        string returnValue = "";
+
+        Json::Value root;
+        Json::Reader reader;
+
+        bool parse = reader.parse(data, root);
+        if (!parse) {
+            returnValue = "Error setting metadata";
+        } else {
+            QVariantMap metadata;
+
+            metadata[MetaData::Title] = QString::fromStdString(root["Title"].asString());
+            metadata[MetaData::Artist] = QString::fromStdString(root["Artist"].asString());
+            metadata[MetaData::Album] = QString::fromStdString(root["Album"].asString());
+
+            npc->setMetaData(metadata);
+
+            returnValue = "Metadata set successfully.";
+        }
+
+        return returnValue;
     }
 
     string NowPlayingNDK::NowPlayingSetIcon(const string& data) {

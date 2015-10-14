@@ -50,9 +50,10 @@ namespace webworks {
                 mp = new bb::multimedia::MediaPlayer(this);
                 npc = new bb::multimedia::NowPlayingConnection(this);
 
-//                npc->acquire();
-//                npc->setOverlayStyle(bb::multimedia::OverlayStyle::Fancy);
-//                npc->revoke();
+                /* Set the volume overlay over the media notification area. */
+                npc->acquire();
+                npc->setOverlayStyle(bb::multimedia::OverlayStyle::Fancy);
+                npc->revoke();
 
                 QObject::connect(this, SIGNAL(playSignal()),
                                 this, SLOT(play()));
