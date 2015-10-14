@@ -1,0 +1,4 @@
+plugin/src/blackberry10/native/device/*
+plugin/src/blackberry10/native/simulator/*
+plugin/src/blackberry10/native/.project
+nowplaying_build.sh

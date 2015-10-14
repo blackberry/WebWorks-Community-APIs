@@ -43,7 +43,7 @@ JSExt* onCreateObject(const string& className, const string& id) {
     return NULL;
 }
 
-NowPlayingJS::NowPlayingJS(const std::string& id): m_id(id) {
+NowPlayingJS::NowPlayingJS(const string& id): m_id(id) {
     m_thread = new bb::webworks::extensions::ApplicationThread(QThread::LowPriority);
     m_NowPlayingMgr = new webworks::NowPlayingNDK(this);
     m_NowPlayingMgr->moveToThread(m_thread);
@@ -56,8 +56,8 @@ NowPlayingJS::~NowPlayingJS(){
 }
 
 // Notifies JavaScript of an event
-void NowPlayingJS::NotifyEvent(const std::string& event) {
-    std::string eventString = m_id + " ";
+void NowPlayingJS::NotifyEvent(const string& event) {
+    string eventString = m_id + " ";
     eventString.append(event);
     SendPluginEvent(eventString.c_str(), m_pContext);
 }
@@ -72,13 +72,13 @@ string NowPlayingJS::InvokeMethod(const string& command) {
     // Format assumed to be "command", "command callbackId", or
     // "command callbackId params"
     size_t commandIndex = command.find_first_of(" ");
-    std::string strCommand = command.substr(0, commandIndex);
+    string strCommand = command.substr(0, commandIndex);
 
     size_t callbackIndex = command.find_first_of(" ", commandIndex + 1);
-    std::string callbackId = command.substr(commandIndex + 1, callbackIndex - (commandIndex + 1));
-    std::string arg = command.substr(callbackIndex + 1, command.length());
+    string callbackId = command.substr(commandIndex + 1, callbackIndex - (commandIndex + 1));
+    string arg = command.substr(callbackIndex + 1, command.length());
 
-    std::string result = "";
+    string result = "";
 
     if (strCommand == "NowPlayingSetMusic") {
         result = m_NowPlayingMgr->NowPlayingSetMusic(arg);

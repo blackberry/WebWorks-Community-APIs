@@ -66,7 +66,7 @@ namespace webworks {
 
             virtual ~NowPlayingNDK() {};
 
-            void sendEvent(const std::string& msg);
+            void sendEvent(const string& msg);
 
             signals:
                 void playSignal();
@@ -81,21 +81,21 @@ namespace webworks {
                 void stop();
 
         public:
-            std::string NowPlayingSetMusic(const std::string& data);
-            std::string NowPlayingSetMetadata(const std::string& data);
-            std::string NowPlayingSetIcon(const std::string& data);
+            string NowPlayingSetMusic(const string& data);
+            string NowPlayingSetMetadata(const string& data);
+            string NowPlayingSetIcon(const string& data);
 
-            std::string NowPlayingChangeTrack(const std::string& callbackId, const std::string& data);
+            string NowPlayingChangeTrack(const string& callbackId, const string& data);
 
-            std::string NowPlayingEnableNextPrevious();
-            std::string NowPlayingDisableNextPrevious();
+            string NowPlayingEnableNextPrevious();
+            string NowPlayingDisableNextPrevious();
 
-            std::string NowPlayingPlay(const std::string& callbackId, const std::string& data);
-            std::string NowPlayingPause(const std::string& callbackId);
-            std::string NowPlayingResume(const std::string& callbackId);
-            std::string NowPlayingStop(const std::string& callbackId);
+            string NowPlayingPlay(const string& callbackId, const string& data);
+            string NowPlayingPause(const string& callbackId);
+            string NowPlayingResume(const string& callbackId);
+            string NowPlayingStop(const string& callbackId);
 
-            std::string NowPlayingGetState();
+            string NowPlayingGetState();
 
     }; // class NowPlayingNDK
 

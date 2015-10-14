@@ -40,7 +40,7 @@ namespace webworks {
         m_pParent->NotifyEvent(msg);
     }
 
-    string NowPlayingNDK::NowPlayingSetMusic(const std::string& data) {
+    string NowPlayingNDK::NowPlayingSetMusic(const string& data) {
         // Ensure media player is stopped.
         emit stopSignal();
 
@@ -62,15 +62,15 @@ namespace webworks {
         }
     }
 
-    string NowPlayingNDK::NowPlayingSetMetadata(const std::string& data) {
+    string NowPlayingNDK::NowPlayingSetMetadata(const string& data) {
         return "Metadata set.";
     }
 
-    string NowPlayingNDK::NowPlayingSetIcon(const std::string& data) {
+    string NowPlayingNDK::NowPlayingSetIcon(const string& data) {
         return "Icon set.";
     }
 
-    string NowPlayingNDK::NowPlayingChangeTrack(const std::string& callbackId, const std::string& data) {
+    string NowPlayingNDK::NowPlayingChangeTrack(const string& callbackId, const string& data) {
         return "Changed track.";
     }
 
@@ -82,29 +82,28 @@ namespace webworks {
         return "Disabled Next Previous.";
     }
 
-    string NowPlayingNDK::NowPlayingPlay(const std::string& callbackId, const std::string& data) {
+    string NowPlayingNDK::NowPlayingPlay(const string& callbackId, const string& data) {
         emit playSignal();
         return "Player started.";
     }
 
-    string NowPlayingNDK::NowPlayingPause(const std::string& callbackId) {
+    string NowPlayingNDK::NowPlayingPause(const string& callbackId) {
         emit pauseSignal();
         return "Player Paused.";
     }
 
-    string NowPlayingNDK::NowPlayingResume(const std::string& callbackId) {
+    string NowPlayingNDK::NowPlayingResume(const string& callbackId) {
         emit resumeSignal();
         return "Player Resumed.";
     }
 
-    string NowPlayingNDK::NowPlayingStop(const std::string& callbackId) {
+    string NowPlayingNDK::NowPlayingStop(const string& callbackId) {
         emit stopSignal();
         return "Player Stopped.";
     }
 
     string NowPlayingNDK::NowPlayingGetState() {
-        std::string state = "State: ";
-
+        string state = "State: ";
         switch (mp->mediaState()) {
             case bb::multimedia::MediaState::Unprepared:
                 state += "Unprepared";
@@ -121,11 +120,22 @@ namespace webworks {
             case bb::multimedia::MediaState::Stopped:
                 state += "Stopped";
                 break;
+            default:
+                state += "Unknown";
         }
+
+        state += " Acquired: ";
+        state += npc->isAcquired() ? "True" : "False";
+
+        state += " Preempted: ";
+        state += npc->isPreempted() ? "True" : "False";
 
         return state.c_str();
     }
 
+    /***
+     * Slots
+     ***/
 
     void NowPlayingNDK::play() {
         //npc->acquire();
