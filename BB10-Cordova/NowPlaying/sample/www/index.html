@@ -18,49 +18,75 @@
     under the License.
 -->
 <html>
+
     <head>
+
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
         <link rel="stylesheet" type="text/css" href="css/index.css" />
+
         <title>NowPlaying</title>
+
     </head>
+
     <body>
+
         <div class="app">
-            <h1>Apache Cordova</h1>
+            <!--<h1>Apache Cordova</h1>-->
             <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
+                <!-- TODO: not working! TypeError: null is not an object (evaluating 'parentElement.querySelector') -->
+                <p class="event listening">NowPlaying Plugin: Connecting to Device</p>
+                <p class="event received">NowPlaying Plugin: Device is Ready</p>
             </div>
             <div id="results"></div>
         </div>
-	<h3>NowPlaying Plugin</h3>
-	<p> The default source music is <a href='http://www.pch.gc.ca/DAMAssetPub/DAM-hymChs-antSgn/STAGING/audio-audio/o-canada_1359474460106_eng.MP3'> "O Canada" </a> Since it is from net, click to test if internet connection is ok. </p>
 
-	<button id="testButton" type="button"> Test Connection </button>
-	<br>
-	<button id="playButton" type="button"> Play Music </button>
-	<br>
-	<button id="pauseButton" type="pause"> Pause </button>
-	<br>
-	<button id="stopButton" type="button"> Stop Music </button>
-	<br>
-	<button id="srcButton" type="button"> Get Source Address</button>
-	<br>
-	<button id="switchButton" type="button"> Switch Music </button>	
-	<br>
-	<button id="durationButton" type="button"> Get Duration </button>
-	<br>
-	<button id="positionButton" type="button"> Get Position </button>
-	<br>
-	<button id="setMetaButton" type="button"> Set Metadata </button>
-    	<br>
-    	<button id="switchLocalButton" type="button"> Switch Local Audio </button>
+        <button id="setMusicButton" type="button"> Set Music1 </button>
+        <br>
+        <button id="setMusic2Button" type="button"> Set Music2 </button>
+        <br>
+        <button id="setMetadataButton" type="button"> Set Metadata1 </button>
+        <br>
+        <button id="setMetadata2Button" type="button"> Set Metadata2 </button>
+        <br>
+        <button id="setIconButton" type="button"> Set Icon1 </button>
+        <br>
+        <button id="setIcon2Button" type="button"> Set Icon2 </button>
+        <br>
+
+        <br>
+        <button id="changeTrackButton" type="button"> Change (to) Track1 </button>
+        <br>
+        <button id="changeTrack2Button" type="button"> Change (to) Track2 </button>
+        <br>
+
+        <br>
+        <button id="enablePreviousNextButton" type="button"> Enable Previous/Next button on volume overlay </button>
+        <br>
+        <button id="disablePreviousNextButton" type="button"> Disable Previous/Next button on volume overlay </button>
+        <br>
+
+        <br>
+        <button id="playButton" type="button"> Play (Acquire) </button>
+        <br>
+        <button id="pauseButton" type="button"> Pause </button>
+        <br>
+        <button id="resumeButton" type="button"> Resume </button>
+        <br>
+        <button id="stopButton" type="button"> Stop (Revoke) </button>
+        <br>
+
+        <br>
+        <button id="getStateButton" type="button"> Get State </button>
+        <br>
 
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
             app.initialize();
         </script>
+
     </body>
 </html>

@@ -34,68 +34,71 @@ namespace webworks {
     using namespace bb::multimedia;
     using namespace std;
 
-
     class NowPlayingNDK : public QObject {
 
-            Q_OBJECT
+        Q_OBJECT
 
-            NowPlayingJS *m_pParent;
+        NowPlayingJS *m_pParent;
 
-           bb::multimedia::MediaPlayer *mp;
-           bb::multimedia::NowPlayingConnection *npc;
-
-
-          public:
-
-            explicit NowPlayingNDK(NowPlayingJS *parent = NULL): QObject(), m_pParent(parent)
-                {
-                    mp = new bb::multimedia::MediaPlayer(this);
-                    npc = new bb::multimedia::NowPlayingConnection(this);
-                    mp->setSourceUrl(QUrl("http://www.pch.gc.ca/DAMAssetPub/DAM-hymChs-antSgn/STAGING/audio-audio/o-canada_1359474460106_eng.MP3"));
-
-                   QObject::connect(this, SIGNAL(playSignal()),
-                                    this, SLOT(play()));
-
-                   QObject::connect(this, SIGNAL(stopSignal()),
-                                    this, SLOT(stop()));
-
-                   QObject::connect(this, SIGNAL(pauseSignal()),
-                                    this, SLOT(pause()));
-
-                }
-
-
-            virtual ~NowPlayingNDK(){};
-
-            void sendEvent( const std::string& msg);
-
-
-
-      signals:
-          void playSignal();
-          void stopSignal();
-          void pauseSignal();
-
-        public slots:
-            void play();
-            void stop();
-            void pause();
+        bb::multimedia::MediaPlayer *mp;
+        bb::multimedia::NowPlayingConnection *npc;
 
         public:
-            std::string NowPlayingConnectionTest();
-            std::string NowPlayingStop();
-            std::string NowPlayingPlay();
-            std::string NowPlayingPause();
-            std::string NowPlayingSwitchMusic(const std::string& src);
-            std::string NowPlayingGetSourceAddress();
-            std::string NowPlayingGetDuration();
-            std::string NowPlayingGetPosition();
-            void NowPlayingSetMetadata(const std::string& callbackId, const std::string& data);
 
-        };
+            explicit NowPlayingNDK(NowPlayingJS *parent = NULL): QObject(), m_pParent(parent)
+            {
+                mp = new bb::multimedia::MediaPlayer(this);
+                npc = new bb::multimedia::NowPlayingConnection(this);
 
+                /* Set the volume overlay over the media notification area. */
+                npc->acquire();
+                npc->setOverlayStyle(bb::multimedia::OverlayStyle::Fancy);
+                npc->revoke();
 
+                QObject::connect(this, SIGNAL(playSignal()),
+                                this, SLOT(play()));
+                QObject::connect(this, SIGNAL(pauseSignal()),
+                                this, SLOT(pause()));
+                QObject::connect(this, SIGNAL(resumeSignal()),
+                                this, SLOT(resume()));
+                QObject::connect(this, SIGNAL(stopSignal()),
+                                this, SLOT(stop()));
+            }
 
+            virtual ~NowPlayingNDK() {};
+
+            void sendEvent(const string& msg);
+
+            signals:
+                void playSignal();
+                void pauseSignal();
+                void resumeSignal();
+                void stopSignal();
+
+            public slots:
+                void play();
+                void pause();
+                void resume();
+                void stop();
+
+        public:
+            string NowPlayingSetMusic(const string& data);
+            string NowPlayingSetMetadata(const string& data);
+            string NowPlayingSetIcon(const string& data);
+
+            string NowPlayingChangeTrack(const string& callbackId, const string& data);
+
+            string NowPlayingEnableNextPrevious();
+            string NowPlayingDisableNextPrevious();
+
+            string NowPlayingPlay(const string& callbackId, const string& data);
+            string NowPlayingPause(const string& callbackId);
+            string NowPlayingResume(const string& callbackId);
+            string NowPlayingStop(const string& callbackId);
+
+            string NowPlayingGetState();
+
+    }; // class NowPlayingNDK
 
 } // namespace webworks
 
