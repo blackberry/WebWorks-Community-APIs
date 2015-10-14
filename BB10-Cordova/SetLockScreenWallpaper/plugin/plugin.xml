@@ -1,0 +1,25 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    id="cordova-plugin-setlockscreenwallpaper"
+    version="1.0.0">
+
+    <name>Setlockscreenwallpaper</name>
+    <description>BlackBerry 10 Community Contributed Setlockscreenwallpaper API</description>
+    <license>Apache 2.0</license>
+    <author>TMC Devs</author>
+    <keywords>blackberry,Setlockscreenwallpaper,cordova</keywords>
+    <repo>https://github.com/blackberry/WebWorks-Community-APIs.git</repo>
+    <issue>https://github.com/blackberry/WebWorks-Community-APIs/issues</issue>
+
+    <js-module src="www/client.js">
+        <clobbers target="cordova.plugins.setlockscreenwallpaper" />
+    </js-module>
+
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" />
+        <lib-file src="src/blackberry10/native/device/libSetlockscreenwallpaper.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libSetlockscreenwallpaper.so" arch="simulator"/>
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="cordova-plugin-setlockscreenwallpaper" value="cordova-plugin-setlockscreenwallpaper" />
+        </config-file>
+    </platform>
+</plugin>
