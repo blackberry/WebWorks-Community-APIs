@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-mediakeys",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "BlackBerry 10 Community Contributed API for Custom Configuration of Media Keys",
   "cordova": {
     "id": "cordova-plugin-mediakeys",
