@@ -123,4 +123,3 @@ string NowPlayingJS::InvokeMethod(const string& command) {
 
 
 
-
