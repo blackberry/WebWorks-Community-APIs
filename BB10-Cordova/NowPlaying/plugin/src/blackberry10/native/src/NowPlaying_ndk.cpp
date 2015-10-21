@@ -36,115 +36,153 @@ namespace webworks {
     using namespace std;
     using namespace bb::multimedia;
 
-   void NowPlayingNDK::sendEvent(const string& msg){
-       m_pParent->NotifyEvent(msg);
-   }
-
-   string NowPlayingNDK::NowPlayingConnectionTest(){
-       return "NowPlayingConnectionTest finished, everything looks good.";
-   }
-
-   string NowPlayingNDK::NowPlayingStop(){
-       emit stopSignal();
-       return "Player Stopped.";
-   }
-
-   string NowPlayingNDK::NowPlayingPause(){
-         emit pauseSignal();
-         return "Player Paused.";
-   }
-
-
-   string NowPlayingNDK::NowPlayingPlay(){
-        emit playSignal();
-        return "Player started.";
-   }
-
-
-   string NowPlayingNDK::NowPlayingSwitchMusic(const string &src){
-
-         emit stopSignal();
-         QString str = QString::fromUtf8(src.c_str());
-
-         if (! str.startsWith("http", Qt::CaseInsensitive)) {
-
-             char cwd[PATH_MAX];
-             getcwd(cwd, PATH_MAX);
-             str.prepend(QString(cwd).append("/app/native/"));
-
-         }
-         QUrl url(str);
-
-         if(url.isValid()){
-               mp->setSourceUrl(url);
-               return "Music switch to " + src;
-          }else{
-               return "Sorry, but the url is not valid";
-          }
-
+    void NowPlayingNDK::sendEvent(const string& msg) {
+        m_pParent->NotifyEvent(msg);
     }
 
-   string NowPlayingNDK::NowPlayingGetSourceAddress(){
-       return mp->sourceUrl().toString().toUtf8().constData();
-   }
+    string NowPlayingNDK::NowPlayingSetMusic(const string& data) {
+        // Ensure media player is stopped.
+        emit stopSignal();
 
-   string NowPlayingNDK::NowPlayingGetDuration(){
-       int duration = mp->duration();
-       QString s = QString::number(duration);
-       return s.toUtf8().constData();
-   }
+        QString str = QString::fromUtf8(data.c_str());
 
-   string NowPlayingNDK::NowPlayingGetPosition(){
-       int position = mp->position();
-       QString s = QString::number(position);
-       return s.toUtf8().constData();
-   }
+        if (! str.startsWith("http", Qt::CaseInsensitive)) {
+            char cwd[PATH_MAX];
+            getcwd(cwd, PATH_MAX);
+            str.prepend(QString(cwd).append("/app/native/"));
+        }
 
+        QUrl url(str);
 
+        if (url.isValid()){
+          mp->setSourceUrl(url);
+          return "Music set to " + data + ".";
+        } else {
+          return "Music couldn't be set to argument because it is invalid.";
+        }
+    }
 
+    string NowPlayingNDK::NowPlayingSetMetadata(const string& data) {
+        string returnValue = "";
 
-   void NowPlayingNDK::play(){
-      mp->play();
+        Json::Value root;
+        Json::Reader reader;
 
-      npc->setDuration(mp->duration());
-      npc->setPosition(mp->position());
+        bool parse = reader.parse(data, root);
+        if (!parse) {
+            returnValue = "Error setting metadata";
+        } else {
+            QVariantMap metadata;
 
-      npc->setMediaState(bb::multimedia::MediaState::Started);
-      npc->setMetaData(mp->metaData());
-   }
+            metadata[MetaData::Title] = QString::fromStdString(root["Title"].asString());
+            metadata[MetaData::Artist] = QString::fromStdString(root["Artist"].asString());
+            metadata[MetaData::Album] = QString::fromStdString(root["Album"].asString());
 
-   void NowPlayingNDK::stop(){
-       mp->stop();
-   }
+            npc->setMetaData(metadata);
 
-   void NowPlayingNDK::pause(){
-         mp->pause();
+            returnValue = "Metadata set successfully.";
+        }
 
-     }
+        return returnValue;
+    }
 
+    string NowPlayingNDK::NowPlayingSetIcon(const string& data) {
+        return "Icon set.";
+    }
 
-   void NowPlayingNDK::NowPlayingSetMetadata(const std::string& callbackId, const std::string& data){
-              // Parse the arg string as JSON
-              Json::FastWriter writer;
-              Json::Reader reader;
-              Json::Value root;
-              bool parse = reader.parse(data, root);
+    string NowPlayingNDK::NowPlayingChangeTrack(const string& callbackId, const string& data) {
+        return "Changed track.";
+    }
 
-              if (!parse) {
-                  Json::Value error;
-                  error["result"] = "Cannot parse JSON object";
-                  sendEvent(callbackId + " " + writer.write(error));
-              } else {
-                  QVariantMap metadata;
+    string NowPlayingNDK::NowPlayingEnableNextPrevious() {
+        return "Enabled Next Previous.";
+    }
 
-                  metadata[MetaData::Title] = QString::fromStdString(root["Title"].asString());
-                  metadata[MetaData::Artist] = QString::fromStdString(root["Artist"].asString());
-                  metadata[MetaData::Album] = QString::fromStdString(root["Album"].asString());
+    string NowPlayingNDK::NowPlayingDisableNextPrevious() {
+        return "Disabled Next Previous.";
+    }
 
+    string NowPlayingNDK::NowPlayingPlay(const string& callbackId, const string& data) {
+        emit playSignal();
+        return "Player started.";
+    }
 
-                  root["result"] = "SetMetadata Succeed.";
-                  sendEvent(callbackId + " " + writer.write(root));
-              }
+    string NowPlayingNDK::NowPlayingPause(const string& callbackId) {
+        emit pauseSignal();
+        return "Player Paused.";
+    }
 
-      }
+    string NowPlayingNDK::NowPlayingResume(const string& callbackId) {
+        emit resumeSignal();
+        return "Player Resumed.";
+    }
+
+    string NowPlayingNDK::NowPlayingStop(const string& callbackId) {
+        emit stopSignal();
+        return "Player Stopped.";
+    }
+
+    string NowPlayingNDK::NowPlayingGetState() {
+        string state = "State: ";
+        switch (mp->mediaState()) {
+            case bb::multimedia::MediaState::Unprepared:
+                state += "Unprepared";
+                break;
+            case bb::multimedia::MediaState::Prepared:
+                state += "Prepared";
+                break;
+            case bb::multimedia::MediaState::Started:
+                state += "Started";
+                break;
+            case bb::multimedia::MediaState::Paused:
+                state += "Paused";
+                break;
+            case bb::multimedia::MediaState::Stopped:
+                state += "Stopped";
+                break;
+            default:
+                state += "Unknown";
+        }
+
+        state += " Acquired: ";
+        state += npc->isAcquired() ? "True" : "False";
+
+        state += " Preempted: ";
+        state += npc->isPreempted() ? "True" : "False";
+
+        return state.c_str();
+    }
+
+    /***
+     * Slots
+     ***/
+
+    void NowPlayingNDK::play() {
+        //npc->acquire();
+
+        mp->play();
+
+        //npc->setMediaState(mp->mediaState());
+    }
+
+    void NowPlayingNDK::resume() {
+        mp->play();
+
+        //npc->setMediaState(mp->mediaState());
+    }
+
+    void NowPlayingNDK::pause() {
+        mp->pause();
+
+        //npc->setMediaState(mp->mediaState());
+    }
+
+    void NowPlayingNDK::stop() {
+        //npc->revoke();
+
+        mp->stop();
+
+        //npc->setMediaState(mp->mediaState());
+    }
+
 } /* namespace webworks */
