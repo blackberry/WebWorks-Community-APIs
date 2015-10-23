@@ -16,30 +16,47 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-var app = {
+var app = (function() {
+
+    // Playlist of songs (json data)
+    var playlist = [
+        {
+            songURL: "http://www.pch.gc.ca/DAMAssetPub/DAM-hymChs-antSgn/STAGING/audio-audio/o-canada_1359474460106_eng.MP3",
+            iconURL: "http://flaglane.com/download/canadian-flag/canadian-flag-small.jpg",
+            metadata: {
+                Title: "O Canada",
+                Artist: "Canada",
+                Album: "Canada's Favorites"
+            }
+        },
+        {
+            songURL: "sounds/highhat.mp3",
+            iconURL: "img/Hi-hat.jpg",
+            metadata: {
+                Title: "High Hat",
+                Artist: "Drum Kit",
+                Album: "Instruments"
+            }
+        }
+    ];
+
 	// Application Constructor
-	initialize: function () {
-		this.bindEvents();
-	},
+	var init = function() {
+		app.bindEvents();
+	};
 
 	// Bind Event Listeners
 	//
 	// Bind any events that are required on startup. Common events are:
 	// "load", "deviceready", "offline", and "online".
-	bindEvents: function () {
-		document.addEventListener("deviceready", this.onDeviceready, false);
-	},
-
-	// deviceready Event Handler
-	//
-	// The scope of 'this' is the event. In order to call the 'receivedEvent'
-	// function, we must explicitly call 'app.receivedEvent(...);'
-	onDeviceready: function () {
-		app.receivedEvent("deviceready");
-	},
+	var bindEvents = function() {
+		document.addEventListener("deviceReady",
+            function() { app.receivedEvent("deviceReady") },
+            false);
+	};
 
 	// Update DOM on a Received Event
-	receivedEvent: function (id) {
+	var receivedEvent = function(id) {
 		var parentElement = document.getElementById(id);
 		var listeningElement = parentElement.querySelector(".listening");
 		var receivedElement = parentElement.querySelector(".received");
@@ -48,46 +65,38 @@ var app = {
 		receivedElement.setAttribute("style", "display:block;");
 
 		console.log("Received Event: " + id);
-		app.testPluginCalls();
-	},
+		app.bindButtons();
+	};
 
     // Write out to screen and console
-	writeOut: function(message) {
+	var writeOut = function(message) {
 		var output = document.getElementById("results");
 		output.innerText = output.innerText + message;
 		output.appendChild(document.createElement("br"));
 		console.log(message);
-	},
+	};
 
-	sampleAsyncCallback: function (data) {
+	var sampleAsyncCallback = function(data) {
 		if (data) {
 			console.log(data);
 			app.writeOut(data.result);
 		}
-	},
+	};
 
-    // Test plugin calls
-	testPluginCalls: function () {
+	var bindButtons = function() {
 		if (com && com.blackberry.community.nowplaying)
 		{
 			app.writeOut("NowPlaying Result:");
-			document.getElementById("setMusicButton").onclick = app.setMusicButtonClick;
-			document.getElementById("setMusic2Button").onclick = app.setMusic2ButtonClick;
-			document.getElementById("setMetadataButton").onclick = app.setMetadataButtonClick;
-			document.getElementById("setMetadata2Button").onclick = app.setMetadata2ButtonClick;
-			document.getElementById("setIconButton").onclick = app.setIconButtonClick;
-			document.getElementById("setIcon2Button").onclick = app.setIcon2ButtonClick;
+            document.getElementById("clearResultsButton").onclick = app.clearResultsButtonClick;
 
-			document.getElementById("changeTrackButton").onclick = app.changeTrackButtonClick;
-			document.getElementById("changeTrack2Button").onclick = app.changeTrack2ButtonClick;
+            document.getElementById("requestPlaybackButton").onclick = app.requestPlaybackButtonClick;
 
-			document.getElementById("enablePreviousNextButton").onclick = app.enablePreviousNextButtonClick;
-			document.getElementById("disablePreviousNextButton").onclick = app.disablePreviousNextButtonClick;
+            //document.getElementById("trackChangeButton").onclick = app.trackChangeButtonClick;
 
-			document.getElementById("playButton").onclick = app.playButtonClick;
-			document.getElementById("pauseButton").onclick = app.pauseButtonClick;
-			document.getElementById("resumeButton").onclick = app.resumeButtonClick;
-			document.getElementById("stopButton").onclick = app.stopButtonClick;
+            document.getElementById("playButton").onclick = app.playButtonClick;
+            //document.getElementById("stopButton").onclick = app.stopButtonClick;
+            //document.getElementById("pauseButton").onclick = app.pauseButtonClick;
+            //document.getElementById("resumeButton").onclick = app.resumeButtonClick;
 
 			document.getElementById("getStateButton").onclick = app.getStateButtonClick;
 		}
@@ -95,113 +104,90 @@ var app = {
 		{
 			app.writeOut("Plugin was not found");
 		}
-	},
+	};
 
-	/* Plugin calls */
-	setMusicButtonClick: function() {
-		app.writeOut(com.blackberry.community.nowplaying.NowPlayingSetMusic(
-			"http://www.pch.gc.ca/DAMAssetPub/DAM-hymChs-antSgn/STAGING/audio-audio/o-canada_1359474460106_eng.MP3"));
-	},
+    /* Button actions */
 
-	setMusic2ButtonClick: function() {
-		app.writeOut(com.blackberry.community.nowplaying.NowPlayingSetMusic("sounds/highhat.mp3"));
-	},
-
-	setMetadataButtonClick: function() {
-		var jsonData = {
-			"Title": "MyTitleSetMetadata1",
-			"Artist": "MyArtistSetMetadata1",
-			"Album": "MyAlbumSetMetadata1"
-		};
-
-		app.writeOut(com.blackberry.community.nowplaying.NowPlayingSetMetadata(jsonData));
-	},
-
-	setMetadata2ButtonClick: function() {
-		var jsonData = {
-			"Title": "MyTitleSetMetadata2",
-			"Artist": "MyArtistSetMetadata2",
-			"Album": "MyAlbumSetMetadata2"
-		};
-
-		app.writeOut(com.blackberry.community.nowplaying.NowPlayingSetMetadata(jsonData));
-	},
-
-	setIconButtonClick: function() {
-		var jsonData = {
-			"Title": "MyTitleSetIcon1",
-			"Artist": "MyArtistSetIcon1",
-			"Album": "MyAlbumSetIcon1"
-		};
-
-		app.writeOut(com.blackberry.community.nowplaying.NowPlayingSetIcon(jsonData));
-	},
-
-	setIcon2ButtonClick: function() {
-		var jsonData = {
-			"Title": "MyTitleSetIcon2",
-			"Artist": "MyArtistSetIcon2",
-			"Album": "MyAlbumSetIcon2"
-		};
-
-		app.writeOut(com.blackberry.community.nowplaying.NowPlayingSetIcon(jsonData));
-	},
+    var clearResultsButtonClick = function() {
+        var output = document.getElementById("results");
+        output.innerText = "";
+        while (output.firstChild) {
+            output.removeChild(output.firstChild);
+        }
+        app.writeOut("NowPlaying Result:");
+    };
 
 
-	changeTrackButtonClick: function() {
-		var jsonData = {
-			"Title": "MyTitleChangeTrack1",
-			"Artist": "MyArtistChangeTrack1",
-			"Album": "MyAlbumChangeTrack1"
-		};
+	var requestPlaybackButtonClick = function() {
+        var jsonData = {
+            songURL: playlist[0].songURL,
+            iconURL: playlist[0].iconURL,
+            metadata: playlist[0].metadata,
+            nextEnabled: true,
+            prevEnabled: true,
+            callbacks: {
+                play: sampleAsyncCallback,
+                stop: sampleAsyncCallback,
+                pause: sampleAsyncCallback,
+                resume: sampleAsyncCallback,
+                error: sampleAsyncCallback,
+                next: sampleAsyncCallback,
+                previous: sampleAsyncCallback
+            }
+        };
 
-		app.writeOut(com.blackberry.community.nowplaying.NowPlayingChangeTrack(app.sampleAsyncCallback, jsonData));
-	},
-
-	changeTrack2ButtonClick: function() {
-		var jsonData = {
-			"Title": "MyTitleChangeTrack2",
-			"Artist": "MyArtistChangeTrack2",
-			"Album": "MyAlbumChangeTrack2"
-		};
-
-		app.writeOut(com.blackberry.community.nowplaying.NowPlayingChangeTrack(app.sampleAsyncCallback, jsonData));
-	},
-
-
-	enablePreviousNextButtonClick: function() {
-		app.writeOut(com.blackberry.community.nowplaying.NowPlayingEnableNextPrevious());
-	},
-
-	disablePreviousNextButtonClick: function() {
-		app.writeOut(com.blackberry.community.nowplaying.NowPlayingDisableNextPrevious());
-	},
+		app.writeOut(com.blackberry.community.nowplaying.NowPlayingRequestPlayback(jsonData));
+	};
 
 
-	playButtonClick: function () {
-		var jsonData = {
-			"Title": "MyTitlePlay",
-			"Artist": "MyArtistPlay",
-			"Album": "MyAlbumPlay"
-		};
+    //var trackChangeButtonClick = function() {
+    //    var jsonData = {
+    //        "Title": "MyTitleChangeTrack1",
+    //        "Artist": "MyArtistChangeTrack1",
+    //        "Album": "MyAlbumChangeTrack1"
+    //    };
+    //
+    //    app.writeOut(com.blackberry.community.nowplaying.NowPlayingChangeTrack(app.sampleAsyncCallback, jsonData));
+    //};
 
-		app.writeOut(com.blackberry.community.nowplaying.NowPlayingPlay(app.sampleAsyncCallback, jsonData));
-	},
+    var playButtonClick = function() {
+        app.writeOut(com.blackberry.community.nowplaying.NowPlayingPlay());
+    };
 
-	pauseButtonClick: function () {
-		app.writeOut(com.blackberry.community.nowplaying.NowPlayingPause(app.sampleAsyncCallback));
-	},
+    //var stopButtonClick = function() {
+     //   app.writeOut(com.blackberry.community.nowplaying.NowPlayingStop(app.sampleAsyncCallback));
+    //};
+    //
+    //var pauseButtonClick = function() {
+	//	app.writeOut(com.blackberry.community.nowplaying.NowPlayingPause(app.sampleAsyncCallback));
+	//};
+    //
+	//var resumeButtonClick = function() {
+	//	app.writeOut(com.blackberry.community.nowplaying.NowPlayingResume(app.sampleAsyncCallback));
+	//};
 
-	resumeButtonClick: function () {
-		app.writeOut(com.blackberry.community.nowplaying.NowPlayingResume(app.sampleAsyncCallback));
-	},
 
-	stopButtonClick: function () {
-		app.writeOut(com.blackberry.community.nowplaying.NowPlayingStop(app.sampleAsyncCallback));
-	},
-
-
-	getStateButtonClick: function () {
+	var getStateButtonClick = function() {
 		app.writeOut(com.blackberry.community.nowplaying.NowPlayingGetState());
-	}
-};
+	};
+
+
+    return {
+        "init": init,
+        "bindEvents": bindEvents,
+        "receivedEvent": receivedEvent,
+        "writeOut": writeOut,
+        "sampleAsyncCallback": sampleAsyncCallback,
+        "bindButtons": bindButtons,
+        "clearResultsButtonClick": clearResultsButtonClick,
+        "requestPlaybackButtonClick": requestPlaybackButtonClick,
+        //"trackChangeButtonClick": trackChangeButtonClick,
+        "playButtonClick": playButtonClick,
+        //"pauseButtonClick": pauseButtonClick,
+        //"resumeButtonClick": resumeButtonClick,
+        //"stopButtonClick": stopButtonClick,
+        "getStateButtonClick": getStateButtonClick
+    };
+}());
+
+app.init();

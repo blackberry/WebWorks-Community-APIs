@@ -55,14 +55,14 @@ namespace webworks {
                 npc->setOverlayStyle(bb::multimedia::OverlayStyle::Fancy);
                 npc->revoke();
 
-                QObject::connect(this, SIGNAL(playSignal()),
-                                this, SLOT(play()));
-                QObject::connect(this, SIGNAL(pauseSignal()),
-                                this, SLOT(pause()));
-                QObject::connect(this, SIGNAL(resumeSignal()),
-                                this, SLOT(resume()));
-                QObject::connect(this, SIGNAL(stopSignal()),
-                                this, SLOT(stop()));
+//                QObject::connect(this, SIGNAL(playSignal()),
+//                                this, SLOT(play()));
+//                QObject::connect(this, SIGNAL(pauseSignal()),
+//                                this, SLOT(pause()));
+//                QObject::connect(this, SIGNAL(resumeSignal()),
+//                                this, SLOT(resume()));
+//                QObject::connect(this, SIGNAL(stopSignal()),
+//                                this, SLOT(stop()));
             }
 
             virtual ~NowPlayingNDK() {};
@@ -71,32 +71,38 @@ namespace webworks {
 
             signals:
                 void playSignal();
-                void pauseSignal();
-                void resumeSignal();
-                void stopSignal();
+//                void pauseSignal();
+//                void resumeSignal();
+//                void stopSignal();
 
             public slots:
-                void play();
-                void pause();
-                void resume();
-                void stop();
+                void playSlot();
+//                void pause();
+//                void resume();
+//                void stop();
+//                void next();
 
         public:
+            string NowPlayingRequestPlayback(const string& data);
+            void NowPlayingBindPlayCallback(const string& callbackId);
             string NowPlayingSetMusic(const string& data);
-            string NowPlayingSetMetadata(const string& data);
-            string NowPlayingSetIcon(const string& data);
+//            string NowPlayingSetMetadata(const string& data);
+//            string NowPlayingSetIcon(const string& data);
+//
+//            string NowPlayingChangeTrack(const string& callbackId, const string& data);
+//
+//            string NowPlayingEnableNextPrevious();
+//            string NowPlayingDisableNextPrevious();
 
-            string NowPlayingChangeTrack(const string& callbackId, const string& data);
-
-            string NowPlayingEnableNextPrevious();
-            string NowPlayingDisableNextPrevious();
-
-            string NowPlayingPlay(const string& callbackId, const string& data);
-            string NowPlayingPause(const string& callbackId);
-            string NowPlayingResume(const string& callbackId);
-            string NowPlayingStop(const string& callbackId);
+            string NowPlayingPlay();
+//            string NowPlayingPause(const string& callbackId);
+//            string NowPlayingResume(const string& callbackId);
+//            string NowPlayingStop(const string& callbackId);
 
             string NowPlayingGetState();
+
+        private:
+            string playCallbackId;
 
     }; // class NowPlayingNDK
 
