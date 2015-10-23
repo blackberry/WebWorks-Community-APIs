@@ -40,10 +40,40 @@ namespace webworks {
         m_pParent->NotifyEvent(msg);
     }
 
-    string NowPlayingNDK::NowPlayingSetMusic(const string& data) {
-        // Ensure media player is stopped.
-        emit stopSignal();
+    string NowPlayingNDK::NowPlayingRequestPlayback(const string& data) {
+        string returnValue = "";
 
+        npc->acquire();
+
+        Json::Value root;
+        Json::Reader reader;
+
+        bool parse = reader.parse(data, root);
+        if (!parse) {
+            returnValue = "Error requesting playback";
+        } else {
+            NowPlayingSetMusic(root["songURL"].asString());
+            returnValue = "Playback requested successfully.";
+        }
+
+        return returnValue;
+    }
+
+    void NowPlayingNDK::NowPlayingBindPlayCallback(const string& callbackId) {
+        playCallbackId = callbackId;
+
+        bool connectResult;
+        Q_UNUSED(connectResult);
+        connectResult = this->connect(
+                            this,
+                            SIGNAL(playSignal()), // can't use bb::multimedia::NowPlayingConnection::play()?
+                            this,
+                            SLOT(playSlot())
+                        );
+        Q_ASSERT(connectResult);
+    }
+
+    string NowPlayingNDK::NowPlayingSetMusic(const string& data) {
         QString str = QString::fromUtf8(data.c_str());
 
         if (! str.startsWith("http", Qt::CaseInsensitive)) {
@@ -56,71 +86,111 @@ namespace webworks {
 
         if (url.isValid()){
           mp->setSourceUrl(url);
-          return "Music set to " + data + ".";
+          return "Music set to " + data;
         } else {
-          return "Music couldn't be set to argument because it is invalid.";
+          return "Music couldn't be set to " + data + " because it is invalid.";
         }
     }
 
-    string NowPlayingNDK::NowPlayingSetMetadata(const string& data) {
-        string returnValue = "";
+//    string NowPlayingNDK::NowPlayingSetMetadata(const string& data) {
+//        string returnValue = "";
+//
+//        Json::Value root;
+//        Json::Reader reader;
+//
+//        bool parse = reader.parse(data, root);
+//        if (!parse) {
+//            returnValue = "Error setting metadata";
+//        } else {
+//            QVariantMap metadata;
+//
+//            metadata[MetaData::Title] = QString::fromStdString(root["Title"].asString());
+//            metadata[MetaData::Artist] = QString::fromStdString(root["Artist"].asString());
+//            metadata[MetaData::Album] = QString::fromStdString(root["Album"].asString());
+//
+//            if (npc->isAcquired()) {
+//                npc->setMetaData(metadata);
+//            } else {
+//                npc->acquire();
+//                npc->setMetaData(metadata);
+//                npc->revoke();
+//            }
+//
+//            returnValue = "Metadata set successfully.";
+//        }
+//
+//        return returnValue;
+//    }
 
-        Json::Value root;
-        Json::Reader reader;
+//    string NowPlayingNDK::NowPlayingSetIcon(const string& data) {
+//        QString str = QString::fromUtf8(data.c_str());
+//
+//        if (! str.startsWith("http", Qt::CaseInsensitive)) {
+//            char cwd[PATH_MAX];
+//            getcwd(cwd, PATH_MAX);
+//            str.prepend(QString(cwd).append("/app/native/"));
+//        }
+//
+//        QUrl url(str);
+//
+//        if (url.isValid()){
+//            if (str.startsWith("http", Qt::CaseInsensitive)) {
+//                return "Icon couldn't be set to " + data + " because HTTP URLs"
+//                       + "to icons aren't currently supported.";
+//            } else {
+//                if (npc->isAcquired()) {
+//                    npc->setIconUrl(url);
+//                } else {
+//                    npc->acquire();
+//                    npc->setIconUrl(url);
+//                    npc->revoke();
+//                }
+//                return "Icon set to " + data;
+//            }
+//        } else {
+//            return "Icon couldn't be set to " + data + " because it is invalid.";
+//        }
+//    }
 
-        bool parse = reader.parse(data, root);
-        if (!parse) {
-            returnValue = "Error setting metadata";
-        } else {
-            QVariantMap metadata;
+//    string NowPlayingNDK::NowPlayingChangeTrack(const string& callbackId, const string& data) {
+//        return "Changed track.";
+//    }
+//
+//    string NowPlayingNDK::NowPlayingEnableNextPrevious() {
+//        if (npc->isAcquired()) {
+//            npc->setNextEnabled(true);
+//        } else {
+//            npc->acquire();
+//            npc->setNextEnabled(true);
+//            npc->revoke();
+//        }
+//
+//        return "Enabled Next Previous.";
+//    }
+//
+//    string NowPlayingNDK::NowPlayingDisableNextPrevious() {
+//        return "Disabled Next Previous.";
+//    }
 
-            metadata[MetaData::Title] = QString::fromStdString(root["Title"].asString());
-            metadata[MetaData::Artist] = QString::fromStdString(root["Artist"].asString());
-            metadata[MetaData::Album] = QString::fromStdString(root["Album"].asString());
-
-            npc->setMetaData(metadata);
-
-            returnValue = "Metadata set successfully.";
-        }
-
-        return returnValue;
-    }
-
-    string NowPlayingNDK::NowPlayingSetIcon(const string& data) {
-        return "Icon set.";
-    }
-
-    string NowPlayingNDK::NowPlayingChangeTrack(const string& callbackId, const string& data) {
-        return "Changed track.";
-    }
-
-    string NowPlayingNDK::NowPlayingEnableNextPrevious() {
-        return "Enabled Next Previous.";
-    }
-
-    string NowPlayingNDK::NowPlayingDisableNextPrevious() {
-        return "Disabled Next Previous.";
-    }
-
-    string NowPlayingNDK::NowPlayingPlay(const string& callbackId, const string& data) {
+    string NowPlayingNDK::NowPlayingPlay() {
         emit playSignal();
         return "Player started.";
     }
 
-    string NowPlayingNDK::NowPlayingPause(const string& callbackId) {
-        emit pauseSignal();
-        return "Player Paused.";
-    }
-
-    string NowPlayingNDK::NowPlayingResume(const string& callbackId) {
-        emit resumeSignal();
-        return "Player Resumed.";
-    }
-
-    string NowPlayingNDK::NowPlayingStop(const string& callbackId) {
-        emit stopSignal();
-        return "Player Stopped.";
-    }
+//    string NowPlayingNDK::NowPlayingPause(const string& callbackId) {
+//        emit pauseSignal();
+//        return "Player Paused.";
+//    }
+//
+//    string NowPlayingNDK::NowPlayingResume(const string& callbackId) {
+//        emit resumeSignal();
+//        return "Player Resumed.";
+//    }
+//
+//    string NowPlayingNDK::NowPlayingStop(const string& callbackId) {
+//        emit stopSignal();
+//        return "Player Stopped.";
+//    }
 
     string NowPlayingNDK::NowPlayingGetState() {
         string state = "State: ";
@@ -157,32 +227,44 @@ namespace webworks {
      * Slots
      ***/
 
-    void NowPlayingNDK::play() {
-        //npc->acquire();
-
+    void NowPlayingNDK::playSlot() {
         mp->play();
 
-        //npc->setMediaState(mp->mediaState());
+        npc->setMediaState(mp->mediaState());
+
+        // Callback
+        Json::FastWriter writer;
+        Json::Value root;
+        root["result"] = "Playing! (callback).";
+        sendEvent(playCallbackId + " " + writer.write(root));
     }
 
-    void NowPlayingNDK::resume() {
-        mp->play();
-
-        //npc->setMediaState(mp->mediaState());
-    }
-
-    void NowPlayingNDK::pause() {
-        mp->pause();
-
-        //npc->setMediaState(mp->mediaState());
-    }
-
-    void NowPlayingNDK::stop() {
-        //npc->revoke();
-
-        mp->stop();
-
-        //npc->setMediaState(mp->mediaState());
-    }
+//    void NowPlayingNDK::resume() {
+//        mp->play();
+//
+//        npc->setMediaState(mp->mediaState());
+//    }
+//
+//    void NowPlayingNDK::pause() {
+//        mp->pause();
+//
+//        npc->setMediaState(mp->mediaState());
+//    }
+//
+//    void NowPlayingNDK::stop() {
+//        npc->revoke();
+//
+//        mp->stop();
+//
+//        npc->setMediaState(mp->mediaState());
+//    }
+//
+//    void NowPlayingNDK::next() {
+//        npc->revoke();
+//
+//        mp->stop();
+//
+//        npc->setMediaState(mp->mediaState());
+//    }
 
 } /* namespace webworks */
