@@ -84,6 +84,8 @@ string NowPlayingJS::InvokeMethod(const string& command) {
         result = m_NowPlayingMgr->NowPlayingRequestPlayback(arg);
     } else if (strCommand == "NowPlayingBindPlayCallback") {
         m_NowPlayingMgr->NowPlayingBindPlayCallback(callbackId);
+    } else if (strCommand == "NowPlayingBindPauseCallback") {
+        m_NowPlayingMgr->NowPlayingBindPauseCallback(callbackId);
     }
 //    if (strCommand == "NowPlayingSetMusic") {
 //        result = m_NowPlayingMgr->NowPlayingSetMusic(arg);
@@ -105,6 +107,10 @@ string NowPlayingJS::InvokeMethod(const string& command) {
 //    }
     else if (strCommand == "NowPlayingPlay") {
         result = m_NowPlayingMgr->NowPlayingPlay();
+
+    } else if (strCommand == "NowPlayingPause") {
+        result = m_NowPlayingMgr->NowPlayingPause();
+        
     }
 //    else if (strCommand == "NowPlayingPause") {
 //        result = m_NowPlayingMgr->NowPlayingPause(callbackId);

@@ -33,6 +33,12 @@ module.exports = {
         result.noResult(true);
     },
 
+    NowPlayingBindPauseCallback: function (success, fail, args, env) {
+        var result = new PluginResult(args, env);
+        resultObjs[result.callbackId] = result;
+        nowPlaying.getInstance().NowPlayingBindPauseCallback(result.callbackId);
+        result.noResult(true);
+    },
     //NowPlayingSetMusic: function (success, fail, args, env) {
 	//	var result = new PluginResult(args, env);
 	//	args = JSON.parse(decodeURIComponent(args["input"]));
@@ -74,6 +80,12 @@ module.exports = {
         var result = new PluginResult(args, env);
         result.ok(nowPlaying.getInstance().NowPlayingPlay(), false);
 	},
+
+  NowPlayingPause: function (success, fail, args, env) {
+        var result = new PluginResult(args, env);
+        result.ok(nowPlaying.getInstance().NowPlayingPause(), false);
+  },
+
 
 	//NowPlayingPause: function (success, fail, args, env) {
 	//	var result = new PluginResult(args, env);
@@ -141,6 +153,10 @@ JNEXT.NowPlaying = function(){
         return JNEXT.invoke(self.m_id, "NowPlayingBindPlayCallback " + callbackId);
     };
 
+    self.NowPlayingBindPauseCallback = function (callbackId) {
+        return JNEXT.invoke(self.m_id, "NowPlayingBindPauseCallback " + callbackId);
+    }
+
     //self.NowPlayingSetMusic = function (input) {
 	//	return JNEXT.invoke(self.m_id, "NowPlayingSetMusic " + "{}" + " " + input);
 	//};
@@ -171,6 +187,10 @@ JNEXT.NowPlaying = function(){
 	self.NowPlayingPlay = function () {
 		return JNEXT.invoke(self.m_id, "NowPlayingPlay");
 	};
+
+  self.NowPlayingPause = function () {
+    return JNEXT.invoke(self.m_id, "NowPlayingPause");
+  }
 
 	//self.NowPlayingPause = function (callbackId) {
 	//	return JNEXT.invoke(self.m_id, "NowPlayingPause " + callbackId);

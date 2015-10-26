@@ -94,6 +94,7 @@ var app = (function() {
             //document.getElementById("trackChangeButton").onclick = app.trackChangeButtonClick;
 
             document.getElementById("playButton").onclick = app.playButtonClick;
+            document.getElementById("pauseButton").onclick = app.pauseButtonClick;
             //document.getElementById("stopButton").onclick = app.stopButtonClick;
             //document.getElementById("pauseButton").onclick = app.pauseButtonClick;
             //document.getElementById("resumeButton").onclick = app.resumeButtonClick;
@@ -154,6 +155,10 @@ var app = (function() {
         app.writeOut(com.blackberry.community.nowplaying.NowPlayingPlay());
     };
 
+    var pauseButtonClick = function() {
+        app.writeOut(com.blackberry.community.nowplaying.NowPlayingPause());
+    };
+
     //var stopButtonClick = function() {
      //   app.writeOut(com.blackberry.community.nowplaying.NowPlayingStop(app.sampleAsyncCallback));
     //};
@@ -183,6 +188,7 @@ var app = (function() {
         "requestPlaybackButtonClick": requestPlaybackButtonClick,
         //"trackChangeButtonClick": trackChangeButtonClick,
         "playButtonClick": playButtonClick,
+        "pauseButtonClick": pauseButtonClick,
         //"pauseButtonClick": pauseButtonClick,
         //"resumeButtonClick": resumeButtonClick,
         //"stopButtonClick": stopButtonClick,

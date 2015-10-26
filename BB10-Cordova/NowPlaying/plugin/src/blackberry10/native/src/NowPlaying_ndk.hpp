@@ -71,13 +71,13 @@ namespace webworks {
 
             signals:
                 void playSignal();
-//                void pauseSignal();
+                void pauseSignal();
 //                void resumeSignal();
 //                void stopSignal();
 
             public slots:
                 void playSlot();
-//                void pause();
+                void pauseSlot();
 //                void resume();
 //                void stop();
 //                void next();
@@ -86,6 +86,7 @@ namespace webworks {
             string NowPlayingRequestPlayback(const string& data);
             void NowPlayingBindPlayCallback(const string& callbackId);
             string NowPlayingSetMusic(const string& data);
+            void NowPlayingBindPauseCallback(const string& callbackId);
 //            string NowPlayingSetMetadata(const string& data);
 //            string NowPlayingSetIcon(const string& data);
 //
@@ -95,6 +96,7 @@ namespace webworks {
 //            string NowPlayingDisableNextPrevious();
 
             string NowPlayingPlay();
+            string NowPlayingPause();
 //            string NowPlayingPause(const string& callbackId);
 //            string NowPlayingResume(const string& callbackId);
 //            string NowPlayingStop(const string& callbackId);
@@ -103,6 +105,7 @@ namespace webworks {
 
         private:
             string playCallbackId;
+            string pauseCallbackId;
 
     }; // class NowPlayingNDK
 
