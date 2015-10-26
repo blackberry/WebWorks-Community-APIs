@@ -87,6 +87,20 @@ namespace webworks {
         Q_ASSERT(connectResult);
     }
 
+    void NowPlayingNDK::NowPlayingBindStopCallback(const string& callbackId) {
+        stopCallbackId = callbackId;
+
+        bool connectResult;
+        Q_UNUSED(connectResult);
+        connectResult = this->connect(
+                            this,
+                            SIGNAL(stopSignal()), // can't use bb::multimedia::NowPlayingConnection::play()?
+                            this,
+                            SLOT(stopSlot())
+                        );
+        Q_ASSERT(connectResult);
+    }
+
 
     string NowPlayingNDK::NowPlayingSetMusic(const string& data) {
         QString str = QString::fromUtf8(data.c_str());
@@ -197,6 +211,10 @@ namespace webworks {
         return "Player paused.";
     }
 
+    string NowPlayingNDK::NowPlayingStop() {
+        emit stopSignal();
+        return "Player stopped.";
+    }
 //    string NowPlayingNDK::NowPlayingPause(const string& callbackId) {
 //        emit pauseSNignal();
 //        return "Player Paused.";
@@ -271,6 +289,16 @@ namespace webworks {
         sendEvent(pauseCallbackId + " " + writer.write(root));
     }
 
+    void NowPlayingNDK::stopSlot() {
+        mp->stop();
+            npc->setMediaState(mp->mediaState());
+
+        // Callback
+        Json::FastWriter writer;
+        Json::Value root;
+        root["result"] = "Stopping! (callback).";
+        sendEvent(stopCallbackId + " " + writer.write(root));
+    }
 //    void NowPlayingNDK::resume() {
 //        mp->play();
 //

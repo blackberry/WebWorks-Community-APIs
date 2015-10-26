@@ -23,6 +23,7 @@ var _self = {},
         /* Bind callbacks */
       	_self.NowPlayingBindPlayCallback(input.callbacks.play);
         _self.NowPlayingBindPauseCallback(input.callbacks.pause);
+        _self.NowPlayingBindStopCallback(input.callbacks.stop);
         delete input.callbacks;
 
         var result,
@@ -56,6 +57,17 @@ var _self = {},
                 console.log("Error: " + data);
             };
         exec(success, fail, _ID, "NowPlayingBindPauseCallback", null);
+    };
+
+    _self.NowPlayingBindStopCallback = function (callback) {
+        var success = function (data, response) {
+                var json = JSON.parse(data);
+                callback(json);
+            },
+            fail = function (data, response) {
+                console.log("Error: " + data);
+            };
+        exec(success, fail, _ID, "NowPlayingBindStopCallback", null);
     };
 
 
@@ -157,6 +169,18 @@ var _self = {},
 				console.log("Error: " + data);
 			};
 		exec(success, fail, _ID, "NowPlayingPause", null);
+		return result; 
+	}
+
+	_self.NowPlayingStop = function () {
+		var result,
+			success = function (data, response) {
+				result = data;
+			},
+			fail = function (data, response) {
+				console.log("Error: " + data);
+			};
+		exec(success, fail, _ID, "NowPlayingStop", null);
 		return result; 
 	}
 	//_self.NowPlayingPause = function (callback) {

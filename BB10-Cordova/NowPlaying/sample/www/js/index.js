@@ -95,8 +95,8 @@ var app = (function() {
 
             document.getElementById("playButton").onclick = app.playButtonClick;
             document.getElementById("pauseButton").onclick = app.pauseButtonClick;
-            //document.getElementById("stopButton").onclick = app.stopButtonClick;
-            //document.getElementById("pauseButton").onclick = app.pauseButtonClick;
+            document.getElementById("stopButton").onclick = app.stopButtonClick;
+            
             //document.getElementById("resumeButton").onclick = app.resumeButtonClick;
 
 			document.getElementById("getStateButton").onclick = app.getStateButtonClick;
@@ -159,6 +159,9 @@ var app = (function() {
         app.writeOut(com.blackberry.community.nowplaying.NowPlayingPause());
     };
 
+    var stopButtonClick = function() {
+        app.writeOut(com.blackberry.community.nowplaying.NowPlayingStop());
+    }
     //var stopButtonClick = function() {
      //   app.writeOut(com.blackberry.community.nowplaying.NowPlayingStop(app.sampleAsyncCallback));
     //};
@@ -191,7 +194,7 @@ var app = (function() {
         "pauseButtonClick": pauseButtonClick,
         //"pauseButtonClick": pauseButtonClick,
         //"resumeButtonClick": resumeButtonClick,
-        //"stopButtonClick": stopButtonClick,
+        "stopButtonClick": stopButtonClick,
         "getStateButtonClick": getStateButtonClick
     };
 }());
