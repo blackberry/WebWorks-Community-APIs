@@ -101,6 +101,19 @@ namespace webworks {
         Q_ASSERT(connectResult);
     }
 
+    void NowPlayingNDK::NowPlayingBindResumeCallback(const string& callbackId) {
+        resumeCallbackId = callbackId;
+
+        bool connectResult;
+        Q_UNUSED(connectResult);
+        connectResult = this->connect(
+                            this,
+                            SIGNAL(resumeSignal()), // can't use bb::multimedia::NowPlayingConnection::play()?
+                            this,
+                            SLOT(resumeSlot())
+                        );
+        Q_ASSERT(connectResult);
+    }
 
     string NowPlayingNDK::NowPlayingSetMusic(const string& data) {
         QString str = QString::fromUtf8(data.c_str());
@@ -215,6 +228,11 @@ namespace webworks {
         emit stopSignal();
         return "Player stopped.";
     }
+
+    string NowPlayingNDK::NowPlayingResume() {
+        emit resumeSignal();
+        return "Player resumed.";
+    }
 //    string NowPlayingNDK::NowPlayingPause(const string& callbackId) {
 //        emit pauseSNignal();
 //        return "Player Paused.";
@@ -291,7 +309,7 @@ namespace webworks {
 
     void NowPlayingNDK::stopSlot() {
         mp->stop();
-            npc->setMediaState(mp->mediaState());
+        npc->setMediaState(mp->mediaState());
 
         // Callback
         Json::FastWriter writer;
@@ -299,6 +317,18 @@ namespace webworks {
         root["result"] = "Stopping! (callback).";
         sendEvent(stopCallbackId + " " + writer.write(root));
     }
+
+    void NowPlayingNDK::resumeSlot() {
+        mp->play();
+        npc->setMediaState(mp->mediaState());
+
+        // Callback
+        Json::FastWriter writer;
+        Json::Value root;
+        root["result"] = "Resuming! (callback).";
+        sendEvent(resumeCallbackId + " " + writer.write(root));
+    }
+
 //    void NowPlayingNDK::resume() {
 //        mp->play();
 //

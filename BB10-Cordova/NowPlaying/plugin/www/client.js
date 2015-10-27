@@ -24,6 +24,7 @@ var _self = {},
       	_self.NowPlayingBindPlayCallback(input.callbacks.play);
         _self.NowPlayingBindPauseCallback(input.callbacks.pause);
         _self.NowPlayingBindStopCallback(input.callbacks.stop);
+        _self.NowPlayingBindResumeCallback(input.callbacks.resume);
         delete input.callbacks;
 
         var result,
@@ -70,6 +71,16 @@ var _self = {},
         exec(success, fail, _ID, "NowPlayingBindStopCallback", null);
     };
 
+    _self.NowPlayingBindResumeCallback = function (callback) {
+        var success = function (data, response) {
+                var json = JSON.parse(data);
+                callback(json);
+            },
+            fail = function (data, response) {
+                console.log("Error: " + data);
+            };
+        exec(success, fail, _ID, "NowPlayingBindResumeCallback", null);
+    };
 
 	//_self.NowPlayingSetMusic = function (input) {
 	//	var result,
@@ -183,6 +194,18 @@ var _self = {},
 		exec(success, fail, _ID, "NowPlayingStop", null);
 		return result; 
 	}
+
+	_self.NowPlayingResume = function () {
+		var result,
+			success = function (data, response) {
+				result = data;
+			},
+			fail = function (data, response) {
+				console.log("Error: " + data);
+			};
+		exec(success, fail, _ID, "NowPlayingResume", null);
+		return result; 
+	}	
 	//_self.NowPlayingPause = function (callback) {
 	//	var result,
 	//		success = function (data, response) {
