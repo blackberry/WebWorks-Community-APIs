@@ -18,6 +18,7 @@ var _self = {},
     _ID = "com.blackberry.community.nowplaying",
     exec = cordova.require("cordova/exec");
 
+	/* Set a particular format. */
 	_self.NowPlayingRequestPlayback = function(input) {
 
         /* Bind callbacks */

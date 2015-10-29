@@ -82,24 +82,20 @@ string NowPlayingJS::InvokeMethod(const string& command) {
 
     if (strCommand == "NowPlayingRequestPlayback") {
         result = m_NowPlayingMgr->NowPlayingRequestPlayback(arg);
-    } else if (strCommand == "NowPlayingBindPlayCallback") {
+
+    }
+    else if (strCommand == "NowPlayingBindPlayCallback") {
         m_NowPlayingMgr->NowPlayingBindPlayCallback(callbackId);
+
     } else if (strCommand == "NowPlayingBindPauseCallback") {
         m_NowPlayingMgr->NowPlayingBindPauseCallback(callbackId);
+
     } else if (strCommand == "NowPlayingBindStopCallback") {
         m_NowPlayingMgr->NowPlayingBindStopCallback(callbackId);
+
     } else if (strCommand == "NowPlayingBindResumeCallback") {
         m_NowPlayingMgr->NowPlayingBindResumeCallback(callbackId);
-    }
-//    if (strCommand == "NowPlayingSetMusic") {
-//        result = m_NowPlayingMgr->NowPlayingSetMusic(arg);
-//    }
-//    else if (strCommand == "NowPlayingSetMetadata") {
-//        result = m_NowPlayingMgr->NowPlayingSetMetadata(arg);
-//    }
-//    else if (strCommand == "NowPlayingSetIcon") {
-//        result = m_NowPlayingMgr->NowPlayingSetIcon(arg);
-//    }
+
 //    else if (strCommand == "NowPlayingChangeTrack") {
 //        result = m_NowPlayingMgr->NowPlayingChangeTrack(callbackId, arg);
 //    }
@@ -109,30 +105,22 @@ string NowPlayingJS::InvokeMethod(const string& command) {
 //    else if (strCommand == "NowPlayingDisableNextPrevious") {
 //        result = m_NowPlayingMgr->NowPlayingDisableNextPrevious();
 //    }
-    else if (strCommand == "NowPlayingPlay") {
+    } else if (strCommand == "NowPlayingPlay") {
         result = m_NowPlayingMgr->NowPlayingPlay();
 
     } else if (strCommand == "NowPlayingPause") {
         result = m_NowPlayingMgr->NowPlayingPause();
-        
+
     } else if (strCommand == "NowPlayingStop") {
         result = m_NowPlayingMgr->NowPlayingStop();
+
     } else if (strCommand == "NowPlayingResume") {
         result = m_NowPlayingMgr->NowPlayingResume();
-    }    
-//    else if (strCommand == "NowPlayingPause") {
-//        result = m_NowPlayingMgr->NowPlayingPause(callbackId);
-//    }
-//    else if (strCommand == "NowPlayingResume") {
-//        result = m_NowPlayingMgr->NowPlayingResume(callbackId);
-//    }
-//    else if (strCommand == "NowPlayingStop") {
-//        result = m_NowPlayingMgr->NowPlayingStop(callbackId);
-//    }
-    else if (strCommand == "NowPlayingGetState") {
+
+    } else if (strCommand == "NowPlayingGetState") {
         result = m_NowPlayingMgr->NowPlayingGetState();
-    }
-    else {
+
+    } else {
         result = "Invalid Method " + strCommand;
     }
 

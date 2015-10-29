@@ -161,7 +161,7 @@ var app = (function() {
 
     var stopButtonClick = function() {
         app.writeOut(com.blackberry.community.nowplaying.NowPlayingStop());
-    }
+    };
     //var stopButtonClick = function() {
      //   app.writeOut(com.blackberry.community.nowplaying.NowPlayingStop(app.sampleAsyncCallback));
     //};

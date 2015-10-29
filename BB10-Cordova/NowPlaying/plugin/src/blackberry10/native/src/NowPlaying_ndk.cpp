@@ -45,6 +45,13 @@ namespace webworks {
 
         npc->acquire();
 
+        /* Set the volume overlay over the media notification area.
+         *
+         * "I don’t think there’s any control to change the size of the
+         * media notification area – it’s set by the OS and the
+         * hardware." - quoted from Tim Windsor */
+        npc->setOverlayStyle(OverlayStyle::Fancy);
+
         Json::Value root;
         Json::Reader reader;
 
@@ -52,8 +59,10 @@ namespace webworks {
         if (!parse) {
             returnValue = "Error requesting playback";
         } else {
-            NowPlayingSetMusic(root["songURL"].asString());
-            returnValue = "Playback requested successfully.";
+            returnValue += setMusic(root["songURL"].asString());
+            returnValue += setIcon(root["iconURL"].asString());
+            returnValue += setMetadata(root["metadata"]);
+            returnValue += "Playback requested successfully.";
         }
 
         return returnValue;
@@ -66,7 +75,7 @@ namespace webworks {
         Q_UNUSED(connectResult);
         connectResult = this->connect(
                             this,
-                            SIGNAL(playSignal()), // can't use bb::multimedia::NowPlayingConnection::play()?
+                            SIGNAL(playSignal()),
                             this,
                             SLOT(playSlot())
                         );
@@ -80,7 +89,7 @@ namespace webworks {
         Q_UNUSED(connectResult);
         connectResult = this->connect(
                             this,
-                            SIGNAL(pauseSignal()), // can't use bb::multimedia::NowPlayingConnection::play()?
+                            SIGNAL(pauseSignal()),
                             this,
                             SLOT(pauseSlot())
                         );
@@ -94,7 +103,7 @@ namespace webworks {
         Q_UNUSED(connectResult);
         connectResult = this->connect(
                             this,
-                            SIGNAL(stopSignal()), // can't use bb::multimedia::NowPlayingConnection::play()?
+                            SIGNAL(stopSignal()),
                             this,
                             SLOT(stopSlot())
                         );
@@ -108,14 +117,19 @@ namespace webworks {
         Q_UNUSED(connectResult);
         connectResult = this->connect(
                             this,
-                            SIGNAL(resumeSignal()), // can't use bb::multimedia::NowPlayingConnection::play()?
+                            SIGNAL(resumeSignal()),
                             this,
                             SLOT(resumeSlot())
                         );
         Q_ASSERT(connectResult);
     }
 
-    string NowPlayingNDK::NowPlayingSetMusic(const string& data) {
+    /**
+     * Assume NowPlayingConnection instance is acquired. No need to revoke.
+     */
+    string NowPlayingNDK::setMusic(const string& data) {
+        Q_ASSERT(npc->isAcquired());
+
         QString str = QString::fromUtf8(data.c_str());
 
         if (! str.startsWith("http", Qt::CaseInsensitive)) {
@@ -128,71 +142,60 @@ namespace webworks {
 
         if (url.isValid()){
           mp->setSourceUrl(url);
-          return "Music set to " + data;
+          return "Music set to " + data + "\n";
         } else {
-          return "Music couldn't be set to " + data + " because it is invalid.";
+          return "Music couldn't be set to " + data
+                  + " because it is invalid.\n";
         }
     }
 
-//    string NowPlayingNDK::NowPlayingSetMetadata(const string& data) {
-//        string returnValue = "";
-//
-//        Json::Value root;
-//        Json::Reader reader;
-//
-//        bool parse = reader.parse(data, root);
-//        if (!parse) {
-//            returnValue = "Error setting metadata";
-//        } else {
-//            QVariantMap metadata;
-//
-//            metadata[MetaData::Title] = QString::fromStdString(root["Title"].asString());
-//            metadata[MetaData::Artist] = QString::fromStdString(root["Artist"].asString());
-//            metadata[MetaData::Album] = QString::fromStdString(root["Album"].asString());
-//
-//            if (npc->isAcquired()) {
-//                npc->setMetaData(metadata);
-//            } else {
-//                npc->acquire();
-//                npc->setMetaData(metadata);
-//                npc->revoke();
-//            }
-//
-//            returnValue = "Metadata set successfully.";
-//        }
-//
-//        return returnValue;
-//    }
+    /**
+     * Assume NowPlayingConnection instance is acquired. No need to revoke.
+     */
+    string NowPlayingNDK::setIcon(const string& data) {
+        Q_ASSERT(npc->isAcquired());
 
-//    string NowPlayingNDK::NowPlayingSetIcon(const string& data) {
-//        QString str = QString::fromUtf8(data.c_str());
-//
-//        if (! str.startsWith("http", Qt::CaseInsensitive)) {
-//            char cwd[PATH_MAX];
-//            getcwd(cwd, PATH_MAX);
-//            str.prepend(QString(cwd).append("/app/native/"));
-//        }
-//
-//        QUrl url(str);
-//
-//        if (url.isValid()){
-//            if (str.startsWith("http", Qt::CaseInsensitive)) {
-//                return "Icon couldn't be set to " + data + " because HTTP URLs"
-//                       + "to icons aren't currently supported.";
-//            } else {
-//                if (npc->isAcquired()) {
-//                    npc->setIconUrl(url);
-//                } else {
-//                    npc->acquire();
-//                    npc->setIconUrl(url);
-//                    npc->revoke();
-//                }
-//                return "Icon set to " + data;
-//            }
-//        } else {
-//            return "Icon couldn't be set to " + data + " because it is invalid.";
-//        }
-//    }
+        QString str = QString::fromUtf8(data.c_str());
+
+        if (! str.startsWith("http", Qt::CaseInsensitive)) {
+            char cwd[PATH_MAX];
+            getcwd(cwd, PATH_MAX);
+            str.prepend(QString(cwd).append("/app/native/"));
+        } else {
+            return "Icon couldn't be set to " + data + " because HTTP URLs "
+                   + "aren't currently supported as icons. \n";
+        }
+
+        QUrl url(str);
+
+        if (url.isValid()){
+            npc->setIconUrl(url);
+            return "Icon set to " + data + "\n";
+        } else {
+            return "Icon couldn't be set to " + data +
+                    " because it is invalid.\n";
+        }
+    }
+
+    /**
+     * Assume NowPlayingConnection instance is acquired. No need to revoke.
+     */
+    string NowPlayingNDK::setMetadata(const Json::Value& data) {
+        Q_ASSERT(npc->isAcquired());
+
+        QVariantMap metadata;
+
+        metadata[MetaData::Title] =
+                QString::fromStdString(data["Title"].asString());
+        metadata[MetaData::Artist] =
+                QString::fromStdString(data["Artist"].asString());
+        metadata[MetaData::Album] =
+                QString::fromStdString(data["Album"].asString());
+
+        npc->setMetaData(metadata);
+
+        return "Metadata set successfully. \n";
+    }
 
 //    string NowPlayingNDK::NowPlayingChangeTrack(const string& callbackId, const string& data) {
 //        return "Changed track.";
@@ -233,20 +236,6 @@ namespace webworks {
         emit resumeSignal();
         return "Player resumed.";
     }
-//    string NowPlayingNDK::NowPlayingPause(const string& callbackId) {
-//        emit pauseSNignal();
-//        return "Player Paused.";
-//    }
-//
-//    string NowPlayingNDK::NowPlayingResume(const string& callbackId) {
-//        emit resumeSignal();
-//        return "Player Resumed.";
-//    }
-//
-//    string NowPlayingNDK::NowPlayingStop(const string& callbackId) {
-//        emit stopSignal();
-//        return "Player Stopped.";
-//    }
 
     string NowPlayingNDK::NowPlayingGetState() {
         string state = "State: ";
@@ -316,6 +305,8 @@ namespace webworks {
         Json::Value root;
         root["result"] = "Stopping! (callback).";
         sendEvent(stopCallbackId + " " + writer.write(root));
+
+        // TODO: revoke and disconnect callback bindings?
     }
 
     void NowPlayingNDK::resumeSlot() {
@@ -329,26 +320,6 @@ namespace webworks {
         sendEvent(resumeCallbackId + " " + writer.write(root));
     }
 
-//    void NowPlayingNDK::resume() {
-//        mp->play();
-//
-//        npc->setMediaState(mp->mediaState());
-//    }
-//
-//    void NowPlayingNDK::pause() {
-//        mp->pause();
-//
-//        npc->setMediaState(mp->mediaState());
-//    }
-//
-//    void NowPlayingNDK::stop() {
-//        npc->revoke();
-//
-//        mp->stop();
-//
-//        npc->setMediaState(mp->mediaState());
-//    }
-//
 //    void NowPlayingNDK::next() {
 //        npc->revoke();
 //

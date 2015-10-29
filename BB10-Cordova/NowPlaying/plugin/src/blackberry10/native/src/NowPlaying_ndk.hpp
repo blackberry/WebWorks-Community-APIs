@@ -24,6 +24,8 @@
 #include <QString>
 #include <QByteArray>
 #include <QtCore>
+#include <json/value.h>
+
 #include <bb/multimedia/MediaPlayer>
 #include <bb/multimedia/NowPlayingConnection>
 
@@ -49,20 +51,6 @@ namespace webworks {
             {
                 mp = new bb::multimedia::MediaPlayer(this);
                 npc = new bb::multimedia::NowPlayingConnection(this);
-
-                /* Set the volume overlay over the media notification area. */
-                npc->acquire();
-                npc->setOverlayStyle(bb::multimedia::OverlayStyle::Fancy);
-                npc->revoke();
-
-//                QObject::connect(this, SIGNAL(playSignal()),
-//                                this, SLOT(play()));
-//                QObject::connect(this, SIGNAL(pauseSignal()),
-//                                this, SLOT(pause()));
-//                QObject::connect(this, SIGNAL(resumeSignal()),
-//                                this, SLOT(resume()));
-//                QObject::connect(this, SIGNAL(stopSignal()),
-//                                this, SLOT(stop()));
             }
 
             virtual ~NowPlayingNDK() {};
@@ -75,26 +63,29 @@ namespace webworks {
                 void stopSignal();
                 void resumeSignal();
 
+                /* TODO: Need to be able to connect built-in play, pause signals etc..
+                 * so can handle from volume overlay/MNA??? */
+
             public slots:
                 void playSlot();
                 void pauseSlot();
                 void stopSlot();
                 void resumeSlot();
-//                void stop();
 //                void next();
 
         public:
             string NowPlayingRequestPlayback(const string& data);
             void NowPlayingBindPlayCallback(const string& callbackId);
-            string NowPlayingSetMusic(const string& data);
             void NowPlayingBindPauseCallback(const string& callbackId);
             void NowPlayingBindStopCallback(const string& callbackId);
             void NowPlayingBindResumeCallback(const string& callbackId);
-//            string NowPlayingSetMetadata(const string& data);
-//            string NowPlayingSetIcon(const string& data);
-//
+
+            string setMusic(const string& data);
+            string setIcon(const string& data);
+            string setMetadata(const Json::Value& data);
+
 //            string NowPlayingChangeTrack(const string& callbackId, const string& data);
-//
+
 //            string NowPlayingEnableNextPrevious();
 //            string NowPlayingDisableNextPrevious();
 
@@ -102,9 +93,6 @@ namespace webworks {
             string NowPlayingPause();
             string NowPlayingStop();
             string NowPlayingResume();
-//            string NowPlayingPause(const string& callbackId);
-//            string NowPlayingResume(const string& callbackId);
-//            string NowPlayingStop(const string& callbackId);
 
             string NowPlayingGetState();
 
