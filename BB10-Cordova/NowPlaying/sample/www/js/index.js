@@ -91,7 +91,7 @@ var app = (function() {
 
             document.getElementById("requestPlaybackButton").onclick = app.requestPlaybackButtonClick;
 
-            //document.getElementById("trackChangeButton").onclick = app.trackChangeButtonClick;
+            document.getElementById("trackChangeButton").onclick = app.trackChangeButtonClick;
 
             document.getElementById("playButton").onclick = app.playButtonClick;
             document.getElementById("pauseButton").onclick = app.pauseButtonClick;
@@ -141,15 +141,18 @@ var app = (function() {
 	};
 
 
-    //var trackChangeButtonClick = function() {
-    //    var jsonData = {
-    //        "Title": "MyTitleChangeTrack1",
-    //        "Artist": "MyArtistChangeTrack1",
-    //        "Album": "MyAlbumChangeTrack1"
-    //    };
-    //
-    //    app.writeOut(com.blackberry.community.nowplaying.NowPlayingChangeTrack(app.sampleAsyncCallback, jsonData));
-    //};
+    var trackChangeButtonClick = function() {
+        var jsonData = {
+            songURL: playlist[1].songURL,
+            iconURL: playlist[1].iconURL,
+            metadata: playlist[1].metadata,
+            nextEnabled: true,
+            prevEnabled: true
+        };
+
+        app.writeOut(com.blackberry.community.nowplaying.NowPlayingTrackChange(jsonData));
+    };
+
 
     var playButtonClick = function() {
         app.writeOut(com.blackberry.community.nowplaying.NowPlayingPlay());
@@ -162,16 +165,9 @@ var app = (function() {
     var stopButtonClick = function() {
         app.writeOut(com.blackberry.community.nowplaying.NowPlayingStop());
     };
-    //var stopButtonClick = function() {
-     //   app.writeOut(com.blackberry.community.nowplaying.NowPlayingStop(app.sampleAsyncCallback));
-    //};
-    //
-    //var pauseButtonClick = function() {
-	//	app.writeOut(com.blackberry.community.nowplaying.NowPlayingPause(app.sampleAsyncCallback));
-	//};
-    //
+
 	var resumeButtonClick = function() {
-		app.writeOut(com.blackberry.community.nowplaying.NowPlayingResume(app.sampleAsyncCallback));
+		app.writeOut(com.blackberry.community.nowplaying.NowPlayingResume());
 	};
 
 
@@ -189,10 +185,9 @@ var app = (function() {
         "bindButtons": bindButtons,
         "clearResultsButtonClick": clearResultsButtonClick,
         "requestPlaybackButtonClick": requestPlaybackButtonClick,
-        //"trackChangeButtonClick": trackChangeButtonClick,
+        "trackChangeButtonClick": trackChangeButtonClick,
         "playButtonClick": playButtonClick,
         "pauseButtonClick": pauseButtonClick,
-        //"pauseButtonClick": pauseButtonClick,
         "resumeButtonClick": resumeButtonClick,
         "stopButtonClick": stopButtonClick,
         "getStateButtonClick": getStateButtonClick

@@ -63,8 +63,8 @@ namespace webworks {
                 void stopSignal();
                 void resumeSignal();
 
-                /* TODO: Need to be able to connect built-in play, pause signals etc..
-                 * so can handle from volume overlay/MNA??? */
+                /* TODO (wait for email response): Need to be able to connect built-in play, pause signals etc..
+                 * so can handle from volume overlay/MNA???  */
 
             public slots:
                 void playSlot();
@@ -80,14 +80,11 @@ namespace webworks {
             void NowPlayingBindStopCallback(const string& callbackId);
             void NowPlayingBindResumeCallback(const string& callbackId);
 
+            string NowPlayingTrackChange(const string& data);
+
             string setMusic(const string& data);
             string setIcon(const string& data);
             string setMetadata(const Json::Value& data);
-
-//            string NowPlayingChangeTrack(const string& callbackId, const string& data);
-
-//            string NowPlayingEnableNextPrevious();
-//            string NowPlayingDisableNextPrevious();
 
             string NowPlayingPlay();
             string NowPlayingPause();

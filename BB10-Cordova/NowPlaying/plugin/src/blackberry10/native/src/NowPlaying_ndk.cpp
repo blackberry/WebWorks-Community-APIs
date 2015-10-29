@@ -51,6 +51,7 @@ namespace webworks {
          * media notification area – it’s set by the OS and the
          * hardware." - quoted from Tim Windsor */
         npc->setOverlayStyle(OverlayStyle::Fancy);
+        npc->setMediaState(MediaState::Started);
 
         Json::Value root;
         Json::Reader reader;
@@ -124,12 +125,32 @@ namespace webworks {
         Q_ASSERT(connectResult);
     }
 
-    /**
-     * Assume NowPlayingConnection instance is acquired. No need to revoke.
-     */
-    string NowPlayingNDK::setMusic(const string& data) {
-        Q_ASSERT(npc->isAcquired());
 
+    string NowPlayingNDK::NowPlayingTrackChange(const string& data) {
+        string returnValue = "";
+
+        Json::Value root;
+        Json::Reader reader;
+
+        emit stopSignal();
+
+        bool parse = reader.parse(data, root);
+        if (!parse) {
+            returnValue = "Error changing track";
+        } else {
+            returnValue += setMusic(root["songURL"].asString());
+            returnValue += setIcon(root["iconURL"].asString());
+            returnValue += setMetadata(root["metadata"]);
+            returnValue += "Track changed successfully.";
+        }
+
+        emit playSignal();
+
+        return returnValue;
+    }
+
+
+    string NowPlayingNDK::setMusic(const string& data) {
         QString str = QString::fromUtf8(data.c_str());
 
         if (! str.startsWith("http", Qt::CaseInsensitive)) {
@@ -149,12 +170,7 @@ namespace webworks {
         }
     }
 
-    /**
-     * Assume NowPlayingConnection instance is acquired. No need to revoke.
-     */
     string NowPlayingNDK::setIcon(const string& data) {
-        Q_ASSERT(npc->isAcquired());
-
         QString str = QString::fromUtf8(data.c_str());
 
         if (! str.startsWith("http", Qt::CaseInsensitive)) {
@@ -177,14 +193,16 @@ namespace webworks {
         }
     }
 
-    /**
-     * Assume NowPlayingConnection instance is acquired. No need to revoke.
-     */
     string NowPlayingNDK::setMetadata(const Json::Value& data) {
-        Q_ASSERT(npc->isAcquired());
-
         QVariantMap metadata;
 
+        /**
+         * http://developer.blackberry.com/native/reference/cascades/bb__multimedia__nowplayingconnection.html#comment-1134791487
+         * Wes Barichak  Theodore Mavrakis • 2 years ago
+         * Currently, the only metadata properties that are available are
+         * MetaData::Album, MetaData::Artist, and MetaData::Title, while the
+         * rest of the MetaData properties are ignored.
+         * This will likely change in the future though. */
         metadata[MetaData::Title] =
                 QString::fromStdString(data["Title"].asString());
         metadata[MetaData::Artist] =
@@ -197,25 +215,6 @@ namespace webworks {
         return "Metadata set successfully. \n";
     }
 
-//    string NowPlayingNDK::NowPlayingChangeTrack(const string& callbackId, const string& data) {
-//        return "Changed track.";
-//    }
-//
-//    string NowPlayingNDK::NowPlayingEnableNextPrevious() {
-//        if (npc->isAcquired()) {
-//            npc->setNextEnabled(true);
-//        } else {
-//            npc->acquire();
-//            npc->setNextEnabled(true);
-//            npc->revoke();
-//        }
-//
-//        return "Enabled Next Previous.";
-//    }
-//
-//    string NowPlayingNDK::NowPlayingDisableNextPrevious() {
-//        return "Disabled Next Previous.";
-//    }
 
     string NowPlayingNDK::NowPlayingPlay() {
         emit playSignal();
@@ -236,6 +235,7 @@ namespace webworks {
         emit resumeSignal();
         return "Player resumed.";
     }
+
 
     string NowPlayingNDK::NowPlayingGetState() {
         string state = "State: ";
@@ -268,6 +268,7 @@ namespace webworks {
         return state.c_str();
     }
 
+
     /***
      * Slots
      ***/
@@ -298,6 +299,7 @@ namespace webworks {
 
     void NowPlayingNDK::stopSlot() {
         mp->stop();
+
         npc->setMediaState(mp->mediaState());
 
         // Callback
@@ -311,6 +313,7 @@ namespace webworks {
 
     void NowPlayingNDK::resumeSlot() {
         mp->play();
+
         npc->setMediaState(mp->mediaState());
 
         // Callback
