@@ -249,7 +249,6 @@ Example:
 #### MUST-HAVES ###
 
 1. Volume Overlay
-
 	(In `/plugin/src/blackberry10/native/src/NowPlaying_ndk.cpp`)
 
 	- Get music, icon, and metadata to show here
