@@ -51,6 +51,8 @@ namespace webworks {
             {
                 mp = new bb::multimedia::MediaPlayer(this);
                 npc = new bb::multimedia::NowPlayingConnection(this);
+
+                newConnectResult = false;
             }
 
             virtual ~NowPlayingNDK() {};
@@ -63,15 +65,11 @@ namespace webworks {
                 void stopSignal();
                 void resumeSignal();
 
-                /* TODO (wait for email response): Need to be able to connect built-in play, pause signals etc..
-                 * so can handle from volume overlay/MNA???  */
-
             public slots:
                 void playSlot();
                 void pauseSlot();
                 void stopSlot();
                 void resumeSlot();
-//                void next();
 
         public:
             string NowPlayingRequestPlayback(const string& data);
@@ -94,6 +92,7 @@ namespace webworks {
             string NowPlayingGetState();
 
         private:
+            bool newConnectResult;
             string playCallbackId;
             string pauseCallbackId;
             string stopCallbackId;

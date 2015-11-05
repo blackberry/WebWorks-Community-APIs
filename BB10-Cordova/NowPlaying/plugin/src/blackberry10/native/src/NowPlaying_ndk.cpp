@@ -50,8 +50,44 @@ namespace webworks {
          * "I don’t think there’s any control to change the size of the
          * media notification area – it’s set by the OS and the
          * hardware." - quoted from Tim Windsor */
+//        npc->setMediaState(MediaState::Started);
         npc->setOverlayStyle(OverlayStyle::Fancy);
-        npc->setMediaState(MediaState::Started);
+        npc->setNextEnabled(true);
+
+        newConnectResult = QObject::connect(
+                                            npc,
+                                            SIGNAL(next()),
+                                            this,
+                                            SLOT(pauseSlot())
+                                        );
+
+        newConnectResult = QObject::connect(
+                                                npc,
+                                                SIGNAL(play()),
+                                                this,
+                                                SLOT(pauseSlot())
+                                            );
+
+        newConnectResult &= QObject::connect(
+                                                        npc,
+                                                        SIGNAL(revoked()),
+                                                        this,
+                                                        SLOT(pauseSlot())
+                                                    );
+
+        newConnectResult &= QObject::connect(
+                                                npc,
+                                                SIGNAL(pause()),
+                                                this,
+                                                SLOT(pauseSlot())
+                                            );
+
+        newConnectResult &= QObject::connect(
+                                                mp,
+                                                SIGNAL(trackChanged(unsigned int)),
+                                                this,
+                                                SLOT(pauseSlot())
+                                            );
 
         Json::Value root;
         Json::Reader reader;
@@ -64,6 +100,9 @@ namespace webworks {
             returnValue += setIcon(root["iconURL"].asString());
             returnValue += setMetadata(root["metadata"]);
             returnValue += "Playback requested successfully.";
+            returnValue += newConnectResult ? "\n CONNECTED" : "\n NOT CONNECTED";
+            returnValue += npc->isNextEnabled() ? "\n NEXT ENALBED" : "\n NEXT NOT ENABLED";
+            returnValue += npc->overlayStyle() == OverlayStyle::Fancy ? "\n FANCY" : "\n PLAIN";
         }
 
         return returnValue;
@@ -72,9 +111,13 @@ namespace webworks {
     void NowPlayingNDK::NowPlayingBindPlayCallback(const string& callbackId) {
         playCallbackId = callbackId;
 
+        // What is npc play signal anyways, and how is it emitted?
+        // I thought one was connected to another, but of course separate.
+        // TODO: try to emit
+
         bool connectResult;
         Q_UNUSED(connectResult);
-        connectResult = this->connect(
+        connectResult = QObject::connect(
                             this,
                             SIGNAL(playSignal()),
                             this,
@@ -86,15 +129,18 @@ namespace webworks {
     void NowPlayingNDK::NowPlayingBindPauseCallback(const string& callbackId) {
         pauseCallbackId = callbackId;
 
-        bool connectResult;
-        Q_UNUSED(connectResult);
-        connectResult = this->connect(
-                            this,
-                            SIGNAL(pauseSignal()),
-                            this,
-                            SLOT(pauseSlot())
-                        );
-        Q_ASSERT(connectResult);
+        Q_UNUSED(newConnectResult);
+
+//        connectResult = this->connect(
+//                            this,
+//                            SIGNAL(pauseSignal()),
+//                            this,
+//                            SLOT(pauseSlot())
+//                        );
+//        Q_ASSERT(connectResult);
+
+
+        Q_ASSERT(newConnectResult);
     }
 
     void NowPlayingNDK::NowPlayingBindStopCallback(const string& callbackId) {
@@ -144,7 +190,7 @@ namespace webworks {
             returnValue += "Track changed successfully.";
         }
 
-        emit playSignal();
+        mp->play();
 
         return returnValue;
     }
@@ -178,6 +224,10 @@ namespace webworks {
             getcwd(cwd, PATH_MAX);
             str.prepend(QString(cwd).append("/app/native/"));
         } else {
+            /* http://developer.blackberry.com/native/reference/cascades/bb__multimedia__nowplayingconnection.html#function-play
+             * Comment 2 years ago from Oct 30, 2015.
+             * Theodore Mavrakis: "How can we pass an http url to use for the icon of a NowPlayingConnection?"
+             * Wes Barichak: "Currently, this is not possible. But, we will be looking at adding this functionality in a future release." */
             return "Icon couldn't be set to " + data + " because HTTP URLs "
                    + "aren't currently supported as icons. \n";
         }
@@ -198,11 +248,13 @@ namespace webworks {
 
         /**
          * http://developer.blackberry.com/native/reference/cascades/bb__multimedia__nowplayingconnection.html#comment-1134791487
-         * Wes Barichak  Theodore Mavrakis • 2 years ago
-         * Currently, the only metadata properties that are available are
+         * Comment 2 years ago from Oct 30, 2015.
+         * Wes Barichak: "Currently, the only metadata properties that are available are
          * MetaData::Album, MetaData::Artist, and MetaData::Title, while the
          * rest of the MetaData properties are ignored.
-         * This will likely change in the future though. */
+         * This will likely change in the future though."
+         *
+         * TODO: test this. */
         metadata[MetaData::Title] =
                 QString::fromStdString(data["Title"].asString());
         metadata[MetaData::Artist] =
@@ -217,6 +269,8 @@ namespace webworks {
 
 
     string NowPlayingNDK::NowPlayingPlay() {
+//        mp->play();
+//        npc->acquire();
         emit playSignal();
         return "Player started.";
     }
@@ -239,7 +293,7 @@ namespace webworks {
 
     string NowPlayingNDK::NowPlayingGetState() {
         string state = "State: ";
-        switch (mp->mediaState()) {
+        switch (npc->mediaState()) {
             case bb::multimedia::MediaState::Unprepared:
                 state += "Unprepared";
                 break;
@@ -264,6 +318,8 @@ namespace webworks {
 
         state += " Preempted: ";
         state += npc->isPreempted() ? "True" : "False";
+
+        state += newConnectResult ? "\nconnected" : "\nnot connected";
 
         return state.c_str();
     }
@@ -307,8 +363,6 @@ namespace webworks {
         Json::Value root;
         root["result"] = "Stopping! (callback).";
         sendEvent(stopCallbackId + " " + writer.write(root));
-
-        // TODO: revoke and disconnect callback bindings?
     }
 
     void NowPlayingNDK::resumeSlot() {
@@ -322,13 +376,4 @@ namespace webworks {
         root["result"] = "Resuming! (callback).";
         sendEvent(resumeCallbackId + " " + writer.write(root));
     }
-
-//    void NowPlayingNDK::next() {
-//        npc->revoke();
-//
-//        mp->stop();
-//
-//        npc->setMediaState(mp->mediaState());
-//    }
-
 } /* namespace webworks */
