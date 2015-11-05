@@ -255,7 +255,8 @@ Example:
 	- Get buttons here to fire signals
 	- Investigate setting appropriate size for media notification area even though Tim mentioned
 
-> I don't think there's any control to change the size of the media notification area - it's set by the OS and the hardware.
+
+	> I don't think there's any control to change the size of the media notification area - it's set by the OS and the hardware.
 
 2. App preemption
 	(In `/plugin/src/blackberry10/native/src/NowPlaying_ndk.cpp`)
@@ -272,7 +273,8 @@ Example:
 
 	- Investigate putting more than just the Title, Artist, Album properties, even though [this](http://developer.blackberry.com/native/reference/cascades/bb__multimedia__nowplayingconnection.html#comment-1134791487) says
 
-> Comment 2 years ago from Oct 30, 2015. Wes Barichak: "Currently, the only metadata properties that are available are MetaData::Album, MetaData::Artist, and MetaData::Title, while the rest of the MetaData properties are ignored. This will likely change in the future though."
+
+	> Comment 2 years ago from Oct 30, 2015. Wes Barichak: "Currently, the only metadata properties that are available are MetaData::Album, MetaData::Artist, and MetaData::Title, while the rest of the MetaData properties are ignored. This will likely change in the future though."
 
 6. Give NowPlayingNDK::NowPlayingError signal/slot parameters to specify error information. Can create an enum of general errors that can occur. Use this throughout the class.
 	(In `/plugin/src/blackberry10/native/src/NowPlaying_ndk.cpp`)
@@ -289,7 +291,8 @@ Example:
 
 	- Investigate setting icons based on URLs even though [this](http://developer.blackberry.com/native/reference/cascades/bb__multimedia__nowplayingconnection.html#function-play) says
 
-> Comment 2 years ago from Oct 30, 2015. Theodore Mavrakis: "How can we pass an http url to use for the icon of a NowPlayingConnection?" Wes Barichak: "Currently, this is not possible. But, we will be looking at adding this functionality in a future release."
+
+	> Comment 2 years ago from Oct 30, 2015. Theodore Mavrakis: "How can we pass an http url to use for the icon of a NowPlayingConnection?" Wes Barichak: "Currently, this is not possible. But, we will be looking at adding this functionality in a future release."
 
 ## Disclaimer ##
 
