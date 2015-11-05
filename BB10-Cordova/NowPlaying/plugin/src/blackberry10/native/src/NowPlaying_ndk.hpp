@@ -33,8 +33,8 @@ class NowPlayingJS;
 
 namespace webworks {
 
-    using namespace bb::multimedia;
     using namespace std;
+    using namespace bb::multimedia;
 
     class NowPlayingNDK : public QObject {
 
@@ -45,58 +45,66 @@ namespace webworks {
         bb::multimedia::MediaPlayer *mp;
         bb::multimedia::NowPlayingConnection *npc;
 
-        public:
+        void sendEvent(const string& msg);
 
+        string setMusic(const string& data);
+        string setIcon(const string& data);
+        string setMetadata(const Json::Value& data);
+
+        private:
+            string playCallbackId;
+            string pauseCallbackId;
+            string stopCallbackId;
+            string nextCallbackId;
+            string previousCallbackId;
+            string errorCallbackId;
+
+        public:
             explicit NowPlayingNDK(NowPlayingJS *parent = NULL): QObject(), m_pParent(parent)
             {
-                mp = new bb::multimedia::MediaPlayer(this);
-                npc = new bb::multimedia::NowPlayingConnection(this);
-
-                newConnectResult = false;
+                mp = new MediaPlayer(this);
+                npc = new NowPlayingConnection(this);
             }
 
             virtual ~NowPlayingNDK() {};
-
-            void sendEvent(const string& msg);
 
             signals:
                 void playSignal();
                 void pauseSignal();
                 void stopSignal();
-                void resumeSignal();
+                void nextSignal();
+                void previousSignal();
+
+                void errorSignal();
 
             public slots:
+                void mediaStateMapperSlot(MediaState::Type mediaState);
                 void playSlot();
                 void pauseSlot();
                 void stopSlot();
-                void resumeSlot();
+                void nextSlot();
+                void previousSlot();
 
-        public:
-            string NowPlayingRequestPlayback(const string& data);
+                void errorSlot();
+
+            string NowPlayingRequestPlayback();
             void NowPlayingBindPlayCallback(const string& callbackId);
             void NowPlayingBindPauseCallback(const string& callbackId);
             void NowPlayingBindStopCallback(const string& callbackId);
-            void NowPlayingBindResumeCallback(const string& callbackId);
+            void NowPlayingBindNextCallback(const string& callbackId);
+            void NowPlayingBindPreviousCallback(const string& callbackId);
+            void NowPlayingBindErrorCallback(const string& callbackId);
 
-            string NowPlayingTrackChange(const string& data);
-
-            string setMusic(const string& data);
-            string setIcon(const string& data);
-            string setMetadata(const Json::Value& data);
-
-            string NowPlayingPlay();
+            string NowPlayingPlay(const string& data);
             string NowPlayingPause();
-            string NowPlayingStop();
             string NowPlayingResume();
+            string NowPlayingStop();
+            string NowPlayingNext();
+            string NowPlayingPrevious();
+
+            string NowPlayingError();
 
             string NowPlayingGetState();
-
-        private:
-            bool newConnectResult;
-            string playCallbackId;
-            string pauseCallbackId;
-            string stopCallbackId;
-            string resumeCallbackId;
 
     }; // class NowPlayingNDK
 

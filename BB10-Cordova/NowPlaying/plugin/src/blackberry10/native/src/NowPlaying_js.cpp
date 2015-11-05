@@ -81,7 +81,7 @@ string NowPlayingJS::InvokeMethod(const string& command) {
     string result = "";
 
     if (strCommand == "NowPlayingRequestPlayback") {
-        result = m_NowPlayingMgr->NowPlayingRequestPlayback(arg);
+        result = m_NowPlayingMgr->NowPlayingRequestPlayback();
 
     } else if (strCommand == "NowPlayingBindPlayCallback") {
         m_NowPlayingMgr->NowPlayingBindPlayCallback(callbackId);
@@ -92,23 +92,35 @@ string NowPlayingJS::InvokeMethod(const string& command) {
     } else if (strCommand == "NowPlayingBindStopCallback") {
         m_NowPlayingMgr->NowPlayingBindStopCallback(callbackId);
 
-    } else if (strCommand == "NowPlayingBindResumeCallback") {
-        m_NowPlayingMgr->NowPlayingBindResumeCallback(callbackId);
+    } else if (strCommand == "NowPlayingBindNextCallback") {
+        m_NowPlayingMgr->NowPlayingBindNextCallback(callbackId);
 
-    } else if (strCommand == "NowPlayingTrackChange") {
-        result = m_NowPlayingMgr->NowPlayingTrackChange(arg);
+    } else if (strCommand == "NowPlayingBindPreviousCallback") {
+        m_NowPlayingMgr->NowPlayingBindPreviousCallback(callbackId);
+
+    } else if (strCommand == "NowPlayingBindErrorCallback") {
+        m_NowPlayingMgr->NowPlayingBindErrorCallback(callbackId);
 
     } else if (strCommand == "NowPlayingPlay") {
-        result = m_NowPlayingMgr->NowPlayingPlay();
+        result = m_NowPlayingMgr->NowPlayingPlay(arg);
 
     } else if (strCommand == "NowPlayingPause") {
         result = m_NowPlayingMgr->NowPlayingPause();
 
+    } else if (strCommand == "NowPlayingResume") {
+        result = m_NowPlayingMgr->NowPlayingResume();
+
     } else if (strCommand == "NowPlayingStop") {
         result = m_NowPlayingMgr->NowPlayingStop();
 
-    } else if (strCommand == "NowPlayingResume") {
-        result = m_NowPlayingMgr->NowPlayingResume();
+    } else if (strCommand == "NowPlayingNext") {
+        result = m_NowPlayingMgr->NowPlayingNext();
+
+    } else if (strCommand == "NowPlayingPrevious") {
+        result = m_NowPlayingMgr->NowPlayingPrevious();
+
+    } else if (strCommand == "NowPlayingError") {
+        result = m_NowPlayingMgr->NowPlayingError();
 
     } else if (strCommand == "NowPlayingGetState") {
         result = m_NowPlayingMgr->NowPlayingGetState();

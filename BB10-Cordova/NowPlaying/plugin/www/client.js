@@ -23,11 +23,12 @@ var _self = {},
         // TODO: verify json input.
 
         /* Bind callbacks */
-      	_self.NowPlayingBindPlayCallback(input.callbacks.play);
-        _self.NowPlayingBindPauseCallback(input.callbacks.pause);
-        _self.NowPlayingBindStopCallback(input.callbacks.stop);
-        _self.NowPlayingBindResumeCallback(input.callbacks.resume);
-        delete input.callbacks;
+      	_self.NowPlayingBindPlayCallback(input.play);
+        _self.NowPlayingBindPauseCallback(input.pause);
+        _self.NowPlayingBindStopCallback(input.stop);
+        _self.NowPlayingBindNextCallback(input.next);
+        _self.NowPlayingBindPreviousCallback(input.previous);
+        _self.NowPlayingBindErrorCallback(input.error);
 
         var result,
 			success = function (data, response) {
@@ -36,7 +37,7 @@ var _self = {},
 			fail = function (data, response) {
 				console.log("Error: " + data);
 			};
-		exec(success, fail, _ID, "NowPlayingRequestPlayback", { input: input });
+		exec(success, fail, _ID, "NowPlayingRequestPlayback");
 		return result;
 	};
 
@@ -73,7 +74,7 @@ var _self = {},
         exec(success, fail, _ID, "NowPlayingBindStopCallback", null);
     };
 
-    _self.NowPlayingBindResumeCallback = function (callback) {
+    _self.NowPlayingBindNextCallback = function (callback) {
         var success = function (data, response) {
                 var json = JSON.parse(data);
                 callback(json);
@@ -81,30 +82,43 @@ var _self = {},
             fail = function (data, response) {
                 console.log("Error: " + data);
             };
-        exec(success, fail, _ID, "NowPlayingBindResumeCallback", null);
+        exec(success, fail, _ID, "NowPlayingBindNextCallback", null);
     };
 
-	_self.NowPlayingTrackChange = function (input) {
-		var result,
-			success = function (data, response) {
-				result = data;
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "NowPlayingTrackChange", { input: input });
-		return result;
-	};
+    _self.NowPlayingBindPreviousCallback = function (callback) {
+        var success = function (data, response) {
+                var json = JSON.parse(data);
+                callback(json);
+            },
+            fail = function (data, response) {
+                console.log("Error: " + data);
+            };
+        exec(success, fail, _ID, "NowPlayingBindPreviousCallback", null);
+    };
 
-	_self.NowPlayingPlay = function () {
-		var result,
+    _self.NowPlayingBindErrorCallback = function (callback) {
+        var success = function (data, response) {
+                var json = JSON.parse(data);
+                callback(json);
+            },
+            fail = function (data, response) {
+                console.log("Error: " + data);
+            };
+        exec(success, fail, _ID, "NowPlayingBindErrorCallback", null);
+    };
+
+	_self.NowPlayingPlay = function (input) {
+
+        // TODO: verify json input.
+
+        var result,
 			success = function (data, response) {
 				result = data;
 			},
 			fail = function (data, response) {
 				console.log("Error: " + data);
 			};
-		exec(success, fail, _ID, "NowPlayingPlay", null);
+		exec(success, fail, _ID, "NowPlayingPlay", { input: input });
 		return result;
 	};
 
@@ -117,22 +131,10 @@ var _self = {},
 				console.log("Error: " + data);
 			};
 		exec(success, fail, _ID, "NowPlayingPause", null);
-		return result; 
+		return result;
 	};
 
-	_self.NowPlayingStop = function () {
-		var result,
-			success = function (data, response) {
-				result = data;
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "NowPlayingStop", null);
-		return result; 
-	};
-
-	_self.NowPlayingResume = function () {
+    _self.NowPlayingResume = function () {
         var result,
             success = function (data, response) {
                 result = data;
@@ -141,6 +143,54 @@ var _self = {},
                 console.log("Error: " + data);
             };
         exec(success, fail, _ID, "NowPlayingResume", null);
+        return result;
+    };
+
+    _self.NowPlayingStop = function () {
+		var result,
+			success = function (data, response) {
+				result = data;
+			},
+			fail = function (data, response) {
+				console.log("Error: " + data);
+			};
+		exec(success, fail, _ID, "NowPlayingStop", null);
+		return result;
+	};
+
+    _self.NowPlayingNext = function () {
+        var result,
+            success = function (data, response) {
+                result = data;
+            },
+            fail = function (data, response) {
+                console.log("Error: " + data);
+            };
+        exec(success, fail, _ID, "NowPlayingNext", null);
+        return result;
+    };
+
+    _self.NowPlayingPrevious = function () {
+        var result,
+            success = function (data, response) {
+                result = data;
+            },
+            fail = function (data, response) {
+                console.log("Error: " + data);
+            };
+        exec(success, fail, _ID, "NowPlayingPrevious", null);
+        return result;
+    };
+
+    _self.NowPlayingError = function () {
+        var result,
+            success = function (data, response) {
+                result = data;
+            },
+            fail = function (data, response) {
+                console.log("Error: " + data);
+            };
+        exec(success, fail, _ID, "NowPlayingError", null);
         return result;
     };
 
