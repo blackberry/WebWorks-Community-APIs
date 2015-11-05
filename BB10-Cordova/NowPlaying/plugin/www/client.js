@@ -18,6 +18,22 @@ var _self = {},
     _ID = "com.blackberry.community.nowplaying",
     exec = cordova.require("cordova/exec");
 
+    /**
+     * NowPlayingRequestPlayback
+     * Set up the app for playing music and bind methods that callback to the app.
+     *
+     * @param input: a json object with methods that callback to the app.
+     * The callback methods that must be specified are:
+     * - play: Fired when the song is played.
+     * - pause: Fired when the song is paused.
+     * - stop: Fired when the song is stopped.
+     * - next: Fired when the next song is invoked. Callback must invoke com.blackberry.community.nowplaying.play()
+     *         with arguments for the next song.
+     * - previous: Fired when the previous song is invoked. Callback must invoke com.blackberry.community.nowplaying.play()
+     *             with arguments for the previous song.
+     * - error: Fired when an internal error occurs.
+     * @returns String: whether playback was requested (set up) successfully.
+     */
 	_self.NowPlayingRequestPlayback = function(input) {
 
         // TODO: verify json input.
@@ -107,6 +123,23 @@ var _self = {},
         exec(success, fail, _ID, "NowPlayingBindErrorCallback", null);
     };
 
+    /**
+     * NowPlayingPlay
+     * Play a specified music in the background.
+     * Executes the callback method given to NowPlayingRequestPlayback.
+     *
+     * @param input: a json object with music details.
+     * The details that must be specified are:
+     * - songURL: URL of the song to play.
+     * - iconURL: URL of the icon to display on the volume overlay.
+     * - metadata: a json object with metadata details to display on the volume overlay.
+     *             Can include title, artist,
+     * - nextEnabled: boolean used to set whether or not the Next button should be
+     *                enabled on the volume overlay.
+     * - previousEnabled: boolean used to set whether or not the Previous button should be
+     *                    enabled on the volume overlay.
+     * @returns String: whether the music played successfully.
+     */
 	_self.NowPlayingPlay = function (input) {
 
         // TODO: verify json input.
@@ -122,6 +155,13 @@ var _self = {},
 		return result;
 	};
 
+    /**
+     * NowPlayingPause
+     * Pause the music if there is any in the background.
+     * Executes the callback method given to NowPlayingRequestPlayback.
+     *
+     * @returns String: whether the music paused successfully.
+     */
 	_self.NowPlayingPause = function () {
 		var result,
 			success = function (data, response) {
@@ -134,6 +174,13 @@ var _self = {},
 		return result;
 	};
 
+    /**
+     * NowPlayingResume
+     * Resume the paused music if there is any in the background.
+     * Executes the callback method given to NowPlayingRequestPlayback.
+     *
+     * @returns String: whether the music resumed successfully.
+     */
     _self.NowPlayingResume = function () {
         var result,
             success = function (data, response) {
@@ -146,6 +193,13 @@ var _self = {},
         return result;
     };
 
+    /**
+     * NowPlayingStop
+     * Stop the music if there is any in the background.
+     * Executes the callback method given to NowPlayingRequestPlayback.
+     *
+     * @returns String: whether the music stopped successfully.
+     */
     _self.NowPlayingStop = function () {
 		var result,
 			success = function (data, response) {
@@ -158,6 +212,13 @@ var _self = {},
 		return result;
 	};
 
+    /**
+     * NowPlayingNext
+     * Play the next song according to the callback method given to
+     * NowPlayingRequestPlayback.
+     *
+     * @returns String: whether the music was changed to next one successfully.
+     */
     _self.NowPlayingNext = function () {
         var result,
             success = function (data, response) {
@@ -170,6 +231,13 @@ var _self = {},
         return result;
     };
 
+    /**
+     * NowPlayingPrevious
+     * Play the previous song according to the callback method given to
+     * NowPlayingRequestPlayback.
+     *
+     * @returns String: whether the music was changed to previous one successfully.
+     */
     _self.NowPlayingPrevious = function () {
         var result,
             success = function (data, response) {
@@ -182,6 +250,13 @@ var _self = {},
         return result;
     };
 
+    /**
+     * NowPlayingError
+     * Fire the error callback method given to NowPlayingRequestPlayback.
+     * For debugging purposes only.
+     *
+     * @returns String: error information
+     */
     _self.NowPlayingError = function () {
         var result,
             success = function (data, response) {
@@ -194,6 +269,16 @@ var _self = {},
         return result;
     };
 
+    /**
+     * NowPlayingGetState
+     * Get the state of the music being played.
+     * For debugging purposes only.
+     *
+     * @returns String: containing:
+     * - the state of the MediaPlayer,
+     * - whether the NowPlayingConnection is acquired,
+     * - whether the NowPlayingConnection is preempted.
+     */
 	_self.NowPlayingGetState = function () {
 		var result,
 			success = function (data, response) {

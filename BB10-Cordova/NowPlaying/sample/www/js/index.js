@@ -117,13 +117,14 @@ var app = (function() {
         sampleAsyncCallback(data);
 
         // Move song pointer.
-        if (mySongPointer != myPlaylist.length - 1) {
+        if (mySongPointer >= myPlaylist.length - 1) {
             mySongPointer++;
 
             // Play the next song.
             play(myPlaylist, mySongPointer);
         } else {
             app.writeOut("At last song: can't go next.");
+            console.log("At last song: can't go next.");
         }
     };
 
@@ -131,13 +132,14 @@ var app = (function() {
         sampleAsyncCallback(data);
 
         // Move song pointer.
-        if (mySongPointer != 0) {
+        if (mySongPointer <= 0) {
             mySongPointer--;
 
             // Play the previous song.
             play(myPlaylist, mySongPointer);
         } else {
             app.writeOut("At first song: can't go previous.");
+            console.log("At first song: can't go previous.");
         }
     };
 

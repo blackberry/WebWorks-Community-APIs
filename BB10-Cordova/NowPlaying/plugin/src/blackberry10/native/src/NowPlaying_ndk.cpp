@@ -96,10 +96,7 @@ namespace webworks {
          * Wes Barichak: "Currently, the only metadata properties that are available are
          * MetaData::Album, MetaData::Artist, and MetaData::Title, while the
          * rest of the MetaData properties are ignored.
-         * This will likely change in the future though."
-         *
-         * TODO: Want this to show on volume overlay
-         * TODO: Try putting more properties */
+         * This will likely change in the future though." */
         metadata[MetaData::Title] =
                 QString::fromStdString(data["Title"].asString());
         metadata[MetaData::Artist] =
@@ -420,7 +417,7 @@ namespace webworks {
         // Let the slot handle playing the next song
         emit nextSignal();
 
-        return "Switching to next song.";
+        return "Changed to next song successfully.";
     }
 
     string NowPlayingNDK::NowPlayingPrevious() {
@@ -428,7 +425,7 @@ namespace webworks {
         // Let the slot handle playing the previous song
         emit previousSignal();
 
-        return "Switching to previous song";
+        return "Changed to previous song successfully.";
     }
 
     /**
