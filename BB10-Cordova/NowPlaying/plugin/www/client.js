@@ -17,6 +17,7 @@
 var _self = {},
     _ID = "com.blackberry.community.nowplaying",
     exec = cordova.require("cordova/exec");
+    stopped = true;
 
     /**
      * NowPlayingRequestPlayback
@@ -34,6 +35,9 @@ var _self = {},
      * - error: Fired when an internal error occurs.
      * @returns String: whether playback was requested (set up) successfully.
      */
+
+    
+
 	_self.NowPlayingRequestPlayback = function(input) {
 
         // TODO: verify json input.
@@ -146,6 +150,7 @@ var _self = {},
 
         var result,
 			success = function (data, response) {
+        stopped = false;
 				result = data;
 			},
 			fail = function (data, response) {
@@ -204,12 +209,17 @@ var _self = {},
 		var result,
 			success = function (data, response) {
 				result = data;
+        stopped = true;
 			},
 			fail = function (data, response) {
 				console.log("Error: " + data);
 			};
-		exec(success, fail, _ID, "NowPlayingStop", null);
-		return result;
+    if(stopped) {
+      result = "Player is already stopped";
+    } else {
+		  exec(success, fail, _ID, "NowPlayingStop", null);
+    }
+		return result; 
 	};
 
     /**
