@@ -51,7 +51,7 @@ var emailJSON = {
 	"signature": "true", // will add vCard from the 'signatureLocation'
 	"signatureLocation": "file:///accounts/1000/shared/documents/file.txt",
 	"attachment": "true", // will add vCard from the 'attachmentLocation'
-	"attachmentLocation": "file:///accounts/1000/shared/documents/file.ext" //will also accept file path as "/accounts/1000/shared/...",
+	"attachmentLocation": ["file:///accounts/1000/shared/documents/file.ext"] //will also accept file path as "/accounts/1000/shared/...",
 																	"/accounts/1000/removable/sdcard/...", or "./app/native/..."
 };
 var status = community.emailsenderplugin.sendEmail(emailJSON);
@@ -75,7 +75,7 @@ var emailJSON = {
 	"signature": "false",
 	"signatureLocation": "",
 	"attachment": "true",
-	"attachmentLocation": "/accounts/1000/shared/documents/file.ext"
+	"attachmentLocation": ["/accounts/1000/shared/documents/file.ext"]
 };
 var status = community.emailsenderplugin.sendEmail(emailJSON);
 ```
@@ -96,7 +96,7 @@ var emailJSON = {
 	"signature": "false",
 	"signatureLocation": "",
 	"attachment": "true",
-	"attachmentLocation": "/accounts/1000/removable/sdcard/My Files/file.dat"
+	"attachmentLocation": ["/accounts/1000/removable/sdcard/My Files/file.dat"]
 };
 ```
 **Here's the usage for the getEmailAccounts() method:**
