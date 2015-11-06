@@ -16,8 +16,9 @@
 
 var _self = {},
     _ID = "com.blackberry.community.nowplaying",
-    exec = cordova.require("cordova/exec");
-    stopped = true;
+    exec = cordova.require("cordova/exec"),
+    stopped = true,
+    playbackRequested = false;
 
     /**
      * NowPlayingRequestPlayback
@@ -43,22 +44,27 @@ var _self = {},
         // TODO: verify json input.
 
         /* Bind callbacks */
-      	_self.NowPlayingBindPlayCallback(input.play);
-        _self.NowPlayingBindPauseCallback(input.pause);
-        _self.NowPlayingBindStopCallback(input.stop);
-        _self.NowPlayingBindNextCallback(input.next);
-        _self.NowPlayingBindPreviousCallback(input.previous);
-        _self.NowPlayingBindErrorCallback(input.error);
+    if(!playbackRequested) {
+        	_self.NowPlayingBindPlayCallback(input.play);
+          _self.NowPlayingBindPauseCallback(input.pause);
+          _self.NowPlayingBindStopCallback(input.stop);
+          _self.NowPlayingBindNextCallback(input.next);
+          _self.NowPlayingBindPreviousCallback(input.previous);
+          _self.NowPlayingBindErrorCallback(input.error);
 
-        var result,
-			success = function (data, response) {
-				result = data;
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "NowPlayingRequestPlayback");
-		return result;
+          var result,
+  			success = function (data, response) {
+  				result = data;
+          playbackRequested = true;
+  			},
+  			fail = function (data, response) {
+  				console.log("Error: " + data);
+  			};
+  		exec(success, fail, _ID, "NowPlayingRequestPlayback");
+  		return result;
+    } else {
+      return "Playback already requested.";
+    }
 	};
 
     _self.NowPlayingBindPlayCallback = function (callback) {
