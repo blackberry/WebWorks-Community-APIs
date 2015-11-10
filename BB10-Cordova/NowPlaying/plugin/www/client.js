@@ -26,45 +26,42 @@ var _self = {},
      *
      * @param input: a json object with methods that callback to the app.
      * The callback methods that must be specified are:
-     * - play: Fired when the song is played.
-     * - pause: Fired when the song is paused.
-     * - stop: Fired when the song is stopped.
-     * - next: Fired when the next song is invoked. Callback must invoke com.blackberry.community.nowplaying.play()
-     *         with arguments for the next song.
-     * - previous: Fired when the previous song is invoked. Callback must invoke com.blackberry.community.nowplaying.play()
-     *             with arguments for the previous song.
+     * - play: Fired when the track is played.
+     * - pause: Fired when the track is paused.
+     * - stop: Fired when the track is stopped.
+     * - next: Fired when the next track is invoked. Callback must invoke com.blackberry.community.nowplaying.play()
+     *         with arguments for the next track.
+     * - previous: Fired when the previous track is invoked. Callback must invoke com.blackberry.community.nowplaying.play()
+     *             with arguments for the previous track.
      * - error: Fired when an internal error occurs.
      * @returns String: whether playback was requested (set up) successfully.
      */
-
-    
-
 	_self.NowPlayingRequestPlayback = function(input) {
 
         // TODO: verify json input.
 
         /* Bind callbacks */
-    if(!playbackRequested) {
+        if (!playbackRequested) {
         	_self.NowPlayingBindPlayCallback(input.play);
-          _self.NowPlayingBindPauseCallback(input.pause);
-          _self.NowPlayingBindStopCallback(input.stop);
-          _self.NowPlayingBindNextCallback(input.next);
-          _self.NowPlayingBindPreviousCallback(input.previous);
-          _self.NowPlayingBindErrorCallback(input.error);
+            _self.NowPlayingBindPauseCallback(input.pause);
+            _self.NowPlayingBindStopCallback(input.stop);
+            _self.NowPlayingBindNextCallback(input.next);
+            _self.NowPlayingBindPreviousCallback(input.previous);
+            _self.NowPlayingBindErrorCallback(input.error);
 
-          var result,
-  			success = function (data, response) {
-  				result = data;
-          playbackRequested = true;
-  			},
-  			fail = function (data, response) {
-  				console.log("Error: " + data);
-  			};
-  		exec(success, fail, _ID, "NowPlayingRequestPlayback");
-  		return result;
-    } else {
-      return "Playback already requested.";
-    }
+            var result,
+            success = function (data, response) {
+                result = data;
+                playbackRequested = true;
+            },
+            fail = function (data, response) {
+                console.log("Error: " + data);
+            };
+            exec(success, fail, _ID, "NowPlayingRequestPlayback");
+            return result;
+        } else {
+          return "Playback already requested.";
+        }
 	};
 
     _self.NowPlayingBindPlayCallback = function (callback) {
@@ -140,7 +137,7 @@ var _self = {},
      *
      * @param input: a json object with music details.
      * The details that must be specified are:
-     * - songURL: URL of the song to play.
+     * - trackURL: URL of the track to play.
      * - iconURL: URL of the icon to display on the volume overlay.
      * - metadata: a json object with metadata details to display on the volume overlay.
      *             Can include title, artist,
@@ -156,7 +153,7 @@ var _self = {},
 
         var result,
 			success = function (data, response) {
-        stopped = false;
+                stopped = false;
 				result = data;
 			},
 			fail = function (data, response) {
@@ -215,22 +212,22 @@ var _self = {},
 		var result,
 			success = function (data, response) {
 				result = data;
-        stopped = true;
+                stopped = true;
 			},
 			fail = function (data, response) {
 				console.log("Error: " + data);
 			};
-    if(stopped) {
-      result = "Player is already stopped";
-    } else {
-		  exec(success, fail, _ID, "NowPlayingStop", null);
-    }
+        if (stopped) {
+            result = "Player is already stopped";
+        } else {
+            exec(success, fail, _ID, "NowPlayingStop", null);
+        }
 		return result; 
 	};
 
     /**
      * NowPlayingNext
-     * Play the next song according to the callback method given to
+     * Play the next track according to the callback method given to
      * NowPlayingRequestPlayback.
      *
      * @returns String: whether the music was changed to next one successfully.
@@ -249,7 +246,7 @@ var _self = {},
 
     /**
      * NowPlayingPrevious
-     * Play the previous song according to the callback method given to
+     * Play the previous track according to the callback method given to
      * NowPlayingRequestPlayback.
      *
      * @returns String: whether the music was changed to previous one successfully.

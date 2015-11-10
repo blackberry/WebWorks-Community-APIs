@@ -114,24 +114,15 @@ namespace webworks {
      * Slots
      **********/
 
-    void NowPlayingNDK::mediaStateMapperSlot(bb::multimedia::MediaState::Type mediaState) {
-        switch(mediaState) {
-            case MediaState::Started:
-                emit playSignal();
-                break;
-            case MediaState::Paused:
-                emit pauseSignal();
-                break;
-            case MediaState::Stopped:
-                emit stopSignal();
-                break;
-            default:
-                // Do nothing.
-                break;
-        }
+    void NowPlayingNDK::joinSlot(const string& windowGroup) {
+        QByteArray byteArray(windowGroup.c_str(), windowGroup.length());
+        m_pParent->applicationThread()->join(byteArray);
     }
 
     void NowPlayingNDK::playSlot() {
+        // Call native library to actually play the track
+        mp->play();
+
         Json::FastWriter writer;
         Json::Value root;
         root["result"] = "Playing callback!";
@@ -139,6 +130,9 @@ namespace webworks {
     }
 
     void NowPlayingNDK::pauseSlot() {
+        // Call native library to actually pause the track
+        mp->pause();
+
         Json::FastWriter writer;
         Json::Value root;
         root["result"] = "Pausing callback!";
@@ -146,6 +140,9 @@ namespace webworks {
     }
 
     void NowPlayingNDK::stopSlot() {
+        // Call native library to actually stop the track
+        mp->stop();
+
         Json::FastWriter writer;
         Json::Value root;
         root["result"] = "Stopping callback!";
@@ -153,6 +150,7 @@ namespace webworks {
     }
 
     void NowPlayingNDK::nextSlot() {
+        // Callback contains next track logic.
         Json::FastWriter writer;
         Json::Value root;
         root["result"] = "Next track callback!";
@@ -160,6 +158,7 @@ namespace webworks {
     }
 
     void NowPlayingNDK::previousSlot() {
+        // Callback contains previous track logic.
         Json::FastWriter writer;
         Json::Value root;
         root["result"] = "Previous track callback!";
@@ -167,6 +166,7 @@ namespace webworks {
     }
 
     void NowPlayingNDK::errorSlot() {
+        // Callback contains error handling logic.
         Json::FastWriter writer;
         Json::Value root;
         root["result"] = "Error callback!";
@@ -185,17 +185,6 @@ namespace webworks {
          * media notification area – it’s set by the OS and the
          * hardware." - quoted from Tim Windsor */
         npc->setOverlayStyle(OverlayStyle::Fancy);
-
-        // Set up mapper for user-triggerable play, pause, and stop callbacks
-        bool connectResult;
-        Q_UNUSED(connectResult);
-        connectResult = connect(
-                            mp,
-                            SIGNAL(mediaStateChanged(bb::multimedia::MediaState::Type)),
-                            this,
-                            SLOT(mediaStateMapperSlot(bb::multimedia::MediaState::Type))
-                        );
-        Q_ASSERT(connectResult);
 
         return "Playback requested successfully.";
     }
@@ -368,7 +357,7 @@ namespace webworks {
         }
 
         // Set up music, icon, and metadata
-        returnValue += setMusic(root["songURL"].asString());
+        returnValue += setMusic(root["trackURL"].asString());
         returnValue += setIcon(root["iconURL"].asString());
         returnValue += setMetadata(root["metadata"]);
 
@@ -382,21 +371,21 @@ namespace webworks {
         }
 
         // Stop any currently playing music, then play the newly set up one.
-        mp->stop();
-        mp->play();
+        emit stopSignal();
+        emit playSignal();
 
         returnValue += "Player started successfully.";
         return returnValue;
     }
 
     string NowPlayingNDK::NowPlayingPause() {
-        mp->pause();
+        emit pauseSignal();
 
         return "Player paused successfully.";
     }
 
     string NowPlayingNDK::NowPlayingResume() {
-        mp->play();
+        emit playSignal();
 
         return "Player resumed successfully.";
     }
@@ -404,7 +393,7 @@ namespace webworks {
     string NowPlayingNDK::NowPlayingStop() {
 
         // Stop the music
-        mp->stop();
+        emit stopSignal();
 
         // Revoke the media notification area
         npc->revoke();
@@ -414,18 +403,18 @@ namespace webworks {
 
     string NowPlayingNDK::NowPlayingNext() {
 
-        // Let the slot handle playing the next song
+        // Let the slot handle playing the next track
         emit nextSignal();
 
-        return "Changed to next song successfully.";
+        return "Changed to next track successfully.";
     }
 
     string NowPlayingNDK::NowPlayingPrevious() {
 
-        // Let the slot handle playing the previous song
+        // Let the slot handle playing the previous track
         emit previousSignal();
 
-        return "Changed to previous song successfully.";
+        return "Changed to previous track successfully.";
     }
 
     /**

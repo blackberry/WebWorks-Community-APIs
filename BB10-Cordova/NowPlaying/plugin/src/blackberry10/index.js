@@ -131,6 +131,25 @@ JNEXT.NowPlaying = function(){
 		}
 
 		JNEXT.registerEvents(self);
+
+        /* Find the window group the app resides in, so that it can be passed
+         * as an argument and so the NowPlayingNDK application thread can run
+         * in the same group. This enables system notifications, in
+         * particular from the media notification area which is part of the
+         * window group the app resides in, to be picked up and handled by the
+         * application thread. The native layer should invoke subsequent
+         * methods from the context of the application thread window group. */
+        var views = qnx.webplatform.getWebViews();
+        var windowGroup = null;
+        var z = -1;
+        for (var i = 0; i < views.length; i++) {
+            if (views[i].visible && views[i].zOrder > z){
+                z = views[i].zOrder;
+                windowGroup = views[i].windowGroup;
+            }
+        }
+
+        JNEXT.invoke(self.m_id, "joinSlot" + " " + JSON.stringify(windowGroup));
 	};
 
     self.getId = function () {
@@ -205,7 +224,7 @@ JNEXT.NowPlaying = function(){
         return JNEXT.invoke(self.m_id, "NowPlayingPause");
     };
 
-    self.NowPlayingResume = function (callbackId) {
+    self.NowPlayingResume = function () {
         return JNEXT.invoke(self.m_id, "NowPlayingResume");
     };
 

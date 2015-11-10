@@ -22,13 +22,13 @@ var app = (function() {
      * App logic variables and methods
      ***********************************/
 
-    // Pointer to current song
-    var mySongPointer = -1;
+    // Pointer to current track
+    var myTrackPointer = -1;
 
-    // Playlist of songs
+    // Playlist of tracks
     var myPlaylist = [
         {
-            songURL: "http://www.pch.gc.ca/DAMAssetPub/DAM-hymChs-antSgn/STAGING/audio-audio/o-canada_1359474460106_eng.MP3",
+            trackURL: "http://www.pch.gc.ca/DAMAssetPub/DAM-hymChs-antSgn/STAGING/audio-audio/o-canada_1359474460106_eng.MP3",
             iconURL: "http://flaglane.com/download/canadian-flag/canadian-flag-small.jpg",
             metadata: {
                 Title: "O Canada",
@@ -37,7 +37,7 @@ var app = (function() {
             }
         },
         {
-            songURL: "sounds/highhat.mp3",
+            trackURL: "sounds/highhat.mp3",
             iconURL: "img/Hi-hat.jpg",
             metadata: {
                 Title: "High Hat",
@@ -47,17 +47,17 @@ var app = (function() {
         }
     ];
 
-    // Helper method to play a specified song in a given playlist.
-    var play = function(playlist, songPointer) {
+    // Helper method to play a specified track in a given playlist.
+    var play = function(playlist, trackPointer) {
         var jsonData = {
-            songURL: playlist[songPointer].songURL,
-            iconURL: playlist[songPointer].iconURL,
-            metadata: playlist[songPointer].metadata,
-            nextEnabled: songPointer < playlist.length - 1,
-            prevEnabled: songPointer > 0
+            trackURL: playlist[trackPointer].trackURL,
+            iconURL: playlist[trackPointer].iconURL,
+            metadata: playlist[trackPointer].metadata,
+            nextEnabled: trackPointer < playlist.length - 1,
+            previousEnabled: trackPointer > 0
         };
 
-        // Play the song.
+        // Play the track.
         app.writeOut(com.blackberry.community.nowplaying.NowPlayingPlay(jsonData));
     };
 
@@ -116,30 +116,30 @@ var app = (function() {
     var nextCallback = function(data) {
         sampleAsyncCallback(data);
 
-        // Move song pointer.
-        if (mySongPointer >= myPlaylist.length - 1) {
-            mySongPointer++;
+        // Move track pointer.
+        if (myTrackPointer < myPlaylist.length - 1) {
+            myTrackPointer++;
 
-            // Play the next song.
-            play(myPlaylist, mySongPointer);
+            // Play the next track.
+            play(myPlaylist, myTrackPointer);
         } else {
-            app.writeOut("At last song: can't go next.");
-            console.log("At last song: can't go next.");
+            app.writeOut("At last track: can't go next.");
+            console.log("At last track: can't go next.");
         }
     };
 
     var previousCallback = function(data) {
         sampleAsyncCallback(data);
 
-        // Move song pointer.
-        if (mySongPointer <= 0) {
-            mySongPointer--;
+        // Move track pointer.
+        if (myTrackPointer > 0) {
+            myTrackPointer--;
 
-            // Play the previous song.
-            play(myPlaylist, mySongPointer);
+            // Play the previous track.
+            play(myPlaylist, myTrackPointer);
         } else {
-            app.writeOut("At first song: can't go previous.");
-            console.log("At first song: can't go previous.");
+            app.writeOut("At first track: can't go previous.");
+            console.log("At first track: can't go previous.");
         }
     };
 
@@ -198,20 +198,20 @@ var app = (function() {
 
     var play0ButtonClick = function() {
 
-        // Update the song pointer.
-        mySongPointer = 0;
+        // Update the track pointer.
+        myTrackPointer = 0;
 
-        // Play the song.
-        play(myPlaylist, mySongPointer);
+        // Play the track.
+        play(myPlaylist, myTrackPointer);
     };
 
     var play1ButtonClick = function() {
 
-        // Update the song pointer.
-        mySongPointer = 1;
+        // Update the track pointer.
+        myTrackPointer = 1;
 
-        // Play the song.
-        play(myPlaylist, mySongPointer);
+        // Play the track.
+        play(myPlaylist, myTrackPointer);
     };
 
     var pauseButtonClick = function() {

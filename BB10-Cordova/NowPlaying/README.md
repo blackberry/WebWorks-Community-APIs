@@ -42,10 +42,6 @@ Run nowplaying_build.sh from that directory.
 
 The api exports a global module as blackberry.community.nowplaying, as shown in `/plugin/src/blackberry10/native/src/NowPlaying_ndk.cpp`
 
-Notes:
-
-	- The terms 'music' and 'song' are used interchangably.
-
 ### Object Methods ###
 
 #### NowPlayingRequestPlayback() ####
@@ -54,13 +50,13 @@ Set up the app for playing music and bind methods that callback to the app.
 @param input: a json object with methods that callback to the app.
 The callback methods that must be specified are:
 
-	- play: Fired when the song is played.
-	- pause: Fired when the song is paused.
-	- stop: Fired when the song is stopped.
-	- next: Fired when the next song is invoked. Callback must invoke com.blackberry.community.nowplaying.play()
-			with arguments for the next song.
-	- previous: Fired when the previous song is invoked. Callback must invoke com.blackberry.community.nowplaying.play()
-				with arguments for the previous song.
+	- play: Fired when the track is played.
+	- pause: Fired when the track is paused.
+	- stop: Fired when the track is stopped.
+	- next: Fired when the next track is invoked. Callback must invoke com.blackberry.community.nowplaying.play()
+			with arguments for the next track.
+	- previous: Fired when the previous track is invoked. Callback must invoke com.blackberry.community.nowplaying.play()
+				with arguments for the previous track.
 	- error: Fired when an internal error occurs.
 
 @returns String: whether playback was requested (set up) successfully.
@@ -89,28 +85,28 @@ Example:
 	var nextCallback = function(data) {
 		sampleAsyncCallback(data);
 
-		// Move song pointer.
-		if (mySongPointer >= myPlaylist.length - 1) {
-			mySongPointer++;
+		// Move track pointer.
+		if (myTrackPointer < myPlaylist.length - 1) {
+			myTrackPointer++;
 
-			// Play the next song.
-			play(myPlaylist, mySongPointer);
+			// Play the next track.
+			play(myPlaylist, myTrackPointer);
 		} else {
-			console.log("At last song: can't go next.");
+			console.log("At last track: can't go next.");
 		}
 	};
 
 	var previousCallback = function(data) {
 		sampleAsyncCallback(data);
 
-		// Move song pointer.
-		if (mySongPointer <= 0) {
-			mySongPointer--;
+		// Move track pointer.
+		if (myTrackPointer > 0) {
+			myTrackPointer--;
 
-			// Play the previous song.
-			play(myPlaylist, mySongPointer);
+			// Play the previous track.
+			play(myPlaylist, myTrackPointer);
 		} else {
-			console.log("At first song: can't go previous.");
+			console.log("At first track: can't go previous.");
 		}
 	};
 
@@ -118,13 +114,13 @@ Example:
 	 * App logic variables and methods
 	 ***********************************/
 
-	// Pointer to current song
-	var mySongPointer = -1;
+	// Pointer to current track
+	var myTrackPointer = -1;
 
-	// Playlist of songs
+	// Playlist of tracks
 	var myPlaylist = [
 		{
-			songURL: "http://www.pch.gc.ca/DAMAssetPub/DAM-hymChs-antSgn/STAGING/audio-audio/o-canada_1359474460106_eng.MP3",
+			trackURL: "http://www.pch.gc.ca/DAMAssetPub/DAM-hymChs-antSgn/STAGING/audio-audio/o-canada_1359474460106_eng.MP3",
 			iconURL: "http://flaglane.com/download/canadian-flag/canadian-flag-small.jpg",
 			metadata: {
 				Title: "O Canada",
@@ -133,7 +129,7 @@ Example:
 			}
 		},
 		{
-			songURL: "sounds/highhat.mp3",
+			trackURL: "sounds/highhat.mp3",
 			iconURL: "img/Hi-hat.jpg",
 			metadata: {
 				Title: "High Hat",
@@ -143,17 +139,17 @@ Example:
 		}
 	];
 
-	// Helper method to play a specified song in a given playlist.
-	var play = function(playlist, songPointer) {
+	// Helper method to play a specified track in a given playlist.
+	var play = function(playlist, trackPointer) {
 		var jsonData = {
-			songURL: playlist[songPointer].songURL,
-			iconURL: playlist[songPointer].iconURL,
-			metadata: playlist[songPointer].metadata,
-			nextEnabled: songPointer < playlist.length - 1,
-			prevEnabled: songPointer > 0
+			trackURL: playlist[trackPointer].trackURL,
+			iconURL: playlist[trackPointer].iconURL,
+			metadata: playlist[trackPointer].metadata,
+			nextEnabled: trackPointer < playlist.length - 1,
+			prevEnabled: trackPointer > 0
 		};
 
-		// Play the song.
+		// Play the track.
 		com.blackberry.community.nowplaying.NowPlayingPlay(jsonData);
 	};
 
@@ -164,7 +160,7 @@ Executes the callback method given to NowPlayingRequestPlayback.
 @param input: a json object with music details.
 The details that must be specified are:
 
-	- songURL: URL of the song to play.
+	- trackURL: URL of the track to play.
 	- iconURL: URL of the icon to display on the volume overlay.
 	- metadata: a json object with metadata details to display on the volume overlay.
 				Can include title, artist, and album.
@@ -178,7 +174,7 @@ The details that must be specified are:
 Example:
 
 	var jsonData = {
-		songURL: "http://www.pch.gc.ca/DAMAssetPub/DAM-hymChs-antSgn/STAGING/audio-audio/o-canada_1359474460106_eng.MP3",,
+		trackURL: "http://www.pch.gc.ca/DAMAssetPub/DAM-hymChs-antSgn/STAGING/audio-audio/o-canada_1359474460106_eng.MP3",,
 		iconURL: "http://flaglane.com/download/canadian-flag/canadian-flag-small.jpg",
 		metadata: {
 					  Title: "O Canada",
@@ -189,7 +185,7 @@ Example:
 		prevEnabled: false
 	};
 
-	// Play the song.
+	// Play the track.
 	com.blackberry.community.nowplaying.NowPlayingPlay(jsonData);
 
 #### NowPlayingPause() ####
@@ -223,7 +219,7 @@ Example:
 
 
 #### NowPlayingNext() ####
-Play the next song according to the callback method given to NowPlayingRequestPlayback.
+Play the next track according to the callback method given to NowPlayingRequestPlayback.
 
 @returns String: whether the music was changed to next one successfully.
 
@@ -232,7 +228,7 @@ Example:
 
 
 #### NowPlayingPrevious() ####
-Play the previous song according to the callback method given to NowPlayingRequestPlayback.
+Play the previous track according to the callback method given to NowPlayingRequestPlayback.
 
 @returns String: whether the music was changed to previous one successfully.
 
@@ -284,7 +280,7 @@ Example:
 
 1. Give the sample app more interesting callbacks, e.g. the sample app [here](https://github.com/blackberry/Cascades-Samples/tree/master/nowplaying) uses images.
 
-2. Test more songURL and iconURL local paths
+2. Test more trackURL and iconURL local paths
 
 3. Icon
 	(In `/plugin/src/blackberry10/native/src/NowPlaying_ndk.cpp`)

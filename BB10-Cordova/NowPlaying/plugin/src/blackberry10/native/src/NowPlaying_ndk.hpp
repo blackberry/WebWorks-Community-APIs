@@ -78,7 +78,8 @@ namespace webworks {
                 void errorSignal();
 
             public slots:
-                void mediaStateMapperSlot(MediaState::Type mediaState);
+                void joinSlot(const string& windowGroup);
+
                 void playSlot();
                 void pauseSlot();
                 void stopSlot();

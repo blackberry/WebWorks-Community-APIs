@@ -78,58 +78,111 @@ string NowPlayingJS::InvokeMethod(const string& command) {
     string callbackId = command.substr(commandIndex + 1, callbackIndex - (commandIndex + 1));
     string arg = command.substr(callbackIndex + 1, command.length());
 
+    bool success = false;
     string result = "";
 
-    if (strCommand == "NowPlayingRequestPlayback") {
-        result = m_NowPlayingMgr->NowPlayingRequestPlayback();
+    if (strCommand == "joinSlot") {
+        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
+                "joinSlot",
+                Qt::BlockingQueuedConnection,
+                Q_ARG(const string&, arg));
+
+    } else if (strCommand == "NowPlayingRequestPlayback") {
+        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
+                "NowPlayingRequestPlayback",
+                Qt::BlockingQueuedConnection,
+                Q_RETURN_ARG(string, result));
 
     } else if (strCommand == "NowPlayingBindPlayCallback") {
-        m_NowPlayingMgr->NowPlayingBindPlayCallback(callbackId);
+        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
+                "NowPlayingBindPlayCallback",
+                Qt::BlockingQueuedConnection,
+                Q_ARG(const string&, callbackId));
 
     } else if (strCommand == "NowPlayingBindPauseCallback") {
-        m_NowPlayingMgr->NowPlayingBindPauseCallback(callbackId);
+        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
+                "NowPlayingBindPauseCallback",
+                Qt::BlockingQueuedConnection,
+                Q_ARG(const string&, callbackId));
 
     } else if (strCommand == "NowPlayingBindStopCallback") {
-        m_NowPlayingMgr->NowPlayingBindStopCallback(callbackId);
+        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
+                "NowPlayingBindStopCallback",
+                Qt::BlockingQueuedConnection,
+                Q_ARG(const string&, callbackId));
 
     } else if (strCommand == "NowPlayingBindNextCallback") {
-        m_NowPlayingMgr->NowPlayingBindNextCallback(callbackId);
+        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
+                "NowPlayingBindNextCallback",
+                Qt::BlockingQueuedConnection,
+                Q_ARG(const string&, callbackId));
 
     } else if (strCommand == "NowPlayingBindPreviousCallback") {
-        m_NowPlayingMgr->NowPlayingBindPreviousCallback(callbackId);
+        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
+                "NowPlayingBindPreviousCallback",
+                Qt::BlockingQueuedConnection,
+                Q_ARG(const string&, callbackId));
 
     } else if (strCommand == "NowPlayingBindErrorCallback") {
-        m_NowPlayingMgr->NowPlayingBindErrorCallback(callbackId);
+        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
+                "NowPlayingBindErrorCallback",
+                Qt::BlockingQueuedConnection,
+                Q_ARG(const string&, callbackId));
 
     } else if (strCommand == "NowPlayingPlay") {
-        result = m_NowPlayingMgr->NowPlayingPlay(arg);
+        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
+                "NowPlayingPlay",
+                Qt::BlockingQueuedConnection,
+                Q_RETURN_ARG(string, result),
+                Q_ARG(const string&, arg));
 
     } else if (strCommand == "NowPlayingPause") {
-        result = m_NowPlayingMgr->NowPlayingPause();
+        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
+                "NowPlayingPause",
+                Qt::BlockingQueuedConnection,
+                Q_RETURN_ARG(string, result));
 
     } else if (strCommand == "NowPlayingResume") {
-        result = m_NowPlayingMgr->NowPlayingResume();
+        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
+                "NowPlayingResume",
+                Qt::BlockingQueuedConnection,
+                Q_RETURN_ARG(string, result));
 
     } else if (strCommand == "NowPlayingStop") {
-        result = m_NowPlayingMgr->NowPlayingStop();
+        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
+                "NowPlayingStop",
+                Qt::BlockingQueuedConnection,
+                Q_RETURN_ARG(string, result));
 
     } else if (strCommand == "NowPlayingNext") {
-        result = m_NowPlayingMgr->NowPlayingNext();
+        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
+                "NowPlayingNext",
+                Qt::BlockingQueuedConnection,
+                Q_RETURN_ARG(string, result));
 
     } else if (strCommand == "NowPlayingPrevious") {
-        result = m_NowPlayingMgr->NowPlayingPrevious();
+        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
+                "NowPlayingPrevious",
+                Qt::BlockingQueuedConnection,
+                Q_RETURN_ARG(string, result));
 
     } else if (strCommand == "NowPlayingError") {
-        result = m_NowPlayingMgr->NowPlayingError();
+        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
+                "NowPlayingError",
+                Qt::BlockingQueuedConnection,
+                Q_RETURN_ARG(string, result));
 
     } else if (strCommand == "NowPlayingGetState") {
-        result = m_NowPlayingMgr->NowPlayingGetState();
+        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
+                "NowPlayingGetState",
+                Qt::BlockingQueuedConnection,
+                Q_RETURN_ARG(string, result));
 
     } else {
         result = "Invalid Method " + strCommand;
     }
 
-    return result;
+    return (success ? "SUCCESS: " : "FAILURE: ") + result;
 }
 
 
