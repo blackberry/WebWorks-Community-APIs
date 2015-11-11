@@ -17,7 +17,6 @@
 var _self = {},
     _ID = "com.blackberry.community.nowplaying",
     exec = cordova.require("cordova/exec"),
-    stopped = true,
     playbackRequested = false;
 
     /**
@@ -153,7 +152,6 @@ var _self = {},
 
         var result,
 			success = function (data, response) {
-                stopped = false;
 				result = data;
 			},
 			fail = function (data, response) {
@@ -212,16 +210,11 @@ var _self = {},
 		var result,
 			success = function (data, response) {
 				result = data;
-                stopped = true;
 			},
 			fail = function (data, response) {
 				console.log("Error: " + data);
 			};
-        if (stopped) {
-            result = "Player is already stopped";
-        } else {
-            exec(success, fail, _ID, "NowPlayingStop", null);
-        }
+        exec(success, fail, _ID, "NowPlayingStop", null);
 		return result; 
 	};
 

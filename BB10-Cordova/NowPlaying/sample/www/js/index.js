@@ -29,7 +29,7 @@ var app = (function() {
     var myPlaylist = [
         {
             trackURL: "http://www.pch.gc.ca/DAMAssetPub/DAM-hymChs-antSgn/STAGING/audio-audio/o-canada_1359474460106_eng.MP3",
-            iconURL: "http://flaglane.com/download/canadian-flag/canadian-flag-small.jpg",
+            iconURL: "img/canadian-flag-small.jpg",
             metadata: {
                 Title: "O Canada",
                 Artist: "Canada",

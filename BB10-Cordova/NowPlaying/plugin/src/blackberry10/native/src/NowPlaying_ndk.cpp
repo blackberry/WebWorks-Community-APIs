@@ -114,14 +114,24 @@ namespace webworks {
      * Slots
      **********/
 
+    /**
+     * Make the window group run on the same thread as the NowPlayingNDK
+     * application, so that system notifications from the window group, in
+     * particular from the media notification area, can be picked up and handled
+     * by the application thread.
+     */
     void NowPlayingNDK::joinSlot(const string& windowGroup) {
         QByteArray byteArray(windowGroup.c_str(), windowGroup.length());
         m_pParent->applicationThread()->join(byteArray);
     }
 
     void NowPlayingNDK::playSlot() {
+
         // Call native library to actually play the track
         mp->play();
+
+        // Notify NowPlayingConnection
+        npc->setMediaState(mp->mediaState());
 
         Json::FastWriter writer;
         Json::Value root;
@@ -130,8 +140,12 @@ namespace webworks {
     }
 
     void NowPlayingNDK::pauseSlot() {
+
         // Call native library to actually pause the track
         mp->pause();
+
+        // Notify NowPlayingConnection
+        npc->setMediaState(mp->mediaState());
 
         Json::FastWriter writer;
         Json::Value root;
@@ -140,8 +154,12 @@ namespace webworks {
     }
 
     void NowPlayingNDK::stopSlot() {
+
         // Call native library to actually stop the track
         mp->stop();
+
+        // Notify NowPlayingConnection
+        npc->setMediaState(mp->mediaState());
 
         Json::FastWriter writer;
         Json::Value root;
@@ -371,7 +389,8 @@ namespace webworks {
         }
 
         // Stop any currently playing music, then play the newly set up one.
-        emit stopSignal();
+        // Let the corresponding slots for these actions handle these.
+        emit stopSignal(); //TODO? parameter to suppress the callback
         emit playSignal();
 
         returnValue += "Player started successfully.";
@@ -379,12 +398,16 @@ namespace webworks {
     }
 
     string NowPlayingNDK::NowPlayingPause() {
+
+        // Let the slot handle pausing the music
         emit pauseSignal();
 
         return "Player paused successfully.";
     }
 
     string NowPlayingNDK::NowPlayingResume() {
+
+        // Let the slot handle playing the music
         emit playSignal();
 
         return "Player resumed successfully.";
@@ -392,11 +415,8 @@ namespace webworks {
 
     string NowPlayingNDK::NowPlayingStop() {
 
-        // Stop the music
+        // Let the slot handle stopping the music
         emit stopSignal();
-
-        // Revoke the media notification area
-        npc->revoke();
 
         return "Player stopped successfully.";
     }

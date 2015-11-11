@@ -55,7 +55,9 @@ NowPlayingJS::~NowPlayingJS(){
     delete m_thread;
 }
 
-// Notifies JavaScript of an event
+/**
+ * Notifies JavaScript of an event
+ */
 void NowPlayingJS::NotifyEvent(const string& event) {
     string eventString = m_id + " ";
     eventString.append(event);

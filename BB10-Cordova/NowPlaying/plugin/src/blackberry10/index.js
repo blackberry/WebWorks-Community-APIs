@@ -134,11 +134,11 @@ JNEXT.NowPlaying = function(){
 
         /* Find the window group the app resides in, so that it can be passed
          * as an argument and so the NowPlayingNDK application thread can run
-         * in the same group. This enables system notifications, in
-         * particular from the media notification area which is part of the
-         * window group the app resides in, to be picked up and handled by the
-         * application thread. The native layer should invoke subsequent
-         * methods from the context of the application thread window group. */
+         * in the same group. This enables system notifications from the
+         * window group, in particular from the media notification area, can
+         * be picked up and handled by the application thread.
+         * The native layer should invoke subsequent methods from the context
+         * of the application thread window group. */
         var views = qnx.webplatform.getWebViews();
         var windowGroup = null;
         var z = -1;

@@ -290,6 +290,8 @@ Example:
 
 	> Comment 2 years ago from Oct 30, 2015. Theodore Mavrakis: "How can we pass an http url to use for the icon of a NowPlayingConnection?" Wes Barichak: "Currently, this is not possible. But, we will be looking at adding this functionality in a future release."
 
+4. Provide an optional parameter to suppress the callbacks from playSlot(), pauseSlot(), and stopSlot(), so that actions can be done to change the internal state of the app without externalization to the interface.
+
 ## Disclaimer ##
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
