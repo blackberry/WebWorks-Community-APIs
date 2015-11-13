@@ -323,7 +323,7 @@ var _self = {},
         if(!(isFunction(input.previous))) result = "Previous attribute was not a function";
         if(!(isFunction(input.error))) result = "Error attribute was not a function";
 
-        if(typeof(result) === "boolean") && result) {
+        if(typeof(result) === "boolean" && result === true) {
             return true;
         } else {
             // call error and return false
@@ -355,17 +355,17 @@ var _self = {},
             if(!('Title' in input.metadata)) response = "Title field in metadata was not provided";   
             if(!('Artist') in input.metadata) response = "Artist field in metadata was not provided";
             if(!('Album' in input.metadata)) response = "Album field in metadata was not provided";
-        else {
+        } else {
             response = "metadata attribute was not provided";
         }
         var valid = true;
-        if(response !=== "") {
+        if(response !== "") {
             valid = false;
             // throw error
         }
         
         return valid
-    }
+    };
 
 
     
