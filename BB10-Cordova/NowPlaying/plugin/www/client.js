@@ -41,23 +41,31 @@ var _self = {},
 
         /* Bind callbacks */
         if (!playbackRequested) {
-        	_self.NowPlayingBindPlayCallback(input.play);
-            _self.NowPlayingBindPauseCallback(input.pause);
-            _self.NowPlayingBindStopCallback(input.stop);
-            _self.NowPlayingBindNextCallback(input.next);
-            _self.NowPlayingBindPreviousCallback(input.previous);
-            _self.NowPlayingBindErrorCallback(input.error);
+            var response = _self.NowPlayingValidateCallback(input);
 
-            var result,
-            success = function (data, response) {
-                result = data;
-                playbackRequested = true;
-            },
-            fail = function (data, response) {
-                console.log("Error: " + data);
-            };
-            exec(success, fail, _ID, "NowPlayingRequestPlayback");
-            return result;
+            if((typeof(response) === "boolean") && response){
+                _self.NowPlayingBindPlayCallback(input.play);
+                _self.NowPlayingBindPauseCallback(input.pause);
+                _self.NowPlayingBindStopCallback(input.stop);
+                _self.NowPlayingBindNextCallback(input.next);
+                _self.NowPlayingBindPreviousCallback(input.previous);
+                _self.NowPlayingBindErrorCallback(input.error);
+
+                var result,
+                success = function (data, response) {
+                    result = data;
+                    playbackRequested = true;
+                },
+                fail = function (data, response) {
+                    console.log("Error: " + data);
+                };
+                exec(success, fail, _ID, "NowPlayingRequestPlayback");
+                return result;
+            } else {
+                // passes response into error callback
+                return response;
+            }
+        	
         } else {
           return "Playback already requested.";
         }
@@ -149,16 +157,21 @@ var _self = {},
 	_self.NowPlayingPlay = function (input) {
 
         // TODO: verify json input.
+        var validInput = _self.NowPlayingValidatePlayInput(input);
+        if(typeof(response) === "boolean") && response) {
+            var result,
+    			success = function (data, response) {
+    				result = data;
+    			},
+    			fail = function (data, response) {
+    				console.log("Error: " + data);
+    			};
+    		exec(success, fail, _ID, "NowPlayingPlay", { input: input });
+    		return result;
+        } else {
+            return "Play input was not valid";
+        }
 
-        var result,
-			success = function (data, response) {
-				result = data;
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "NowPlayingPlay", { input: input });
-		return result;
 	};
 
     /**
@@ -169,15 +182,13 @@ var _self = {},
      * @returns String: whether the music paused successfully.
      */
 	_self.NowPlayingPause = function () {
-		var result,
 			success = function (data, response) {
-				result = data;
+				// do nothing, pause callback handle it
 			},
 			fail = function (data, response) {
 				console.log("Error: " + data);
 			};
 		exec(success, fail, _ID, "NowPlayingPause", null);
-		return result;
 	};
 
     /**
@@ -275,6 +286,89 @@ var _self = {},
         return result;
     };
 
+    // Validate play input
+
+
+    /* We expect the following callbacks to be present:
+    play, pause, stop, next, previous, error
+    */
+    _self.NowPlayingValidateCallback = function(input) {
+        if(!('play' in input)) return "Play callback was not provided";
+        if(!('pause' in input)) return "Pause callback was not provided";
+        if(!('stop' in input)) return "Stop callback was not provided";
+        if(!('next' in input)) return "Next callback was not provided";
+        if(!('previous' in input)) return "Previous callback was not provided";
+        if(!('error' in input)) return "Error callback was not provided";
+
+        if(!(isFunction(input.play))) return "Play attribute was not a function";
+        if(!(isFunction(input.pause))) return "Pause attribute was not a function";
+        if(!(isFunction(input.stop))) return "Stop attribute was not a function";
+        if(!(isFunction(input.next))) return "Next attribute was not a function";
+        if(!(isFunction(input.previous))) return "Previous attribute was not a function";
+        if(!(isFunction(input.error))) return "Error attribute was not a function";
+
+        // if all attributes present and are function, valid callback
+        return true;
+
+    };
+
+    function isFunction(functionToCheck) {
+        var getType = {};
+        return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+    };
+
+    /* 
+     trackURL: "http://www.pch.gc.ca/DAMAssetPub/DAM-hymChs-antSgn/STAGING/audio-audio/o-canada_1359474460106_eng.MP3",
+            iconURL: "img/canadian-flag-small.jpg",
+            metadata: {
+                Title: "O Canada",
+                Artist: "Canada",
+                Album: "Canada's Favorites"
+            }
+    */
+
+    _self.NowPlayingValidatePlayInput = function(input) {
+        var response = true;
+        if(!('iconURL' in input)) {
+            response = "iconURL attribute was not provided";
+            // trigger the error and pass it in as a input
+            return response;
+        } 
+        if(!('trackURL' in input)) {
+            response =  "trackURL attribute was not provided";
+
+            return response;
+        } 
+
+        if(!('metadata' in input)) {
+            response = "metadata attribute was not provided";
+
+            return response;
+        } 
+
+        if(!('Title' in input.metadata)) {
+            response = "Title field in metadata was not provided";
+
+            return response;
+        }
+
+        if(!('Artist') in input.metadata) {
+            response = "Artist field in metadata was not provided";
+
+            return response;
+        }
+
+        if(!('Album' in input.metadata)) {
+            response = "Album field in metadata was not provided";
+
+            return response;
+        }
+
+        return response;
+    }
+
+
+    
     /**
      * NowPlayingGetState
      * Get the state of the music being played.
