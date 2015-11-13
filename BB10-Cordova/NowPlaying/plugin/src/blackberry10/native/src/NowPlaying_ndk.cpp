@@ -96,7 +96,8 @@ namespace webworks {
          * Wes Barichak: "Currently, the only metadata properties that are available are
          * MetaData::Album, MetaData::Artist, and MetaData::Title, while the
          * rest of the MetaData properties are ignored.
-         * This will likely change in the future though." */
+         * This will likely change in the future though."
+         * It seems album isn't showing either, though. */
         metadata[MetaData::Title] =
                 QString::fromStdString(data["Title"].asString());
         metadata[MetaData::Artist] =
@@ -209,13 +210,13 @@ namespace webworks {
 
     void NowPlayingNDK::NowPlayingBindPlayCallback(const string& callbackId) {
 
-        // Set up callback channel
+        // Set up the callback channel used by event handlers
         playCallbackId = callbackId;
 
         bool connectResult;
         Q_UNUSED(connectResult);
 
-        // Set up user-triggerable callback
+        // Set up user-triggerable event handler
         connectResult = QObject::connect(
                             this,
                             SIGNAL(playSignal()),
@@ -224,7 +225,7 @@ namespace webworks {
                         );
         Q_ASSERT(connectResult);
 
-        // Set up system-triggerable callback
+        // Set up system-triggerable event handler
         connectResult = QObject::connect(
                             npc,
                             SIGNAL(play()),
@@ -232,18 +233,17 @@ namespace webworks {
                             SLOT(playSlot())
                         );
         Q_ASSERT(connectResult);
-
     }
 
     void NowPlayingNDK::NowPlayingBindPauseCallback(const string& callbackId) {
 
-        // Set up callback channel
+        // Set up the callback channel used by event handlers
         pauseCallbackId = callbackId;
 
         bool connectResult;
         Q_UNUSED(connectResult);
 
-        // Set up user-triggerable callback
+        // Set up the user-triggerable pause event handler
         connectResult = QObject::connect(
                             this,
                             SIGNAL(pauseSignal()),
@@ -252,7 +252,7 @@ namespace webworks {
                         );
         Q_ASSERT(connectResult);
 
-        // Set up system-triggerable callback
+        // Set up the system-triggerable pause event handler
         connectResult = QObject::connect(
                             npc,
                             SIGNAL(pause()),
@@ -265,13 +265,13 @@ namespace webworks {
 
     void NowPlayingNDK::NowPlayingBindStopCallback(const string& callbackId) {
 
-        // Set up callback channel
+        // Set up the callback channel used by event handlers
         stopCallbackId = callbackId;
 
         bool connectResult;
         Q_UNUSED(connectResult);
 
-        // Set up user-triggerable callback
+        // Set up the user-triggerable event handler
         connectResult = QObject::connect(
                             this,
                             SIGNAL(stopSignal()),
@@ -280,7 +280,7 @@ namespace webworks {
                         );
         Q_ASSERT(connectResult);
 
-        // Set up system-triggerable callback
+        // Set up the system-triggerable event handler
         connectResult = QObject::connect(
                             npc,
                             SIGNAL(stop()),
@@ -289,17 +289,31 @@ namespace webworks {
                         );
         Q_ASSERT(connectResult);
 
+        // Abstract the system-triggerable revoked event handler into the
+        // stop event handler. Because the NowPlayingConnection is a
+        // low-priority connection, this means if an app using this plugin
+        // is preempted by another low-prority connection, the track will
+        // always be stopped.
+        // See https://developer.blackberry.com/native/documentation/graphics_multimedia/audio_video/accessing_media_notification_areas.html
+        // for more details.
+        connectResult = QObject::connect(
+                                    npc,
+                                    SIGNAL(revoked()),
+                                    this,
+                                    SLOT(stopSlot())
+                                );
+        Q_ASSERT(connectResult);
     }
 
     void NowPlayingNDK::NowPlayingBindNextCallback(const string& callbackId) {
 
-        // Set up callback channel
+        // Set up the callback channel used by event handlers
         nextCallbackId = callbackId;
 
         bool connectResult;
         Q_UNUSED(connectResult);
 
-        // Set up user-triggerable callback
+        // Set up the user-triggerable event handler
         connectResult = QObject::connect(
                             this,
                             SIGNAL(nextSignal()),
@@ -308,7 +322,7 @@ namespace webworks {
                         );
         Q_ASSERT(connectResult);
 
-        // Set up system-triggerable callback
+        // Set up the system-triggerable event handler
         connectResult = QObject::connect(
                             npc,
                             SIGNAL(next()),
@@ -321,13 +335,13 @@ namespace webworks {
 
     void NowPlayingNDK::NowPlayingBindPreviousCallback(const string& callbackId) {
 
-        // Set up callback channel
+        // Set up the callback channel used by event handlers
         previousCallbackId = callbackId;
 
         bool connectResult;
         Q_UNUSED(connectResult);
 
-        // Set up user-triggerable callback
+        // Set up the user-triggerable event handler
         connectResult = QObject::connect(
                             this,
                             SIGNAL(previousSignal()),
@@ -336,7 +350,7 @@ namespace webworks {
                         );
         Q_ASSERT(connectResult);
 
-        // Set up system-triggerable callback
+        // Set up the system-triggerable event handler
         connectResult = QObject::connect(
                             npc,
                             SIGNAL(previous()),
@@ -349,10 +363,10 @@ namespace webworks {
 
     void NowPlayingNDK::NowPlayingBindErrorCallback(const string& callbackId) {
 
-        // Set up callback channel
+        // Set up the callback channel used by event handlers
         errorCallbackId = callbackId;
 
-        // Set up callback
+        // Set up the callback event handler
         bool connectResult;
         Q_UNUSED(connectResult);
         connectResult = QObject::connect(
@@ -383,13 +397,13 @@ namespace webworks {
         npc->setNextEnabled(root["nextEnabled"].asBool());
         npc->setPreviousEnabled(root["previousEnabled"].asBool());
 
-        // Acquire the media notification area if it isn't already
+        // Acquire the media notification area if it isn't already.
         if (!npc->isAcquired()) {
             npc->acquire();
         }
 
-        // Stop any currently playing music, then play the newly set up one.
-        // Let the corresponding slots for these actions handle these.
+        // Stop any currently playing music and play the newly set up track.
+        // Let the slots do this.
         emit stopSignal(); //TODO? parameter to suppress the callback
         emit playSignal();
 
@@ -452,7 +466,7 @@ namespace webworks {
 
     /**
      * NowPlayingNDK::NowPlayingGetState
-     * Return the state of NowPlaying.
+     * Returns the state of NowPlaying. Used for debugging purposes.
      */
     string NowPlayingNDK::NowPlayingGetState() {
         string state = "State: ";
@@ -487,6 +501,6 @@ namespace webworks {
         state += npc->isPreempted() ? "True" : "False";
         state += "\n";
 
-        return state.c_str();
+        return state;
     }
 } /* namespace webworks */

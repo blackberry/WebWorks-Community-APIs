@@ -32,7 +32,7 @@ var app = (function() {
             iconURL: "img/canadian-flag-small.jpg",
             metadata: {
                 Title: "O Canada",
-                Artist: "Canada",
+                Artist: "Canadians",
                 Album: "Canada's Favorites"
             }
         },

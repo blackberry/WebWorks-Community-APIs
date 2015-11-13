@@ -63,6 +63,14 @@ namespace webworks {
             explicit NowPlayingNDK(NowPlayingJS *parent = NULL): QObject(), m_pParent(parent)
             {
                 mp = new MediaPlayer(this);
+
+                // Create a low-priority NowPlayingConnection.
+                // This means that if an app using this plugin is preempted by
+                // a high-priority connection, the track will be automatically
+                // restarted if it was playing, remain paused if paused, and
+                // stopped if stopped.
+                // See https://developer.blackberry.com/native/documentation/graphics_multimedia/audio_video/accessing_media_notification_areas.html
+                // for more details.
                 npc = new NowPlayingConnection(this);
             }
 

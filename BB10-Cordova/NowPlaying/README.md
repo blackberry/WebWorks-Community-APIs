@@ -45,7 +45,7 @@ The api exports a global module as blackberry.community.nowplaying, as shown in 
 ### Object Methods ###
 
 #### NowPlayingRequestPlayback() ####
-Set up the app for playing music and bind methods that callback to the app.
+Sets up the app for playing music and binds callbacks to the app.
 
 @param input: a json object with methods that callback to the app.
 The callback methods that must be specified are:
@@ -154,10 +154,11 @@ Example:
 	};
 
 #### NowPlayingPlay() ####
-Play a specified music in the background.
+Plays a specified track in the background.
 Executes the callback method given to NowPlayingRequestPlayback.
+Use this method to play the track if it isn't automatically restarted after the app playback is no longer preempted.
 
-@param input: a json object with music details.
+@param input: a json object with track details.
 The details that must be specified are:
 
 	- trackURL: URL of the track to play.
@@ -169,7 +170,7 @@ The details that must be specified are:
 	- previousEnabled: boolean used to set whether or not the Previous button should be
 					   enabled on the volume overlay.
 
-@returns String: whether the music played successfully.
+@returns String: whether the track played successfully.
 
 Example:
 
@@ -189,48 +190,48 @@ Example:
 	com.blackberry.community.nowplaying.NowPlayingPlay(jsonData);
 
 #### NowPlayingPause() ####
-Pause the music if there is any in the background.
+Pauses the track if there is any in the background.
 Executes the callback method given to NowPlayingRequestPlayback.
 
-@returns String: whether the music paused successfully.
+@returns String: whether the track paused successfully.
 
 Example:
 	com.blackberry.community.nowplaying.NowPlayingPause();
 
 
 #### NowPlayingResume() ####
-Resume the paused music if there is any in the background.
+Resumes the paused track if there is any in the background.
 Executes the callback method given to NowPlayingRequestPlayback.
 
-@returns String: whether the music resumed successfully.
+@returns String: whether the track resumed successfully.
 
 Example:
 	com.blackberry.community.nowplaying.NowPlayingResume();
 
 
 #### NowPlayingStop() ####
-Stop the music if there is any in the background.
+Stops the track if there is any in the background.
 Executes the callback method given to NowPlayingRequestPlayback.
 
-@returns String: whether the music stopped successfully.
+@returns String: whether the track stopped successfully.
 
 Example:
 	com.blackberry.community.nowplaying.NowPlayingStop();
 
 
 #### NowPlayingNext() ####
-Play the next track according to the callback method given to NowPlayingRequestPlayback.
+Plays the next track according to the callback method given to NowPlayingRequestPlayback.
 
-@returns String: whether the music was changed to next one successfully.
+@returns String: whether the track was changed to next one successfully.
 
 Example:
 	com.blackberry.community.nowplaying.NowPlayingNext();
 
 
 #### NowPlayingPrevious() ####
-Play the previous track according to the callback method given to NowPlayingRequestPlayback.
+Plays the previous track according to the callback method given to NowPlayingRequestPlayback.
 
-@returns String: whether the music was changed to previous one successfully.
+@returns String: whether the track was changed to previous one successfully.
 
 Example:
 	com.blackberry.community.nowplaying.NowPlayingPrevious();
@@ -244,45 +245,31 @@ Example:
 
 #### MUST-HAVES ###
 
-1. Volume Overlay
-	(In `/plugin/src/blackberry10/native/src/NowPlaying_ndk.cpp`)
-
-	- Get music, icon, and metadata to show here
-	- Get buttons here to fire signals
-	- Investigate setting appropriate size for media notification area even though Tim mentioned
-
-
-	> I don't think there's any control to change the size of the media notification area - it's set by the OS and the hardware.
-
-2. App preemption
-	(In `/plugin/src/blackberry10/native/src/NowPlaying_ndk.cpp`)
-
-	- Get app preemption to fire signals
-
-3. Ensure callbacks are not duplicated when pressing "Stop" and "requestPlayback" multiple times in the sample app, i.e. idempotentcy.
-
-4. Validate parameters to NowPlayingRequestPlayback and NowPlayingPlay.
+1. Ensure proper app flow through validation e.g. that requestPlayback is done before any other method. When possible, errors should be propagated through the error callback in the native layer rather than the javascript server-side part of the plugin.
 	(In `/plugin/www/client.js`)
 
-5. Metadata
+2. Validate parameters to NowPlayingRequestPlayback and NowPlayingPlay.
+	(In `/plugin/www/client.js`)
+
+#### NICE-TO-HAVES ####
+
+1. Provide an optional parameter to suppress the callbacks from playSlot(), pauseSlot(), and stopSlot(), so that actions can be done to change the internal state of the app without externalization to the interface.
+
+2. Give NowPlayingNDK::NowPlayingError signal/slot parameters to specify error information. Can create an enum of general errors that can occur. Use this throughout the class.
 	(In `/plugin/src/blackberry10/native/src/NowPlaying_ndk.cpp`)
 
+3. Give the sample app more interesting callbacks, e.g. the sample app [here](https://github.com/blackberry/Cascades-Samples/tree/master/nowplaying) uses images.
+
+4. Metadata
+	(In `/plugin/src/blackberry10/native/src/NowPlaying_ndk.cpp`)
+
+	- Album isn't showing.
 	- Investigate putting more than just the Title, Artist, Album properties, even though [this](http://developer.blackberry.com/native/reference/cascades/bb__multimedia__nowplayingconnection.html#comment-1134791487) says
 
 
 	> Comment 2 years ago from Oct 30, 2015. Wes Barichak: "Currently, the only metadata properties that are available are MetaData::Album, MetaData::Artist, and MetaData::Title, while the rest of the MetaData properties are ignored. This will likely change in the future though."
 
-6. Give NowPlayingNDK::NowPlayingError signal/slot parameters to specify error information. Can create an enum of general errors that can occur. Use this throughout the class.
-	(In `/plugin/src/blackberry10/native/src/NowPlaying_ndk.cpp`)
-
-
-#### NICE-TO-HAVES ####
-
-1. Give the sample app more interesting callbacks, e.g. the sample app [here](https://github.com/blackberry/Cascades-Samples/tree/master/nowplaying) uses images.
-
-2. Test more trackURL and iconURL local paths
-
-3. Icon
+5. Icon
 	(In `/plugin/src/blackberry10/native/src/NowPlaying_ndk.cpp`)
 
 	- Investigate setting icons based on URLs even though [this](http://developer.blackberry.com/native/reference/cascades/bb__multimedia__nowplayingconnection.html#function-play) says
@@ -290,7 +277,14 @@ Example:
 
 	> Comment 2 years ago from Oct 30, 2015. Theodore Mavrakis: "How can we pass an http url to use for the icon of a NowPlayingConnection?" Wes Barichak: "Currently, this is not possible. But, we will be looking at adding this functionality in a future release."
 
-4. Provide an optional parameter to suppress the callbacks from playSlot(), pauseSlot(), and stopSlot(), so that actions can be done to change the internal state of the app without externalization to the interface.
+6. Volume Overlay
+	(In `/plugin/src/blackberry10/native/src/NowPlaying_ndk.cpp`)
+
+	- Investigate setting appropriate size for media notification area even though Tim mentioned
+
+
+	> I don't think there's any control to change the size of the media notification area - it's set by the OS and the hardware.
+
 
 ## Disclaimer ##
 

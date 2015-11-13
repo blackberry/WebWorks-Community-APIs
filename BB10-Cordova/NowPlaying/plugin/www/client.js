@@ -17,11 +17,12 @@
 var _self = {},
     _ID = "com.blackberry.community.nowplaying",
     exec = cordova.require("cordova/exec"),
-    playbackRequested = false;
+    playbackRequested = false,
+    stopped = true;
 
     /**
      * NowPlayingRequestPlayback
-     * Set up the app for playing music and bind methods that callback to the app.
+     * Sets up the app for playing music and binds callbacks to the app.
      *
      * @param input: a json object with methods that callback to the app.
      * The callback methods that must be specified are:
@@ -75,6 +76,7 @@ var _self = {},
         var success = function (data, response) {
                 var json = JSON.parse(data);
                 callback(json);
+                stopped = false;
             },
             fail = function (data, response) {
                 console.log("Error: " + data);
@@ -97,6 +99,7 @@ var _self = {},
         var success = function (data, response) {
                 var json = JSON.parse(data);
                 callback(json);
+                stopped = true;
             },
             fail = function (data, response) {
                 console.log("Error: " + data);
@@ -108,6 +111,7 @@ var _self = {},
         var success = function (data, response) {
                 var json = JSON.parse(data);
                 callback(json);
+                stopped = false;
             },
             fail = function (data, response) {
                 console.log("Error: " + data);
@@ -119,6 +123,7 @@ var _self = {},
         var success = function (data, response) {
                 var json = JSON.parse(data);
                 callback(json);
+                stopped = false;
             },
             fail = function (data, response) {
                 console.log("Error: " + data);
@@ -139,10 +144,12 @@ var _self = {},
 
     /**
      * NowPlayingPlay
-     * Play a specified music in the background.
+     * Plays a specified track in the background.
      * Executes the callback method given to NowPlayingRequestPlayback.
+     * Use this method to play the track if it isn't automatically restarted
+     * after the app playback is no longer preempted.
      *
-     * @param input: a json object with music details.
+     * @param input: a json object with track details.
      * The details that must be specified are:
      * - trackURL: URL of the track to play.
      * - iconURL: URL of the icon to display on the volume overlay.
@@ -152,7 +159,7 @@ var _self = {},
      *                enabled on the volume overlay.
      * - previousEnabled: boolean used to set whether or not the Previous button should be
      *                    enabled on the volume overlay.
-     * @returns String: whether the music played successfully.
+     * @returns String: whether the track played successfully.
      */
 	_self.NowPlayingPlay = function (input) {
 
@@ -176,10 +183,10 @@ var _self = {},
 
     /**
      * NowPlayingPause
-     * Pause the music if there is any in the background.
+     * Pauses the track if there is any in the background.
      * Executes the callback method given to NowPlayingRequestPlayback.
      *
-     * @returns String: whether the music paused successfully.
+     * @returns String: whether the track paused successfully.
      */
 	_self.NowPlayingPause = function () {
 			var result;
@@ -195,10 +202,10 @@ var _self = {},
 
     /**
      * NowPlayingResume
-     * Resume the paused music if there is any in the background.
+     * Resumes the paused track if there is any in the background.
      * Executes the callback method given to NowPlayingRequestPlayback.
      *
-     * @returns String: whether the music resumed successfully.
+     * @returns String: whether the track resumed successfully.
      */
     _self.NowPlayingResume = function () {
         var result,
@@ -208,16 +215,23 @@ var _self = {},
             fail = function (data, response) {
                 console.log("Error: " + data);
             };
-        exec(success, fail, _ID, "NowPlayingResume", null);
+
+        if (stopped) {
+            result = "Track cannot be resumed because it is stopped. " +
+                "Call the play method to set up a new track to play instead.";
+        } else {
+            exec(success, fail, _ID, "NowPlayingResume", null);
+        }
+
         return result;
     };
 
     /**
      * NowPlayingStop
-     * Stop the music if there is any in the background.
+     * Stops the track if there is any in the background.
      * Executes the callback method given to NowPlayingRequestPlayback.
      *
-     * @returns String: whether the music stopped successfully.
+     * @returns String: whether the track stopped successfully.
      */
     _self.NowPlayingStop = function () {
 		var result,
@@ -228,15 +242,15 @@ var _self = {},
 				console.log("Error: " + data);
 			};
         exec(success, fail, _ID, "NowPlayingStop", null);
-		return result; 
+		return result;
 	};
 
     /**
      * NowPlayingNext
-     * Play the next track according to the callback method given to
+     * Plays the next track according to the callback method given to
      * NowPlayingRequestPlayback.
      *
-     * @returns String: whether the music was changed to next one successfully.
+     * @returns String: whether the track was changed to next one successfully.
      */
     _self.NowPlayingNext = function () {
         var result,
@@ -252,10 +266,10 @@ var _self = {},
 
     /**
      * NowPlayingPrevious
-     * Play the previous track according to the callback method given to
+     * Plays the previous track according to the callback method given to
      * NowPlayingRequestPlayback.
      *
-     * @returns String: whether the music was changed to previous one successfully.
+     * @returns String: whether the track was changed to previous one successfully.
      */
     _self.NowPlayingPrevious = function () {
         var result,
@@ -271,7 +285,7 @@ var _self = {},
 
     /**
      * NowPlayingError
-     * Fire the error callback method given to NowPlayingRequestPlayback.
+     * Fires the error callback method given to NowPlayingRequestPlayback.
      * For debugging purposes only.
      *
      * @returns String: error information
@@ -371,8 +385,8 @@ var _self = {},
     
     /**
      * NowPlayingGetState
-     * Get the state of the music being played.
-     * For debugging purposes only.
+     * Returns the state of the plugin.
+     * Used for debugging purposes.
      *
      * @returns String: containing:
      * - the state of the MediaPlayer,
