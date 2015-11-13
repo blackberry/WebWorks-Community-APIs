@@ -182,13 +182,15 @@ var _self = {},
      * @returns String: whether the music paused successfully.
      */
 	_self.NowPlayingPause = function () {
-			success = function (data, response) {
-				// do nothing, pause callback handle it
+			var result;
+            success = function (data, response) {
+				result = data;
 			},
 			fail = function (data, response) {
 				console.log("Error: " + data);
 			};
 		exec(success, fail, _ID, "NowPlayingPause", null);
+        return result;
 	};
 
     /**
