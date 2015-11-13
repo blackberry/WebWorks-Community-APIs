@@ -41,9 +41,9 @@ var _self = {},
 
         /* Bind callbacks */
         if (!playbackRequested) {
-            var response = _self.NowPlayingValidateCallback(input);
+            var valid = _self.NowPlayingValidateCallback(input);
 
-            if((typeof(response) === "boolean") && response){
+            if(valid){
                 _self.NowPlayingBindPlayCallback(input.play);
                 _self.NowPlayingBindPauseCallback(input.pause);
                 _self.NowPlayingBindStopCallback(input.stop);
@@ -63,7 +63,7 @@ var _self = {},
                 return result;
             } else {
                 // passes response into error callback
-                return response;
+                return "Playback input was not valid";
             }
         	
         } else {
@@ -158,7 +158,7 @@ var _self = {},
 
         // TODO: verify json input.
         var validInput = _self.NowPlayingValidatePlayInput(input);
-        if(typeof(response) === "boolean") && response) {
+        if(validInput) {
             var result,
     			success = function (data, response) {
     				result = data;
@@ -295,23 +295,40 @@ var _self = {},
     play, pause, stop, next, previous, error
     */
     _self.NowPlayingValidateCallback = function(input) {
-        if(!('play' in input)) return "Play callback was not provided";
-        if(!('pause' in input)) return "Pause callback was not provided";
-        if(!('stop' in input)) return "Stop callback was not provided";
-        if(!('next' in input)) return "Next callback was not provided";
-        if(!('previous' in input)) return "Previous callback was not provided";
-        if(!('error' in input)) return "Error callback was not provided";
+        var result = "";
+        var valid = true;
+        if(!('play' in input)) result = "Play callback was not provided";
+        if(!('pause' in input)) result = "Pause callback was not provided";
+        if(!('stop' in input)) result = "Stop callback was not provided";
+        if(!('next' in input)) result = "Next callback was not provided";
+        if(!('previous' in input)) result = "Previous callback was not provided";
+        if(!('error' in input)) result = "Error callback was not provided";
+        
+        if(result !== "") {
+            valid = false;
+            // send error callback;
+        }
+        if(valid) {
+            valid = _self.NowPlayingValidateCallbackAttributes(input);  
+        } 
+        return valid;
+    };
 
-        if(!(isFunction(input.play))) return "Play attribute was not a function";
-        if(!(isFunction(input.pause))) return "Pause attribute was not a function";
-        if(!(isFunction(input.stop))) return "Stop attribute was not a function";
-        if(!(isFunction(input.next))) return "Next attribute was not a function";
-        if(!(isFunction(input.previous))) return "Previous attribute was not a function";
-        if(!(isFunction(input.error))) return "Error attribute was not a function";
+    _self.NowPlayingValidateCallbackAttributes = function(input) {
+        var result = true;
+        if(!(isFunction(input.play))) result = "Play attribute was not a function";
+        if(!(isFunction(input.pause))) result = "Pause attribute was not a function";
+        if(!(isFunction(input.stop))) result = "Stop attribute was not a function";
+        if(!(isFunction(input.next))) result = "Next attribute was not a function";
+        if(!(isFunction(input.previous))) result = "Previous attribute was not a function";
+        if(!(isFunction(input.error))) result = "Error attribute was not a function";
 
-        // if all attributes present and are function, valid callback
-        return true;
-
+        if(typeof(result) === "boolean") && result) {
+            return true;
+        } else {
+            // call error and return false
+            return false;
+        }
     };
 
     function isFunction(functionToCheck) {
@@ -330,43 +347,24 @@ var _self = {},
     */
 
     _self.NowPlayingValidatePlayInput = function(input) {
-        var response = true;
-        if(!('iconURL' in input)) {
-            response = "iconURL attribute was not provided";
-            // trigger the error and pass it in as a input
-            return response;
-        } 
-        if(!('trackURL' in input)) {
-            response =  "trackURL attribute was not provided";
-
-            return response;
-        } 
-
-        if(!('metadata' in input)) {
+        var response = "";
+        if(!('iconURL' in input)) response = "iconURL attribute was not provided";
+        if(!('trackURL' in input)) response =  "trackURL attribute was not provided";
+        if(('metadata' in input)) {
+            // is this necessary or should we only check for trackURL
+            if(!('Title' in input.metadata)) response = "Title field in metadata was not provided";   
+            if(!('Artist') in input.metadata) response = "Artist field in metadata was not provided";
+            if(!('Album' in input.metadata)) response = "Album field in metadata was not provided";
+        else {
             response = "metadata attribute was not provided";
-
-            return response;
-        } 
-
-        if(!('Title' in input.metadata)) {
-            response = "Title field in metadata was not provided";
-
-            return response;
         }
-
-        if(!('Artist') in input.metadata) {
-            response = "Artist field in metadata was not provided";
-
-            return response;
+        var valid = true;
+        if(response !=== "") {
+            valid = false;
+            // throw error
         }
-
-        if(!('Album' in input.metadata)) {
-            response = "Album field in metadata was not provided";
-
-            return response;
-        }
-
-        return response;
+        
+        return valid
     }
 
 
