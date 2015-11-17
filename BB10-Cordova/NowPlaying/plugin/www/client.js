@@ -42,15 +42,16 @@ var _self = {},
 
         /* Bind callbacks */
         if (!playbackRequested) {
-            var valid = _self.NowPlayingValidateCallback(input);
 
+            var valid = _self.NowPlayingValidateCallback(input);
+            
             if(valid){
                 _self.NowPlayingBindPlayCallback(input.play);
                 _self.NowPlayingBindPauseCallback(input.pause);
                 _self.NowPlayingBindStopCallback(input.stop);
                 _self.NowPlayingBindNextCallback(input.next);
                 _self.NowPlayingBindPreviousCallback(input.previous);
-                _self.NowPlayingBindErrorCallback(input.error);
+                //_self.NowPlayingBindErrorCallback(input.error);
 
                 var result,
                 success = function (data, response) {
@@ -133,6 +134,7 @@ var _self = {},
 
     _self.NowPlayingBindErrorCallback = function (callback) {
         var success = function (data, response) {
+                console.log(data);
                 var json = JSON.parse(data);
                 callback(json);
             },
@@ -290,7 +292,7 @@ var _self = {},
      *
      * @returns String: error information
      */
-    _self.NowPlayingError = function () {
+    _self.NowPlayingError = function (error) {
         var result,
             success = function (data, response) {
                 result = data;
@@ -298,7 +300,7 @@ var _self = {},
             fail = function (data, response) {
                 console.log("Error: " + data);
             };
-        exec(success, fail, _ID, "NowPlayingError", null);
+        exec(success, fail, _ID, "NowPlayingError", { input: error });
         return result;
     };
 
@@ -320,7 +322,8 @@ var _self = {},
         
         if(result !== "") {
             valid = false;
-            // send error callback;
+            // log error to console since no error callback is defined
+            console.log(result);
         }
         if(valid) {
             valid = _self.NowPlayingValidateCallbackAttributes(input);  
@@ -340,7 +343,8 @@ var _self = {},
         if(typeof(result) === "boolean" && result === true) {
             return true;
         } else {
-            // call error and return false
+            // no error callback set up, log to console
+            console.log(result);
             return false;
         }
     };
