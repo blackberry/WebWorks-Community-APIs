@@ -100,7 +100,8 @@ module.exports = {
 
     NowPlayingError: function (success, fail, args, env) {
         var result = new PluginResult(args, env);
-        result.ok(nowPlaying.getInstance().NowPlayingError(), false);
+        args = JSON.parse(decodeURIComponent(args["input"]));
+        result.ok(nowPlaying.getInstance().NowPlayingError(args), false);
     },
 
     NowPlayingGetState: function (success, fail, args, env) {
@@ -240,8 +241,8 @@ JNEXT.NowPlaying = function(){
         return JNEXT.invoke(self.m_id, "NowPlayingPrevious");
     };
 
-    self.NowPlayingError = function () {
-        return JNEXT.invoke(self.m_id, "NowPlayingError");
+    self.NowPlayingError = function (input) {
+        return JNEXT.invoke(self.m_id, "NowPlayingError" + " {} " + input);
     };
 
 	self.NowPlayingGetState = function () {

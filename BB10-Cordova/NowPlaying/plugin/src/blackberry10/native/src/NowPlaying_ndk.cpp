@@ -184,11 +184,11 @@ namespace webworks {
         sendEvent(previousCallbackId + " " + writer.write(root));
     }
 
-    void NowPlayingNDK::errorSlot() {
+    void NowPlayingNDK::errorSlot(const string& errorMessage) {
         // Callback contains error handling logic.
         Json::FastWriter writer;
         Json::Value root;
-        root["result"] = "Error callback!";
+        root["result"] = errorMessage;
         sendEvent(errorCallbackId + " " + writer.write(root));
     }
 
@@ -371,9 +371,9 @@ namespace webworks {
         Q_UNUSED(connectResult);
         connectResult = QObject::connect(
                             this,
-                            SIGNAL(errorSignal()),
+                            SIGNAL(errorSignal(const string)),
                             this,
-                            SLOT(errorSlot())
+                            SLOT(errorSlot(const string))
                         );
         Q_ASSERT(connectResult);
     }
@@ -456,10 +456,10 @@ namespace webworks {
      * TODO: can create error enum and this takes params accordingly. This can
      * then be called throughout the methods of this class.
      */
-    string NowPlayingNDK::NowPlayingError() {
+    string NowPlayingNDK::NowPlayingError(const string& errorMessage) {
 
        // Let the slot handle the error
-       emit errorSignal();
+       emit errorSignal(errorMessage);
 
        return "Error detected.";
     }

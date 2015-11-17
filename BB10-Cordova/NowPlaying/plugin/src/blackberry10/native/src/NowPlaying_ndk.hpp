@@ -83,7 +83,7 @@ namespace webworks {
                 void nextSignal();
                 void previousSignal();
 
-                void errorSignal();
+                void errorSignal(const string& errorMessage);
 
             public slots:
                 void joinSlot(const string& windowGroup);
@@ -94,7 +94,7 @@ namespace webworks {
                 void nextSlot();
                 void previousSlot();
 
-                void errorSlot();
+                void errorSlot(const string& errorMessage);
 
             string NowPlayingRequestPlayback();
             void NowPlayingBindPlayCallback(const string& callbackId);
@@ -111,7 +111,7 @@ namespace webworks {
             string NowPlayingNext();
             string NowPlayingPrevious();
 
-            string NowPlayingError();
+            string NowPlayingError(const string& data);
 
             string NowPlayingGetState();
 
