@@ -366,8 +366,11 @@ var _self = {},
 
     _self.NowPlayingValidatePlayInput = function(input) {
         var response = "";
-        if(!('iconURL' in input)) response = "iconURL attribute was not provided";
         if(!('trackURL' in input)) response =  "trackURL attribute was not provided";
+
+        /* Only need trackURL for it to be considered a valid play input
+        
+        if(!('iconURL' in input)) response = "iconURL attribute was not provided";
         if(('metadata' in input)) {
             // is this necessary or should we only check for trackURL
             if(!('Title' in input.metadata)) response = "Title field in metadata was not provided";   
@@ -376,6 +379,7 @@ var _self = {},
         } else {
             response = "metadata attribute was not provided";
         }
+        */
         var valid = true;
         if(response !== "") {
             valid = false;

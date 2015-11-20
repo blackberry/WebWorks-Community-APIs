@@ -390,9 +390,13 @@ namespace webworks {
 
         // Set up music, icon, and metadata
         returnValue += setMusic(root["trackURL"].asString());
-        returnValue += setIcon(root["iconURL"].asString());
-        returnValue += setMetadata(root["metadata"]);
-
+        if(root.isMember("iconURL")) {
+            returnValue += setIcon(root["iconURL"].asString());
+        }
+        if(root.isMember("metadata")) {
+            returnValue += setMetadata(root["metadata"]);
+        }
+        
         // Set up next/previous buttons on the volume overlay
         npc->setNextEnabled(root["nextEnabled"].asBool());
         npc->setPreviousEnabled(root["previousEnabled"].asBool());
