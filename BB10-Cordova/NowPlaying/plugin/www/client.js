@@ -51,7 +51,7 @@ var _self = {},
                 _self.NowPlayingBindStopCallback(input.stop);
                 _self.NowPlayingBindNextCallback(input.next);
                 _self.NowPlayingBindPreviousCallback(input.previous);
-                //_self.NowPlayingBindErrorCallback(input.error);
+                _self.NowPlayingBindErrorCallback(input.error);
 
                 var result,
                 success = function (data, response) {
@@ -166,19 +166,26 @@ var _self = {},
 	_self.NowPlayingPlay = function (input) {
 
         // TODO: verify json input.
-        var validInput = _self.NowPlayingValidatePlayInput(input);
-        if(validInput) {
-            var result,
-    			success = function (data, response) {
-    				result = data;
-    			},
-    			fail = function (data, response) {
-    				console.log("Error: " + data);
-    			};
-    		exec(success, fail, _ID, "NowPlayingPlay", { input: input });
-    		return result;
+
+        if(!playbackRequested) {
+            console.log("Need to request playback first.");
+            return;
         } else {
-            return "Play input was not valid";
+
+            var validInput = _self.NowPlayingValidatePlayInput(input);
+            if(validInput) {
+                var result,
+        			success = function (data, response) {
+        				result = data;
+        			},
+        			fail = function (data, response) {
+        				console.log("Error: " + data);
+        			};
+        		exec(success, fail, _ID, "NowPlayingPlay", { input: input });
+        		return result;
+            } else {
+                return "Play input was not valid";
+            }
         }
 
 	};
@@ -191,6 +198,10 @@ var _self = {},
      * @returns String: whether the track paused successfully.
      */
 	_self.NowPlayingPause = function () {
+        if(!playbackRequested) {
+            console.log("Need to request playback first.");
+            return;
+        } else {
 			var result;
             success = function (data, response) {
 				result = data;
@@ -200,6 +211,7 @@ var _self = {},
 			};
 		exec(success, fail, _ID, "NowPlayingPause", null);
         return result;
+        }
 	};
 
     /**
@@ -210,22 +222,27 @@ var _self = {},
      * @returns String: whether the track resumed successfully.
      */
     _self.NowPlayingResume = function () {
-        var result,
-            success = function (data, response) {
-                result = data;
-            },
-            fail = function (data, response) {
-                console.log("Error: " + data);
-            };
-
-        if (stopped) {
-            result = "Track cannot be resumed because it is stopped. " +
-                "Call the play method to set up a new track to play instead.";
+        if(!playbackRequested) {
+            console.log("Need to request playback first.");
+            return;
         } else {
-            exec(success, fail, _ID, "NowPlayingResume", null);
-        }
+            var result,
+                success = function (data, response) {
+                    result = data;
+                },
+                fail = function (data, response) {
+                    console.log("Error: " + data);
+                };
 
-        return result;
+            if (stopped) {
+                result = "Track cannot be resumed because it is stopped. " +
+                    "Call the play method to set up a new track to play instead.";
+            } else {
+                exec(success, fail, _ID, "NowPlayingResume", null);
+            }
+
+            return result;
+        }
     };
 
     /**
@@ -236,15 +253,20 @@ var _self = {},
      * @returns String: whether the track stopped successfully.
      */
     _self.NowPlayingStop = function () {
-		var result,
-			success = function (data, response) {
-				result = data;
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-        exec(success, fail, _ID, "NowPlayingStop", null);
-		return result;
+		if(!playbackRequested) {
+            console.log("Need to request playback first.");
+            return;
+        } else {
+            var result,
+    			success = function (data, response) {
+    				result = data;
+    			},
+    			fail = function (data, response) {
+    				console.log("Error: " + data);
+    			};
+            exec(success, fail, _ID, "NowPlayingStop", null);
+    		return result;
+        }
 	};
 
     /**
@@ -255,15 +277,20 @@ var _self = {},
      * @returns String: whether the track was changed to next one successfully.
      */
     _self.NowPlayingNext = function () {
-        var result,
-            success = function (data, response) {
-                result = data;
-            },
-            fail = function (data, response) {
-                console.log("Error: " + data);
-            };
-        exec(success, fail, _ID, "NowPlayingNext", null);
-        return result;
+        if(!playbackRequested) {
+            console.log("Need to request playback first.");
+            return;
+        } else {
+            var result,
+                success = function (data, response) {
+                    result = data;
+                },
+                fail = function (data, response) {
+                    console.log("Error: " + data);
+                };
+            exec(success, fail, _ID, "NowPlayingNext", null);
+            return result;
+        }
     };
 
     /**
@@ -274,15 +301,20 @@ var _self = {},
      * @returns String: whether the track was changed to previous one successfully.
      */
     _self.NowPlayingPrevious = function () {
-        var result,
-            success = function (data, response) {
-                result = data;
-            },
-            fail = function (data, response) {
-                console.log("Error: " + data);
-            };
-        exec(success, fail, _ID, "NowPlayingPrevious", null);
-        return result;
+        if(!playbackRequested) {
+            console.log("Need to request playback first.");
+            return;
+        } else {
+            var result,
+                success = function (data, response) {
+                    result = data;
+                },
+                fail = function (data, response) {
+                    console.log("Error: " + data);
+                };
+            exec(success, fail, _ID, "NowPlayingPrevious", null);
+            return result;
+        }
     };
 
     /**
@@ -293,15 +325,20 @@ var _self = {},
      * @returns String: error information
      */
     _self.NowPlayingError = function (error) {
-        var result,
-            success = function (data, response) {
-                result = data;
-            },
-            fail = function (data, response) {
-                console.log("Error: " + data);
-            };
-        exec(success, fail, _ID, "NowPlayingError", { input: error });
-        return result;
+        if(!playbackRequested) {
+            console.log("Need to request playback first.");
+            return;
+        } else {
+            var result,
+                success = function (data, response) {
+                    result = data;
+                },
+                fail = function (data, response) {
+                    console.log("Error: " + data);
+                };
+            exec(success, fail, _ID, "NowPlayingError", { input: error });
+            return result;
+        }
     };
 
     // Validate play input
