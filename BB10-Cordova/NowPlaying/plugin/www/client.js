@@ -38,14 +38,12 @@ var _self = {},
      */
 	_self.NowPlayingRequestPlayback = function(input) {
 
-        // TODO: verify json input.
-
         /* Bind callbacks */
         if (!playbackRequested) {
 
             var valid = _self.NowPlayingValidateCallback(input);
             
-            if(valid){
+            if(valid) {
                 _self.NowPlayingBindPlayCallback(input.play);
                 _self.NowPlayingBindPauseCallback(input.pause);
                 _self.NowPlayingBindStopCallback(input.stop);
@@ -152,8 +150,8 @@ var _self = {},
      * after the app playback is no longer preempted.
      *
      * @param input: a json object with track details.
-     * The details that must be specified are:
-     * - trackURL: URL of the track to play.
+     * The details that can be specified are:
+     * - trackURL: URL of the track to play (required).
      * - iconURL: URL of the icon to display on the volume overlay.
      * - metadata: a json object with metadata details to display on the volume overlay.
      *             Can include title, artist,
@@ -165,13 +163,10 @@ var _self = {},
      */
 	_self.NowPlayingPlay = function (input) {
 
-        // TODO: verify json input.
-
         if(!playbackRequested) {
             console.log("Need to request playback first.");
             return;
         } else {
-
             var validInput = _self.NowPlayingValidatePlayInput(input);
             if(validInput) {
                 var result,
@@ -202,15 +197,15 @@ var _self = {},
             console.log("Need to request playback first.");
             return;
         } else {
-			var result;
-            success = function (data, response) {
-				result = data;
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "NowPlayingPause", null);
-        return result;
+			var result,
+                success = function (data, response) {
+                    result = data;
+                },
+                fail = function (data, response) {
+                    console.log("Error: " + data);
+                };
+            exec(success, fail, _ID, "NowPlayingPause", null);
+            return result;
         }
 	};
 
@@ -341,12 +336,22 @@ var _self = {},
         }
     };
 
-    // Validate play input
-
-
-    /* We expect the following callbacks to be present:
-    play, pause, stop, next, previous, error
-    */
+    /**
+     * NowPlayingValidateCallback
+     * Validates the input to the NowPlayingRequestPlayback.
+     *
+     * @param input: a json object with methods that callback to the app.
+     * The callback methods that should be specified are:
+     * - play: Fired when the track is played.
+     * - pause: Fired when the track is paused.
+     * - stop: Fired when the track is stopped.
+     * - next: Fired when the next track is invoked. Callback must invoke com.blackberry.community.nowplaying.play()
+     *         with arguments for the next track.
+     * - previous: Fired when the previous track is invoked. Callback must invoke com.blackberry.community.nowplaying.play()
+     *             with arguments for the previous track.
+     * - error: Fired when an internal error occurs.
+     * @returns Boolean: whether the input is valid.
+     */
     _self.NowPlayingValidateCallback = function(input) {
         var result = "";
         var valid = true;
@@ -389,51 +394,32 @@ var _self = {},
     function isFunction(functionToCheck) {
         var getType = {};
         return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-    };
+    }
 
-    /* 
-     trackURL: "http://www.pch.gc.ca/DAMAssetPub/DAM-hymChs-antSgn/STAGING/audio-audio/o-canada_1359474460106_eng.MP3",
-            iconURL: "img/canadian-flag-small.jpg",
-            metadata: {
-                Title: "O Canada",
-                Artist: "Canada",
-                Album: "Canada's Favorites"
-            }
-    */
-
+    /**
+     * NowPlayingValidatePlayInput
+     * Validates the input to the NowPlayingPlay.
+     *
+     * @param input: a json object with track details.
+     * The detail that must be specified is the trackURL: URL of the track to play.
+     * @returns boolean: whether the input is valid.
+     */
     _self.NowPlayingValidatePlayInput = function(input) {
-        var response = "";
-        if(!('trackURL' in input)) response =  "trackURL attribute was not provided";
-
-        /* Only need trackURL for it to be considered a valid play input
-        
-        if(!('iconURL' in input)) response = "iconURL attribute was not provided";
-        if(('metadata' in input)) {
-            // is this necessary or should we only check for trackURL
-            if(!('Title' in input.metadata)) response = "Title field in metadata was not provided";   
-            if(!('Artist') in input.metadata) response = "Artist field in metadata was not provided";
-            if(!('Album' in input.metadata)) response = "Album field in metadata was not provided";
+        if(('trackURL' in input)) {
+            return true;
         } else {
-            response = "metadata attribute was not provided";
+            // no error callback set up, log to console
+            console.log("trackURL attribute was not provided");
+            return false;
         }
-        */
-        var valid = true;
-        if(response !== "") {
-            valid = false;
-            // throw error
-        }
-        
-        return valid
     };
 
-
-    
     /**
      * NowPlayingGetState
      * Returns the state of the plugin.
      * Used for debugging purposes.
      *
-     * @returns String: containing:
+     * @returns {String}: containing:
      * - the state of the MediaPlayer,
      * - whether the NowPlayingConnection is acquired,
      * - whether the NowPlayingConnection is preempted.

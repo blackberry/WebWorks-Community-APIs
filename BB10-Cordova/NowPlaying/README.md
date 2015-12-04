@@ -244,13 +244,6 @@ Example:
 - Sizing is roughly x hours to investigate, at most 1 hour (left) to finish implementing, at most 1 hour to test.
 
 #### MUST-HAVES ###
-
-1. Ensure proper app flow through validation e.g. that requestPlayback is done before any other method. When possible, errors should be propagated through the error callback in the native layer rather than the javascript server-side part of the plugin.
-	(In `/plugin/www/client.js`)
-
-2. Validate parameters to NowPlayingRequestPlayback and NowPlayingPlay.
-	(In `/plugin/www/client.js`)
-
 #### NICE-TO-HAVES ####
 
 1. Provide an optional parameter to suppress the callbacks from playSlot(), pauseSlot(), and stopSlot(), so that actions can be done to change the internal state of the app without externalization to the interface.

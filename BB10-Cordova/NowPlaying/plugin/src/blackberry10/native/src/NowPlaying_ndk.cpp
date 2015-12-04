@@ -396,7 +396,7 @@ namespace webworks {
         if(root.isMember("metadata")) {
             returnValue += setMetadata(root["metadata"]);
         }
-        
+
         // Set up next/previous buttons on the volume overlay
         npc->setNextEnabled(root["nextEnabled"].asBool());
         npc->setPreviousEnabled(root["previousEnabled"].asBool());
@@ -507,4 +507,5 @@ namespace webworks {
 
         return state;
     }
+
 } /* namespace webworks */
