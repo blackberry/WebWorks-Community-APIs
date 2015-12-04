@@ -420,6 +420,7 @@ var _self = {},
         var valid = true;
         if(response !== "") {
             valid = false;
+            _self.NowPlayingError(response);
             // throw error
         }
         

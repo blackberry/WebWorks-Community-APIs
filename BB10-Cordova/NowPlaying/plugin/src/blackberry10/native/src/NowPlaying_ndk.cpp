@@ -82,6 +82,7 @@ namespace webworks {
             npc->setIconUrl(url);
             return "Icon set to " + data + "\n";
         } else {
+            emit errorSignal("Icon couldn't be set to " + data + "because it is invalid.");
             return "Icon couldn't be set to " + data +
                     " because it is invalid.\n";
         }
@@ -98,13 +99,19 @@ namespace webworks {
          * rest of the MetaData properties are ignored.
          * This will likely change in the future though."
          * It seems album isn't showing either, though. */
-        metadata[MetaData::Title] =
+        if(data.isMember("Title")) {
+            metadata[MetaData::Title] =
                 QString::fromStdString(data["Title"].asString());
-        metadata[MetaData::Artist] =
-                QString::fromStdString(data["Artist"].asString());
-        metadata[MetaData::Album] =
+        }
+        if(data.isMember("Artist")) {
+            metadata[MetaData::Title] =
+                QString::fromStdString(data["Title"].asString());
+        }
+        if(data.isMember("Album")) {
+            metadata[MetaData::Album] =
                 QString::fromStdString(data["Album"].asString());
-
+        }
+        
         npc->setMetaData(metadata);
 
         return "Metadata set successfully. \n";
@@ -385,6 +392,7 @@ namespace webworks {
         Json::Reader reader;
         bool parse = reader.parse(data, root);
         if (!parse) {
+            emit errorSignal("Error parsing data.");
             return "Error parsing data";
         }
 
