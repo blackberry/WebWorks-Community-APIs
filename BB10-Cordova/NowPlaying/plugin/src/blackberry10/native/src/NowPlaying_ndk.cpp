@@ -55,6 +55,8 @@ namespace webworks {
           mp->setSourceUrl(url);
           return "Music set to " + data + "\n";
         } else {
+          emit errorSignal("Music couldn't be set to " + data
+                  + " because it is invalid.");
           return "Music couldn't be set to " + data
                   + " because it is invalid.\n";
         }
@@ -72,6 +74,8 @@ namespace webworks {
              * Comment 2 years ago from Oct 30, 2015.
              * Theodore Mavrakis: "How can we pass an http url to use for the icon of a NowPlayingConnection?"
              * Wes Barichak: "Currently, this is not possible. But, we will be looking at adding this functionality in a future release." */
+             emit errorSignal("Icon couldn't be set to " + data + " because HTTP URLs "
+                   + "aren't currently supported as icons.");
             return "Icon couldn't be set to " + data + " because HTTP URLs "
                    + "aren't currently supported as icons. \n";
         }
