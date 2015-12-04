@@ -55,7 +55,7 @@ namespace webworks {
           mp->setSourceUrl(url);
           return "Music set to " + data + "\n";
         } else {
-          emit errorSignal("Music couldn't be set to " + data
+          NowPlayingError("Music couldn't be set to " + data
                   + " because it is invalid.");
           return "Music couldn't be set to " + data
                   + " because it is invalid.\n";
@@ -74,8 +74,8 @@ namespace webworks {
              * Comment 2 years ago from Oct 30, 2015.
              * Theodore Mavrakis: "How can we pass an http url to use for the icon of a NowPlayingConnection?"
              * Wes Barichak: "Currently, this is not possible. But, we will be looking at adding this functionality in a future release." */
-             emit errorSignal("Icon couldn't be set to " + data + " because HTTP URLs "
-                   + "aren't currently supported as icons.");
+            NowPlayingError("Icon couldn't be set to " + data +
+                    " because HTTP URLs aren't currently supported as icons.");
             return "Icon couldn't be set to " + data + " because HTTP URLs "
                    + "aren't currently supported as icons. \n";
         }
@@ -86,7 +86,8 @@ namespace webworks {
             npc->setIconUrl(url);
             return "Icon set to " + data + "\n";
         } else {
-            emit errorSignal("Icon couldn't be set to " + data + "because it is invalid.");
+            NowPlayingError("Icon couldn't be set to " + data +
+                    "because it is invalid.");
             return "Icon couldn't be set to " + data +
                     " because it is invalid.\n";
         }
@@ -115,7 +116,7 @@ namespace webworks {
             metadata[MetaData::Album] =
                 QString::fromStdString(data["Album"].asString());
         }
-        
+
         npc->setMetaData(metadata);
 
         return "Metadata set successfully. \n";
@@ -396,7 +397,7 @@ namespace webworks {
         Json::Reader reader;
         bool parse = reader.parse(data, root);
         if (!parse) {
-            emit errorSignal("Error parsing data.");
+            NowPlayingError("Error parsing data.");
             return "Error parsing data";
         }
 
@@ -420,7 +421,7 @@ namespace webworks {
 
         // Stop any currently playing music and play the newly set up track.
         // Let the slots do this.
-        emit stopSignal(); //TODO? parameter to suppress the callback
+        emit stopSignal(); //TODO: parameter to suppress the callback
         emit playSignal();
 
         returnValue += "Player started successfully.";

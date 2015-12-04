@@ -235,7 +235,7 @@ var app = (function() {
     };
 
     var errorButtonClick = function() {
-        app.writeOut(com.blackberry.community.nowplaying.NowPlayingError());
+        app.writeOut(com.blackberry.community.nowplaying.NowPlayingError("NowPlayingError test call"));
     };
 
 	var getStateButtonClick = function() {

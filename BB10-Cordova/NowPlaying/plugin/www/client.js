@@ -37,13 +37,13 @@ var _self = {},
      * @returns String: whether playback was requested (set up) successfully.
      */
 	_self.NowPlayingRequestPlayback = function(input) {
+        var result = "";
 
         /* Bind callbacks */
         if (!playbackRequested) {
-
             var valid = _self.NowPlayingValidateCallback(input);
-            
-            if(valid) {
+
+            if (valid) {
                 _self.NowPlayingBindPlayCallback(input.play);
                 _self.NowPlayingBindPauseCallback(input.pause);
                 _self.NowPlayingBindStopCallback(input.stop);
@@ -51,31 +51,29 @@ var _self = {},
                 _self.NowPlayingBindPreviousCallback(input.previous);
                 _self.NowPlayingBindErrorCallback(input.error);
 
-                var result,
-                success = function (data, response) {
-                    result = data;
-                    playbackRequested = true;
-                },
-                fail = function (data, response) {
-                    console.log("Error: " + data);
-                };
+                var success = function (data, response) {
+                        result = data;
+                        playbackRequested = true;
+                    },
+                    fail = function (data, response) {
+                        result = "Error: " + data;
+                    };
                 exec(success, fail, _ID, "NowPlayingRequestPlayback");
-                return result;
             } else {
-                // passes response into error callback
-                return "Playback input was not valid";
+                result = "Playback input was not valid.";
             }
-        	
         } else {
-          return "Playback already requested.";
+            result = "Playback already requested.";
         }
+
+        console.log(result);
+        return result;
 	};
 
     _self.NowPlayingBindPlayCallback = function (callback) {
         var success = function (data, response) {
                 var json = JSON.parse(data);
                 callback(json);
-                stopped = false;
             },
             fail = function (data, response) {
                 console.log("Error: " + data);
@@ -98,7 +96,6 @@ var _self = {},
         var success = function (data, response) {
                 var json = JSON.parse(data);
                 callback(json);
-                stopped = true;
             },
             fail = function (data, response) {
                 console.log("Error: " + data);
@@ -110,7 +107,6 @@ var _self = {},
         var success = function (data, response) {
                 var json = JSON.parse(data);
                 callback(json);
-                stopped = false;
             },
             fail = function (data, response) {
                 console.log("Error: " + data);
@@ -122,7 +118,6 @@ var _self = {},
         var success = function (data, response) {
                 var json = JSON.parse(data);
                 callback(json);
-                stopped = false;
             },
             fail = function (data, response) {
                 console.log("Error: " + data);
@@ -132,7 +127,6 @@ var _self = {},
 
     _self.NowPlayingBindErrorCallback = function (callback) {
         var success = function (data, response) {
-                console.log(data);
                 var json = JSON.parse(data);
                 callback(json);
             },
@@ -162,27 +156,31 @@ var _self = {},
      * @returns String: whether the track played successfully.
      */
 	_self.NowPlayingPlay = function (input) {
+        var result = "";
 
-        if(!playbackRequested) {
-            console.log("Need to request playback first.");
-            return;
+        if (!playbackRequested) {
+            result = "Need to request playback first.";
         } else {
             var validInput = _self.NowPlayingValidatePlayInput(input);
-            if(validInput) {
-                var result,
-        			success = function (data, response) {
+
+            if (validInput) {
+                var success = function (data, response) {
         				result = data;
+                        stopped = false;
         			},
         			fail = function (data, response) {
-        				console.log("Error: " + data);
+        				result = "Error: " + data;
+                        _self.NowPlayingError("Error: " + data);
         			};
         		exec(success, fail, _ID, "NowPlayingPlay", { input: input });
-        		return result;
+
             } else {
-                return "Play input was not valid";
+                result = "Play input was not valid";
             }
         }
 
+        console.log(result);
+        return result;
 	};
 
     /**
@@ -193,20 +191,31 @@ var _self = {},
      * @returns String: whether the track paused successfully.
      */
 	_self.NowPlayingPause = function () {
-        if(!playbackRequested) {
-            console.log("Need to request playback first.");
-            return;
+        var result = "";
+
+        if (!playbackRequested) {
+            result = "Need to request playback first.";
+        } else if (stopped) {
+            result = 'Track cannot be paused because it is stopped.\n' +
+                'Call the play, next, or previous methods to start playing a new track.';
+            _self.NowPlayingError(result);
+        } else if (! isConnectionAcquired()) {
+            result = 'Track cannot be paused because the NowPlayingConnection is no longer acquired.\n' +
+                'Call the play, next, or previous methods to start playing a new track.';
+            _self.NowPlayingError(result);
         } else {
-			var result,
-                success = function (data, response) {
+			var success = function (data, response) {
                     result = data;
                 },
                 fail = function (data, response) {
-                    console.log("Error: " + data);
+                    result = "Error: " + data;
+                    _self.NowPlayingError(result);
                 };
             exec(success, fail, _ID, "NowPlayingPause", null);
-            return result;
         }
+
+        console.log(result);
+        return result;
 	};
 
     /**
@@ -217,28 +226,36 @@ var _self = {},
      * @returns String: whether the track resumed successfully.
      */
     _self.NowPlayingResume = function () {
-        if(!playbackRequested) {
-            console.log("Need to request playback first.");
-            return;
+        var result = "";
+
+        if (!playbackRequested) {
+            result = "Need to request playback first.";
+        } else if (stopped) {
+            result = 'Track cannot be resumed because it is stopped.\n' +
+                'Call the play, next, or previous methods to start playing a new track.';
+            _self.NowPlayingError(result);
+        } else if (! isConnectionAcquired()) {
+            result = 'Track cannot be resumed because the NowPlayingConnection is no longer acquired.\n' +
+                'Call the play, next, or previous methods to start playing a new track.';
+            _self.NowPlayingError(result);
         } else {
-            var result,
-                success = function (data, response) {
+            var success = function (data, response) {
                     result = data;
                 },
                 fail = function (data, response) {
-                    console.log("Error: " + data);
+                    result = "Error: " + data;
+                    _self.NowPlayingError(result);
                 };
-
-            if (stopped) {
-                result = "Track cannot be resumed because it is stopped. " +
-                    "Call the play method to set up a new track to play instead.";
-            } else {
-                exec(success, fail, _ID, "NowPlayingResume", null);
-            }
-
-            return result;
+            exec(success, fail, _ID, "NowPlayingResume", null);
         }
+
+        console.log(result);
+        return result;
     };
+
+    function isConnectionAcquired() {
+        return _self.NowPlayingGetState().indexOf("Acquired: True") > -1;
+    }
 
     /**
      * NowPlayingStop
@@ -248,20 +265,24 @@ var _self = {},
      * @returns String: whether the track stopped successfully.
      */
     _self.NowPlayingStop = function () {
-		if(!playbackRequested) {
-            console.log("Need to request playback first.");
-            return;
+        var result = "";
+
+		if (!playbackRequested) {
+            result = "Need to request playback first.";
         } else {
-            var result,
-    			success = function (data, response) {
+            var success = function (data, response) {
     				result = data;
-    			},
+                    stopped = true;
+                },
     			fail = function (data, response) {
-    				console.log("Error: " + data);
+    				result = "Error: " + data;
+                    _self.NowPlayingError(result);
     			};
             exec(success, fail, _ID, "NowPlayingStop", null);
-    		return result;
         }
+
+        console.log(result);
+        return result;
 	};
 
     /**
@@ -272,20 +293,24 @@ var _self = {},
      * @returns String: whether the track was changed to next one successfully.
      */
     _self.NowPlayingNext = function () {
-        if(!playbackRequested) {
-            console.log("Need to request playback first.");
-            return;
+        var result = "";
+
+        if (!playbackRequested) {
+            result = "Need to request playback first.";
         } else {
-            var result,
-                success = function (data, response) {
+            var success = function (data, response) {
                     result = data;
+                    stopped = false;
                 },
                 fail = function (data, response) {
-                    console.log("Error: " + data);
+                    result = "Error: " + data;
+                    _self.NowPlayingError(result);
                 };
             exec(success, fail, _ID, "NowPlayingNext", null);
-            return result;
         }
+
+        console.log(result);
+        return result;
     };
 
     /**
@@ -296,20 +321,24 @@ var _self = {},
      * @returns String: whether the track was changed to previous one successfully.
      */
     _self.NowPlayingPrevious = function () {
-        if(!playbackRequested) {
-            console.log("Need to request playback first.");
-            return;
+        var result = "";
+
+        if (!playbackRequested) {
+            result = "Need to request playback first.";
         } else {
-            var result,
-                success = function (data, response) {
+            var success = function (data, response) {
                     result = data;
+                    stopped = false;
                 },
                 fail = function (data, response) {
-                    console.log("Error: " + data);
+                    result ="Error: " + data;
+                    _self.NowPlayingError(result);
                 };
             exec(success, fail, _ID, "NowPlayingPrevious", null);
-            return result;
         }
+
+        console.log(result);
+        return result;
     };
 
     /**
@@ -320,20 +349,22 @@ var _self = {},
      * @returns String: error information
      */
     _self.NowPlayingError = function (error) {
-        if(!playbackRequested) {
-            console.log("Need to request playback first.");
-            return;
+        var result = "";
+
+        if (!playbackRequested) {
+            result = "Need to request playback first.";
         } else {
-            var result,
-                success = function (data, response) {
+            var success = function (data, response) {
                     result = data;
                 },
                 fail = function (data, response) {
-                    console.log("Error: " + data);
+                    result = "Error: " + data;
                 };
             exec(success, fail, _ID, "NowPlayingError", { input: error });
-            return result;
         }
+
+        console.log(result);
+        return result;
     };
 
     /**
@@ -355,37 +386,43 @@ var _self = {},
     _self.NowPlayingValidateCallback = function(input) {
         var result = "";
         var valid = true;
-        if(!('play' in input)) result = "Play callback was not provided";
-        if(!('pause' in input)) result = "Pause callback was not provided";
-        if(!('stop' in input)) result = "Stop callback was not provided";
-        if(!('next' in input)) result = "Next callback was not provided";
-        if(!('previous' in input)) result = "Previous callback was not provided";
-        if(!('error' in input)) result = "Error callback was not provided";
+
+        if (!('play' in input)) result += "Play callback was not provided\n";
+        if (!('pause' in input)) result += "Pause callback was not provided\n";
+        if (!('stop' in input)) result += "Stop callback was not provided\n";
+        if (!('next' in input)) result += "Next callback was not provided\n";
+        if (!('previous' in input)) result += "Previous callback was not provided\n";
+        if (!('error' in input)) result += "Error callback was not provided\n";
         
-        if(result !== "") {
+        if (result !== "") {
             valid = false;
-            // log error to console since no error callback is defined
+
+            // Log error to console since no error callback is defined at this point.
             console.log(result);
         }
-        if(valid) {
+
+        if (valid) {
             valid = _self.NowPlayingValidateCallbackAttributes(input);  
-        } 
+        }
+
         return valid;
     };
 
     _self.NowPlayingValidateCallbackAttributes = function(input) {
         var result = true;
-        if(!(isFunction(input.play))) result = "Play attribute was not a function";
-        if(!(isFunction(input.pause))) result = "Pause attribute was not a function";
-        if(!(isFunction(input.stop))) result = "Stop attribute was not a function";
-        if(!(isFunction(input.next))) result = "Next attribute was not a function";
-        if(!(isFunction(input.previous))) result = "Previous attribute was not a function";
-        if(!(isFunction(input.error))) result = "Error attribute was not a function";
 
-        if(typeof(result) === "boolean" && result === true) {
+        if(!(isFunction(input.play))) result += "Play attribute was not a function\n";
+        if(!(isFunction(input.pause))) result += "Pause attribute was not a function\n";
+        if(!(isFunction(input.stop))) result += "Stop attribute was not a function\n";
+        if(!(isFunction(input.next))) result += "Next attribute was not a function\n";
+        if(!(isFunction(input.previous))) result += "Previous attribute was not a function\n";
+        if(!(isFunction(input.error))) result += "Error attribute was not a function\n";
+
+        if (typeof(result) === "boolean" && result === true) {
             return true;
         } else {
-            // no error callback set up, log to console
+
+            // Log error to console since no error callback is defined at this point.
             console.log(result);
             return false;
         }
@@ -405,15 +442,10 @@ var _self = {},
      * @returns boolean: whether the input is valid.
      */
     _self.NowPlayingValidatePlayInput = function(input) {
-        if(('trackURL' in input)) {
+        if ('trackURL' in input) {
             return true;
         } else {
-            response = "metadata attribute was not provided";
-        }
-        var valid = true;
-        if(response !== "") {
-            valid = false;
-            _self.NowPlayingError(response);
+            _self.NowPlayingError("Track URL attribute was not provided in input to NowPlayingPlay.");
             return false;
         }
     };
@@ -423,20 +455,28 @@ var _self = {},
      * Returns the state of the plugin.
      * Used for debugging purposes.
      *
-     * @returns {String}: containing:
+     * @returns String: containing:
      * - the state of the MediaPlayer,
      * - whether the NowPlayingConnection is acquired,
      * - whether the NowPlayingConnection is preempted.
      */
 	_self.NowPlayingGetState = function () {
-		var result,
-			success = function (data, response) {
-				result = data;
-			},
-			fail = function (data, response) {
-				console.log("Error: " + data);
-			};
-		exec(success, fail, _ID, "NowPlayingGetState", null);
+		var result = "";
+
+        if (!playbackRequested) {
+            result = "Need to request playback first.";
+        } else {
+            var success = function (data, response) {
+                    result = data;
+                },
+                fail = function (data, response) {
+                    result = "Error: " + data;
+                    _self.NowPlayingError(result);
+                };
+            exec(success, fail, _ID, "NowPlayingGetState", null);
+        }
+
+        console.log(result);
 		return result;
 	};
 
