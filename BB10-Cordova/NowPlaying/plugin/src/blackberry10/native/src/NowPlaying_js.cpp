@@ -169,15 +169,6 @@ string NowPlayingJS::InvokeMethod(const string& command) {
                 Q_RETURN_ARG(string, result));
 
     } else if (strCommand == "NowPlayingError") {
-        /*
-        success = QMetaObject::invokeMethod(m_NowPlayingMgr,
-                "NowPlayingPlay",
-                Qt::BlockingQueuedConnection,
-                Q_RETURN_ARG(string, result),
-                Q_ARG(const string&, arg));
-
-        */
-
         success = QMetaObject::invokeMethod(m_NowPlayingMgr,
                 "NowPlayingError",
                 Qt::BlockingQueuedConnection,
