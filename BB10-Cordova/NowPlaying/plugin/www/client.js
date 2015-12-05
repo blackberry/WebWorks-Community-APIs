@@ -58,7 +58,7 @@ var _self = {},
                     fail = function (data, response) {
                         result = "Error: " + data;
                     };
-                exec(success, fail, _ID, "NowPlayingRequestPlayback");
+                exec(success, fail, _ID, "NowPlayingRequestPlayback", null);
             } else {
                 result = "Playback input was not valid.";
             }
@@ -127,7 +127,9 @@ var _self = {},
 
     _self.NowPlayingBindErrorCallback = function (callback) {
         var success = function (data, response) {
+                console.log(data);
                 var json = JSON.parse(data);
+                console.log(json);
                 callback(json);
             },
             fail = function (data, response) {
@@ -196,12 +198,12 @@ var _self = {},
         if (!playbackRequested) {
             result = "Need to request playback first.";
         } else if (stopped) {
-            result = 'Track cannot be paused because it is stopped.\n' +
-                'Call the play, next, or previous methods to start playing a new track.';
+            result = "Track cannot be paused because it is stopped."
+                + "Call the play, next, or previous methods to start playing a new track.";
             _self.NowPlayingError(result);
         } else if (! isConnectionAcquired()) {
-            result = 'Track cannot be paused because the NowPlayingConnection is no longer acquired.\n' +
-                'Call the play, next, or previous methods to start playing a new track.';
+            result = "Track cannot be paused because the NowPlayingConnection is no longer acquired."
+                + "Call the play, next, or previous methods to start playing a new track.";
             _self.NowPlayingError(result);
         } else {
 			var success = function (data, response) {
@@ -231,12 +233,12 @@ var _self = {},
         if (!playbackRequested) {
             result = "Need to request playback first.";
         } else if (stopped) {
-            result = 'Track cannot be resumed because it is stopped.\n' +
-                'Call the play, next, or previous methods to start playing a new track.';
+            result = "Track cannot be resumed because it is stopped."
+                + "Call the play, next, or previous methods to start playing a new track.";
             _self.NowPlayingError(result);
         } else if (! isConnectionAcquired()) {
-            result = 'Track cannot be resumed because the NowPlayingConnection is no longer acquired.\n' +
-                'Call the play, next, or previous methods to start playing a new track.';
+            result = "Track cannot be resumed because the NowPlayingConnection is no longer acquired."
+                + "Call the play, next, or previous methods to start playing a new track.";
             _self.NowPlayingError(result);
         } else {
             var success = function (data, response) {
