@@ -28,15 +28,15 @@ using namespace std;
 class NowPlayingJS: public JSExt {
 
     public:
-        explicit NowPlayingJS(const std::string& id);
+        explicit NowPlayingJS(const string& id);
         virtual ~NowPlayingJS();
         virtual bool CanDelete() { return true; };
-        void NotifyEvent(const std::string& event);
-        virtual std::string InvokeMethod(const std::string& command);
+        void NotifyEvent(const string& event);
+        virtual string InvokeMethod(const string& command);
         bb::webworks::extensions::ApplicationThread* applicationThread() const { return m_thread; };
 
     private:
-        std::string m_id;
+        string m_id;
         bb::webworks::extensions::ApplicationThread *m_thread;
 
         // Definition of a pointer to the actual native extension code

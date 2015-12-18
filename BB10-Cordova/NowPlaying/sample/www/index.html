@@ -35,47 +35,43 @@
 
         <div class="app">
             <!--<h1>Apache Cordova</h1>-->
-            <div id="deviceready" class="blink">
-                <!-- TODO: not working! TypeError: null is not an object (evaluating 'parentElement.querySelector') -->
+            <div id="deviceReady" class="blink">
                 <p class="event listening">NowPlaying Plugin: Connecting to Device</p>
                 <p class="event received">NowPlaying Plugin: Device is Ready</p>
             </div>
             <div id="results"></div>
         </div>
 
-        <button id="setMusicButton" type="button"> Set Music1 </button>
         <br>
-        <button id="setMusic2Button" type="button"> Set Music2 </button>
         <br>
-        <button id="setMetadataButton" type="button"> Set Metadata1 </button>
         <br>
-        <button id="setMetadata2Button" type="button"> Set Metadata2 </button>
         <br>
-        <button id="setIconButton" type="button"> Set Icon1 </button>
         <br>
-        <button id="setIcon2Button" type="button"> Set Icon2 </button>
+        <button id="clearResultsButton" type="button"> Clear Results from Screen </button>
         <br>
 
         <br>
-        <button id="changeTrackButton" type="button"> Change (to) Track1 </button>
-        <br>
-        <button id="changeTrack2Button" type="button"> Change (to) Track2 </button>
+        <button id="requestPlaybackButton" type="button"> Request Playback </button>
         <br>
 
         <br>
-        <button id="enablePreviousNextButton" type="button"> Enable Previous/Next button on volume overlay </button>
+        <button id="play0Button" type="button"> Play track 0 </button>
         <br>
-        <button id="disablePreviousNextButton" type="button"> Disable Previous/Next button on volume overlay </button>
-        <br>
-
-        <br>
-        <button id="playButton" type="button"> Play (Acquire) </button>
+        <button id="play1Button" type="button"> Play track 1 </button>
         <br>
         <button id="pauseButton" type="button"> Pause </button>
         <br>
         <button id="resumeButton" type="button"> Resume </button>
         <br>
-        <button id="stopButton" type="button"> Stop (Revoke) </button>
+        <button id="stopButton" type="button"> Stop </button>
+        <br>
+        <button id="nextButton" type="button"> Next </button>
+        <br>
+        <button id="previousButton" type="button"> Previous </button>
+        <br>
+
+        <br>
+        <button id="errorButton" type="button"> Force a Dummy Error </button>
         <br>
 
         <br>
@@ -85,7 +81,7 @@
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
-            app.initialize();
+            app.init();
         </script>
 
     </body>

@@ -24,6 +24,8 @@
 #include <QString>
 #include <QByteArray>
 #include <QtCore>
+#include <json/value.h>
+
 #include <bb/multimedia/MediaPlayer>
 #include <bb/multimedia/NowPlayingConnection>
 
@@ -31,8 +33,8 @@ class NowPlayingJS;
 
 namespace webworks {
 
-    using namespace bb::multimedia;
     using namespace std;
+    using namespace bb::multimedia;
 
     class NowPlayingNDK : public QObject {
 
@@ -43,58 +45,73 @@ namespace webworks {
         bb::multimedia::MediaPlayer *mp;
         bb::multimedia::NowPlayingConnection *npc;
 
-        public:
+        void sendEvent(const string& msg);
 
+        string setMusic(const string& data);
+        string setIcon(const string& data);
+        string setMetadata(const Json::Value& data);
+
+        private:
+            string playCallbackId;
+            string pauseCallbackId;
+            string stopCallbackId;
+            string nextCallbackId;
+            string previousCallbackId;
+            string errorCallbackId;
+
+        public:
             explicit NowPlayingNDK(NowPlayingJS *parent = NULL): QObject(), m_pParent(parent)
             {
-                mp = new bb::multimedia::MediaPlayer(this);
-                npc = new bb::multimedia::NowPlayingConnection(this);
+                mp = new MediaPlayer(this);
 
-                /* Set the volume overlay over the media notification area. */
-                npc->acquire();
-                npc->setOverlayStyle(bb::multimedia::OverlayStyle::Fancy);
-                npc->revoke();
-
-                QObject::connect(this, SIGNAL(playSignal()),
-                                this, SLOT(play()));
-                QObject::connect(this, SIGNAL(pauseSignal()),
-                                this, SLOT(pause()));
-                QObject::connect(this, SIGNAL(resumeSignal()),
-                                this, SLOT(resume()));
-                QObject::connect(this, SIGNAL(stopSignal()),
-                                this, SLOT(stop()));
+                // Create a low-priority NowPlayingConnection.
+                // This means that if an app using this plugin is preempted by
+                // a high-priority connection, the track will be automatically
+                // restarted if it was playing, remain paused if paused, and
+                // stopped if stopped.
+                // See https://developer.blackberry.com/native/documentation/graphics_multimedia/audio_video/accessing_media_notification_areas.html
+                // for more details.
+                npc = new NowPlayingConnection(this);
             }
 
             virtual ~NowPlayingNDK() {};
 
-            void sendEvent(const string& msg);
-
             signals:
                 void playSignal();
                 void pauseSignal();
-                void resumeSignal();
                 void stopSignal();
+                void nextSignal();
+                void previousSignal();
+
+                void errorSignal(const string& errorMessage);
 
             public slots:
-                void play();
-                void pause();
-                void resume();
-                void stop();
+                void joinSlot(const string& windowGroup);
 
-        public:
-            string NowPlayingSetMusic(const string& data);
-            string NowPlayingSetMetadata(const string& data);
-            string NowPlayingSetIcon(const string& data);
+                void playSlot();
+                void pauseSlot();
+                void stopSlot();
+                void nextSlot();
+                void previousSlot();
 
-            string NowPlayingChangeTrack(const string& callbackId, const string& data);
+                void errorSlot(const string& errorMessage);
 
-            string NowPlayingEnableNextPrevious();
-            string NowPlayingDisableNextPrevious();
+            string NowPlayingRequestPlayback();
+            void NowPlayingBindPlayCallback(const string& callbackId);
+            void NowPlayingBindPauseCallback(const string& callbackId);
+            void NowPlayingBindStopCallback(const string& callbackId);
+            void NowPlayingBindNextCallback(const string& callbackId);
+            void NowPlayingBindPreviousCallback(const string& callbackId);
+            void NowPlayingBindErrorCallback(const string& callbackId);
 
-            string NowPlayingPlay(const string& callbackId, const string& data);
-            string NowPlayingPause(const string& callbackId);
-            string NowPlayingResume(const string& callbackId);
-            string NowPlayingStop(const string& callbackId);
+            string NowPlayingPlay(const string& data);
+            string NowPlayingPause();
+            string NowPlayingResume();
+            string NowPlayingStop();
+            string NowPlayingNext();
+            string NowPlayingPrevious();
+
+            string NowPlayingError(const string& data);
 
             string NowPlayingGetState();
 
