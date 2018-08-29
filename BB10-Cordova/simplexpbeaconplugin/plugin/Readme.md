@@ -1,5 +1,7 @@
 # Bluetooth iBeacon Cross Platform Cordova Plugin #
 
+__Note: This module was previously published under the ID cordova-plugin-beacon, but has been renamed to allow a newer module to use that ID.__
+
 This Bluetooth Smart iBeacon WebWorks Cordova Cross Platform Plugin (**SimpleXpBeaconPlugin**) is intended to allow  WebWorks applications to monitor and detect devices using the Apple de-facto iBeacon standard. It supports all the following platforms:
 
 - **BlackBerry 10**

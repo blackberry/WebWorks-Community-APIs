@@ -1,9 +1,9 @@
 {
-  "name": "cordova-plugin-beacon",
+  "name": "cordova-plugin-simple-beacon",
   "version": "1.1.0",
   "description": "BlackBerry 10 Community Contributed SimpleXpBeaconPlugin API",
   "cordova": {
-    "id": "cordova-plugin-beacon",
+    "id": "cordova-plugin-simple-beacon",
     "platforms": [
       "blackberry10",
       "android",
