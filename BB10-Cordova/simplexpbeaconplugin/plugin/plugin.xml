@@ -1,5 +1,5 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    id="cordova-plugin-beacon"
+    id="cordova-plugin-simple-beacon"
     version="1.1.0">
 
     <name>SimpleXpBeaconPlugin</name>
@@ -16,13 +16,13 @@
         <lib-file src="src/blackberry10/native/device/libSimpleXpBeaconPlugin.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libSimpleXpBeaconPlugin.so" arch="simulator"/>
         <config-file target="www/config.xml" parent="/widget">
-            <feature name="cordova-plugin-beacon" value="cordova-plugin-beacon" />
+            <feature name="cordova-plugin-simple-beacon" value="cordova-plugin-simple-beacon" />
         </config-file>
     </platform>
 
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/widget">
-            <feature name="cordova-plugin-beacon">
+            <feature name="cordova-plugin-simple-beacon">
                 <param name="android-package" value="com.blackberry.community.SimpleXpBeaconPlugin"/>
             </feature>
         </config-file>
@@ -39,7 +39,7 @@
 
     <platform name="ios">
         <config-file target="config.xml" parent="/widget">
-            <feature name="cordova-plugin-beacon">
+            <feature name="cordova-plugin-simple-beacon">
                 <param name="ios-package" value="SimpleXpBeaconPlugin" />
             </feature>
         </config-file>
